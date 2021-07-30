@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\GL">
+      <UniqueIdentifier>{cc90d16f-58b3-46e0-b661-f015f20931a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\structure">
+      <UniqueIdentifier>{e47f8622-426a-4178-a6f0-19148e4c1c23}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\structure">
+      <UniqueIdentifier>{da468fbf-98e8-4446-9dc1-02ebb0386983}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\opengl">
+      <UniqueIdentifier>{aa30b8bf-037d-4d70-80a7-971ce4cae45a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\external_lib">
+      <UniqueIdentifier>{42e57564-31a1-4ce6-a6a7-80fb5185da17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opengl">
+      <UniqueIdentifier>{182d3a25-523e-4a61-942e-cbe6ed6a5474}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Widget">
+      <UniqueIdentifier>{a8a49f7f-ee21-4899-a834-89d9221fa304}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Widget">
+      <UniqueIdentifier>{aa471ea6-35b9-4cc7-ab6a-2f592285d488}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\network">
+      <UniqueIdentifier>{4750aaff-f575-425c-8049-857dc6b81a1a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes\jgl2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_includes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_dirent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\GL\eglew.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\GL\glew.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\GL\glut.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\GL\glxew.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\GL\wglew.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_string.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_basic_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_glyph.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_structure.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_locked_queue.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_matrix.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_perlin.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_pool.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_shared_object.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_vector.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_color.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_data_contener.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_array.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_exception.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_enum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_file_handler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_basic_functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_opengl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_define.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\opengl\jgl2_gl_object.h">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\opengl\jgl2_shader.h">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\opengl\jgl2_viewport.h">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\opengl\jgl2_application.h">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\opengl\jgl2_drawing_function.h">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_image.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_drawing_functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_keyboard.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_mouse.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_sprite_sheet.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\external_lib\stb_image.h">
+      <Filter>Header Files\external_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\external_lib\std_truetype.h">
+      <Filter>Header Files\external_lib</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\structure\jgl2_font.h">
+      <Filter>Header Files\structure</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\widget\jgl2_widget.h">
+      <Filter>Header Files\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_widgets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\widget\jgl2_widget_component.h">
+      <Filter>Header Files\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\widget\jgl2_frame.h">
+      <Filter>Header Files\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\widget\jgl2_button.h">
+      <Filter>Header Files\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\network\jgl2_network_client.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\network\jgl2_network_message.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\network\jgl2_network_server.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_network.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\widget\jgl2_label.h">
+      <Filter>Header Files\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\widget\jgl2_text_entry.h">
+      <Filter>Header Files\Widget</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\network\jgl2_network_connection.h">
+      <Filter>Header Files\network</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="srcs\jgl2_file_handler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\structure\array_handler.cpp">
+      <Filter>Source Files\structure</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\jgl2_basic_function.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\structure\string_handler.cpp">
+      <Filter>Source Files\structure</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\structure\exception_handler.cpp">
+      <Filter>Source Files\structure</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\structure\mouse_handler.cpp">
+      <Filter>Source Files\structure</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\structure\perlin_handler.cpp">
+      <Filter>Source Files\structure</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\structure\keyboard_handler.cpp">
+      <Filter>Source Files\structure</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\opengl\application_handler.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\opengl\window_creation.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\structure\image_handler.cpp">
+      <Filter>Source Files\structure</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\drawing_function_2D_color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\drawing_function_utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\opengl\viewport_handler.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\opengl\shader_handler.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\opengl\shader_2D.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\opengl\shader_3D.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\structure\sprite_sheet_handler.cpp">
+      <Filter>Source Files\structure</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\structure\shape_handler.cpp">
+      <Filter>Source Files\structure</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\structure\font_handler.cpp">
+      <Filter>Source Files\structure</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\widget\widget_handler.cpp">
+      <Filter>Source Files\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="includes\opengl\central_widget_handler.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\widget\widget_component_label_handler.cpp">
+      <Filter>Source Files\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\widget\widget_component_box_handler.cpp">
+      <Filter>Source Files\Widget</Filter>
+    </ClCompile>
+    <ClCompile Include="srcs\widget\widget_component_graphical_handler.cpp">
+      <Filter>Source Files\Widget</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

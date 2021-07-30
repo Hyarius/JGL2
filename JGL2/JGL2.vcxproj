@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="includes\external_lib\stb_image.h" />
+    <ClInclude Include="includes\external_lib\std_truetype.h" />
+    <ClInclude Include="includes\GL\eglew.h" />
+    <ClInclude Include="includes\GL\glew.h" />
+    <ClInclude Include="includes\GL\glut.h" />
+    <ClInclude Include="includes\GL\glxew.h" />
+    <ClInclude Include="includes\GL\wglew.h" />
+    <ClInclude Include="includes\jgl2.h" />
+    <ClInclude Include="includes\jgl2_basic_functions.h" />
+    <ClInclude Include="includes\jgl2_define.h" />
+    <ClInclude Include="includes\jgl2_drawing_functions.h" />
+    <ClInclude Include="includes\jgl2_enum.h" />
+    <ClInclude Include="includes\jgl2_file_handler.h" />
+    <ClInclude Include="includes\jgl2_network.h" />
+    <ClInclude Include="includes\jgl2_opengl.h" />
+    <ClInclude Include="includes\jgl2_basic_types.h" />
+    <ClInclude Include="includes\jgl2_dirent.h" />
+    <ClInclude Include="includes\jgl2_includes.h" />
+    <ClInclude Include="includes\jgl2_structure.h" />
+    <ClInclude Include="includes\jgl2_widgets.h" />
+    <ClInclude Include="includes\network\jgl2_network_client.h" />
+    <ClInclude Include="includes\network\jgl2_network_connection.h" />
+    <ClInclude Include="includes\network\jgl2_network_message.h" />
+    <ClInclude Include="includes\network\jgl2_network_server.h" />
+    <ClInclude Include="includes\opengl\jgl2_application.h" />
+    <ClInclude Include="includes\opengl\jgl2_drawing_function.h" />
+    <ClInclude Include="includes\opengl\jgl2_gl_object.h" />
+    <ClInclude Include="includes\opengl\jgl2_shader.h" />
+    <ClInclude Include="includes\opengl\jgl2_viewport.h" />
+    <ClInclude Include="includes\structure\jgl2_array.h" />
+    <ClInclude Include="includes\structure\jgl2_font.h" />
+    <ClInclude Include="includes\structure\jgl2_color.h" />
+    <ClInclude Include="includes\structure\jgl2_data_contener.h" />
+    <ClInclude Include="includes\structure\jgl2_exception.h" />
+    <ClInclude Include="includes\structure\jgl2_glyph.h" />
+    <ClInclude Include="includes\structure\jgl2_image.h" />
+    <ClInclude Include="includes\structure\jgl2_keyboard.h" />
+    <ClInclude Include="includes\structure\jgl2_locked_queue.h" />
+    <ClInclude Include="includes\structure\jgl2_matrix.h" />
+    <ClInclude Include="includes\structure\jgl2_mouse.h" />
+    <ClInclude Include="includes\structure\jgl2_perlin.h" />
+    <ClInclude Include="includes\structure\jgl2_pool.h" />
+    <ClInclude Include="includes\structure\jgl2_shared_object.h" />
+    <ClInclude Include="includes\structure\jgl2_sprite_sheet.h" />
+    <ClInclude Include="includes\structure\jgl2_string.h" />
+    <ClInclude Include="includes\structure\jgl2_vector.h" />
+    <ClInclude Include="includes\widget\jgl2_button.h" />
+    <ClInclude Include="includes\widget\jgl2_frame.h" />
+    <ClInclude Include="includes\widget\jgl2_label.h" />
+    <ClInclude Include="includes\widget\jgl2_text_entry.h" />
+    <ClInclude Include="includes\widget\jgl2_widget.h" />
+    <ClInclude Include="includes\widget\jgl2_widget_component.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="includes\opengl\central_widget_handler.cpp" />
+    <ClCompile Include="srcs\drawing_function_2D_color.cpp" />
+    <ClCompile Include="srcs\drawing_function_utils.cpp" />
+    <ClCompile Include="srcs\jgl2_basic_function.cpp" />
+    <ClCompile Include="srcs\jgl2_file_handler.cpp" />
+    <ClCompile Include="srcs\opengl\application_handler.cpp" />
+    <ClCompile Include="srcs\opengl\shader_2D.cpp" />
+    <ClCompile Include="srcs\opengl\shader_3D.cpp" />
+    <ClCompile Include="srcs\opengl\shader_handler.cpp" />
+    <ClCompile Include="srcs\opengl\viewport_handler.cpp" />
+    <ClCompile Include="srcs\opengl\window_creation.cpp" />
+    <ClCompile Include="srcs\structure\array_handler.cpp" />
+    <ClCompile Include="srcs\structure\font_handler.cpp" />
+    <ClCompile Include="srcs\structure\exception_handler.cpp" />
+    <ClCompile Include="srcs\structure\image_handler.cpp" />
+    <ClCompile Include="srcs\structure\keyboard_handler.cpp" />
+    <ClCompile Include="srcs\structure\mouse_handler.cpp" />
+    <ClCompile Include="srcs\structure\perlin_handler.cpp" />
+    <ClCompile Include="srcs\structure\shape_handler.cpp" />
+    <ClCompile Include="srcs\structure\sprite_sheet_handler.cpp" />
+    <ClCompile Include="srcs\structure\string_handler.cpp" />
+    <ClCompile Include="srcs\widget\widget_component_box_handler.cpp" />
+    <ClCompile Include="srcs\widget\widget_component_graphical_handler.cpp" />
+    <ClCompile Include="srcs\widget\widget_component_label_handler.cpp" />
+    <ClCompile Include="srcs\widget\widget_handler.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{0fdcfe5f-1379-4753-b8e2-85408c890c16}</ProjectGuid>
+    <RootNamespace>JGL2</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
+    <IncludePath>C:\Developement\JGL2\JGL2\includes;$(IncludePath)</IncludePath>
+    <IntDir>BUILD\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
+    <IncludePath>C:\Developement\JGL2\JGL2\includes;$(IncludePath)</IncludePath>
+    <IntDir>BUILD\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
+    <IncludePath>C:\Developement\JGL2\JGL2\includes;$(IncludePath)</IncludePath>
+    <IntDir>BUILD\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
+    <IncludePath>C:\Developement\JGL2\JGL2\includes;$(IncludePath)</IncludePath>
+    <IntDir>BUILD\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;_DEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <PrecompiledHeaderFile>
+      </PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>
+      </SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
