@@ -1,63 +1,27 @@
 #pragma once
 
-#include "jgl2_includes.h"
+#include <stdint.h>
+#include <math.h>
 
 namespace jgl
 {
 	using Bool = bool;
 
-	using Char = int8_t;
-	using Uchar = uint8_t;
+	using Char = char;
+	using UChar = unsigned char;
 
 	using Short = int16_t;
-	using Ushort = uint16_t;
+	using UShort = uint16_t;
 
 	using Int = int32_t;
-	using Uint = uint32_t;
+	using UInt = uint32_t;
 	using Size_t = uint32_t;
 
 	using Long = int64_t;
-	using Ulong = uint64_t;
+	using ULong = uint64_t;
 
 	using Float = float_t;
 	using Double = double_t;
 
-	using Sampler2D = uint32_t;
-	using Isampler2D = uint32_t;
-	using Uisampler2D = uint32_t;
-
-	template<class K, class E>
-	using Map = std::map<K, E>;
-
-	using File = std::fstream;
-
-	enum class File_mode
-	{
-		in = std::ios_base::in,
-		out = std::ios_base::out,
-		clear_out = std::ios_base::out | std::ios_base::trunc,
-		out_binary = std::ios_base::out | std::ios_base::binary,
-		in_binary = std::ios_base::out | std::ios_base::binary,
-		app = std::ios_base::app,
-		binary = std::ios_base::binary,
-		ate = std::ios_base::ate,
-	};
-
-	enum class File_pos
-	{
-		Begin = std::ios_base::beg,
-		End = std::ios_base::end,
-		Current = std::ios_base::cur 
-	};
-
-	enum class File_type {
-		Error = DT_UNKNOWN,
-		File = DT_REG,
-		Directory = DT_DIR,
-		Fifo = DT_FIFO,
-		Socket = DT_SOCK,
-		Char_device = DT_CHR,
-		Block = DT_BLK,
-		Link = DT_LNK
-	};
+	using WChar = wchar_t;
 }

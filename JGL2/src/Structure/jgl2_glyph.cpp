@@ -1,0 +1,62 @@
+#include "Structure/jgl2_glyph.h"
+
+namespace jgl
+{
+	jgl::Int Glyph::_countCharLen(const jgl::Char p_toParse)
+	{
+		static const jgl::Int mask[4] = { 0b10000000, 0b11100000, 0b11110000, 0b11111000 };
+		static const jgl::Int expected[4] = { 0b00000000, 0b11000000, 0b11100000, 0b11110000 };
+
+		for (jgl::Size_t i = 0; i < 4; i++)
+		{
+			if ((p_toParse & mask[i]) == expected[i])
+				return (i + 1);
+		}
+		return (-1);
+	}
+
+	void Glyph::_decodeUnicodeChar(const jgl::Char* p_str)
+	{
+		jgl::Int limit = _countCharLen(p_str[0]);
+
+		if (limit == -1)
+		{
+			throw jgl::Exception(-1, "Unexpected encoding char in wide char parsing operation");
+		}
+
+		_size = limit;
+		for (jgl::Int i = 0; i < limit; i++)
+			_content[i] = p_str[i];
+		_content[limit] = '\0';
+	}
+
+	Glyph::Glyph()
+	{
+		clean();
+	}
+
+	Glyph::Glyph(jgl::WChar p_c) : Glyph()
+	{
+		_decodeUnicodeChar(reinterpret_cast<jgl::Char*>(&p_c));
+	}
+
+	jgl::Size_t Glyph::size() const
+	{
+		return (_size);
+	}
+
+	const char& Glyph::operator [] (jgl::Size_t p_index) const
+	{
+		if (p_index >= _size)
+			throw jgl::Exception(-1, "Index out of range");
+		return (_content[p_index]);
+	}
+
+	void Glyph::clean()
+	{
+		for (jgl::Size_t i = 0; i < 5; i++)
+		{
+			_content[i] = '\0';
+		}
+	}
+}

@@ -19,90 +19,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="includes\external_lib\stb_image.h" />
-    <ClInclude Include="includes\external_lib\std_truetype.h" />
-    <ClInclude Include="includes\GL\eglew.h" />
-    <ClInclude Include="includes\GL\glew.h" />
-    <ClInclude Include="includes\GL\glut.h" />
-    <ClInclude Include="includes\GL\glxew.h" />
-    <ClInclude Include="includes\GL\wglew.h" />
     <ClInclude Include="includes\jgl2.h" />
-    <ClInclude Include="includes\jgl2_basic_functions.h" />
-    <ClInclude Include="includes\jgl2_define.h" />
-    <ClInclude Include="includes\jgl2_drawing_functions.h" />
-    <ClInclude Include="includes\jgl2_enum.h" />
-    <ClInclude Include="includes\jgl2_file_handler.h" />
-    <ClInclude Include="includes\jgl2_network.h" />
-    <ClInclude Include="includes\jgl2_opengl.h" />
     <ClInclude Include="includes\jgl2_basic_types.h" />
-    <ClInclude Include="includes\jgl2_dirent.h" />
     <ClInclude Include="includes\jgl2_includes.h" />
-    <ClInclude Include="includes\jgl2_structure.h" />
-    <ClInclude Include="includes\jgl2_widgets.h" />
-    <ClInclude Include="includes\network\jgl2_network_client.h" />
-    <ClInclude Include="includes\network\jgl2_network_connection.h" />
-    <ClInclude Include="includes\network\jgl2_network_message.h" />
-    <ClInclude Include="includes\network\jgl2_network_server.h" />
-    <ClInclude Include="includes\opengl\jgl2_application.h" />
-    <ClInclude Include="includes\opengl\jgl2_drawing_function.h" />
-    <ClInclude Include="includes\opengl\jgl2_gl_object.h" />
-    <ClInclude Include="includes\opengl\jgl2_shader.h" />
-    <ClInclude Include="includes\opengl\jgl2_viewport.h" />
-    <ClInclude Include="includes\structure\jgl2_array.h" />
-    <ClInclude Include="includes\structure\jgl2_font.h" />
-    <ClInclude Include="includes\structure\jgl2_color.h" />
-    <ClInclude Include="includes\structure\jgl2_data_contener.h" />
-    <ClInclude Include="includes\structure\jgl2_exception.h" />
-    <ClInclude Include="includes\structure\jgl2_glyph.h" />
-    <ClInclude Include="includes\structure\jgl2_image.h" />
-    <ClInclude Include="includes\structure\jgl2_keyboard.h" />
-    <ClInclude Include="includes\structure\jgl2_locked_queue.h" />
-    <ClInclude Include="includes\structure\jgl2_matrix.h" />
-    <ClInclude Include="includes\structure\jgl2_mouse.h" />
-    <ClInclude Include="includes\structure\jgl2_perlin.h" />
-    <ClInclude Include="includes\structure\jgl2_pool.h" />
-    <ClInclude Include="includes\structure\jgl2_shared_object.h" />
-    <ClInclude Include="includes\structure\jgl2_sprite_sheet.h" />
-    <ClInclude Include="includes\structure\jgl2_string.h" />
-    <ClInclude Include="includes\structure\jgl2_vector.h" />
-    <ClInclude Include="includes\widget\jgl2_button.h" />
-    <ClInclude Include="includes\widget\jgl2_frame.h" />
-    <ClInclude Include="includes\widget\jgl2_label.h" />
-    <ClInclude Include="includes\widget\jgl2_text_entry.h" />
-    <ClInclude Include="includes\widget\jgl2_widget.h" />
-    <ClInclude Include="includes\widget\jgl2_widget_component.h" />
+    <ClInclude Include="includes\jgl2_structures.h" />
+    <ClInclude Include="includes\Structure\jgl2_application.h" />
+    <ClInclude Include="includes\Structure\jgl2_exception.h" />
+    <ClInclude Include="includes\Structure\jgl2_glyph.h" />
+    <ClInclude Include="includes\Structure\jgl2_iostream.h" />
+    <ClInclude Include="includes\Structure\jgl2_string.h" />
+    <ClInclude Include="includes\Structure\jgl2_thread.h" />
+    <ClInclude Include="includes\Structure\jgl2_vector.h" />
+    <ClInclude Include="includes\Structure\jgl2_widget.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="includes\opengl\central_widget_handler.cpp" />
-    <ClCompile Include="srcs\drawing_function_2D_color.cpp" />
-    <ClCompile Include="srcs\drawing_function_utils.cpp" />
-    <ClCompile Include="srcs\jgl2_basic_function.cpp" />
-    <ClCompile Include="srcs\jgl2_file_handler.cpp" />
-    <ClCompile Include="srcs\opengl\application_handler.cpp" />
-    <ClCompile Include="srcs\opengl\shader_2D.cpp" />
-    <ClCompile Include="srcs\opengl\shader_3D.cpp" />
-    <ClCompile Include="srcs\opengl\shader_handler.cpp" />
-    <ClCompile Include="srcs\opengl\viewport_handler.cpp" />
-    <ClCompile Include="srcs\opengl\window_creation.cpp" />
-    <ClCompile Include="srcs\structure\array_handler.cpp" />
-    <ClCompile Include="srcs\structure\font_handler.cpp" />
-    <ClCompile Include="srcs\structure\exception_handler.cpp" />
-    <ClCompile Include="srcs\structure\image_handler.cpp" />
-    <ClCompile Include="srcs\structure\keyboard_handler.cpp" />
-    <ClCompile Include="srcs\structure\mouse_handler.cpp" />
-    <ClCompile Include="srcs\structure\perlin_handler.cpp" />
-    <ClCompile Include="srcs\structure\shape_handler.cpp" />
-    <ClCompile Include="srcs\structure\sprite_sheet_handler.cpp" />
-    <ClCompile Include="srcs\structure\string_handler.cpp" />
-    <ClCompile Include="srcs\widget\widget_component_box_handler.cpp" />
-    <ClCompile Include="srcs\widget\widget_component_graphical_handler.cpp" />
-    <ClCompile Include="srcs\widget\widget_component_label_handler.cpp" />
-    <ClCompile Include="srcs\widget\widget_handler.cpp" />
+    <ClCompile Include="src\Structure\jgl2_application.cpp" />
+    <ClCompile Include="src\Structure\jgl2_exception.cpp" />
+    <ClCompile Include="src\Structure\jgl2_glyph.cpp" />
+    <ClCompile Include="src\Structure\jgl2_iostream.cpp" />
+    <ClCompile Include="src\Structure\jgl2_string.cpp" />
+    <ClCompile Include="src\Structure\jgl2_thread.cpp" />
+    <ClCompile Include="src\Structure\jgl2_widget.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{0fdcfe5f-1379-4753-b8e2-85408c890c16}</ProjectGuid>
+    <ProjectGuid>{5ef60ebf-903e-4022-bb32-8536b33eb17e}</ProjectGuid>
     <RootNamespace>JGL2</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
@@ -110,24 +52,28 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -147,41 +93,32 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>includes;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
+    <OutDir>$(SolutionDir)BUILD\LIB\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(SolutionDir)BUILD\OBJ\$(Configuration)\$(PlatformTarget)\</IntDir>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
-    <IncludePath>C:\Developement\JGL2\JGL2\includes;$(IncludePath)</IncludePath>
-    <IntDir>BUILD\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)BUILD\LIB\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(SolutionDir)BUILD\OBJ\$(Configuration)\$(PlatformTarget)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
-    <IncludePath>C:\Developement\JGL2\JGL2\includes;$(IncludePath)</IncludePath>
-    <IntDir>BUILD\$(Platform)\$(Configuration)\</IntDir>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
-    <IncludePath>C:\Developement\JGL2\JGL2\includes;$(IncludePath)</IncludePath>
-    <IntDir>BUILD\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)BUILD\LIB\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(SolutionDir)BUILD\OBJ\$(Configuration)\$(PlatformTarget)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)Output\$(Configuration)\$(Platform)\</OutDir>
-    <IncludePath>C:\Developement\JGL2\JGL2\includes;$(IncludePath)</IncludePath>
-    <IntDir>BUILD\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)BUILD\LIB\$(Configuration)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(SolutionDir)BUILD\OBJ\$(Configuration)\$(PlatformTarget)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -195,13 +132,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -215,13 +150,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;_DEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -235,13 +168,11 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;NDEBUG;_LIB;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <PrecompiledHeaderFile>
-      </PrecompiledHeaderFile>
-      <LanguageStandard>stdcpp17</LanguageStandard>
-      <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>
