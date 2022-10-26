@@ -148,6 +148,17 @@ namespace jgl
 		return (*this);
 	}
 
+	jgl::IOStream& IOStream::operator << (const void* p_address)
+	{
+		std::ostringstream address;
+		address << (void const*)this;
+
+		std::string name = address.str();
+
+		_addString(name);
+		return (*this);
+	}
+
 	IOStream& endl(IOStream& os)
 	{
 		os.flush();

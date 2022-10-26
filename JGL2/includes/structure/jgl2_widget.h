@@ -15,11 +15,15 @@ namespace jgl
 			void _addChildren(Widget* p_parent);
 			void _removeChildren(Widget* p_parent);
 
+			virtual jgl::Bool _onUpdate() = 0;
+			virtual void _onRender() = 0;
+
 		public:
 			Widget(jgl::String p_widgetName, Widget* p_parent);
 			Widget(Widget* p_parent);
 
 			void setParent(Widget* p_parent);
+
 			jgl::Bool update();
 			void render();
 		};

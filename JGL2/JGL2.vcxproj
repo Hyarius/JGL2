@@ -21,12 +21,19 @@
   <ItemGroup>
     <ClInclude Include="includes\jgl2.h" />
     <ClInclude Include="includes\jgl2_basic_types.h" />
+    <ClInclude Include="includes\jgl2_enums.h" />
     <ClInclude Include="includes\jgl2_includes.h" />
     <ClInclude Include="includes\jgl2_structures.h" />
     <ClInclude Include="includes\Structure\jgl2_application.h" />
+    <ClInclude Include="includes\Structure\jgl2_color.h" />
     <ClInclude Include="includes\Structure\jgl2_exception.h" />
     <ClInclude Include="includes\Structure\jgl2_glyph.h" />
     <ClInclude Include="includes\Structure\jgl2_iostream.h" />
+    <ClInclude Include="includes\Structure\jgl2_keyboard.h" />
+    <ClInclude Include="includes\Structure\jgl2_mouse.h" />
+    <ClInclude Include="includes\Structure\jgl2_openGLContext.h" />
+    <ClInclude Include="includes\Structure\jgl2_polymorphic_container.h" />
+    <ClInclude Include="includes\Structure\jgl2_pool.h" />
     <ClInclude Include="includes\Structure\jgl2_string.h" />
     <ClInclude Include="includes\Structure\jgl2_thread.h" />
     <ClInclude Include="includes\Structure\jgl2_vector.h" />
@@ -34,6 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Structure\jgl2_application.cpp" />
+    <ClCompile Include="src\Structure\jgl2_application_win_proc.cpp" />
+    <ClCompile Include="src\Structure\jgl2_keyboard.cpp" />
+    <ClCompile Include="src\Structure\jgl2_mouse.cpp" />
+    <ClCompile Include="src\Structure\jgl2_openGLContext.cpp" />
     <ClCompile Include="src\Structure\jgl2_exception.cpp" />
     <ClCompile Include="src\Structure\jgl2_glyph.cpp" />
     <ClCompile Include="src\Structure\jgl2_iostream.cpp" />
@@ -101,14 +112,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)BUILD\LIB\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)BUILD\OBJ\$(Configuration)\$(PlatformTarget)\</IntDir>
+    <IncludePath>includes;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)BUILD\LIB\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)BUILD\OBJ\$(Configuration)\$(PlatformTarget)\</IntDir>
+    <IncludePath>includes;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)BUILD\LIB\$(Configuration)\$(PlatformTarget)\</OutDir>
     <IntDir>$(SolutionDir)BUILD\OBJ\$(Configuration)\$(PlatformTarget)\</IntDir>
+    <IncludePath>includes;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

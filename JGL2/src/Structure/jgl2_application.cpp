@@ -21,9 +21,14 @@ namespace jgl
 
 	void Application::_runUpdate()
 	{
+		_updateTime();
+
+		jgl::ULong next_time = _time + 1000;
+
 		while (_running == true)
 		{
 			_updateTime();
+			_handleWinMessage();
 
 			for (jgl::Size_t i = 0; i < _widgets.size(); i++)
 			{
@@ -33,13 +38,20 @@ namespace jgl
 	}
 	void Application::_runRender()
 	{
+		jgl::ULong next_time = _time + 1000;
+
 		while (_running == true)
 		{
+			_pullWinMessage();
+
+			_context.clear();
 
 			for (jgl::Size_t i = 0; i < _widgets.size(); i++)
 			{
 				_widgets[i]->render();
 			}
+		
+			_context.render();
 		}
 	}
 
@@ -48,22 +60,26 @@ namespace jgl
 		_running = true;
 
 		_update_thread = new jgl::Thread("Update thread", [&]() {
-			_runUpdate();
+				_runUpdate();
 			});
 		_runRender();
 	}
 
-	Application::Application()
+	Application::Application(jgl::String p_title, jgl::Vector2Int p_size)
 	{
 		if (_instance != nullptr)
 			throw jgl::Exception(1, "Application already created");
+		_instance = this;
+
+		_messagePool.setDefaultObject(new jgl::PolymorphicContainer());
+		_context.initialize(p_title, p_size);
 
 		_updateTime();
-		_instance = this;
 	}
 
 	void Application::quit()
 	{
+		jgl::cout << "Quitting application !" << jgl::endl;
 		_running = false;
 	}
 
@@ -78,6 +94,7 @@ namespace jgl
 			jgl::cout << e.what() << jgl::endl;
 			return (e.errorId());
 		}
+
 		return (0);
 	}
 

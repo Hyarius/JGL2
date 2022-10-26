@@ -1,5 +1,14 @@
 #include "Structure/jgl2_string.h"
 
+#include <io.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <errno.h>
+#include <share.h>
+
 namespace jgl
 {
 	String::String()
@@ -15,12 +24,17 @@ namespace jgl
 		}
 	}
 
+	String::String(const std::string& p_str) : String(p_str.c_str())
+	{
+		
+	}
+
 	jgl::Size_t String::size() const
 	{
 		return (_size);
 	}
 
-	const char* String::c_str() const
+	const jgl::Char* String::c_str() const
 	{
 		if (_str == nullptr || _edited == true)
 		{
@@ -42,6 +56,15 @@ namespace jgl
 			}
 		}
 		return (_str);
+	}
+
+	jgl::WChar* String::convertToWChar() const
+	{
+		jgl::WChar* result = new jgl::WChar[_content.size() + 1];
+		size_t convertedChars = 0;
+		mbstowcs_s(&convertedChars, result, _content.size() + 1, c_str(), _TRUNCATE);
+
+		return (result);
 	}
 
 	jgl::Glyph& String::operator [] (jgl::Size_t p_index)
@@ -94,6 +117,13 @@ namespace jgl
 		result.append(p_other);
 
 		return (result);
+	}
+
+	String& String::operator += (const Glyph& p_glyph)
+	{
+		this->append(p_glyph, 1);
+
+		return (*this);
 	}
 
 	String& String::operator += (const String& p_other)

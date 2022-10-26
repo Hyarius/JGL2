@@ -51,6 +51,27 @@
     <ClInclude Include="includes\Structure\jgl2_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_openGLContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_color.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_polymorphic_container.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_pool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_keyboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_mouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Structure\jgl2_iostream.cpp">
@@ -72,6 +93,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Structure\jgl2_thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Structure\jgl2_openGLContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Structure\jgl2_application_win_proc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Structure\jgl2_keyboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Structure\jgl2_mouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,16 +1,21 @@
 #include "Structure/jgl2_glyph.h"
 
+
+#include <bitset>
+#include <iostream>
+
 namespace jgl
 {
 	jgl::Int Glyph::_countCharLen(const jgl::Char p_toParse)
 	{
-		static const jgl::Int mask[4] = { 0b10000000, 0b11100000, 0b11110000, 0b11111000 };
-		static const jgl::Int expected[4] = { 0b00000000, 0b11000000, 0b11100000, 0b11110000 };
+		static const jgl::Int mask[] = { 0b10000000, 0b11100000, 0b11110000, 0b11111000, 0b10000000 };
+		static const jgl::Int expected[] = { 0b00000000, 0b11000000, 0b11100000, 0b11110000, 0b10000000 };
+		static const jgl::Int result[] = {1, 2, 3, 4, 1};
 
-		for (jgl::Size_t i = 0; i < 4; i++)
+		for (jgl::Size_t i = 0; i < 5; i++)
 		{
 			if ((p_toParse & mask[i]) == expected[i])
-				return (i + 1);
+				return (result[i]);
 		}
 		return (-1);
 	}

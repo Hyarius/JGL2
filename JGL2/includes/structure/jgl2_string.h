@@ -15,13 +15,17 @@ namespace jgl
 		mutable jgl::Bool _edited = false;
 		mutable jgl::Char* _str = nullptr;
 		mutable jgl::Size_t _str_len = 0;
+		mutable jgl::WChar* _wstr = nullptr;
+		mutable jgl::Size_t _wstr_len = 0;
 
 	public:
 		String();
 		String(const char* p_str);
+		String(const std::string& p_str);
 
 		jgl::Size_t size() const;
-		const char* c_str() const;
+		const jgl::Char* c_str() const;
+		jgl::WChar* convertToWChar() const;
 
 		jgl::Glyph& operator [] (jgl::Size_t p_index);
 		const jgl::Glyph& operator [] (jgl::Size_t p_index) const;
@@ -31,6 +35,7 @@ namespace jgl
 		void push_back(jgl::Glyph p_char, jgl::Size_t p_nb_char = 1);
 		void push_back(jgl::String p_other);
 		String operator + (const String& p_other) const;
+		String& operator += (const Glyph& p_glyph);
 		String& operator += (const String& p_other);
 
 		friend String operator + (const char* p_first, const String& p_second)

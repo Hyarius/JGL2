@@ -1,5 +1,6 @@
 #include "Structure/jgl2_widget.h"
 #include "Structure/jgl2_iostream.h"
+#include "Structure/jgl2_application.h"
 
 namespace jgl
 {
@@ -29,25 +30,33 @@ namespace jgl
 		void Widget::setParent(Widget* p_parent)
 		{
 			if (_parent != nullptr)
-			{
 				_parent->_removeChildren(this);
-			}
 			else
 			{
+				auto tmp = std::find(jgl::Application::instance()->_widgets.begin(), jgl::Application::instance()->_widgets.end(), this);
 
+				if (tmp != jgl::Application::instance()->_widgets.end())
+				{
+					jgl::Application::instance()->_widgets.erase(tmp);
+				}
 			}
+
 			_parent = p_parent;
+
+			if (_parent != nullptr)
+				_parent->_addChildren(this);
+			else
+				jgl::Application::instance()->_widgets.push_back(this);
 		}
 
 		jgl::Bool Widget::update()
 		{
-			jgl::cout << "Updating widget " << _widgetName << jgl::endl;
-			return (false);
+			return (_onUpdate());
 		}
 
 		void Widget::render()
 		{
-			jgl::cout << "Rendering widget " << _widgetName << jgl::endl;
+			_onRender();
 		}
 
 	}
