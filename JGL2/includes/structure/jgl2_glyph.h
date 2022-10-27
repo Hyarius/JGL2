@@ -5,6 +5,7 @@
 
 namespace jgl
 {
+	/*
 	class Glyph
 	{
 	private:
@@ -23,4 +24,5 @@ namespace jgl
 		const char& operator [] (jgl::Size_t p_index) const;
 		void clean();
 	};
+	*/
 }

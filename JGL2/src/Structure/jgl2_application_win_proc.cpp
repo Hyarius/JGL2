@@ -413,7 +413,6 @@ namespace jgl
 				*tmpMessage >> value;
 
 				_keyboard._entry = jgl::Glyph(static_cast<jgl::WChar>(value));
-				jgl::cout << "New entry : " << _keyboard._entry << jgl::endl;
 				break;
 			}
 			case WM_SYSKEYDOWN:
@@ -464,6 +463,7 @@ namespace jgl
 			case WM_ENTERSIZEMOVE:
 			case WM_SIZING:
 			case WM_MOUSEACTIVATE:
+			case WM_DEADCHAR:
 			{
 				//Ignored message
 				break;

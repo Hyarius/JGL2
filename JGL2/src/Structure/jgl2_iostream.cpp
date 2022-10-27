@@ -130,6 +130,7 @@ namespace jgl
 		return (*this);
 	}
 
+	/*
 	jgl::IOStream& IOStream::operator << (const Glyph& p_glyph)
 	{
 		for (jgl::Size_t i = 0; i < p_glyph.size(); i++)
@@ -138,6 +139,7 @@ namespace jgl
 		}
 		return (*this);
 	}
+	*/
 
 	jgl::IOStream& IOStream::operator << (const String& p_values)
 	{

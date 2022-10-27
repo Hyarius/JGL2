@@ -6,18 +6,10 @@
 
 namespace jgl
 {
+	/*
 	jgl::Int Glyph::_countCharLen(const jgl::Char p_toParse)
 	{
-		static const jgl::Int mask[] = { 0b10000000, 0b11100000, 0b11110000, 0b11111000, 0b10000000 };
-		static const jgl::Int expected[] = { 0b00000000, 0b11000000, 0b11100000, 0b11110000, 0b10000000 };
-		static const jgl::Int result[] = {1, 2, 3, 4, 1};
-
-		for (jgl::Size_t i = 0; i < 5; i++)
-		{
-			if ((p_toParse & mask[i]) == expected[i])
-				return (result[i]);
-		}
-		return (-1);
+		return (1);
 	}
 
 	void Glyph::_decodeUnicodeChar(const jgl::Char* p_str)
@@ -64,4 +56,5 @@ namespace jgl
 			_content[i] = '\0';
 		}
 	}
+	*/
 }

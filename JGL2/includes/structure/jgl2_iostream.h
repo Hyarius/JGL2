@@ -42,7 +42,7 @@ namespace jgl
 		IOStream& operator << (const jgl::ULong p_value);
 		IOStream& operator << (const jgl::Float p_value);
 		IOStream& operator << (const jgl::Double p_value);
-		jgl::IOStream& operator << (const Glyph& p_glyph);
+		//jgl::IOStream& operator << (const Glyph& p_glyph);
 		jgl::IOStream& operator << (const String& p_values);
 		jgl::IOStream& operator << (const void* p_address);
 	};

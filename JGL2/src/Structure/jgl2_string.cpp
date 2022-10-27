@@ -47,12 +47,16 @@ namespace jgl
 			jgl::Size_t index = 0;
 			for (jgl::Size_t i = 0; i < _content.size(); i++)
 			{
+				_str[index] = _content[i];
+				index++;
+				/*
 				jgl::Glyph tmp_char = _content[i];
 				for (jgl::Size_t j = 0; j < tmp_char.size(); j++)
 				{
 					_str[index] = tmp_char[j];
 					index++;
 				}
+				*/
 			}
 		}
 		return (_str);
@@ -87,7 +91,7 @@ namespace jgl
 		for (jgl::Size_t i = 0; i < p_nb_char; i++)
 		{
 			_content.push_back(p_char);
-			_size += p_char.size();
+			_size += 1;// p_char.size();
 		}
 	}
 
