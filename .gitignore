@@ -5,3 +5,8 @@
 /.vs/JGL2
 BUILD/
 Debug/
+/JGLTester/Release
+/JGLTester/x64/Release/JGLTester.tlog
+/JGLTester/x64/Release
+/Release
+/x64/Release
