@@ -49,11 +49,16 @@ namespace jgl
 		void quit();
 		jgl::Int run();
 		jgl::ULong time();
+		jgl::Vector2Int size();
+		jgl::Vector2Int viewportSize();
 
 		jgl::PolymorphicContainer* obtainWinMessage();
 		void releaseWinMessage(jgl::PolymorphicContainer* p_msg);
 		void insertWinMessageToTreat(jgl::PolymorphicContainer* p_msg);
 		jgl::PolymorphicContainer* getWinMessageToTreat();
+
+		jgl::Vector2 convertScreenToOpenGL(jgl::Vector2Int p_screenPos);
+		jgl::Vector2Int convertOpenGLToScreen(jgl::Vector2 p_openGLPos);
 
 		static Application* instance();
 	};

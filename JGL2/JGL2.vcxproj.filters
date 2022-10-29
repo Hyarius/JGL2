@@ -72,6 +72,9 @@
     <ClInclude Include="includes\Structure\jgl2_mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\jgl2_drawing_functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Structure\jgl2_iostream.cpp">
@@ -105,6 +108,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Structure\jgl2_mouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Structure\jgl2_application_opengl_function.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\jgl2_drawing_functions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

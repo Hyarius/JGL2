@@ -12,6 +12,20 @@ namespace jgl
 		return (_time);
 	}
 
+	jgl::Vector2Int Application::size()
+	{
+		return (_context.size());
+	}
+
+	jgl::Vector2Int viewportSize()
+	{
+		GLint viewport_info[4];
+		glGetIntegerv(GL_VIEWPORT, viewport_info);
+		jgl::Size_t w = viewport_info[2];
+		jgl::Size_t h = viewport_info[3];
+		return (jgl::Vector2Int(w, h));
+	}
+
 	void Application::_updateTime()
 	{
 		auto epoch = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()).time_since_epoch();
@@ -34,6 +48,8 @@ namespace jgl
 			{
 				_widgets[i]->update();
 			}
+
+
 		}
 	}
 	void Application::_runRender()
@@ -73,6 +89,8 @@ namespace jgl
 
 		_messagePool.setDefaultObject(new jgl::PolymorphicContainer());
 		_context.initialize(p_title, p_size);
+
+		_context.setup(jgl::Color(0, 0, 0));
 
 		_updateTime();
 	}

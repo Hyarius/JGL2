@@ -10,6 +10,7 @@ namespace jgl
 	class Pool
 	{
 	private:
+		std::recursive_mutex _mutex;
 		TElement* _defaultObject;
 		std::vector<TElement*> _content;
 
@@ -31,12 +32,16 @@ namespace jgl
 
 		void reserve(jgl::Size_t p_nbReservedObject)
 		{
+			_mutex.lock();
+
 			_content.resize(p_nbReservedObject);
 
 			for (jgl::Size_t i = 0; i < p_nbReservedObject; i++)
 			{
 				_content[i] = new TElement(*_defaultObject);
 			}
+
+			_mutex.unlock();
 		}
 
 		TElement* obtain()
@@ -45,6 +50,8 @@ namespace jgl
 			{
 				throw jgl::Exception(1, "Can't allocate a new object for the pool");
 			}
+
+			_mutex.lock();
 
 			if (_content.size() == 0)
 			{
@@ -57,12 +64,16 @@ namespace jgl
 
 			_content.pop_back();
 
+			_mutex.unlock();
+
 			return (result);
 		}
 
 		void release(TElement* p_newContent)
 		{
+			_mutex.lock();
 			_content.push_back(p_newContent);
+			_mutex.unlock();
 		}
 	};
 }

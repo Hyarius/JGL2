@@ -39,6 +39,8 @@ namespace jgl
 		void setup(jgl::Color background);
 		void resize(jgl::Int w, jgl::Int h);
 		void clear();
-		void render(void);
+		void render();
+
+		jgl::Vector2Int size();
 	};
 }
