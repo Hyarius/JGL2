@@ -38,11 +38,11 @@ namespace jgl
 	{
 		if (_str == nullptr || _edited == true)
 		{
-			if (_str == nullptr || _str_len < _size)
+			if (_str == nullptr || _str_len <= _size)
 			{
 				if (_str != nullptr)
 					delete[] _str;
-				_str = new jgl::Char[_size];
+				_str = new jgl::Char[_size + 1];
 			}
 			jgl::Size_t index = 0;
 			for (jgl::Size_t i = 0; i < _content.size(); i++)
@@ -58,6 +58,7 @@ namespace jgl
 				}
 				*/
 			}
+			_str[_size] = '\0';
 		}
 		return (_str);
 	}

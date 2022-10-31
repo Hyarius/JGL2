@@ -9,31 +9,31 @@ namespace jgl
 	class String
 	{
 	private:
-		jgl::Size_t _size = 0;
-		std::vector<jgl::Glyph> _content;
+		Size_t _size = 0;
+		std::vector<Glyph> _content;
 
-		mutable jgl::Bool _edited = false;
-		mutable jgl::Char* _str = nullptr;
-		mutable jgl::Size_t _str_len = 0;
-		mutable jgl::WChar* _wstr = nullptr;
-		mutable jgl::Size_t _wstr_len = 0;
+		mutable Bool _edited = false;
+		mutable Char* _str = nullptr;
+		mutable Size_t _str_len = 0;
+		mutable WChar* _wstr = nullptr;
+		mutable Size_t _wstr_len = 0;
 
 	public:
 		String();
 		String(const char* p_str);
 		String(const std::string& p_str);
 
-		jgl::Size_t size() const;
-		const jgl::Char* c_str() const;
-		jgl::WChar* convertToWChar() const;
+		Size_t size() const;
+		const Char* c_str() const;
+		WChar* convertToWChar() const;
 
-		jgl::Glyph& operator [] (jgl::Size_t p_index);
-		const jgl::Glyph& operator [] (jgl::Size_t p_index) const;
+		Glyph& operator [] (Size_t p_index);
+		const Glyph& operator [] (Size_t p_index) const;
 
-		void append(jgl::Glyph p_char, jgl::Size_t p_nb_char = 1);
-		void append(jgl::String p_other);
-		void push_back(jgl::Glyph p_char, jgl::Size_t p_nb_char = 1);
-		void push_back(jgl::String p_other);
+		void append(Glyph p_char, Size_t p_nb_char = 1);
+		void append(String p_other);
+		void push_back(Glyph p_char, Size_t p_nb_char = 1);
+		void push_back(String p_other);
 		String operator + (const String& p_other) const;
 		String& operator += (const Glyph& p_glyph);
 		String& operator += (const String& p_other);

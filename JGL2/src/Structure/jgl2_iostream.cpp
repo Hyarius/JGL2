@@ -13,7 +13,7 @@ namespace jgl
 
 		if (p_char == '\n')
 		{
-			_needed_prefix = true;
+			flush();
 		}
 		else
 		{
@@ -52,7 +52,7 @@ namespace jgl
 		}
 		int forth = _write(1, _buffer, _buffer_len);
 		int fifth = _write(1, "\n", 1);
-
+		_needed_prefix = true;
 		_buffer_len = 0;
 	}
 
@@ -164,7 +164,6 @@ namespace jgl
 	IOStream& endl(IOStream& os)
 	{
 		os.flush();
-		os << '\n';
 		return (os);
 	}
 }
