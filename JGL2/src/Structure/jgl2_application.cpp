@@ -116,4 +116,13 @@ namespace jgl
 		return (0);
 	}
 
+	void addShader(std::string p_shaderName, Shader* p_shader)
+	{
+
+	}
+	
+	Shader* shader(std::string p_shaderName)
+	{
+		return (nullptr);
+	}
 }

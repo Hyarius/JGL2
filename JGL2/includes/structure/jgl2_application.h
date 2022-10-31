@@ -10,6 +10,7 @@
 #include "Structure/jgl2_pool.h"
 #include "Structure/jgl2_keyboard.h"
 #include "Structure/jgl2_mouse.h"
+#include "Structure/jgl2_shader.h"
 
 namespace jgl
 {
@@ -17,22 +18,22 @@ namespace jgl
 	{
 	public:
 
-		friend class jgl::Abstract::Widget;
+		friend class Abstract::Widget;
 	private:
 		OpenGLContext _context;
 		
-		static std::map<jgl::UInt, std::string> WinMessageToString;
+		static std::map<UInt, std::string> WinMessageToString;
 		std::recursive_mutex _message_mutex;
-		jgl::Pool< jgl::PolymorphicContainer> _messagePool;
-		std::deque< jgl::PolymorphicContainer*> _messagesToTreat;
+		Pool< PolymorphicContainer> _messagePool;
+		std::deque< PolymorphicContainer*> _messagesToTreat;
 
-		jgl::Thread* _update_thread = nullptr;
-		jgl::Bool _running = false;
-		jgl::ULong _time = 0;
-		std::vector<jgl::Abstract::Widget*> _widgets;
+		Thread* _update_thread = nullptr;
+		Bool _running = false;
+		ULong _time = 0;
+		std::vector<Abstract::Widget*> _widgets;
 
-		jgl::Keyboard _keyboard;
-		jgl::Mouse _mouse;
+		Keyboard _keyboard;
+		Mouse _mouse;
 
 		void _pullWinMessage();
 		void _handleWinMessage();
@@ -45,20 +46,24 @@ namespace jgl
 		static inline Application* _instance = nullptr;
 
 	public:
-		Application(std::string p_title, jgl::Vector2Int p_size);
+		Application(std::string p_title, Vector2Int p_size);
 		void quit();
-		jgl::Int run();
-		jgl::ULong time();
-		jgl::Vector2Int size();
-		jgl::Vector2Int viewportSize();
+		Int run();
 
-		jgl::PolymorphicContainer* obtainWinMessage();
-		void releaseWinMessage(jgl::PolymorphicContainer* p_msg);
-		void insertWinMessageToTreat(jgl::PolymorphicContainer* p_msg);
-		jgl::PolymorphicContainer* getWinMessageToTreat();
+		void addShader(std::string p_shaderName, Shader* p_shader);
+		Shader* shader(std::string p_shaderName);
 
-		jgl::Vector2 convertScreenToOpenGL(jgl::Vector2Int p_screenPos);
-		jgl::Vector2Int convertOpenGLToScreen(jgl::Vector2 p_openGLPos);
+		ULong time();
+		Vector2Int size();
+		Vector2Int viewportSize();
+
+		PolymorphicContainer* obtainWinMessage();
+		void releaseWinMessage(PolymorphicContainer* p_msg);
+		void insertWinMessageToTreat(PolymorphicContainer* p_msg);
+		PolymorphicContainer* getWinMessageToTreat();
+
+		Vector2 convertScreenToOpenGL(Vector2Int p_screenPos);
+		Vector2Int convertOpenGLToScreen(Vector2 p_openGLPos);
 
 		static Application* instance();
 	};
