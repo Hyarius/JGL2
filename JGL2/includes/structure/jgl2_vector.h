@@ -2,6 +2,7 @@
 
 #include "jgl2_basic_types.h"
 #include "jgl2_iostream.h"
+#include "jgl2_exception.h"
 
 namespace jgl
 {
@@ -21,14 +22,14 @@ namespace jgl
 		TType& operator [] (jgl::Size_t p_index)
 		{
 			if (p_index >= C_NB_DIM)
-				throw jgl::Exception("Index out of range");
+				throw Exception(1, "Index out of range");
 			return (values[p_index]);
 		}
 
 		const TType& operator [] (jgl::Size_t p_index) const
 		{
 			if (p_index >= C_NB_DIM)
-				throw jgl::Exception("Index out of range");
+				throw Exception(1, "Index out of range");
 			return (values[p_index]);
 		}
 
@@ -83,7 +84,7 @@ namespace jgl
 			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
 			{
 				if (p_other.values[i] == 0)
-					throw jgl::Exception("Try to divide by 0");
+					throw Exception(1, "Try to divide by 0");
 				result.values[i] = values[i] / p_other.values[i];
 			}
 
@@ -163,7 +164,7 @@ namespace jgl
 			jgl::Float tmp_lenght = length();
 
 			if (tmp_lenght == 0)
-				throw jgl::Exception("Try to divide by 0");
+				throw Exception(1, "Try to divide by 0");
 
 			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
 			{
@@ -251,15 +252,15 @@ namespace jgl
 			return (true);
 		}
 
-		jgl::String text() const
+		std::string text() const
 		{
-			jgl::String result = "";
+			std::string result = "";
 
 			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
 			{
 				if (i != 0)
 					result += " / ";
-				jgl::String tmp = std::to_string(values[i]);
+				std::string tmp = std::to_string(values[i]);
 				result += tmp;
 			}
 

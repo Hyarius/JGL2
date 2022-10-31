@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Structure/jgl2_string.h"
+#include "jgl2_includes.h"
+#include "jgl2_basic_types.h"
 
 namespace jgl
 {
@@ -9,7 +10,7 @@ namespace jgl
 		class Widget
 		{
 		private:
-			jgl::String _widgetName;
+			std::string _widgetName;
 			Widget* _parent = nullptr;
 
 			void _addChildren(Widget* p_parent);
@@ -19,7 +20,7 @@ namespace jgl
 			virtual void _onRender() = 0;
 
 		public:
-			Widget(jgl::String p_widgetName, Widget* p_parent);
+			Widget(std::string p_widgetName, Widget* p_parent);
 			Widget(Widget* p_parent);
 
 			void setParent(Widget* p_parent);

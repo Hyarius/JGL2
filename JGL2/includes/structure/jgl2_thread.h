@@ -11,11 +11,11 @@ namespace jgl
 
 	public:
 		template< class Function, class... Args>
-		Thread(jgl::String p_name, Function&& p_funct, Args&&... p_argv)
+		Thread(std::string p_name, Function&& p_funct, Args&&... p_argv)
 		{
 			jgl::cout << "Creating new thread with name [" << p_name << "]" << jgl::endl;
 			_thread = new std::thread(
-				[&](jgl::String p_name, Function&& p_funct, Args&&... p_argv)
+				[&](std::string p_name, Function&& p_funct, Args&&... p_argv)
 				{
 					cout = jgl::IOStream(p_name);
 					p_funct(p_argv...);

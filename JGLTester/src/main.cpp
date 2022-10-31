@@ -24,7 +24,7 @@ namespace jgl
 				Double = GL_DOUBLE
 			};
 
-			static String to_string(Mode p_type) {
+			static std::string to_string(Mode p_type) {
 				switch (p_type)
 				{
 				case Mode::Error:
@@ -42,7 +42,7 @@ namespace jgl
 				}
 			}
 
-			static String to_string(Type p_type) {
+			static std::string to_string(Type p_type) {
 				switch (p_type)
 				{
 				case Type::Error:
@@ -73,7 +73,7 @@ namespace jgl
 			}
 
 		private:
-			String _name;
+			std::string _name;
 			Int _location;
 			UInt _elements;
 			GLuint _id;
@@ -88,7 +88,7 @@ namespace jgl
 			}
 
 		public:
-			Buffer(String p_name = "undefined", Int p_location = -1, UInt p_elements = 3, Type p_dataType = Type::Float, Mode p_mode = Mode::Array) :
+			Buffer(std::string p_name = "undefined", Int p_location = -1, UInt p_elements = 3, Type p_dataType = Type::Float, Mode p_mode = Mode::Array) :
 				_name(p_name),
 				_location(p_location),
 				_elements(p_elements),
@@ -103,7 +103,7 @@ namespace jgl
 				return (new Buffer(_name, _location, _elements, _dataType, _mode));
 			}
 
-			const String name() const { return (_name); }
+			const std::string name() const { return (_name); }
 			const Int location() const { return (_location); }
 			const UInt indexes() const { return (_elements); }
 			const Type data_type() const { return (_dataType); }
@@ -182,7 +182,7 @@ namespace jgl
 				Three,
 				Four
 			};
-			static String str(Mode value)
+			static std::string str(Mode value)
 			{
 				switch (value)
 				{
@@ -197,7 +197,7 @@ namespace jgl
 				}
 			}
 
-			static String str(Type p_type, Size p_size) {
+			static std::string str(Type p_type, Size p_size) {
 				switch (p_type)
 				{
 				case Type::Error:
@@ -290,7 +290,7 @@ namespace jgl
 			}
 
 		private:
-			String _name;
+			std::string _name;
 			Int _location;
 			Mode _mode;
 			Type _type;
@@ -303,7 +303,7 @@ namespace jgl
 
 			bool _uniform_checker(Mode expected_mode, Type expected_type, Size expected_size)
 			{
-				String errorMessage = "";
+				std::string errorMessage = "";
 
 				if (_mode == Mode::Error || _type == Type::Error || _size == Size::Error)
 					errorMessage = "Trying to use uniform [" + _name + "] who isn't parsed correctly";
@@ -321,7 +321,7 @@ namespace jgl
 			}
 
 		public:
-			Uniform(String p_name = "undefined", Int p_location = -1, Mode p_mode = Mode::Element, Type p_type = Type::Float, Size p_size = Size::One) :
+			Uniform(std::string p_name = "undefined", Int p_location = -1, Mode p_mode = Mode::Element, Type p_type = Type::Float, Size p_size = Size::One) :
 				_name(p_name),
 				_location(p_location),
 				_mode(p_mode),
@@ -334,7 +334,7 @@ namespace jgl
 			Uniform* copy() const {
 				return (new Uniform(_name, _location, _mode, _type, _size));
 			}
-			const String name() const { return (_name); }
+			const std::string name() const { return (_name); }
 			const Int location() const { return (_location); }
 			const Mode mode() const { return (_mode); }
 			const Type type() const { return (_type); }
@@ -413,6 +413,7 @@ namespace jgl
 				if (_uniform_checker(Mode::Element, Type::UInt, Size::Four) == true)
 					glUniform4ui(_location, data.x, data.y, data.z, data.w);
 			}
+			/*
 			template <typename T, typename std::enable_if < std::is_same <Matrix2x2, T>::value == true > ::type* = nullptr >
 			void send(T data)
 			{
@@ -431,6 +432,7 @@ namespace jgl
 				if (_uniform_checker(Mode::Element, Type::Matrix, Size::Four) == true)
 					glUniformMatrix4fv(_location, 1, GL_FALSE, &(data));
 			}
+			*/
 
 			// Array part
 			template <typename T, typename std::enable_if < std::is_same <Float, T>::value == true > ::type* = nullptr >
@@ -505,6 +507,7 @@ namespace jgl
 				if (_uniform_checker(Mode::Array, Type::UInt, Size::Four) == true)
 					glUniform4uiv(_location, nb_element, data);
 			}
+			/*
 			template <typename T, typename std::enable_if < std::is_same <Matrix2x2, T>::value == true > ::type* = nullptr >
 			void send(T* data, Size_t nb_element)
 			{
@@ -523,22 +526,23 @@ namespace jgl
 				if (_uniform_checker(Mode::Array, Type::Matrix, Size::Four) == true)
 					glUniformMatrix4fv(_location, nb_element, GL_FALSE, &(data));
 			}
+			*/
 		};
 	}
 
 	class Shader
 	{
 	private:
-		jgl::UInt _program;
-		jgl::UInt _idArray;
+		UInt _program;
+		UInt _idArray;
 
 		void _initialize();
-		void _compileShader(jgl::UInt p_shaderIndex, jgl::String p_shaderCode);
-		void _compileProgram(jgl::UInt p_programID, jgl::UInt p_vertexID, jgl::UInt p_fragmentID);
-		void _compile(jgl::String p_vertexShaderCode, jgl::String p_fragmentShaderCode);
+		void _compileShader(UInt p_shaderIndex, std::string p_shaderCode);
+		void _compileProgram(UInt p_programID, UInt p_vertexID, UInt p_fragmentID);
+		void _compile(std::string p_vertexShaderCode, std::string p_fragmentShaderCode);
 	public:
 		Shader(std::fstream& p_vertexShaderFile, std::fstream& p_fragmentShaderFile);
-		Shader(jgl::String p_vertexShaderCode, jgl::String p_fragmentShaderCode);
+		Shader(std::string p_vertexShaderCode, std::string p_fragmentShaderCode);
 		void activate();
 	};
 }
@@ -561,13 +565,13 @@ namespace jgl
 		}
 		catch (...)
 		{
-			throw jgl::Exception(1, "Error while reading files content");
+			throw Exception(1, "Error while reading files content");
 		}
 
 		_compile(vShaderStream.str(), fShaderStream.str());
 	}
 
-	Shader::Shader(jgl::String p_vertexShaderCode, jgl::String p_fragmentShaderCode)
+	Shader::Shader(std::string p_vertexShaderCode, std::string p_fragmentShaderCode)
 	{
 		_initialize();
 
@@ -588,10 +592,10 @@ namespace jgl
 		glBindVertexArray(_idArray);
 	}
 
-	void Shader::_compileShader(jgl::UInt p_shaderIndex, jgl::String p_shaderCode)
+	void Shader::_compileShader(UInt p_shaderIndex, std::string p_shaderCode)
 	{
-		jgl::Int result;
-		jgl::Int len;
+		Int result;
+		Int len;
 		const char* content = p_shaderCode.c_str();
 
 		result = GL_FALSE;
@@ -603,16 +607,16 @@ namespace jgl
 		if (result != GL_TRUE)
 		{
 			glGetShaderiv(p_shaderIndex, GL_INFO_LOG_LENGTH, &len);
-			jgl::Char *errorMsg = new jgl::Char[len + 1];
+			Char *errorMsg = new Char[len + 1];
 			glGetShaderInfoLog(p_shaderIndex, len, NULL, errorMsg);
-			jgl::cout << errorMsg << jgl::endl;
-			throw jgl::Exception(1, errorMsg);
+			cout << errorMsg << endl;
+			throw Exception(1, errorMsg);
 		}
 	}
 
-	void Shader::_compileProgram(jgl::UInt p_programID, jgl::UInt p_vertexID, jgl::UInt p_fragmentID)
+	void Shader::_compileProgram(UInt p_programID, UInt p_vertexID, UInt p_fragmentID)
 	{
-		jgl::Int result;
+		Int result;
 
 		result = GL_FALSE;
 		glAttachShader(p_programID, p_vertexID);
@@ -621,7 +625,7 @@ namespace jgl
 		glGetProgramiv(p_programID, GL_LINK_STATUS, &result);
 		if (result != GL_TRUE)
 		{
-			throw jgl::Exception(-3, "Error while linking a program");
+			throw Exception(-3, "Error while linking a program");
 		}
 		glDetachShader(p_programID, p_vertexID);
 		glDetachShader(p_programID, p_fragmentID);
@@ -629,10 +633,10 @@ namespace jgl
 		glDeleteShader(p_fragmentID);
 	}
 
-	void Shader::_compile(jgl::String p_vertexShaderCode, jgl::String p_fragmentShaderCode)
+	void Shader::_compile(std::string p_vertexShaderCode, std::string p_fragmentShaderCode)
 	{
-		jgl::UInt _vertex_shader_id = glCreateShader(GL_VERTEX_SHADER);
-		jgl::UInt _fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
+		UInt _vertex_shader_id = glCreateShader(GL_VERTEX_SHADER);
+		UInt _fragment_shader_id = glCreateShader(GL_FRAGMENT_SHADER);
 
 		_compileShader(_vertex_shader_id, p_vertexShaderCode);
 		_compileShader(_fragment_shader_id, p_fragmentShaderCode);
@@ -661,7 +665,7 @@ public:
 	}
 };
 
-jgl::String colorShaderVertex =
+std::string colorShaderVertex =
 R"(#version 330 core
 layout(location = 0) in vec3 model_space;
 layout(location = 1) in vec4 color_space;
@@ -672,7 +676,7 @@ gl_Position = vec4(model_space, 1.0f);
 fragmentColor = color_space;
 })";
 
-jgl::String colorShaderFragment =
+std::string colorShaderFragment =
 R"(#version 330 core
 in vec4 fragmentColor;
 layout(location = 0) out vec4 color;

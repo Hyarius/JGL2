@@ -28,14 +28,12 @@
     <ClInclude Include="includes\Structure\jgl2_application.h" />
     <ClInclude Include="includes\Structure\jgl2_color.h" />
     <ClInclude Include="includes\Structure\jgl2_exception.h" />
-    <ClInclude Include="includes\Structure\jgl2_glyph.h" />
     <ClInclude Include="includes\Structure\jgl2_iostream.h" />
     <ClInclude Include="includes\Structure\jgl2_keyboard.h" />
     <ClInclude Include="includes\Structure\jgl2_mouse.h" />
     <ClInclude Include="includes\Structure\jgl2_openGLContext.h" />
     <ClInclude Include="includes\Structure\jgl2_polymorphic_container.h" />
     <ClInclude Include="includes\Structure\jgl2_pool.h" />
-    <ClInclude Include="includes\Structure\jgl2_string.h" />
     <ClInclude Include="includes\Structure\jgl2_thread.h" />
     <ClInclude Include="includes\Structure\jgl2_vector.h" />
     <ClInclude Include="includes\Structure\jgl2_widget.h" />
@@ -48,9 +46,7 @@
     <ClCompile Include="src\Structure\jgl2_mouse.cpp" />
     <ClCompile Include="src\Structure\jgl2_openGLContext.cpp" />
     <ClCompile Include="src\Structure\jgl2_exception.cpp" />
-    <ClCompile Include="src\Structure\jgl2_glyph.cpp" />
     <ClCompile Include="src\Structure\jgl2_iostream.cpp" />
-    <ClCompile Include="src\Structure\jgl2_string.cpp" />
     <ClCompile Include="src\Structure\jgl2_thread.cpp" />
     <ClCompile Include="src\Structure\jgl2_widget.cpp" />
     <ClCompile Include="src\Structure\jgl2_application_opengl_function.cpp" />

@@ -29,7 +29,7 @@ namespace jgl
 		}
 	}
 
-	IOStream::IOStream(const jgl::String& p_prefix) : _prefix(p_prefix)
+	IOStream::IOStream(const std::string& p_prefix) : _prefix(p_prefix)
 	{
 
 	}
@@ -46,7 +46,7 @@ namespace jgl
 		if (_needed_prefix == true)
 		{
 			int first = _write(1, "[", 1);
-			int second = _write(1, _prefix.c_str(), _prefix.size());
+			int second = _write(1, _prefix.c_str(), static_cast<jgl::UInt>(_prefix.size()));
 			int thrid = _write(1, "] - ", 4);
 			_needed_prefix = false;
 		}
@@ -74,6 +74,15 @@ namespace jgl
 	}
 
 	IOStream& IOStream::operator << (const jgl::Char* p_str)
+	{
+		for (jgl::Size_t i = 0; p_str[i] != '\0'; i++)
+		{
+			_addChar(p_str[i]);
+		}
+		return (*this);
+	}
+
+	IOStream& IOStream::operator << (const jgl::WChar* p_str)
 	{
 		for (jgl::Size_t i = 0; p_str[i] != '\0'; i++)
 		{
@@ -130,26 +139,6 @@ namespace jgl
 		return (*this);
 	}
 
-	/*
-	jgl::IOStream& IOStream::operator << (const Glyph& p_glyph)
-	{
-		for (jgl::Size_t i = 0; i < p_glyph.size(); i++)
-		{
-			_addChar(p_glyph[i]);
-		}
-		return (*this);
-	}
-	*/
-
-	jgl::IOStream& IOStream::operator << (const String& p_values)
-	{
-		for (jgl::Size_t i = 0; i < p_values.size(); i++)
-		{
-			(*this) << p_values[i];
-		}
-		return (*this);
-	}
-
 	jgl::IOStream& IOStream::operator << (const void* p_address)
 	{
 		std::ostringstream address;
@@ -158,6 +147,15 @@ namespace jgl
 		std::string name = address.str();
 
 		_addString(name);
+		return (*this);
+	}
+
+	IOStream& IOStream::operator << (const std::string p_string)
+	{
+		for (jgl::Size_t i = 0; i < p_string.size(); i++)
+		{
+			(*this) << p_string[i];
+		}
 		return (*this);
 	}
 

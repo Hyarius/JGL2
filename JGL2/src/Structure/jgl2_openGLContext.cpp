@@ -86,11 +86,14 @@ namespace jgl
 			delete[] _convertedTitle;
 	}
 
-	void OpenGLContext::initialize(jgl::String p_title, jgl::Vector2Int p_size, jgl::Int p_major_version, jgl::Int p_minor_version)
+	void OpenGLContext::initialize(std::string p_title, jgl::Vector2Int p_size, jgl::Int p_major_version, jgl::Int p_minor_version)
 	{
 		_majorVersion = p_major_version;
 		_minorVersion = p_minor_version;
-		_convertedTitle = p_title.convertToWChar();
+
+		_convertedTitle = new jgl::WChar[p_title.size() + 1];
+		size_t convertedChars = 0;
+		mbstowcs_s(&convertedChars, _convertedTitle, p_title.size() + 1, p_title.c_str(), _TRUNCATE);
 
 		_createGhostInstance();
 		_createWindowClass();

@@ -16,7 +16,7 @@ namespace jgl
 
 		}
 
-		Widget::Widget(jgl::String p_widgetName, Widget* p_parent) :
+		Widget::Widget(std::string p_widgetName, Widget* p_parent) :
 			_widgetName(p_widgetName)
 		{
 			setParent(p_parent);

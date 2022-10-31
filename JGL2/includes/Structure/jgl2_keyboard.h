@@ -1,8 +1,8 @@
 #pragma once
 
 #include "jgl2_includes.h"
-#include "jgl2_string.h"
 #include "jgl2_enums.h"
+#include "jgl2_basic_types.h"
 
 namespace jgl
 {
@@ -10,7 +10,7 @@ namespace jgl
     class Keyboard
     {
     public:
-        static const jgl::Size_t C_NB_KEY = 255;
+        static const Size_t C_NB_KEY = 255;
 
         enum Key
         {
@@ -150,16 +150,16 @@ namespace jgl
 
         friend class Application;
     private:
-        static std::map<Keyboard::Key, jgl::String> _convertKeyToString;
-        jgl::InputStatus _keys[C_NB_KEY];
-        jgl::Glyph _entry;
+        static std::map<Keyboard::Key, std::string> _convertKeyToString;
+        InputStatus _keys[C_NB_KEY];
+        Char _entry;
 
         Keyboard();
         void _updateState();
-        void _updateEntry(jgl::Glyph p_entry);
+        void _updateEntry(Char p_entry);
 
     public:
-        jgl::InputStatus getKey(Keyboard::Key p_key);
-        jgl::Glyph getEntry();
+        InputStatus getKey(Keyboard::Key p_key);
+        Char getEntry();
     };
 }

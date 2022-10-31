@@ -81,7 +81,7 @@ namespace jgl
 		_runRender();
 	}
 
-	Application::Application(jgl::String p_title, jgl::Vector2Int p_size)
+	Application::Application(std::string p_title, jgl::Vector2Int p_size)
 	{
 		if (_instance != nullptr)
 			throw jgl::Exception(1, "Application already created");

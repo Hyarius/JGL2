@@ -21,7 +21,7 @@ namespace jgl
 	private:
 		OpenGLContext _context;
 		
-		static std::map<jgl::UInt, jgl::String> WinMessageToString;
+		static std::map<jgl::UInt, std::string> WinMessageToString;
 		std::recursive_mutex _message_mutex;
 		jgl::Pool< jgl::PolymorphicContainer> _messagePool;
 		std::deque< jgl::PolymorphicContainer*> _messagesToTreat;
@@ -45,7 +45,7 @@ namespace jgl
 		static inline Application* _instance = nullptr;
 
 	public:
-		Application(jgl::String p_title, jgl::Vector2Int p_size);
+		Application(std::string p_title, jgl::Vector2Int p_size);
 		void quit();
 		jgl::Int run();
 		jgl::ULong time();

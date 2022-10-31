@@ -4,7 +4,7 @@
 
 namespace jgl
 {
-	std::map<jgl::UInt, jgl::String> Application::WinMessageToString =
+	std::map<jgl::UInt, std::string> Application::WinMessageToString =
 	{
 	  { 0, "WM_NULL"},
 	  { 1, "WM_CREATE" },
