@@ -2,7 +2,6 @@
 
 #include "jgl2_basic_types.h"
 #include "jgl2_iostream.h"
-#include "jgl2_exception.h"
 
 namespace jgl
 {
@@ -22,15 +21,15 @@ namespace jgl
 		TType& operator [] (jgl::Size_t p_index)
 		{
 			if (p_index >= C_NB_DIM)
-				throw Exception(1, "Index out of range");
-			return (values[p_index]);
+				throw std::out_of_range(std::string(__FUNCTION__) + std::string("::") + std::to_string(__LINE__));
+			return (this->values[p_index]);
 		}
 
 		const TType& operator [] (jgl::Size_t p_index) const
 		{
 			if (p_index >= C_NB_DIM)
-				throw Exception(1, "Index out of range");
-			return (values[p_index]);
+				throw std::out_of_range(std::string(__FUNCTION__) + std::string("::") + std::to_string(__LINE__));
+			return (this->values[p_index]);
 		}
 
 		Vector<TType, C_NB_DIM>& operator = (const Vector<TType, C_NB_DIM>& p_other) const
@@ -84,7 +83,7 @@ namespace jgl
 			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
 			{
 				if (p_other.values[i] == 0)
-					throw Exception(1, "Try to divide by 0");
+					throw std::exception("Try to divide by 0");
 				result.values[i] = values[i] / p_other.values[i];
 			}
 
@@ -164,7 +163,7 @@ namespace jgl
 			jgl::Float tmp_lenght = length();
 
 			if (tmp_lenght == 0)
-				throw Exception(1, "Try to divide by 0");
+				throw std::exception("Try to divide by 0");
 
 			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
 			{
@@ -277,17 +276,24 @@ namespace jgl
 	template <typename TType>
 	struct BaseVector2 : public Vector<TType, 2>
 	{
-		TType& x;
-		TType& y;
+		TType& x() { return (this->values[0]); };
+		TType& y() { return (this->values[1]); };
 
-		BaseVector2() : Vector<TType, 2>(), x(this->values[0]), y(this->values[1])
+		BaseVector2() : Vector<TType, 2>()
 		{
 
 		}
-		BaseVector2(TType p_x, TType p_y) : x(this->values[0]), y(this->values[1])
+		BaseVector2(TType p_x, TType p_y)
 		{
 			this->values[0] = p_x;
 			this->values[1] = p_y;
+		}
+
+		template <typename TOtherType>
+		BaseVector2(const Vector<TOtherType, 2>& p_other)
+		{
+			this->values[0] = p_other[0];
+			this->values[1] = p_other[1];
 		}
 
 		BaseVector2<TType> operator = (const BaseVector2<TType>& p_other)
@@ -306,19 +312,43 @@ namespace jgl
 	template <typename TType>
 	struct BaseVector3 : public Vector<TType, 3>
 	{
-		TType& x;
-		TType& y;
-		TType& z;
+		TType& x() { return (this->values[0]); };
+		TType& y() { return (this->values[1]); };
+		TType& z() { return (this->values[2]); };
 
-		BaseVector3() : Vector<TType, 3>(), x(this->values[0]), y(this->values[1]), z(this->values[2])
+		BaseVector3() : Vector<TType, 3>()
 		{
 
 		}
-		BaseVector3(TType p_x, TType p_y, TType p_z) : x(this->values[0]), y(this->values[1]), z(this->values[2])
+		BaseVector3(TType p_x, TType p_y, TType p_z)
 		{
 			this->values[0] = p_x;
 			this->values[1] = p_y;
 			this->values[2] = p_z;
+		}
+		template <typename TOtherType>
+		BaseVector3(const Vector<TOtherType, 2>& p_other, const TType& p_z)
+		{
+			this->values[0] = p_other[0];
+			this->values[1] = p_other[1];
+			this->values[2] = p_z;
+		}
+
+		template <typename TOtherType>
+		BaseVector3(const Vector<TOtherType, 3>& p_other)
+		{
+			this->values[0] = p_other[0];
+			this->values[1] = p_other[1];
+			this->values[2] = p_other[2];
+		}
+
+		BaseVector3<TType>& operator = (const BaseVector2<TType>& p_other)
+		{
+			for (jgl::Size_t i = 0; i < 2; i++)
+			{
+				this->values[i] = p_other.values[i];
+			}
+			return (*this);
 		}
 
 		BaseVector3<TType>& operator = (const BaseVector3<TType>& p_other)
@@ -334,16 +364,16 @@ namespace jgl
 	template <typename TType>
 	struct BaseVector4 : public Vector<TType, 4>
 	{
-		TType& x;
-		TType& y;
-		TType& z;
-		TType& w;
+		TType& x() { return (this->values[0]); };
+		TType& y() { return (this->values[1]); };
+		TType& z() { return (this->values[2]); };
+		TType& w() { return (this->values[3]); };
 
-		BaseVector4() : Vector<TType, 4>(), x(this->values[0]), y(this->values[1]), z(this->values[2]), w(this->values[3])
+		BaseVector4() : Vector<TType, 4>()
 		{
 
 		}
-		BaseVector4(TType p_x, TType p_y, TType p_z, TType p_w) : x(this->values[0]), y(this->values[1]), z(this->values[2]), w(this->values[3])
+		BaseVector4(TType p_x, TType p_y, TType p_z, TType p_w)
 		{
 			this->values[0] = p_x;
 			this->values[1] = p_y;
@@ -351,7 +381,53 @@ namespace jgl
 			this->values[3] = p_w;
 		}
 
-		BaseVector4<TType>& operator = (const BaseVector4<TType>& p_other)
+		template <typename TOtherType>
+		BaseVector4(const Vector<TOtherType, 2>& p_other, const TType& p_z, const TType& p_w)
+		{
+			this->values[0] = p_other[0];
+			this->values[1] = p_other[1];
+			this->values[2] = p_z;
+			this->values[2] = p_w;
+		}
+
+		template <typename TOtherType>
+		BaseVector4(const Vector<TOtherType, 3>& p_other, const TType& p_w)
+		{
+			this->values[0] = p_other[0];
+			this->values[1] = p_other[1];
+			this->values[2] = p_other[2];
+			this->values[2] = p_w;
+		}
+
+		template <typename TOtherType>
+		BaseVector4(const Vector<TOtherType, 4>& p_other)
+		{
+			this->values[0] = p_other[0];
+			this->values[1] = p_other[1];
+			this->values[2] = p_other[2];
+			this->values[3] = p_other[3];
+		}
+
+		template <typename TOtherType>
+		BaseVector4<TType>& operator = (const BaseVector2<TOtherType>& p_other)
+		{
+			for (jgl::Size_t i = 0; i < 2; i++)
+			{
+				this->values[i] = p_other.values[i];
+			}
+			return (*this);
+		}
+		template <typename TOtherType>
+		BaseVector4<TType>& operator = (const BaseVector3<TOtherType>& p_other)
+		{
+			for (jgl::Size_t i = 0; i < 3; i++)
+			{
+				this->values[i] = p_other.values[i];
+			}
+			return (*this);
+		}
+		template <typename TOtherType>
+		BaseVector4<TType>& operator = (const BaseVector4<TOtherType>& p_other)
 		{
 			for (jgl::Size_t i = 0; i < 4; i++)
 			{

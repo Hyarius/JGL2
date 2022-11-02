@@ -1,7 +1,22 @@
 #include "Structure/jgl2_openGLContext.h"
+#include "jgl2_basic_functions.h"
+
 
 namespace jgl
 {
+	void GLAPIENTRY
+		MessageOpenGLCallback(GLenum source,
+			GLenum type,
+			GLuint id,
+			GLenum severity,
+			GLsizei length,
+			const GLchar* message,
+			const void* userParam)
+	{
+		if (severity == GL_DEBUG_TYPE_ERROR || severity == GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR || severity == GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR ||
+			severity == GL_DEBUG_TYPE_ERROR_ARB || severity == GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB || severity == GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB)
+			fprintf(stderr, "GL CALLBACK: %s type = 0x%x, severity = 0x%x, message = %s", (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : ""), type, severity, message);
+	}
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	void OpenGLContext::_createWindowClass()
@@ -26,9 +41,9 @@ namespace jgl
 	void OpenGLContext::_setupWindowSize(jgl::Vector2Int p_size)
 	{
 		_windowSize.left = (long)0;
-		_windowSize.right = (long)p_size.x;
+		_windowSize.right = (long)p_size.x();
 		_windowSize.top = (long)0;
-		_windowSize.bottom = (long)p_size.y;
+		_windowSize.bottom = (long)p_size.y();
 
 		_windowExStyle = WS_EX_APPWINDOW | WS_EX_WINDOWEDGE;
 		_windowStyle = WS_OVERLAPPEDWINDOW;
@@ -74,6 +89,12 @@ namespace jgl
 			wglDeleteContext(tempOpenGLContext);
 			wglMakeCurrent(_hdc, _hrc);
 		}
+
+		jgl::Int glVersion[2] = { -1, -1 }; // Des valeurs par défaut pour la version
+		glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]); // On récupère la version majeure d'OpenGL utilisée
+		glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]); // On récupère la version mineure d'OpenGL utilisée
+
+		jgl::cout << "Creating a windows with OpenGL version " << glVersion[0] << "." << glVersion[1] << jgl::endl;
 	}
 
 	OpenGLContext::OpenGLContext()
@@ -84,6 +105,10 @@ namespace jgl
 	{
 		if (_convertedTitle != nullptr)
 			delete[] _convertedTitle;
+
+		wglMakeCurrent(_hdc, NULL);
+		wglDeleteContext(_hrc);
+		ReleaseDC(_windowFrame, _hdc);
 	}
 
 	void OpenGLContext::initialize(std::string p_title, jgl::Vector2Int p_size, jgl::Int p_major_version, jgl::Int p_minor_version)
@@ -102,11 +127,13 @@ namespace jgl
 
 		_setupWindowSize(p_size);
 
+		_size = p_size;
+
 		_composeOpenGLContext();
 
 		ShowWindow(_windowFrame, SW_SHOW);
 		UpdateWindow(_windowFrame);
-		wglSwapIntervalEXT(0);
+		//wglSwapIntervalEXT(0);
 	}
 
 	void OpenGLContext::setup(jgl::Color background)
@@ -116,13 +143,13 @@ namespace jgl
 
 	void OpenGLContext::resize(jgl::Int w, jgl::Int h)
 	{
-		_size.x = w;
-		_size.y = h;
+		_size.x() = w;
+		_size.y() = h;
 	}
 
 	void OpenGLContext::clear()
 	{
-		glViewport(0, 0, _size.x, _size.y);
+		glViewport(0, 0, _size.x(), _size.y());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 

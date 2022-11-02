@@ -317,7 +317,7 @@ namespace jgl
 				errorMessage = "Trying to use uniform [" + _name + "] who isn't parsed correctly (location = -1)";
 
 			if (errorMessage != "")
-				throw Exception(1, errorMessage.c_str());
+				throw std::runtime_error(errorMessage.c_str());
 
 			return (true);
 		}
@@ -533,17 +533,46 @@ namespace jgl
 
 	class Shader
 	{
+	public:
+		enum class Mode
+		{
+			Point = GL_POINTS,
+			Line = GL_LINES,
+			Triangle = GL_TRIANGLES,
+		};
+
 	private:
 		UInt _program;
-		UInt _idArray;
+		UInt _bufferArray;
+		Buffer* _elementBuffer;
+		std::map<std::string, jgl::Uniform*> _uniforms;
+		std::map<std::string, jgl::Buffer*> _buffers;
 
 		void _initialize();
 		void _compileShader(UInt p_shaderIndex, std::string p_shaderCode);
 		void _compileProgram(UInt p_programID, UInt p_vertexID, UInt p_fragmentID);
 		void _compile(std::string p_vertexShaderCode, std::string p_fragmentShaderCode);
+
+		void _parse_buffer(std::string base);
+		void _parse_uniform(std::string base);
+		void _parse_uniform_information(GLint _location, std::vector<std::string> tab);
+
 	public:
 		Shader(std::fstream& p_vertexShaderFile, std::fstream& p_fragmentShaderFile);
 		Shader(std::string p_vertexShaderCode, std::string p_fragmentShaderCode);
+
+		jgl::UInt id() { return (program()); }
+		jgl::UInt program() { return (_program); }
+
 		void activate();
+		jgl::Uniform* uniform(std::string name);
+		jgl::Buffer* buffer(std::string name);
+		jgl::Buffer* elementBuffer();
+
+		void cast(jgl::Shader::Mode p_type, jgl::Size_t p_nb_elem);
+		void castInstancied(jgl::Shader::Mode p_type, jgl::Size_t p_nb_vertex_model, jgl::Size_t p_nb_element);
+
+		void launch(jgl::Shader::Mode type);
+		void launchInstancied(jgl::Shader::Mode type, jgl::Size_t nb_element);
 	};
 }

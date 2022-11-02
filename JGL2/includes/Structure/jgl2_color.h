@@ -1,6 +1,7 @@
 #pragma once
 
 #include "jgl2_basic_types.h"
+#include "jgl2_iostream.h"
 
 namespace jgl
 {
@@ -10,6 +11,15 @@ namespace jgl
 		jgl::Float g;
 		jgl::Float b;
 		jgl::Float a;
+
+		Color() :
+			r(0),
+			g(0),
+			b(0),
+			a(1)
+		{
+
+		}
 
 		Color(jgl::Int p_r, jgl::Int p_g, jgl::Int p_b, jgl::Int p_a = 255) :
 			r(static_cast<jgl::Float>(p_r) / 255.0f),
@@ -26,6 +36,12 @@ namespace jgl
 			a(p_a)
 		{
 
+		}
+
+		friend jgl::IOStream& operator << (jgl::IOStream& p_os, const Color& p_values)
+		{
+			p_os << p_values.r << " / " << p_values.g << " / " << p_values.b << " / " << p_values.a;
+			return (p_os);
 		}
 	};
 }

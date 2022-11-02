@@ -11,6 +11,7 @@
 #include "Structure/jgl2_keyboard.h"
 #include "Structure/jgl2_mouse.h"
 #include "Structure/jgl2_shader.h"
+#include "jgl2_basic_functions.h"
 
 namespace jgl
 {
@@ -32,6 +33,8 @@ namespace jgl
 		ULong _time = 0;
 		std::vector<Abstract::Widget*> _widgets;
 
+		std::map<std::string, Shader*> _shaders;
+
 		Keyboard _keyboard;
 		Mouse _mouse;
 
@@ -41,7 +44,11 @@ namespace jgl
 
 		void _runUpdate();
 		void _runRender();
+		void _runMonoThread();
 		void _run();
+
+		void _create2DColorShader();
+		void _create2DTextureShader();
 
 		static inline Application* _instance = nullptr;
 
@@ -53,9 +60,10 @@ namespace jgl
 		void addShader(std::string p_shaderName, Shader* p_shader);
 		Shader* shader(std::string p_shaderName);
 
+		void resize(jgl::Vector2Int p_size);
+
 		ULong time();
 		Vector2Int size();
-		Vector2Int viewportSize();
 
 		PolymorphicContainer* obtainWinMessage();
 		void releaseWinMessage(PolymorphicContainer* p_msg);

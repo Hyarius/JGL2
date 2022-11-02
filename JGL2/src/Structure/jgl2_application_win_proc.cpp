@@ -339,7 +339,7 @@ namespace jgl
 				*tmpMessage >> x;
 				*tmpMessage >> y;
 
-				_context.resize(x, y);
+				resize(jgl::Vector2Int(x, y));
 
 				break;
 			}

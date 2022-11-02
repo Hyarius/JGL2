@@ -48,7 +48,7 @@ namespace jgl
 		{
 			if (_defaultObject == nullptr)
 			{
-				throw jgl::Exception(1, "Can't allocate a new object for the pool");
+				throw std::exception("Can't allocate a new object for the pool");
 			}
 
 			_mutex.lock();

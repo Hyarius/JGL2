@@ -33,7 +33,7 @@ namespace jgl
 	public:
 		OpenGLContext();
 		~OpenGLContext();
-		void initialize(std::string p_title, jgl::Vector2Int p_size, jgl::Int p_major_version = 3, jgl::Int p_minor_version = 2);
+		void initialize(std::string p_title, jgl::Vector2Int p_size, jgl::Int p_major_version = 4, jgl::Int p_minor_version = 2);
 
 		void setup(jgl::Color background);
 		void resize(jgl::Int w, jgl::Int h);
