@@ -28,6 +28,7 @@ int main(int argc, char** argv)
 	jgl::cout.setEncoding("fr-FR");
 
 	TestWidget tmpWidget = TestWidget(nullptr);
+	tmpWidget.activate();
 
 	return (app.run());
 }

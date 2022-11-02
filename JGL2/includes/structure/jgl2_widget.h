@@ -10,11 +10,14 @@ namespace jgl
 		class Widget
 		{
 		private:
-			std::string _widgetName;
-			Widget* _parent = nullptr;
+			std::string _widgetName = "Un-named";
+			jgl::Bool _activated = false;
 
-			void _addChildren(Widget* p_parent);
-			void _removeChildren(Widget* p_parent);
+			Widget* _parent = nullptr;
+			std::vector<Widget*> _childrens;
+
+			void _addChildren(Widget* p_widget);
+			void _removeChildren(Widget* p_widget);
 
 			virtual jgl::Bool _onUpdate() = 0;
 			virtual void _onRender() = 0;
@@ -24,6 +27,11 @@ namespace jgl
 			Widget(Widget* p_parent);
 
 			void setParent(Widget* p_parent);
+
+			void activate();
+			void deactivate();
+			void setActivate(jgl::Bool p_state);
+			jgl::Bool isActivated();
 
 			jgl::Bool update();
 			void render();

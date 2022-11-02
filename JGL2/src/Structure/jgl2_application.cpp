@@ -86,18 +86,10 @@ namespace jgl
 	{
 		_running = true;
 
-		if (false)
-		{
-			_runMonoThread();
-		}
-		else
-		{
-			_update_thread = new jgl::Thread("Update thread", [&]() {
-				_runUpdate();
-				});
-			_runRender();
-		}
-
+		_update_thread = new jgl::Thread("Update thread", [&]() {
+			_runUpdate();
+			});
+		_runRender();
 	}
 
 	Application::Application(std::string p_title, jgl::Vector2Int p_size)
