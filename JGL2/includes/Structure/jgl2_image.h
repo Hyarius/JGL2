@@ -16,10 +16,10 @@ namespace jgl
 
 		static Shader* _shader;
 
-		static Buffer* _model_space_buffer;
-		static Buffer* _model_uv_buffer;
-		static Buffer* _element_index_buffer;
-		static Uniform* _texture_uniform;
+		static Buffer* _modelSpaceBuffer;
+		static Buffer* _modelUvBuffer;
+		static Buffer* _indexesBuffer;
+		static Uniform* _textureUniform;
 
 		void _init_shader_data();
 

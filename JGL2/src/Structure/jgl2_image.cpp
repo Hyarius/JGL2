@@ -8,10 +8,10 @@ namespace jgl
 {
 	Shader* Image::_shader = nullptr;
 
-	Buffer* Image::_model_space_buffer = nullptr;
-	Buffer* Image::_model_uv_buffer = nullptr;
-	Buffer* Image::_element_index_buffer = nullptr;
-	Uniform* Image::_texture_uniform = nullptr;
+	Buffer* Image::_modelSpaceBuffer = nullptr;
+	Buffer* Image::_modelUvBuffer = nullptr;
+	Buffer* Image::_indexesBuffer = nullptr;
+	Uniform* Image::_textureUniform = nullptr;
 
 	Image::Image(GLuint p_id) : _data(nullptr)
 	{
@@ -86,25 +86,25 @@ namespace jgl
 		if (_shader == nullptr)
 			_shader = Application::instance()->shader("Texture2D");
 
-		if (_model_space_buffer == nullptr)
-			_model_space_buffer = _shader->buffer("model_space");
-		if (_model_uv_buffer == nullptr)
-			_model_uv_buffer = _shader->buffer("model_uv");
-		if (_element_index_buffer == nullptr)
-			_element_index_buffer = _shader->elementBuffer();
-		if (_texture_uniform == nullptr)
-			_texture_uniform = _shader->uniform("textureID");
+		if (_modelSpaceBuffer == nullptr)
+			_modelSpaceBuffer = _shader->buffer("model_space");
+		if (_modelUvBuffer == nullptr)
+			_modelUvBuffer = _shader->buffer("model_uv");
+		if (_indexesBuffer == nullptr)
+			_indexesBuffer = _shader->elementBuffer();
+		if (_textureUniform == nullptr)
+			_textureUniform = _shader->uniform("textureID");
 
 		if (_shader == nullptr)
 			throw std::runtime_error("Error : no shader Texture2D in application");
 
-		if (_model_space_buffer == nullptr)
+		if (_modelSpaceBuffer == nullptr)
 			throw std::runtime_error("Error : no model space buffer found in shader");
-		if (_model_uv_buffer == nullptr)
+		if (_modelUvBuffer == nullptr)
 			throw std::runtime_error("Error : no model uv buffer found in shader");
-		if (_element_index_buffer == nullptr)
+		if (_indexesBuffer == nullptr)
 			throw std::runtime_error("Error : no element buffer found in shader");
-		if (_texture_uniform == nullptr)
+		if (_textureUniform == nullptr)
 			throw std::runtime_error("Error : no texture ID uniform found in shader");
 	}
 
@@ -129,10 +129,10 @@ namespace jgl
 			uv_content[i] = (uv_pos + uv_size * delta_pos[i]);
 		}
 
-		_model_space_buffer->send(vertex_content, 4);
-		_model_uv_buffer->send(uv_content, 4);
-		_element_index_buffer->send(element_index, 6);
-		_texture_uniform->send(0);
+		_modelSpaceBuffer->send(vertex_content, 4);
+		_modelUvBuffer->send(uv_content, 4);
+		_indexesBuffer->send(element_index, 6);
+		_textureUniform->send(0);
 
 		_shader->launch(jgl::Shader::Mode::Triangle);
 	}
