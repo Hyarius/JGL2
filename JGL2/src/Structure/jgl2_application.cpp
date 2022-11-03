@@ -86,7 +86,7 @@ namespace jgl
 	{
 		_running = true;
 
-		_update_thread = new jgl::Thread("Update thread", [&]() {
+		_updateThread = new jgl::Thread("Update thread", [&]() {
 			_runUpdate();
 			});
 		_runRender();

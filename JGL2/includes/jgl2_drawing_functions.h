@@ -6,5 +6,5 @@
 
 namespace jgl
 {
-	void draw_rectangle_color(jgl::Color color, jgl::Vector2Int pos, jgl::Vector2Int size);
+	void drawRectangleColor(jgl::Color color, jgl::Vector2Int pos, jgl::Vector2Int size);
 }

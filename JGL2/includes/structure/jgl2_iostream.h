@@ -14,9 +14,9 @@ namespace jgl
 		static const jgl::Size_t C_BUFFER_SIZE = 1024;
 	private:
 		std::string _prefix;
-		jgl::Bool _needed_prefix = true;
+		jgl::Bool _neededPrefix = true;
 		jgl::Char _buffer[C_BUFFER_SIZE];
-		jgl::Size_t _buffer_len = 0;
+		jgl::Size_t _bufferLength = 0;
 		static inline std::mutex _mutex;
 
 		typedef IOStream& (*FormatFunctionPointer)(IOStream&);

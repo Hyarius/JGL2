@@ -24,11 +24,10 @@ namespace jgl
 		OpenGLContext _context;
 		
 		static std::map<UInt, std::string> WinMessageToString;
-		std::recursive_mutex _message_mutex;
 		Pool< PolymorphicContainer> _messagePool;
 		std::deque< PolymorphicContainer*> _messagesToTreat;
 
-		Thread* _update_thread = nullptr;
+		Thread* _updateThread = nullptr;
 		Bool _running = false;
 		ULong _time = 0;
 		std::vector<Abstract::Widget*> _widgets;

@@ -11,7 +11,7 @@ namespace jgl
 		jgl::Vector2Int(1, 1)
 	};
 
-	void draw_rectangle_color(jgl::Color p_color, jgl::Vector2Int p_pos, jgl::Vector2Int p_size)
+	void drawRectangleColor(jgl::Color p_color, jgl::Vector2Int p_pos, jgl::Vector2Int p_size)
 	{
 		const std::string shader_name = "Color2D";
 

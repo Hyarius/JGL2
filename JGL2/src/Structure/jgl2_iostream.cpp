@@ -6,7 +6,7 @@ namespace jgl
 
 	void IOStream::_addChar(jgl::Char p_char)
 	{
-		if (_buffer_len >= C_BUFFER_SIZE)
+		if (_bufferLength >= C_BUFFER_SIZE)
 		{
 			flush();
 		}
@@ -17,8 +17,8 @@ namespace jgl
 		}
 		else
 		{
-			_buffer[_buffer_len] = p_char;
-			_buffer_len++;
+			_buffer[_bufferLength] = p_char;
+			_bufferLength++;
 		}
 	}
 	void IOStream::_addString(std::string p_str)
@@ -43,17 +43,17 @@ namespace jgl
 	{
 		std::lock_guard<std::mutex> lock(_mutex);
 
-		if (_needed_prefix == true)
+		if (_neededPrefix == true)
 		{
 			int first = _write(1, "[", 1);
 			int second = _write(1, _prefix.c_str(), static_cast<jgl::UInt>(_prefix.size()));
 			int thrid = _write(1, "] - ", 4);
-			_needed_prefix = false;
+			_neededPrefix = false;
 		}
-		int forth = _write(1, _buffer, _buffer_len);
+		int forth = _write(1, _buffer, _bufferLength);
 		int fifth = _write(1, "\n", 1);
-		_needed_prefix = true;
-		_buffer_len = 0;
+		_neededPrefix = true;
+		_bufferLength = 0;
 	}
 
 	IOStream& IOStream::operator << (const FormatFunctionPointer& p_funct)

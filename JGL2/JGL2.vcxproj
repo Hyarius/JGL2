@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="includes\ExternalLibraries\stb_image.h" />
+    <ClInclude Include="includes\ExternalLibraries\stb_image_write.h" />
+    <ClInclude Include="includes\ExternalLibraries\stb_truetype.h" />
     <ClInclude Include="includes\jgl2.h" />
     <ClInclude Include="includes\jgl2_basic_functions.h" />
     <ClInclude Include="includes\jgl2_basic_types.h" />
@@ -28,6 +31,8 @@
     <ClInclude Include="includes\jgl2_structures.h" />
     <ClInclude Include="includes\Structure\jgl2_application.h" />
     <ClInclude Include="includes\Structure\jgl2_color.h" />
+    <ClInclude Include="includes\Structure\jgl2_image.h" />
+    <ClInclude Include="includes\Structure\jgl2_image_output.h" />
     <ClInclude Include="includes\Structure\jgl2_iostream.h" />
     <ClInclude Include="includes\Structure\jgl2_keyboard.h" />
     <ClInclude Include="includes\Structure\jgl2_mouse.h" />
@@ -45,6 +50,8 @@
     <ClCompile Include="src\Structure\jgl2_application.cpp" />
     <ClCompile Include="src\Structure\jgl2_application_shader.cpp" />
     <ClCompile Include="src\Structure\jgl2_application_win_proc.cpp" />
+    <ClCompile Include="src\Structure\jgl2_image_holder.cpp" />
+    <ClCompile Include="src\Structure\jgl2_image_output.cpp" />
     <ClCompile Include="src\Structure\jgl2_keyboard.cpp" />
     <ClCompile Include="src\Structure\jgl2_mouse.cpp" />
     <ClCompile Include="src\Structure\jgl2_openGLContext.cpp" />

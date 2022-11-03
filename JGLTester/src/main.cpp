@@ -11,8 +11,8 @@ private:
 
 	void _onRender()
 	{
-		jgl::draw_rectangle_color(jgl::Color(255, 0, 0), jgl::Vector2Int(100, 100), jgl::Vector2Int(100, 100));
-		jgl::draw_rectangle_color(jgl::Color(0, 255, 0), jgl::Vector2Int(200, 200), jgl::Vector2Int(100, 100));
+		jgl::drawRectangleColor(jgl::Color(255, 0, 0), jgl::Vector2Int(100, 100), jgl::Vector2Int(100, 100));
+		jgl::drawRectangleColor(jgl::Color(0, 255, 0), jgl::Vector2Int(200, 200), jgl::Vector2Int(100, 100));
 	}
 
 public:
