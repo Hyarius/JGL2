@@ -28,7 +28,7 @@ namespace jgl
 				
 				for (jgl::Size_t i = 0; i < tab2.size(); i++)
 				{
-					jgl::Size_t skipLenght = tab2[i].find_first_not_of(" \t");
+					auto skipLenght = tab2[i].find_first_not_of(" \t");
 					if (tab2[i].size() >= 6u && (tab2[i].substr(skipLenght, 3) == "in " || tab2[i].substr(skipLenght, 6) == "layout"))
 					{
 						std::vector<std::string> tab = splitString(tab2[i], ' ');
@@ -155,6 +155,7 @@ namespace jgl
 			size = jgl::Uniform::Size::One;
 		}
 
+		jgl::cout << "Creating new uniform named [" << name << "]" << jgl::endl;
 		_uniforms[name] = new jgl::Uniform(name, location, mode, type, size);
 	}
 
@@ -172,7 +173,8 @@ namespace jgl
 				{
 					if (tab2[i].size() >= 8)
 					{
-						if (tab2[i].substr(0, 7) == "uniform")
+						auto skipLenght = tab2[i].find_first_not_of(" \t");
+						if (tab2[i].substr(skipLenght, 7) == "uniform")
 						{
 							std::vector<std::string> tab = splitString(tab2[i], ' ');
 							GLint id = glGetUniformLocation(_program, tab[2].c_str());

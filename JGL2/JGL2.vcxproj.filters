@@ -128,7 +128,7 @@
     <ClCompile Include="src\Structure\jgl2_application_shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Structure\jgl2_image_holder.cpp">
+    <ClCompile Include="src\Structure\jgl2_image.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Structure\jgl2_image_output.cpp">

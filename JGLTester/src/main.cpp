@@ -3,6 +3,7 @@
 class TestWidget : public jgl::Abstract::Widget
 {
 private:
+	jgl::Image* _image;
 
 	jgl::Bool _onUpdate()
 	{
@@ -11,14 +12,13 @@ private:
 
 	void _onRender()
 	{
-		jgl::drawRectangleColor(jgl::Color(255, 0, 0), jgl::Vector2Int(100, 100), jgl::Vector2Int(100, 100));
-		jgl::drawRectangleColor(jgl::Color(0, 255, 0), jgl::Vector2Int(200, 200), jgl::Vector2Int(100, 100));
+		_image->draw(jgl::Vector2Int(100, 100), jgl::Vector2Int(200, 200), jgl::Vector2(0, 0), jgl::Vector2(1, 1));
 	}
 
 public:
 	TestWidget(jgl::Abstract::Widget* p_parent) : jgl::Abstract::Widget(p_parent)
 	{
-
+		_image = new jgl::Image("test.png");
 	}
 };
 

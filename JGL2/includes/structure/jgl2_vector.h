@@ -32,7 +32,8 @@ namespace jgl
 			return (this->values[p_index]);
 		}
 
-		Vector<TType, C_NB_DIM>& operator = (const Vector<TType, C_NB_DIM>& p_other) const
+		template <typename TOtherType>
+		Vector<TType, C_NB_DIM>& operator = (const Vector<TOtherType, C_NB_DIM>& p_other) const
 		{
 			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
 			{
@@ -40,7 +41,8 @@ namespace jgl
 			}
 		}
 
-		Vector<TType, C_NB_DIM> operator + (const Vector<TType, C_NB_DIM>& p_other) const
+		template <typename TOtherType>
+		Vector<TType, C_NB_DIM> operator + (const Vector<TOtherType, C_NB_DIM>& p_other) const
 		{
 			Vector<TType, C_NB_DIM>  result;
 
@@ -52,7 +54,8 @@ namespace jgl
 			return (result);
 		}
 
-		Vector<TType, C_NB_DIM> operator - (const Vector<TType, C_NB_DIM>& p_other) const
+		template <typename TOtherType>
+		Vector<TType, C_NB_DIM> operator - (const Vector<TOtherType, C_NB_DIM>& p_other) const
 		{
 			Vector<TType, C_NB_DIM>  result;
 
@@ -64,7 +67,8 @@ namespace jgl
 			return (result);
 		}
 
-		Vector<TType, C_NB_DIM> operator * (const Vector<TType, C_NB_DIM>& p_other) const
+		template <typename TOtherType>
+		Vector<TType, C_NB_DIM> operator * (const Vector<TOtherType, C_NB_DIM>& p_other) const
 		{
 			Vector<TType, C_NB_DIM>  result;
 
@@ -76,7 +80,8 @@ namespace jgl
 			return (result);
 		}
 
-		Vector<TType, C_NB_DIM> operator / (const Vector<TType, C_NB_DIM>& p_other) const
+		template <typename TOtherType>
+		Vector<TType, C_NB_DIM> operator / (const Vector<TOtherType, C_NB_DIM>& p_other) const
 		{
 			Vector<TType, C_NB_DIM>  result;
 
@@ -90,7 +95,8 @@ namespace jgl
 			return (result);
 		}
 
-		Vector<TType, C_NB_DIM>& operator += (const Vector<TType, C_NB_DIM>& p_other)
+		template <typename TOtherType>
+		Vector<TType, C_NB_DIM>& operator += (const Vector<TOtherType, C_NB_DIM>& p_other)
 		{
 			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
 			{
@@ -100,7 +106,8 @@ namespace jgl
 			return (*this);
 		}
 
-		Vector<TType, C_NB_DIM>& operator -= (const Vector<TType, C_NB_DIM>& p_other)
+		template <typename TOtherType>
+		Vector<TType, C_NB_DIM>& operator -= (const Vector<TOtherType, C_NB_DIM>& p_other)
 		{
 			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
 			{
@@ -110,7 +117,8 @@ namespace jgl
 			return (*this);
 		}
 
-		Vector<TType, C_NB_DIM>& operator *= (const Vector<TType, C_NB_DIM>& p_other)
+		template <typename TOtherType>
+		Vector<TType, C_NB_DIM>& operator *= (const Vector<TOtherType, C_NB_DIM>& p_other)
 		{
 			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
 			{
@@ -120,7 +128,8 @@ namespace jgl
 			return (*this);
 		}
 
-		Vector<TType, C_NB_DIM>& operator /= (const Vector<TType, C_NB_DIM>& p_other)
+		template <typename TOtherType>
+		Vector<TType, C_NB_DIM>& operator /= (const Vector<TOtherType, C_NB_DIM>& p_other)
 		{
 			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
 			{
@@ -296,16 +305,14 @@ namespace jgl
 			this->values[1] = p_other[1];
 		}
 
-		BaseVector2<TType> operator = (const BaseVector2<TType>& p_other)
+		BaseVector2<TType>& operator = (const BaseVector2<TType>& p_other)
 		{
-			BaseVector2<TType> result;
-
 			for (jgl::Size_t i = 0; i < 2; i++)
 			{
-				result.values[i] = p_other.values[i];
+				this->values[i] = p_other.values[i];
 			}
 
-			return (result);
+			return (*this);
 		}
 	};
 

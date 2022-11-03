@@ -17,15 +17,11 @@ namespace jgl
 		static Shader* _shader;
 
 		static Buffer* _model_space_buffer;
-		static Buffer* _vertexUV_buffer;
-		static Buffer* _alpha_value_buffer;
+		static Buffer* _model_uv_buffer;
 		static Buffer* _element_index_buffer;
 		static Uniform* _texture_uniform;
 
-		void _draw(
-			Vector2Int pos_a, Vector2Int pos_b, Vector2Int pos_c,
-			Vector2 uv_a, Vector2 uv_b, Vector2 uv_c,
-			Float depth, Float alpha);
+		void _init_shader_data();
 
 	public:
 		Image(GLuint p_id = -1);
@@ -44,6 +40,6 @@ namespace jgl
 		void activate(GLenum texture = GL_TEXTURE0);
 		void desactivate(GLenum texture = GL_TEXTURE0);
 
-		void draw(jgl::Vector2Int pos, jgl::Vector2UInt size, jgl::Vector2 uv_pos, jgl::Vector2 uv_size, jgl::Float depth, jgl::Float alpha);
+		void draw(jgl::Vector2Int pos, jgl::Vector2Int size, jgl::Vector2 uv_pos, jgl::Vector2 uv_size);
 	};
 }

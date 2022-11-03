@@ -14,16 +14,6 @@ namespace jgl
 	void drawRectangleColor(jgl::Color p_color, jgl::Vector2Int p_pos, jgl::Vector2Int p_size)
 	{
 		const std::string shader_name = "Color2D";
-
-		Vector3 vertex_content[4];
-		Color color_content[4];
-
-		for (size_t i = 0; i < 4; i++)
-		{
-			vertex_content[i] = jgl::Application::instance()->convertScreenToOpenGL(p_pos + p_size * delta_pos[i]);
-			color_content[i] = p_color;
-		}
-
 		static jgl::Shader* tmp_shader = nullptr;
 
 		if (tmp_shader == nullptr)
@@ -38,7 +28,18 @@ namespace jgl
 		if (model_buffer == nullptr)
 			model_buffer = tmp_shader->buffer("model_space");
 		if (color_buffer == nullptr)
-			color_buffer = tmp_shader->buffer("color_space");
+			color_buffer = tmp_shader->buffer("model_color");
+
+
+
+		Vector3 vertex_content[4];
+		Color color_content[4];
+
+		for (size_t i = 0; i < 4; i++)
+		{
+			vertex_content[i] = jgl::Application::instance()->convertScreenToOpenGL(p_pos + p_size * delta_pos[i]);
+			color_content[i] = p_color;
+		}
 
 		model_buffer->send(vertex_content, 4);
 		color_buffer->send(color_content, 4);

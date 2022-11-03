@@ -50,7 +50,7 @@
     <ClCompile Include="src\Structure\jgl2_application.cpp" />
     <ClCompile Include="src\Structure\jgl2_application_shader.cpp" />
     <ClCompile Include="src\Structure\jgl2_application_win_proc.cpp" />
-    <ClCompile Include="src\Structure\jgl2_image_holder.cpp" />
+    <ClCompile Include="src\Structure\jgl2_image.cpp" />
     <ClCompile Include="src\Structure\jgl2_image_output.cpp" />
     <ClCompile Include="src\Structure\jgl2_keyboard.cpp" />
     <ClCompile Include="src\Structure\jgl2_mouse.cpp" />

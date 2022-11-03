@@ -9,72 +9,9 @@ namespace jgl
 	Shader* Image::_shader = nullptr;
 
 	Buffer* Image::_model_space_buffer = nullptr;
-	Buffer* Image::_vertexUV_buffer = nullptr;
-	Buffer* Image::_alpha_value_buffer = nullptr;
+	Buffer* Image::_model_uv_buffer = nullptr;
 	Buffer* Image::_element_index_buffer = nullptr;
 	Uniform* Image::_texture_uniform = nullptr;
-
-	void Image::_draw(
-		Vector2Int pos_a, Vector2Int pos_b, Vector2Int pos_c,
-		Vector2 uv_a, Vector2 uv_b, Vector2 uv_c,
-		Float depth, Float alpha)
-	{
-		if (_id == -1 || Application::instance() == nullptr)
-			throw std::runtime_error("Trying to print an image non-initialized or with no application created");
-
-		activate();
-
-		const std::string shader_name = "Texture_shader_2D";
-
-		static UInt element_index[3] = { 0, 3, 1 };
-
-		Vector3 vertex_content[3] = {
-			Vector3(Application::instance()->convertScreenToOpenGL(pos_a), depth),
-			Vector3(Application::instance()->convertScreenToOpenGL(pos_b), depth),
-			Vector3(Application::instance()->convertScreenToOpenGL(pos_c), depth)
-		};
-		Vector2 uv_content[3] = {
-			uv_a, uv_b, uv_c
-		};
-		Float alpha_content[3] = {
-			alpha, alpha, alpha
-		};
-
-		if (_shader == nullptr)
-			_shader = Application::instance()->shader(shader_name);
-
-		if (_shader == nullptr)
-		{
-			std::string errorMessage = "No shader named " + shader_name;
-			throw std::runtime_error(errorMessage.c_str());
-
-		}
-
-		if (_model_space_buffer == nullptr)
-			_model_space_buffer = _shader->buffer("model_space");
-
-		if (_vertexUV_buffer == nullptr)
-			_vertexUV_buffer = _shader->buffer("vertexUV");
-
-		if (_alpha_value_buffer == nullptr)
-			_alpha_value_buffer = _shader->buffer("alpha_value");
-
-		if (_element_index_buffer == nullptr)
-			_element_index_buffer = _shader->elementBuffer();
-
-		if (_texture_uniform == nullptr)
-			_texture_uniform = _shader->uniform("textureID");
-
-		_model_space_buffer->send(vertex_content, 3);
-		_vertexUV_buffer->send(uv_content, 3);
-		_alpha_value_buffer->send(alpha_content, 3);
-		_element_index_buffer->send(element_index, 3);
-		_texture_uniform->send(0);
-
-		_shader->launch(Shader::Mode::Triangle);
-
-		desactivate();
-	}
 
 	Image::Image(GLuint p_id) : _data(nullptr)
 	{
@@ -120,7 +57,7 @@ namespace jgl
 		}
 		unsigned char datas[4] = { 0, 0, 0, 0 };
 
-		UInt index = (p_x * _nbChannels) + (_width * _nbChannels) * p_y;
+		Int index = (p_x * _nbChannels) + (_width * _nbChannels) * p_y;
 		for (Size_t comp = 0; comp < _nbChannels; comp++)
 			datas[comp] = _data[index + (_nbChannels - 1 - comp)];
 
@@ -144,4 +81,59 @@ namespace jgl
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
+	void Image::_init_shader_data()
+	{
+		if (_shader == nullptr)
+			_shader = Application::instance()->shader("Texture2D");
+
+		if (_model_space_buffer == nullptr)
+			_model_space_buffer = _shader->buffer("model_space");
+		if (_model_uv_buffer == nullptr)
+			_model_uv_buffer = _shader->buffer("model_uv");
+		if (_element_index_buffer == nullptr)
+			_element_index_buffer = _shader->elementBuffer();
+		if (_texture_uniform == nullptr)
+			_texture_uniform = _shader->uniform("textureID");
+
+		if (_shader == nullptr)
+			throw std::runtime_error("Error : no shader Texture2D in application");
+
+		if (_model_space_buffer == nullptr)
+			throw std::runtime_error("Error : no model space buffer found in shader");
+		if (_model_uv_buffer == nullptr)
+			throw std::runtime_error("Error : no model uv buffer found in shader");
+		if (_element_index_buffer == nullptr)
+			throw std::runtime_error("Error : no element buffer found in shader");
+		if (_texture_uniform == nullptr)
+			throw std::runtime_error("Error : no texture ID uniform found in shader");
+	}
+
+	void Image::draw(Vector2Int pos, Vector2Int size, Vector2 uv_pos, Vector2 uv_size)
+	{
+		static UInt element_index[6] = { 0, 3, 1, 2, 3, 0 };
+		static Vector2Int delta_pos[4] = {
+			Vector2Int(0, 0),
+			Vector2Int(1, 0),
+			Vector2Int(0, 1),
+			Vector2Int(1, 1)
+		};
+
+		_init_shader_data();
+
+		Vector3 vertex_content[4];
+		Vector2 uv_content[4];
+
+		for (size_t i = 0; i < 4; i++)
+		{
+			vertex_content[i] = Vector3(jgl::Application::instance()->convertScreenToOpenGL(pos + size * delta_pos[i]), 0);
+			uv_content[i] = (uv_pos + uv_size * delta_pos[i]);
+		}
+
+		_model_space_buffer->send(vertex_content, 4);
+		_model_uv_buffer->send(uv_content, 4);
+		_element_index_buffer->send(element_index, 6);
+		_texture_uniform->send(0);
+
+		_shader->launch(jgl::Shader::Mode::Triangle);
+	}
 }
