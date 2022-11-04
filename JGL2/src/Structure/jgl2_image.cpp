@@ -110,8 +110,8 @@ namespace jgl
 
 	void Image::draw(Vector2Int pos, Vector2Int size, Vector2 uv_pos, Vector2 uv_size)
 	{
-		static UInt element_index[6] = { 0, 3, 1, 2, 3, 0 };
-		static Vector2Int delta_pos[4] = {
+		static UInt elementIndex[6] = { 0, 3, 1, 2, 3, 0 };
+		static Vector2Int deltaPos[4] = {
 			Vector2Int(0, 0),
 			Vector2Int(1, 0),
 			Vector2Int(0, 1),
@@ -120,18 +120,18 @@ namespace jgl
 
 		_init_shader_data();
 
-		Vector3 vertex_content[4];
-		Vector2 uv_content[4];
+		Vector3 vertexContent[4];
+		Vector2 uvContent[4];
 
 		for (size_t i = 0; i < 4; i++)
 		{
-			vertex_content[i] = Vector3(jgl::Application::instance()->convertScreenToOpenGL(pos + size * delta_pos[i]), 0);
-			uv_content[i] = (uv_pos + uv_size * delta_pos[i]);
+			vertexContent[i] = Vector3(jgl::Application::instance()->convertScreenToOpenGL(pos + size * deltaPos[i]), 0);
+			uvContent[i] = (uv_pos + uv_size * deltaPos[i]);
 		}
 
-		_modelSpaceBuffer->send(vertex_content, 4);
-		_modelUvBuffer->send(uv_content, 4);
-		_indexesBuffer->send(element_index, 6);
+		_modelSpaceBuffer->send(vertexContent, 4);
+		_modelUvBuffer->send(uvContent, 4);
+		_indexesBuffer->send(elementIndex, 6);
 		_textureUniform->send(0);
 
 		_shader->launch(jgl::Shader::Mode::Triangle);
