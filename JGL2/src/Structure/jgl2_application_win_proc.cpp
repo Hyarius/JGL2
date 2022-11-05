@@ -412,7 +412,7 @@ namespace jgl
 
 				*tmpMessage >> value;
 
-				_keyboard._entry = jgl::Glyph(static_cast<jgl::WChar>(value));
+				_keyboard._entry = static_cast<jgl::WChar>(value);
 				break;
 			}
 			case WM_SYSKEYDOWN:

@@ -92,7 +92,7 @@ namespace jgl
 		_runRender();
 	}
 
-	Application::Application(std::string p_title, jgl::Vector2Int p_size)
+	Application::Application(std::string p_title, jgl::Vector2Int p_size, jgl::Color p_backgroundColor)
 	{
 		if (_instance != nullptr)
 			throw std::runtime_error("Application already created");
@@ -101,10 +101,11 @@ namespace jgl
 		_messagePool.setDefaultObject(new jgl::PolymorphicContainer());
 		_context.initialize(p_title, p_size, 4, 2);
 
-		_context.setup(jgl::Color(0, 0, 150));
+		_context.setup(p_backgroundColor);
 
 		_create2DColorShader();
 		_create2DTextureShader();
+		_create2DTextTextureShader();
 
 		//resize(p_size);
 		_updateTime();

@@ -90,6 +90,9 @@
     <ClInclude Include="includes\Structure\jgl2_sprite_sheet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_font.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Structure\jgl2_iostream.cpp">
@@ -138,6 +141,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Structure\jgl2_sprite_sheet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Structure\jgl2_font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

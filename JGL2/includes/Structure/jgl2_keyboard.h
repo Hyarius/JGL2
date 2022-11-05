@@ -152,14 +152,14 @@ namespace jgl
     private:
         static std::map<Keyboard::Key, std::string> _convertKeyToString;
         InputStatus _keys[C_NB_KEY];
-        Char _entry;
+        WChar _entry;
 
         Keyboard();
         void _updateState();
-        void _updateEntry(Char p_entry);
+        void _updateEntry(WChar p_entry);
 
     public:
         InputStatus getKey(Keyboard::Key p_key);
-        Char getEntry();
+        WChar getEntry();
     };
 }

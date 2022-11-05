@@ -24,6 +24,4 @@ namespace jgl
 	using Double = double_t;
 
 	using WChar = wchar_t;
-
-	using Glyph = Char;
 }

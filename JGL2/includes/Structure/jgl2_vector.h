@@ -10,14 +10,22 @@ namespace jgl
 	{
 		TType values[C_NB_DIM];
 
-
 		Vector()
 		{
 			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
 			{
-				values[i] = {};
+				this->values[i] = {};
 			}
 		}
+
+		Vector(TType p_value)
+		{
+			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
+			{
+				this->values[i] = p_value;
+			}
+		}
+
 		TType& operator [] (jgl::Size_t p_index)
 		{
 			if (p_index >= C_NB_DIM)
@@ -294,6 +302,13 @@ namespace jgl
 		{
 
 		}
+
+		BaseVector2(const TType& p_value)
+		{
+			this->values[0] = p_value;
+			this->values[1] = p_value;
+		}
+
 		BaseVector2(TType p_x, TType p_y)
 		{
 			this->values[0] = p_x;
@@ -329,6 +344,14 @@ namespace jgl
 		{
 
 		}
+
+		BaseVector3(const TType& p_value)
+		{
+			this->values[0] = p_value;
+			this->values[1] = p_value;
+			this->values[2] = p_value;
+		}
+
 		BaseVector3(TType p_x, TType p_y, TType p_z)
 		{
 			this->values[0] = p_x;
@@ -382,6 +405,15 @@ namespace jgl
 		{
 
 		}
+
+		BaseVector4(const TType& p_value)
+		{
+			this->values[0] = p_value;
+			this->values[1] = p_value;
+			this->values[2] = p_value;
+			this->values[3] = p_value;
+		}
+
 		BaseVector4(TType p_x, TType p_y, TType p_z, TType p_w)
 		{
 			this->values[0] = p_x;

@@ -31,6 +31,7 @@
     <ClInclude Include="includes\jgl2_structures.h" />
     <ClInclude Include="includes\Structure\jgl2_application.h" />
     <ClInclude Include="includes\Structure\jgl2_color.h" />
+    <ClInclude Include="includes\Structure\jgl2_font.h" />
     <ClInclude Include="includes\Structure\jgl2_image.h" />
     <ClInclude Include="includes\Structure\jgl2_image_output.h" />
     <ClInclude Include="includes\Structure\jgl2_iostream.h" />
@@ -51,6 +52,7 @@
     <ClCompile Include="src\Structure\jgl2_application.cpp" />
     <ClCompile Include="src\Structure\jgl2_application_shader.cpp" />
     <ClCompile Include="src\Structure\jgl2_application_win_proc.cpp" />
+    <ClCompile Include="src\Structure\jgl2_font.cpp" />
     <ClCompile Include="src\Structure\jgl2_image.cpp" />
     <ClCompile Include="src\Structure\jgl2_image_output.cpp" />
     <ClCompile Include="src\Structure\jgl2_keyboard.cpp" />

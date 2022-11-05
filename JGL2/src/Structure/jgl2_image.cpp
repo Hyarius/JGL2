@@ -58,7 +58,7 @@ namespace jgl
 		unsigned char datas[4] = { 0, 0, 0, 0 };
 
 		Int index = (p_x * _nbChannels) + (_width * _nbChannels) * p_y;
-		for (Size_t comp = 0; comp < _nbChannels; comp++)
+		for (Int comp = 0; comp < _nbChannels; comp++)
 			datas[comp] = _data[index + (_nbChannels - 1 - comp)];
 
 		if (_nbChannels == 3)

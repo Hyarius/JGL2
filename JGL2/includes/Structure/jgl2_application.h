@@ -48,11 +48,12 @@ namespace jgl
 
 		void _create2DColorShader();
 		void _create2DTextureShader();
+		void _create2DTextTextureShader();
 
 		static inline Application* _instance = nullptr;
 
 	public:
-		Application(std::string p_title, Vector2Int p_size);
+		Application(std::string p_title, Vector2Int p_size, jgl::Color p_backgroundColor);
 		void quit();
 		Int run();
 

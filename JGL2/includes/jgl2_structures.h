@@ -7,3 +7,4 @@
 #include "Structure/jgl2_image.h"
 #include "Structure/jgl2_image_output.h"
 #include "Structure/jgl2_sprite_sheet.h"
+#include "Structure/jgl2_font.h"

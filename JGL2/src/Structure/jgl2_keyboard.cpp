@@ -158,7 +158,7 @@ namespace jgl
         }
     }
 
-    void Keyboard::_updateEntry(Char p_entry)
+    void Keyboard::_updateEntry(WChar p_entry)
     {
         _entry = p_entry;
     }
@@ -168,7 +168,7 @@ namespace jgl
         return (_keys[static_cast<Size_t>(p_key)]);
     }
     
-    Char Keyboard::getEntry()
+    WChar Keyboard::getEntry()
     {
         return (_entry);
     }

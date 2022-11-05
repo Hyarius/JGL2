@@ -53,7 +53,6 @@ namespace jgl
 							}
 						}
 						
-						jgl::cout << "Creating new buffer named [" << name << "]" << jgl::endl;
 						_buffers[name] = new Buffer(name, location_id, tmp_element_type, element_type_result[nb_component], jgl::Buffer::Mode::Array);
 					}
 				}
@@ -155,7 +154,6 @@ namespace jgl
 			size = jgl::Uniform::Size::One;
 		}
 
-		jgl::cout << "Creating new uniform named [" << name << "]" << jgl::endl;
 		_uniforms[name] = new jgl::Uniform(name, location, mode, type, size);
 	}
 
