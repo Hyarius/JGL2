@@ -40,6 +40,7 @@
     <ClInclude Include="includes\Structure\jgl2_polymorphic_container.h" />
     <ClInclude Include="includes\Structure\jgl2_pool.h" />
     <ClInclude Include="includes\Structure\jgl2_shader.h" />
+    <ClInclude Include="includes\Structure\jgl2_sprite_sheet.h" />
     <ClInclude Include="includes\Structure\jgl2_thread.h" />
     <ClInclude Include="includes\Structure\jgl2_vector.h" />
     <ClInclude Include="includes\Structure\jgl2_widget.h" />
@@ -57,6 +58,7 @@
     <ClCompile Include="src\Structure\jgl2_openGLContext.cpp" />
     <ClCompile Include="src\Structure\jgl2_iostream.cpp" />
     <ClCompile Include="src\Structure\jgl2_shader.cpp" />
+    <ClCompile Include="src\Structure\jgl2_sprite_sheet.cpp" />
     <ClCompile Include="src\Structure\jgl2_thread.cpp" />
     <ClCompile Include="src\Structure\jgl2_widget.cpp" />
     <ClCompile Include="src\Structure\jgl2_application_opengl_function.cpp" />

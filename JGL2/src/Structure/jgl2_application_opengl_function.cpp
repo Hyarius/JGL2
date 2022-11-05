@@ -6,7 +6,7 @@ namespace jgl
 	{
 		jgl::Float x = static_cast<jgl::Float>(p_screenPos.x()) / static_cast<jgl::Float>(size().x() / 2) - 1.0f;
 		jgl::Float y = static_cast<jgl::Float>(p_screenPos.y()) / static_cast<jgl::Float>(size().y() / 2) - 1.0f;
-		return (Vector2(x, y));
+		return (Vector2(x, -y));
 	}
 	
 	jgl::Vector2Int Application::convertOpenGLToScreen(jgl::Vector2 p_openGLPos)

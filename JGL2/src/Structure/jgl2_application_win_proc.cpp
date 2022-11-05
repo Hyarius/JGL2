@@ -478,6 +478,7 @@ namespace jgl
 			case 617:
 			case 647:
 			case 480:
+			case 49366:
 			{
 				//Ignored message, but not stored in convert map
 				break;

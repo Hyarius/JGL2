@@ -287,6 +287,8 @@ namespace jgl
 	{
 		TType& x() { return (this->values[0]); };
 		TType& y() { return (this->values[1]); };
+		const TType& x() const { return (this->values[0]); };
+		const TType& y() const { return (this->values[1]); };
 
 		BaseVector2() : Vector<TType, 2>()
 		{
