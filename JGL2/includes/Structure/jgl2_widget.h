@@ -20,10 +20,12 @@ namespace jgl
 
 		std::recursive_mutex _mutex;
 		Bool _calculated = false;
-		jgl::Vector2Int _anchor;
-		jgl::Vector2Int _size;
-		jgl::Vector2Int _viewportAnchor;
-		jgl::Vector2Int _viewportSize;
+		jgl::Vector2Int _anchor = jgl::Vector2Int(0, 0);
+		jgl::Vector2Int _size = jgl::Vector2Int(0, 0);
+		jgl::Vector2Int _viewportAnchor = jgl::Vector2Int(0, 0);
+		jgl::Vector2Int _viewportAnchorOffset = jgl::Vector2Int(0, 0);
+		jgl::Vector2Int _viewportSize = jgl::Vector2Int(0, 0);
+		jgl::Vector2Int _viewportSizeOffset = jgl::Vector2Int(0, 0);
 
 		void _composeViewportInfo();
 		Vector2Int _cumulatedAnchor() const;
@@ -33,6 +35,10 @@ namespace jgl
 		virtual jgl::Bool _onUpdate() = 0;
 		virtual void _onRender() = 0;
 		virtual void _onGeometryChange() = 0;
+
+	protected:
+		void _setViewportAnchorOffset(jgl::Vector2Int p_anchorOffset);
+		void _setViewportSizeOffset(jgl::Vector2Int p_sizeOffset);
 
 	public:
 		Widget(std::string p_widgetName, Widget* p_parent);
@@ -51,6 +57,8 @@ namespace jgl
 		void place(jgl::Vector2Int p_anchor);
 		Vector2Int anchor() { return (_anchor); }
 		Vector2Int size() { return (_size); }
+		Vector2Int usableAnchor() { return (_anchor + _viewportAnchorOffset); }
+		Vector2Int usableSize() { return (_size - _viewportSizeOffset); }
 		Vector2Int viewportAnchor() { return (_viewportAnchor); }
 		Vector2Int viewportSize() { return (_viewportSize); }
 

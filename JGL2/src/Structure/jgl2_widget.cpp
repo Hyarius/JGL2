@@ -75,27 +75,37 @@ namespace jgl
 		return (_activated);
 	}
 
+	void Widget::_setViewportAnchorOffset(jgl::Vector2Int p_anchorOffset)
+	{
+		_viewportAnchorOffset = p_anchorOffset;
+	}
+	
+	void Widget::_setViewportSizeOffset(jgl::Vector2Int p_sizeOffset)
+	{
+		_viewportSizeOffset = p_sizeOffset;
+	}
+
 	void Widget::_composeViewportInfo()
 	{
 		if (_parent == nullptr)
 		{
-			_viewportAnchor = 0;
-			_viewportSize = jgl::Application::instance()->size();
+			_viewportAnchor = _viewportAnchorOffset;
+			_viewportSize = jgl::Application::instance()->size() - _viewportSizeOffset;
 		}
 		else
 		{
-			_viewportAnchor = _parent->_cumulatedAnchor();
-			_viewportSize = _parent->size();
+			_viewportAnchor = _parent->_cumulatedAnchor() + _viewportAnchorOffset;
+			_viewportSize = _parent->size() - _viewportSizeOffset;
 
-			if (_viewportAnchor.x() < _parent->viewportAnchor().x())
-				_viewportAnchor.x() = _parent->viewportAnchor().x();
-			if (_viewportAnchor.y() < _parent->viewportAnchor().y())
-				_viewportAnchor.y() = _parent->viewportAnchor().y();
+			if (_viewportAnchor.x() < _parent->viewportAnchor().x() + _viewportAnchorOffset.x())
+				_viewportAnchor.x() = _parent->viewportAnchor().x() + _viewportAnchorOffset.x();
+			if (_viewportAnchor.y() < _parent->viewportAnchor().y() + _viewportAnchorOffset.y())
+				_viewportAnchor.y() = _parent->viewportAnchor().y() + _viewportAnchorOffset.y();
 
-			if (_viewportAnchor.x() + _viewportSize.x() > _parent->viewportAnchor().x() + _parent->viewportSize().x())
-				_viewportSize.x() = _parent->viewportAnchor().x() + _parent->viewportSize().x() - _viewportAnchor.x();
-			if (_viewportAnchor.y() + _viewportSize.y() > _parent->viewportAnchor().y() + _parent->viewportSize().y())
-				_viewportSize.y() = _parent->viewportAnchor().y() + _parent->viewportSize().y() - _viewportAnchor.y();
+			if (_viewportAnchor.x() + _viewportSize.x() > _parent->viewportAnchor().x() + _parent->viewportSize().x() - _viewportSizeOffset.x())
+				_viewportSize.x() = _parent->viewportAnchor().x() + _parent->viewportSize().x() - _viewportAnchor.x() - _viewportSizeOffset.x();
+			if (_viewportAnchor.y() + _viewportSize.y() > _parent->viewportAnchor().y() + _parent->viewportSize().y() - _viewportSizeOffset.y())
+				_viewportSize.y() = _parent->viewportAnchor().y() + _parent->viewportSize().y() - _viewportAnchor.y() - _viewportSizeOffset.y();
 		}
 	}
 
@@ -136,7 +146,7 @@ namespace jgl
 		const Widget* tmp = this;
 		while (tmp != nullptr)
 		{
-			result += tmp->_anchor;
+			result += tmp->_anchor + tmp->_viewportAnchorOffset;
 			tmp = tmp->_parent;
 		}
 		return (result);
