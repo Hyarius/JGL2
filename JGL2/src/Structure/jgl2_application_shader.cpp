@@ -84,7 +84,7 @@ namespace jgl
 					gl_Position = vec4(model_space, 1.0f);
 					fragmentUV = model_uv;
 					fragmentColor = model_color;
-					fragmentColor = model_outline_color;
+					fragmentOutlineColor = model_outline_color;
 				})";
 
 		std::string textTextureShaderFragment =

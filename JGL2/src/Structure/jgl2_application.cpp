@@ -39,6 +39,9 @@ namespace jgl
 			{
 				_widgets[i]->update();
 			}
+
+			_keyboard._updateState();
+			_mouse._updateState();
 		}
 	}
 	void Application::_runRender()

@@ -49,7 +49,7 @@ namespace jgl
 			{
 				jgl::Int tmp_x = p_x + delta_x;
 				jgl::Int tmp_y = p_y + delta_y;
-				if (tmp_x >= 0 && tmp_x < p_width && tmp_y >= 0 && tmp_y < p_height && Vector2(tmp_x, tmp_y).distance(origin) <= p_outlineSize)
+				if (tmp_x >= 0 && tmp_x < p_width && tmp_y >= 0 && tmp_y < p_height)// && Vector2(tmp_x, tmp_y).distance(origin) <= p_outlineSize)
 				{
 					jgl::Int index = tmp_x + tmp_y * p_width;
 
@@ -253,7 +253,7 @@ namespace jgl
 			_modelSpaceData.push_back(Vector3(Application::instance()->convertScreenToOpenGL(tmp_pos), 0));
 			_modelUvData.push_back(glyphData.uvs[i]);
 			_modelColorData.push_back(p_color);
-			_modelOutlineColorData.push_back(p_color);
+			_modelOutlineColorData.push_back(p_outlineColor);
 		}
 
 		for (Size_t i = 0; i < 6; i++)

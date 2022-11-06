@@ -359,17 +359,20 @@ namespace jgl
 			// ----- Mouse part
 			case WM_LBUTTONDOWN:
 			{
-				_mouse._buttons[static_cast<jgl::Int>(jgl::Mouse::Button::Left)] = jgl::InputStatus::Pressed;
+				if (_mouse._buttons[static_cast<jgl::Int>(jgl::Mouse::Button::Left)] == jgl::InputStatus::Up)
+					_mouse._buttons[static_cast<jgl::Int>(jgl::Mouse::Button::Left)] = jgl::InputStatus::Pressed;
 				break;
 			}
 			case WM_MBUTTONDOWN:
 			{
-				_mouse._buttons[static_cast<jgl::Int>(jgl::Mouse::Button::Center)] = jgl::InputStatus::Pressed;
+				if (_mouse._buttons[static_cast<jgl::Int>(jgl::Mouse::Button::Center)] == jgl::InputStatus::Up)
+					_mouse._buttons[static_cast<jgl::Int>(jgl::Mouse::Button::Center)] = jgl::InputStatus::Pressed;
 				break;
 			}
 			case WM_RBUTTONDOWN:
 			{
-				_mouse._buttons[static_cast<jgl::Int>(jgl::Mouse::Button::Right)] = jgl::InputStatus::Pressed;
+				if (_mouse._buttons[static_cast<jgl::Int>(jgl::Mouse::Button::Right)] == jgl::InputStatus::Up)
+					_mouse._buttons[static_cast<jgl::Int>(jgl::Mouse::Button::Right)] = jgl::InputStatus::Pressed;
 				break;
 			}
 			case WM_LBUTTONUP:
@@ -421,8 +424,9 @@ namespace jgl
 				jgl::UInt value;
 
 				*tmpMessage >> value;
-
-				_keyboard._keys[value] = jgl::InputStatus::Pressed;
+				
+				if (_keyboard._keys[value] == jgl::InputStatus::Up)
+					_keyboard._keys[value] = jgl::InputStatus::Pressed;
 				break;
 			}
 			case WM_SYSKEYUP:

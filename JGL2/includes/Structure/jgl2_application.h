@@ -60,6 +60,9 @@ namespace jgl
 		void addShader(std::string p_shaderName, Shader* p_shader);
 		Shader* shader(std::string p_shaderName);
 
+		Keyboard& keyboard() { return (_keyboard); }
+		Mouse& mouse() { return (_mouse); }
+
 		void resize(jgl::Vector2Int p_size);
 
 		ULong time();

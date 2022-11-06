@@ -47,7 +47,7 @@ namespace jgl
 		void _initShaderData();
 
 	public:
-		Font(std::string path, Size_t p_baseCharSize, jgl::Size_t p_outlineSize);
+		Font(std::string path, Size_t p_baseCharSize = 100, jgl::Size_t p_outlineSize = 2);
 		~Font();
 
 		Vector2Int calcCharSize(WChar p_char, UInt p_size);
