@@ -1,5 +1,6 @@
 #include "jgl2_basic_functions.h"
 #include "Structure/jgl2_iostream.h"
+#include "jgl2_enums.h"
 
 namespace jgl
 {
@@ -163,4 +164,19 @@ namespace jgl
 		}
 	}
 
+	std::string to_string(const jgl::InputStatus& p_status)
+	{
+		switch (p_status)
+		{
+		case jgl::InputStatus::Down:
+			return ("Down");
+		case jgl::InputStatus::Up:
+			return ("Up");
+		case jgl::InputStatus::Released:
+			return ("Released");
+		case jgl::InputStatus::Pressed:
+			return ("Pressed");
+		}
+		return ("Unknow");
+	}
 }

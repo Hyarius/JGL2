@@ -7,14 +7,19 @@ namespace jgl
 		return (_instance);
 	}
 
-	jgl::ULong Application::time()
+	const jgl::ULong& Application::time() const
 	{
 		return (_time);
 	}
 
-	jgl::Vector2Int Application::size()
+	const jgl::Vector2Int& Application::size() const
 	{
 		return (_context.size());
+	}
+
+	void Application::_setViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
+	{
+		_context.setViewport(p_anchor.x(), p_anchor.y(), p_size.x(), p_size.y());
 	}
 
 	void Application::_updateTime()
@@ -48,10 +53,12 @@ namespace jgl
 	{
 		while (_running == true)
 		{
+			//jgl::cout << " ===== " << jgl::endl;
 			_context.clear();
 
 			_pullWinMessage();
 
+			//jgl::cout << "Rendering widgets" << jgl::endl;
 			for (jgl::Size_t i = 0; i < _widgets.size(); i++)
 			{
 				_widgets[i]->render();
@@ -73,22 +80,23 @@ namespace jgl
 
 			for (jgl::Size_t i = 0; i < _widgets.size(); i++)
 			{
-				_widgets[i]->render();
+				_widgets[i]->update();
 			}
 
 			for (jgl::Size_t i = 0; i < _widgets.size(); i++)
 			{
-				_widgets[i]->update();
+				_widgets[i]->render();
 			}
 
 			_context.render();
+
+			_keyboard._updateState();
+			_mouse._updateState();
 		}
 	}
 
 	void Application::_run()
 	{
-		_running = true;
-
 		_updateThread = new jgl::Thread("Update thread", [&]() {
 			_runUpdate();
 			});
@@ -131,11 +139,26 @@ namespace jgl
 		_running = false;
 	}
 
+	void Application::activateMultiThread()
+	{
+		_multithreaded = true;
+	}
+
+	void Application::deactivateMultiThread()
+	{
+		_multithreaded = true;
+	}
+
 	int Application::run()
 	{
 		try
 		{
-			_run();
+			_running = true;
+
+			if (_multithreaded == true)
+				_run();
+			else
+				_runMonoThread();
 		}
 		catch (std::exception& e)
 		{

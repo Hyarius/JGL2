@@ -159,7 +159,7 @@ namespace jgl
         void _updateEntry(WChar p_entry);
 
     public:
-        InputStatus getKey(Keyboard::Key p_key);
-        WChar getEntry();
+        const InputStatus& getKey(Keyboard::Key p_key) const;
+        const WChar& getEntry() const;
     };
 }

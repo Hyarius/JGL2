@@ -163,12 +163,12 @@ namespace jgl
         _entry = p_entry;
     }
 
-    InputStatus Keyboard::getKey(Keyboard::Key p_key)
+    const InputStatus& Keyboard::getKey(Keyboard::Key p_key) const
     {
         return (_keys[static_cast<Size_t>(p_key)]);
     }
     
-    WChar Keyboard::getEntry()
+    const WChar& Keyboard::getEntry() const
     {
         return (_entry);
     }

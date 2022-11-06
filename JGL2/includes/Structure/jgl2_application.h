@@ -18,8 +18,9 @@ namespace jgl
 	class Application
 	{
 	public:
+		friend class Widget;
+		friend LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
-		friend class Abstract::Widget;
 	private:
 		OpenGLContext _context;
 		
@@ -29,8 +30,9 @@ namespace jgl
 
 		Thread* _updateThread = nullptr;
 		Bool _running = false;
+		Bool _multithreaded = false;
 		ULong _time = 0;
-		std::vector<Abstract::Widget*> _widgets;
+		std::vector<Widget*> _widgets;
 
 		std::map<std::string, Shader*> _shaders;
 
@@ -50,7 +52,14 @@ namespace jgl
 		void _create2DTextureShader();
 		void _create2DTextTextureShader();
 
+		void _setViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size);
+
 		static inline Application* _instance = nullptr;
+
+		PolymorphicContainer* _obtainWinMessage();
+		void _releaseWinMessage(PolymorphicContainer* p_msg);
+		void _insertWinMessageToTreat(PolymorphicContainer* p_msg);
+		PolymorphicContainer* _getWinMessageToTreat();
 
 	public:
 		Application(std::string p_title, Vector2Int p_size, jgl::Color p_backgroundColor);
@@ -60,18 +69,16 @@ namespace jgl
 		void addShader(std::string p_shaderName, Shader* p_shader);
 		Shader* shader(std::string p_shaderName);
 
-		Keyboard& keyboard() { return (_keyboard); }
-		Mouse& mouse() { return (_mouse); }
+		const Keyboard& keyboard() const { return (_keyboard); }
+		const Mouse& mouse() const { return (_mouse); }
+
+		void activateMultiThread();
+		void deactivateMultiThread();
 
 		void resize(jgl::Vector2Int p_size);
 
-		ULong time();
-		Vector2Int size();
-
-		PolymorphicContainer* obtainWinMessage();
-		void releaseWinMessage(PolymorphicContainer* p_msg);
-		void insertWinMessageToTreat(PolymorphicContainer* p_msg);
-		PolymorphicContainer* getWinMessageToTreat();
+		const ULong& time() const;
+		const Vector2Int& size() const;
 
 		Vector2 convertScreenToOpenGL(Vector2Int p_screenPos);
 		Vector2Int convertOpenGLToScreen(Vector2 p_openGLPos);

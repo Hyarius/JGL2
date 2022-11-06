@@ -9,10 +9,11 @@ namespace jgl
 	class OpenGLContext
 	{
 	private:
-		jgl::WChar* _convertedTitle = nullptr;
-		jgl::Vector2Int _size;
-		jgl::Int _majorVersion;
-		jgl::Int _minorVersion;
+		WChar* _convertedTitle = nullptr;
+		Vector2Int _size;
+		Vector2Int _actualSize;
+		Int _majorVersion;
+		Int _minorVersion;
 
 		HWND _windowFrame;
 		HINSTANCE _hInstance = NULL;
@@ -27,19 +28,20 @@ namespace jgl
 
 		void _createWindowClass();
 		void _createGhostInstance();
-		void _setupWindowSize(jgl::Vector2Int p_size);
+		void _setupWindowSize(Vector2Int p_size);
 		void _composeOpenGLContext();
 
 	public:
 		OpenGLContext();
 		~OpenGLContext();
-		void initialize(std::string p_title, jgl::Vector2Int p_size, jgl::Int p_major_version = 4, jgl::Int p_minor_version = 2);
+		void initialize(std::string p_title, Vector2Int p_size, Int p_major_version = 4, Int p_minor_version = 2);
 
-		void setup(jgl::Color background);
-		void resize(jgl::Int w, jgl::Int h);
+		void setup(Color background);
+		void resize(Int w, Int h);
 		void clear();
 		void render();
+		void setViewport(Int p_x, Int p_y, Int p_w, Int p_h);
 
-		jgl::Vector2Int size();
+		const Vector2Int& size() const;
 	};
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "jgl2_includes.h"
+
 namespace jgl
 {
 	enum class InputStatus
@@ -9,4 +11,6 @@ namespace jgl
 		Up = 2,
 		Pressed = 3,
 	};
+
+	std::string to_string(const InputStatus& p_status);
 }

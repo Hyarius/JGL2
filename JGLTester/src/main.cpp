@@ -1,35 +1,66 @@
 #include "jgl2.h"
 
-class TestWidget : public jgl::Abstract::Widget
+class Frame : public jgl::Widget
 {
 private:
-	jgl::Font* _font;
+	jgl::Color _backgroundColor = jgl::Color(120, 120, 120);
 
 	jgl::Bool _onUpdate()
 	{
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::D) == jgl::InputStatus::Released)
+		{
+			move(jgl::Vector2Int(10, 0));
+		}
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Q) == jgl::InputStatus::Released)
+		{
+			move(jgl::Vector2Int(-10, 0));
+		}
 		return (false);
 	}
 
 	void _onRender()
 	{
-		jgl::Size_t text_size = 160;
-		_font->draw("Coucou", jgl::Vector2Int(100, 100), text_size, jgl::Color(255, 255, 255));
+		jgl::drawRectangleColor(_backgroundColor, 0, size());
+	}
+
+	void _onGeometryChange()
+	{
+		
 	}
 
 public:
-	TestWidget(jgl::Abstract::Widget* p_parent) : jgl::Abstract::Widget(p_parent)
+	Frame(jgl::Widget* p_parent) : jgl::Widget(p_parent)
 	{
-		_font = new jgl::Font("karma suture.ttf", 80, 1);
+
+	}
+	void setColor(jgl::Color p_color)
+	{
+		_backgroundColor = p_color;
 	}
 };
 
 int main(int argc, char** argv)
 {
-	jgl::Application app = jgl::Application("JGLTester", jgl::Vector2Int(400, 400), jgl::Color(150, 150, 150));
+	jgl::Application app = jgl::Application("JGLTester", jgl::Vector2Int(400, 400), jgl::Color(50, 50, 50));
 	jgl::cout.setEncoding("fr-FR");
 
-	TestWidget tmpWidget = TestWidget(nullptr);
-	tmpWidget.activate();
+	Frame* tmpWidget = new Frame(nullptr);
+	tmpWidget->setName("Main widget");
+	tmpWidget->setGeometry(0, 200);
+	tmpWidget->setColor(jgl::Color(255, 0, 0));
+	tmpWidget->activate();
+
+	Frame* tmpWidget2 = new Frame(tmpWidget);
+	tmpWidget2->setName("Widget children");
+	tmpWidget2->setGeometry(10, 180);
+	tmpWidget2->setColor(jgl::Color(0, 255, 0));
+	tmpWidget2->activate();
+	
+	Frame* tmpWidget3 = new Frame(tmpWidget2);
+	tmpWidget3->setName("Widget children's children");
+	tmpWidget3->setGeometry(10, 260);
+	tmpWidget3->setColor(jgl::Color(0, 0, 0, 120));
+	tmpWidget3->activate();
 
 	return (app.run());
 }

@@ -61,6 +61,12 @@ namespace jgl
 		return (*p_funct)(*this);
 	}
 
+	IOStream& IOStream::operator << (const long p_value)
+	{
+		_addString(std::to_string(p_value));
+		return (*this);
+	}
+
 	IOStream& IOStream::operator << (const jgl::Char p_char)
 	{
 		_addChar(p_char);

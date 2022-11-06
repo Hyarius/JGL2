@@ -90,11 +90,15 @@ namespace jgl
 			wglMakeCurrent(_hdc, _hrc);
 		}
 
-		jgl::Int glVersion[2] = { -1, -1 }; // Des valeurs par défaut pour la version
-		glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]); // On récupère la version majeure d'OpenGL utilisée
-		glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]); // On récupère la version mineure d'OpenGL utilisée
+		jgl::Int glVersion[2] = { -1, -1 };
+		glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]);
+		glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]);
 
 		jgl::cout << "Creating a windows with OpenGL version " << glVersion[0] << "." << glVersion[1] << jgl::endl;
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glFrontFace(GL_CCW);
 	}
 
 	OpenGLContext::OpenGLContext()
@@ -127,17 +131,18 @@ namespace jgl
 
 		_setupWindowSize(p_size);
 
-		_size = p_size;
+		resize(p_size.x(), p_size.y());
 
 		_composeOpenGLContext();
 
 		ShowWindow(_windowFrame, SW_SHOW);
 		UpdateWindow(_windowFrame);
-		//wglSwapIntervalEXT(0);
+		wglSwapIntervalEXT(0);
 	}
 
 	void OpenGLContext::setup(jgl::Color background)
 	{
+		setViewport(0, 0, _size.x(), _size.y());
 		glClearColor(background.r, background.g, background.b, background.a);
 	}
 
@@ -145,11 +150,12 @@ namespace jgl
 	{
 		_size.x() = w;
 		_size.y() = h;
+		setViewport(0, 0, _size.x(), _size.y());
 	}
 
 	void OpenGLContext::clear()
 	{
-		glViewport(0, 0, _size.x(), _size.y());
+		setViewport(0, 0, _size.x(), _size.y());
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 
@@ -158,8 +164,14 @@ namespace jgl
 		SwapBuffers(_hdc);
 	}
 
-	jgl::Vector2Int OpenGLContext::size()
+	void OpenGLContext::setViewport(Int p_x, Int p_y, Int p_w, Int p_h)
 	{
-		return (_size);
+		_actualSize = Vector2Int(p_w, p_h);
+		glViewport(p_x, _size.y() - p_y - p_h, p_w, p_h);
+	}
+
+	const jgl::Vector2Int& OpenGLContext::size() const
+	{
+		return (_actualSize);
 	}
 }

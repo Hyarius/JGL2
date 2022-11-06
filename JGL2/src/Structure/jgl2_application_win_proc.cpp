@@ -314,7 +314,7 @@ namespace jgl
 	{
 		while (_messagesToTreat.empty() == false)
 		{
-			jgl::PolymorphicContainer* tmpMessage = getWinMessageToTreat();
+			jgl::PolymorphicContainer* tmpMessage = _getWinMessageToTreat();
 			
 			jgl::UInt messageId;
 			*tmpMessage >> messageId;
@@ -498,27 +498,27 @@ namespace jgl
 				break;
 			}
 			}
-			releaseWinMessage(tmpMessage);
+			_releaseWinMessage(tmpMessage);
 		}
 	}
 
-	jgl::PolymorphicContainer* Application::obtainWinMessage()
+	jgl::PolymorphicContainer* Application::_obtainWinMessage()
 	{
 		jgl::PolymorphicContainer* result = _messagePool.obtain();
 
 		return (result);
 	}
-	void Application::releaseWinMessage(jgl::PolymorphicContainer* p_msg)
+	void Application::_releaseWinMessage(jgl::PolymorphicContainer* p_msg)
 	{
 		_messagePool.release(p_msg);
 	}
 
-	void jgl::Application::insertWinMessageToTreat(jgl::PolymorphicContainer* p_msg)
+	void jgl::Application::_insertWinMessageToTreat(jgl::PolymorphicContainer* p_msg)
 	{
 		_messagesToTreat.push_back(p_msg);
 	}
 
-	jgl::PolymorphicContainer* jgl::Application::getWinMessageToTreat()
+	jgl::PolymorphicContainer* jgl::Application::_getWinMessageToTreat()
 	{
 		jgl::PolymorphicContainer* result = _messagesToTreat.front();
 		_messagesToTreat.pop_front();
@@ -527,7 +527,7 @@ namespace jgl
 
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 
-		jgl::PolymorphicContainer* newMessage = jgl::Application::instance()->obtainWinMessage();
+		jgl::PolymorphicContainer* newMessage = jgl::Application::instance()->_obtainWinMessage();
 
 		newMessage->clear();
 
@@ -576,7 +576,7 @@ namespace jgl
 		}
 		}
 
-		jgl::Application::instance()->insertWinMessageToTreat(newMessage);
+		jgl::Application::instance()->_insertWinMessageToTreat(newMessage);
 
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
