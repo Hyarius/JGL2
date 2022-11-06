@@ -5,6 +5,8 @@
 #include <sstream>
 #include <mutex>
 
+#include <algorithm>
+
 #include <string>
 #include <deque>
 #include <vector>

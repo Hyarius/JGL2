@@ -15,12 +15,21 @@ private:
 		{
 			move(jgl::Vector2Int(-10, 0));
 		}
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::S) == jgl::InputStatus::Released)
+		{
+			move(jgl::Vector2Int(0, 10));
+		}
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Z) == jgl::InputStatus::Released)
+		{
+			move(jgl::Vector2Int(0, -10));
+		}
 		return (false);
 	}
 
 	void _onRender()
 	{
-		jgl::drawRectangleColor(_backgroundColor, 0, size());
+		jgl::drawRectangleColor(_backgroundColor, anchor(), size());
+		jgl::drawRectangleColor(jgl::Color(255, 255, 255), anchor(), 10);
 	}
 
 	void _onGeometryChange()
@@ -45,22 +54,24 @@ int main(int argc, char** argv)
 	jgl::cout.setEncoding("fr-FR");
 
 	Frame* tmpWidget = new Frame(nullptr);
-	tmpWidget->setName("Main widget");
-	tmpWidget->setGeometry(0, 200);
+	tmpWidget->setGeometry(app.size() / jgl::Vector2Int(2, 2) - jgl::Vector2Int(100, 100), 200);
 	tmpWidget->setColor(jgl::Color(255, 0, 0));
 	tmpWidget->activate();
 
 	Frame* tmpWidget2 = new Frame(tmpWidget);
-	tmpWidget2->setName("Widget children");
-	tmpWidget2->setGeometry(10, 180);
+	tmpWidget2->setGeometry(10, tmpWidget->size() - jgl::Vector2Int(20, 20));
 	tmpWidget2->setColor(jgl::Color(0, 255, 0));
 	tmpWidget2->activate();
-	
+
 	Frame* tmpWidget3 = new Frame(tmpWidget2);
-	tmpWidget3->setName("Widget children's children");
 	tmpWidget3->setGeometry(10, 260);
 	tmpWidget3->setColor(jgl::Color(0, 0, 0, 120));
 	tmpWidget3->activate();
+
+	Frame* tmpWidget4 = new Frame(tmpWidget3);
+	tmpWidget4->setGeometry(10, 260);
+	tmpWidget4->setColor(jgl::Color(255, 255, 255, 120));
+	tmpWidget4->activate();
 
 	return (app.run());
 }

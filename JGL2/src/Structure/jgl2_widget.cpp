@@ -77,18 +77,25 @@ namespace jgl
 
 	void Widget::_composeViewportInfo()
 	{
-		_viewportAnchor = _cumulatedAnchor();
 		if (_parent == nullptr)
 		{
+			_viewportAnchor = 0;
 			_viewportSize = jgl::Application::instance()->size();
 		}
 		else
 		{
-			Vector2Int tmp = Vector2Int(
-				_parent->size().x() < _parent->viewportSize().x() ? _parent->size().x() : _parent->viewportSize().x(),
-				_parent->size().y() < _parent->viewportSize().y() ? _parent->size().y() : _parent->viewportSize().y()
-			);
-			_viewportSize = tmp - _anchor;
+			_viewportAnchor = _parent->_cumulatedAnchor();
+			_viewportSize = _parent->size();
+
+			if (_viewportAnchor.x() < _parent->viewportAnchor().x())
+				_viewportAnchor.x() = _parent->viewportAnchor().x();
+			if (_viewportAnchor.y() < _parent->viewportAnchor().y())
+				_viewportAnchor.y() = _parent->viewportAnchor().y();
+
+			if (_viewportAnchor.x() + _viewportSize.x() > _parent->viewportAnchor().x() + _parent->viewportSize().x())
+				_viewportSize.x() = _parent->viewportAnchor().x() + _parent->viewportSize().x() - _viewportAnchor.x();
+			if (_viewportAnchor.y() + _viewportSize.y() > _parent->viewportAnchor().y() + _parent->viewportSize().y())
+				_viewportSize.y() = _parent->viewportAnchor().y() + _parent->viewportSize().y() - _viewportAnchor.y();
 		}
 	}
 
