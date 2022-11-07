@@ -27,6 +27,7 @@ namespace jgl
 		jgl::Vector2Int _viewportSize = jgl::Vector2Int(0, 0);
 		jgl::Vector2Int _viewportSizeOffset = jgl::Vector2Int(0, 0);
 
+		void _resetCalculation();
 		void _composeViewportInfo();
 		Vector2Int _cumulatedAnchor() const;
 		void _addChildren(Widget* p_widget);
@@ -45,6 +46,7 @@ namespace jgl
 		Widget(Widget* p_parent);
 
 		void setParent(Widget* p_parent);
+		std::string name(){return (_widgetName); }
 		void setName(std::string p_name);
 
 		void activate();

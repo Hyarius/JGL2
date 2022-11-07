@@ -97,15 +97,24 @@ namespace jgl
 			_viewportAnchor = _parent->_cumulatedAnchor() + _viewportAnchorOffset;
 			_viewportSize = _parent->size() - _viewportSizeOffset;
 
-			if (_viewportAnchor.x() < _parent->viewportAnchor().x() + _viewportAnchorOffset.x())
-				_viewportAnchor.x() = _parent->viewportAnchor().x() + _viewportAnchorOffset.x();
-			if (_viewportAnchor.y() < _parent->viewportAnchor().y() + _viewportAnchorOffset.y())
-				_viewportAnchor.y() = _parent->viewportAnchor().y() + _viewportAnchorOffset.y();
+			if (_viewportAnchor.x() < _parent->viewportAnchor().x())
+				_viewportAnchor.x() = _parent->viewportAnchor().x();
+			if (_viewportAnchor.y() < _parent->viewportAnchor().y())
+				_viewportAnchor.y() = _parent->viewportAnchor().y();
 
-			if (_viewportAnchor.x() + _viewportSize.x() > _parent->viewportAnchor().x() + _parent->viewportSize().x() - _viewportSizeOffset.x())
-				_viewportSize.x() = _parent->viewportAnchor().x() + _parent->viewportSize().x() - _viewportAnchor.x() - _viewportSizeOffset.x();
-			if (_viewportAnchor.y() + _viewportSize.y() > _parent->viewportAnchor().y() + _parent->viewportSize().y() - _viewportSizeOffset.y())
-				_viewportSize.y() = _parent->viewportAnchor().y() + _parent->viewportSize().y() - _viewportAnchor.y() - _viewportSizeOffset.y();
+			if (_viewportAnchor.x() + _viewportSize.x() > _parent->viewportAnchor().x() + _parent->viewportSize().x())
+				_viewportSize.x() = _parent->viewportAnchor().x() + _parent->viewportSize().x() - _viewportAnchor.x();
+			if (_viewportAnchor.y() + _viewportSize.y() > _parent->viewportAnchor().y() + _parent->viewportSize().y())
+				_viewportSize.y() = _parent->viewportAnchor().y() + _parent->viewportSize().y() - _viewportAnchor.y();
+		}
+	}
+
+	void Widget::_resetCalculation()
+	{
+		_calculated = false;
+		for (jgl::Size_t i = 0; i < _childrens.size(); i++)
+		{
+			_childrens[i]->_resetCalculation();
 		}
 	}
 
@@ -113,18 +122,20 @@ namespace jgl
 	{
 		_anchor = p_anchor;
 		_size = p_size;
-		_calculated = false;
+		_resetCalculation();
 		_onGeometryChange();
 	}
 
 	void Widget::move(jgl::Vector2Int p_deltaAnchor)
 	{
-		setGeometry(_anchor + p_deltaAnchor, _size);
+		_anchor += p_deltaAnchor;
+		_resetCalculation();
 	}
 
 	void Widget::place(jgl::Vector2Int p_anchor)
 	{
-		setGeometry(p_anchor, _size);
+		_anchor = p_anchor;
+		_resetCalculation();
 	}
 
 	jgl::Bool Widget::update()
