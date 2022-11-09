@@ -17,6 +17,11 @@ namespace jgl
 		return (_context.size());
 	}
 
+	const Float Application::maxDepth() const
+	{
+		return (_maxDepth);
+	}
+
 	void Application::_setViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
 	{
 		_context.setViewport(p_anchor.x(), p_anchor.y(), p_size.x(), p_size.y());
@@ -120,10 +125,6 @@ namespace jgl
 
 		//resize(p_size);
 		_updateTime();
-
-		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_ALWAYS);
-		glClearDepth(0.0f);
 
 		//_context.clear();
 	}

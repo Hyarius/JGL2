@@ -230,7 +230,7 @@ namespace jgl
 		return (result);
 	}
 
-	Vector2Int Font::_prepareCharRender(WChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Color p_outlineColor)
+	Vector2Int Font::_prepareCharRender(WChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Color p_outlineColor, jgl::Float p_depth)
 	{
 		if (p_char < 32)
 			return (Vector2Int(0, 0));
@@ -250,7 +250,7 @@ namespace jgl
 		for (Size_t i = 0; i < 4; i++)
 		{
 			Vector2Int tmp_pos = p_pos + glyphSize * delta_pos[i] + Vector2Int(0, -glyphSize.y()) + glyphOffset;
-			_modelSpaceData.push_back(Vector3(Application::instance()->convertScreenToOpenGL(tmp_pos), 0));
+			_modelSpaceData.push_back(Vector3(Application::instance()->convertScreenToOpenGL(tmp_pos), p_depth));
 			_modelUvData.push_back(glyphData.uvs[i]);
 			_modelColorData.push_back(p_color);
 			_modelOutlineColorData.push_back(p_outlineColor);
@@ -279,35 +279,56 @@ namespace jgl
 
 		_shader->launch(jgl::Shader::Mode::Triangle);
 	}
-
-	Vector2Int Font::draw(WChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Color p_outlineColor)
+	Vector2Int Font::draw(WChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth)
 	{
 		_initCharRender();
 
-		if (p_outlineColor.a == 0)
-			p_outlineColor = p_color;
-
 		Vector2Int result;
 
-		result = _prepareCharRender(p_char, p_pos, p_size, p_color, p_outlineColor);
+		result = _prepareCharRender(p_char, p_pos, p_size, p_color, p_color, p_depth);
 
 		_castCharRender();
 
 		return (result);
 	}
-	
-	Vector2Int Font::draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Color p_outlineColor)
+	Vector2Int Font::draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth)
 	{
 		_initCharRender();
-
-		if (p_outlineColor.a == 0)
-			p_outlineColor = p_color;
 
 		Vector2Int result = Vector2Int(0, p_size);
 
 		for (jgl::Size_t i = 0; i < p_string.size(); i++)
 		{
-			Vector2Int tmp = _prepareCharRender(p_string[i], p_pos + result, p_size, p_color, p_outlineColor);
+			Vector2Int tmp = _prepareCharRender(p_string[i], p_pos + result, p_size, p_color, p_color, p_depth);
+
+			result.x() += tmp.x();
+		}
+
+		_castCharRender();
+
+		return (result);
+	}
+	Vector2Int Font::draw(WChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Color p_outlineColor, jgl::Float p_depth)
+	{
+		_initCharRender();
+
+		Vector2Int result;
+
+		result = _prepareCharRender(p_char, p_pos, p_size, p_color, p_outlineColor, p_depth);
+
+		_castCharRender();
+
+		return (result);
+	}
+	Vector2Int Font::draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Color p_outlineColor, jgl::Float p_depth)
+	{
+		_initCharRender();
+
+		Vector2Int result = Vector2Int(0, p_size);
+
+		for (jgl::Size_t i = 0; i < p_string.size(); i++)
+		{
+			Vector2Int tmp = _prepareCharRender(p_string[i], p_pos + result, p_size, p_color, p_outlineColor, p_depth);
 
 			result.x() += tmp.x();
 		}

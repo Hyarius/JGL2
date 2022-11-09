@@ -16,11 +16,19 @@ namespace jgl
 			_childrens.erase(tmp);
 	}
 
-	Widget::Widget(std::string p_widgetName, Widget* p_parent) :
-		_widgetName(p_widgetName),
+	Widget::Widget(std::string p_name, Widget* p_parent) :
+		_name(p_name),
 		_activated(false)
 	{
 		setParent(p_parent);
+		if (p_parent == nullptr)
+		{
+			setDepth(0);
+		}
+		else
+		{
+			setDepth(p_parent->depth() + 1);
+		}
 	}
 
 	Widget::Widget(Widget* p_parent) : Widget("Unnamed", p_parent)
@@ -30,7 +38,7 @@ namespace jgl
 
 	void Widget::setName(std::string p_name)
 	{
-		_widgetName = p_name;
+		_name = p_name;
 	}
 
 	void Widget::setParent(Widget* p_parent)
@@ -89,23 +97,23 @@ namespace jgl
 	{
 		if (_parent == nullptr)
 		{
-			_viewportAnchor = _viewportAnchorOffset;
-			_viewportSize = jgl::Application::instance()->size() - _viewportSizeOffset;
+			_viewportAnchor = 0;
+			_viewportSize = jgl::Application::instance()->size();
 		}
 		else
 		{
-			_viewportAnchor = _parent->_cumulatedAnchor() + _viewportAnchorOffset;
-			_viewportSize = _parent->size() - _viewportSizeOffset;
+			jgl::Vector2Int parentAnchor = _parent->viewportAnchor() + _parent->_viewportAnchorOffset + _parent->anchor();
+			_viewportAnchor = parentAnchor;
+			_viewportSize = _parent->viewportSize() - _parent->_viewportSizeOffset;
 
-			if (_viewportAnchor.x() < _parent->viewportAnchor().x())
+			if (_viewportAnchor.x() <= _parent->viewportAnchor().x())
+			{
 				_viewportAnchor.x() = _parent->viewportAnchor().x();
-			if (_viewportAnchor.y() < _parent->viewportAnchor().y())
+			}
+			if (_viewportAnchor.y() <= _parent->viewportAnchor().y())
+			{
 				_viewportAnchor.y() = _parent->viewportAnchor().y();
-
-			if (_viewportAnchor.x() + _viewportSize.x() > _parent->viewportAnchor().x() + _parent->viewportSize().x())
-				_viewportSize.x() = _parent->viewportAnchor().x() + _parent->viewportSize().x() - _viewportAnchor.x();
-			if (_viewportAnchor.y() + _viewportSize.y() > _parent->viewportAnchor().y() + _parent->viewportSize().y())
-				_viewportSize.y() = _parent->viewportAnchor().y() + _parent->viewportSize().y() - _viewportAnchor.y();
+			}
 		}
 	}
 
@@ -115,6 +123,19 @@ namespace jgl
 		for (jgl::Size_t i = 0; i < _childrens.size(); i++)
 		{
 			_childrens[i]->_resetCalculation();
+		}
+	}
+
+	void Widget::setDepth(jgl::Float p_depth)
+	{
+		if (p_depth > jgl::Application::instance()->maxDepth())
+			throw std::out_of_range("Widget depth out of range");
+
+		jgl::Int oldDepth = _depth;
+		_depth = p_depth;
+		for (jgl::Size_t i = 0; i < _childrens.size(); i++)
+		{
+			_childrens[i]->setDepth(_depth + (_childrens[i]->depth() - oldDepth));
 		}
 	}
 

@@ -33,6 +33,7 @@ namespace jgl
 		Bool _multithreaded = false;
 		ULong _time = 0;
 		std::vector<Widget*> _widgets;
+		jgl::Float _maxDepth = 10000.0f;
 
 		std::map<std::string, Shader*> _shaders;
 
@@ -79,6 +80,7 @@ namespace jgl
 
 		const ULong& time() const;
 		const Vector2Int& size() const;
+		const Float maxDepth() const;
 
 		Vector2 convertScreenToOpenGL(Vector2Int p_screenPos);
 		Vector2Int convertOpenGLToScreen(Vector2 p_openGLPos);

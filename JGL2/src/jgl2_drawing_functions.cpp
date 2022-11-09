@@ -11,7 +11,7 @@ namespace jgl
 		jgl::Vector2Int(1, 1)
 	};
 
-	void drawRectangleColor(jgl::Color p_color, jgl::Vector2Int p_pos, jgl::Vector2Int p_size)
+	void drawRectangleColor(jgl::Color p_color, jgl::Vector2Int p_pos, jgl::Vector2Int p_size, jgl::Float p_depth)
 	{
 		const std::string shader_name = "Color2D";
 		static jgl::Shader* tmp_shader = nullptr;
@@ -37,7 +37,10 @@ namespace jgl
 
 		for (size_t i = 0; i < 4; i++)
 		{
-			vertex_content[i] = jgl::Application::instance()->convertScreenToOpenGL(p_pos + p_size * delta_pos[i]);
+			vertex_content[i] = Vector3(
+				jgl::Application::instance()->convertScreenToOpenGL(p_pos + p_size * delta_pos[i]),
+				static_cast<jgl::Float>(p_depth) / jgl::Application::instance()->maxDepth()
+			);
 			color_content[i] = p_color;
 		}
 

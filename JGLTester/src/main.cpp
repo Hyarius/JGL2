@@ -1,79 +1,70 @@
 #include "jgl2.h"
 
-class Frame : public jgl::Widget
+namespace jgl
 {
-private:
-	jgl::Color _backgroundColor = jgl::Color(120, 120, 120);
-
-	jgl::Bool _onUpdate()
+	class Frame : public jgl::Widget
 	{
-		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::D) == jgl::InputStatus::Released)
+	private:
+		jgl::Color _backgroundColor = jgl::Color(120, 120, 120);
+		jgl::Color _frontgroundColor = jgl::Color(150, 150, 150);
+
+		jgl::Bool _onUpdate()
 		{
-			if (name() == "Test")
-				move(jgl::Vector2Int(10, 0));
+			return (false);
 		}
-		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Q) == jgl::InputStatus::Released)
+
+		void _onRender()
 		{
-			move(jgl::Vector2Int(-10, 0));
+			jgl::drawRectangleColor(_backgroundColor, anchor(), size(), depth());
+			jgl::drawRectangleColor(_frontgroundColor, anchor() + jgl::Vector2Int(5, 5), size() - jgl::Vector2Int(10, 10), depth() + 0.1f);
 		}
-		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::S) == jgl::InputStatus::Released)
+
+		void _onGeometryChange()
 		{
-			move(jgl::Vector2Int(0, 10));
+
 		}
-		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Z) == jgl::InputStatus::Released)
+
+	public:
+		Frame(jgl::Widget* p_parent) : jgl::Widget(p_parent)
 		{
-			move(jgl::Vector2Int(0, -10));
+			_setViewportAnchorOffset(5);
+			_setViewportSizeOffset(10);
 		}
-		return (false);
-	}
-
-	void _onRender()
-	{
-		jgl::drawRectangleColor(_backgroundColor, anchor(), size());
-		jgl::drawRectangleColor(jgl::Color(255, 255, 255, 150), anchor() + jgl::Vector2Int(5, 5), size() - jgl::Vector2Int(10, 10));
-	}
-
-	void _onGeometryChange()
-	{
-
-	}
-
-public:
-	Frame(jgl::Widget* p_parent) : jgl::Widget(p_parent)
-	{
-		_setViewportAnchorOffset(5);
-		_setViewportSizeOffset(10);
-	}
-	void setColor(jgl::Color p_color)
-	{
-		_backgroundColor = p_color;
-	}
-};
+		void setColor(jgl::Color p_backgroundColor, jgl::Color p_frontgroundColor)
+		{
+			_frontgroundColor = p_frontgroundColor;
+			_backgroundColor = p_backgroundColor;
+		}
+	};
+}
 
 int main(int argc, char** argv)
 {
 	jgl::Application app = jgl::Application("JGLTester", jgl::Vector2Int(800, 800), jgl::Color(50, 50, 50));
 	jgl::cout.setEncoding("fr-FR");
 
-	Frame* tmpWidget = new Frame(nullptr);
-	tmpWidget->setName("Test");
-	tmpWidget->setGeometry(app.size() / jgl::Vector2Int(2, 2) - jgl::Vector2Int(200, 200), 400);
-	tmpWidget->setColor(jgl::Color(255, 0, 0));
-	tmpWidget->activate();
+	jgl::Frame* tmpWidget1 = new jgl::Frame(nullptr);
+	tmpWidget1->setName("Red frame");
+	tmpWidget1->setColor(jgl::Color(255, 0, 0), jgl::Color(255, 100, 100));
+	tmpWidget1->setGeometry(40, app.size() - jgl::Vector2Int(80, 80));
+	tmpWidget1->activate();
 
-	Frame* tmpWidget2 = new Frame(tmpWidget);
-	tmpWidget2->setGeometry(0, tmpWidget->usableSize() - jgl::Vector2Int(80, 80));
-	tmpWidget2->setColor(jgl::Color(0, 255, 0));
+	jgl::Frame* tmpWidget2 = new jgl::Frame(tmpWidget1);
+	tmpWidget2->setName("Green frame");
+	tmpWidget2->setColor(jgl::Color(0, 255, 0), jgl::Color(100, 255, 100));
+	tmpWidget2->setGeometry(0, tmpWidget1->usableSize() - jgl::Vector2Int(80, 80));
 	tmpWidget2->activate();
 
-	Frame* tmpWidget3 = new Frame(tmpWidget2);
+	jgl::Frame* tmpWidget3 = new jgl::Frame(tmpWidget2);
+	tmpWidget3->setName("Blue frame");
+	tmpWidget3->setColor(jgl::Color(0, 0, 255), jgl::Color(100, 100, 255));
 	tmpWidget3->setGeometry(0, tmpWidget2->usableSize() - jgl::Vector2Int(80, 80));
-	tmpWidget3->setColor(jgl::Color(0, 0, 255));
 	tmpWidget3->activate();
 
-	Frame* tmpWidget4 = new Frame(tmpWidget3);
+	jgl::Frame* tmpWidget4 = new jgl::Frame(tmpWidget3);
+	tmpWidget4->setName("Magenta frame");
+	tmpWidget4->setColor(jgl::Color(255, 0, 255), jgl::Color(255, 100, 255));
 	tmpWidget4->setGeometry(0, tmpWidget3->usableSize() - jgl::Vector2Int(80, 80));
-	tmpWidget4->setColor(jgl::Color(255, 0, 255));
 	tmpWidget4->activate();
 
 	return (app.run());
