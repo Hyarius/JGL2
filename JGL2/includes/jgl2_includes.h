@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef _WIN32
+#define NOMINMAX
+#endif // _WIN32
+
 #include <iostream>
 #include <fstream>
 #include <sstream>

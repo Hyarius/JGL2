@@ -22,6 +22,11 @@ namespace jgl
 		return (_maxDepth);
 	}
 
+	void Application::setMaxDepth(jgl::Float p_maxDepth)
+	{
+		_maxDepth = p_maxDepth;
+	}
+
 	void Application::_setViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
 	{
 		_context.setViewport(p_anchor.x(), p_anchor.y(), p_size.x(), p_size.y());
@@ -58,16 +63,16 @@ namespace jgl
 	{
 		while (_running == true)
 		{
-			//jgl::cout << " ===== " << jgl::endl;
 			_context.clear();
 
 			_pullWinMessage();
 
-			//jgl::cout << "Rendering widgets" << jgl::endl;
+			glEnable(GL_STENCIL_TEST);
 			for (jgl::Size_t i = 0; i < _widgets.size(); i++)
 			{
 				_widgets[i]->render();
 			}
+			glDisable(GL_STENCIL_TEST);
 		
 			_context.render();
 		}

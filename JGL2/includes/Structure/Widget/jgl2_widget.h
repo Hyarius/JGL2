@@ -3,6 +3,7 @@
 #include "jgl2_includes.h"
 #include "jgl2_basic_types.h"
 #include "Structure/jgl2_vector.h"
+#include "Structure/jgl2_viewport.h"
 
 namespace jgl
 {
@@ -15,6 +16,7 @@ namespace jgl
 		std::string _name = "Un-named";
 		Bool _activated = false;
 
+		Viewport _viewport;
 		Widget* _parent = nullptr;
 		Float _depth = 0;
 		std::vector<Widget*> _childrens;
@@ -23,11 +25,6 @@ namespace jgl
 		Bool _calculated = false;
 		Vector2Int _anchor = Vector2Int(0, 0);
 		Vector2Int _size = Vector2Int(0, 0);
-		Vector2Int _viewportAnchor = Vector2Int(0, 0);
-		Vector2Int _viewportAnchorOffset = Vector2Int(0, 0);
-		Bool _cropped = false;
-		Vector2Int _viewportSize = Vector2Int(0, 0);
-		Vector2Int _viewportSizeOffset = Vector2Int(0, 0);
 
 		void _resetCalculation();
 		void _composeViewportInfo();
@@ -40,8 +37,7 @@ namespace jgl
 		virtual void _onGeometryChange() = 0;
 
 	protected:
-		void _setViewportAnchorOffset(Vector2Int p_anchorOffset);
-		void _setViewportSizeOffset(Vector2Int p_sizeOffset);
+		void _setViewportOffset(Vector2Int p_anchorOffset, Vector2Int p_sizeOffset);
 
 	public:
 		Widget(std::string p_name, Widget* p_parent);
@@ -60,13 +56,14 @@ namespace jgl
 		void setGeometry(Vector2Int p_anchor, Vector2Int p_size);
 		void move(Vector2Int p_deltaAnchor);
 		void place(Vector2Int p_anchor);
+		Viewport* viewport() { return (&_viewport); }
 		Vector2Int anchor() { return (_anchor); }
 		Vector2Int size() { return (_size); }
+		Vector2Int anchorOffset() { return (_viewport.anchorOffset()); }
+		Vector2Int sizeOffset() { return (_viewport.sizeOffset()); }
 		Float depth() { return (_depth); }
-		Vector2Int usableAnchor() { return (_anchor + _viewportAnchorOffset); }
-		Vector2Int usableSize() { return (_size - _viewportSizeOffset); }
-		Vector2Int viewportAnchor() { return (_viewportAnchor); }
-		Vector2Int viewportSize() { return (_viewportSize); }
+		Vector2Int usableAnchor() { return (_anchor + anchorOffset()); }
+		Vector2Int usableSize() { return (_size - sizeOffset()); }
 
 		Bool update();
 		void render();

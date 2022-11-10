@@ -212,7 +212,7 @@ namespace jgl
 	{
 		Glyph_data& data = _getData(p_char);
 		Vector2 tmp = (data.positions[3] - data.positions[0]);
-		tmp *= Vector2(p_size);
+		tmp *= Vector2(p_size, p_size);
 		return (tmp);
 	}
 

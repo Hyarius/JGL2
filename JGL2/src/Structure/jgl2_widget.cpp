@@ -1,4 +1,4 @@
-#include "Structure/jgl2_widget.h"
+#include "Structure/Widget/jgl2_widget.h"
 #include "Structure/jgl2_iostream.h"
 #include "Structure/jgl2_application.h"
 
@@ -58,9 +58,15 @@ namespace jgl
 		_parent = p_parent;
 
 		if (_parent != nullptr)
+		{
 			_parent->_addChildren(this);
+			_viewport.setParentViewport(p_parent->viewport());
+		}
 		else
+		{
 			jgl::Application::instance()->_widgets.push_back(this);
+			_viewport.setParentViewport(nullptr);
+		}
 	}
 
 	void Widget::activate()
@@ -83,38 +89,14 @@ namespace jgl
 		return (_activated);
 	}
 
-	void Widget::_setViewportAnchorOffset(jgl::Vector2Int p_anchorOffset)
+	void Widget::_setViewportOffset(Vector2Int p_anchorOffset, Vector2Int p_sizeOffset)
 	{
-		_viewportAnchorOffset = p_anchorOffset;
-	}
-	
-	void Widget::_setViewportSizeOffset(jgl::Vector2Int p_sizeOffset)
-	{
-		_viewportSizeOffset = p_sizeOffset;
+		_viewport.setOffset(p_anchorOffset, p_sizeOffset);
 	}
 
 	void Widget::_composeViewportInfo()
 	{
-		if (_parent == nullptr)
-		{
-			_viewportAnchor = 0;
-			_viewportSize = jgl::Application::instance()->size();
-		}
-		else
-		{
-			jgl::Vector2Int parentAnchor = _parent->viewportAnchor() + _parent->_viewportAnchorOffset + _parent->anchor();
-			_viewportAnchor = parentAnchor;
-			_viewportSize = _parent->viewportSize() - _parent->_viewportSizeOffset;
-
-			if (_viewportAnchor.x() <= _parent->viewportAnchor().x())
-			{
-				_viewportAnchor.x() = _parent->viewportAnchor().x();
-			}
-			if (_viewportAnchor.y() <= _parent->viewportAnchor().y())
-			{
-				_viewportAnchor.y() = _parent->viewportAnchor().y();
-			}
-		}
+		_viewport.configure(_cumulatedAnchor(), _size);
 	}
 
 	void Widget::_resetCalculation()
@@ -178,7 +160,7 @@ namespace jgl
 		const Widget* tmp = this;
 		while (tmp != nullptr)
 		{
-			result += tmp->_anchor + tmp->_viewportAnchorOffset;
+			result += tmp->_anchor + tmp->_viewport.anchorOffset();
 			tmp = tmp->_parent;
 		}
 		return (result);
@@ -195,7 +177,7 @@ namespace jgl
 			_calculated = true;
 		}
 
-		jgl::Application::instance()->_setViewport(_viewportAnchor, _viewportSize);
+		_viewport.use();
 		_onRender();
 		for (jgl::Size_t i = 0; i < _childrens.size(); i++)
 		{

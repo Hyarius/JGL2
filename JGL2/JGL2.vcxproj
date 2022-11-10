@@ -44,7 +44,10 @@
     <ClInclude Include="includes\Structure\jgl2_sprite_sheet.h" />
     <ClInclude Include="includes\Structure\jgl2_thread.h" />
     <ClInclude Include="includes\Structure\jgl2_vector.h" />
-    <ClInclude Include="includes\Structure\jgl2_widget.h" />
+    <ClInclude Include="includes\Structure\jgl2_viewport.h" />
+    <ClInclude Include="includes\Structure\jgl2_widgets.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_widget.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_frame.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\jgl2_basic_functions.cpp" />
@@ -62,8 +65,10 @@
     <ClCompile Include="src\Structure\jgl2_shader.cpp" />
     <ClCompile Include="src\Structure\jgl2_sprite_sheet.cpp" />
     <ClCompile Include="src\Structure\jgl2_thread.cpp" />
+    <ClCompile Include="src\Structure\jgl2_viewport.cpp" />
     <ClCompile Include="src\Structure\jgl2_widget.cpp" />
     <ClCompile Include="src\Structure\jgl2_application_opengl_function.cpp" />
+    <ClCompile Include="src\Structure\Widget\jgl2_frame.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

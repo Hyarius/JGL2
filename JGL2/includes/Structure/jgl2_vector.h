@@ -1,5 +1,6 @@
 #pragma once
 
+#include "jgl2_includes.h"
 #include "jgl2_basic_types.h"
 #include "jgl2_iostream.h"
 
@@ -15,14 +16,6 @@ namespace jgl
 			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
 			{
 				this->values[i] = {};
-			}
-		}
-
-		Vector(TType p_value)
-		{
-			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
-			{
-				this->values[i] = p_value;
 			}
 		}
 
@@ -283,6 +276,32 @@ namespace jgl
 			return (result);
 		}
 
+		template <typename TType, jgl::Size_t C_NB_DIM>
+		static Vector<TType, C_NB_DIM> composeMin(const Vector<TType, C_NB_DIM>& p_valueA, const Vector<TType, C_NB_DIM>& p_valueB)
+		{
+			Vector<TType, C_NB_DIM> result;
+
+			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
+			{
+				result[i] = std::min(p_valueA[i], p_valueB[i]);
+			}
+
+			return (result);
+		}
+
+		template <typename TType, jgl::Size_t C_NB_DIM>
+		static Vector<TType, C_NB_DIM> composeMax(const Vector<TType, C_NB_DIM>& p_valueA, const Vector<TType, C_NB_DIM>& p_valueB)
+		{
+			Vector<TType, C_NB_DIM> result;
+
+			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
+			{
+				result[i] = std::max(p_valueA[i], p_valueB[i]);
+			}
+
+			return (result);
+		}
+
 		friend jgl::IOStream& operator << (jgl::IOStream& p_os, const Vector<TType, C_NB_DIM>& p_values)
 		{
 			p_os << p_values.text();
@@ -301,12 +320,6 @@ namespace jgl
 		BaseVector2() : Vector<TType, 2>()
 		{
 
-		}
-
-		BaseVector2(const TType& p_value)
-		{
-			this->values[0] = p_value;
-			this->values[1] = p_value;
 		}
 
 		BaseVector2(TType p_x, TType p_y)
@@ -343,13 +356,6 @@ namespace jgl
 		BaseVector3() : Vector<TType, 3>()
 		{
 
-		}
-
-		BaseVector3(const TType& p_value)
-		{
-			this->values[0] = p_value;
-			this->values[1] = p_value;
-			this->values[2] = p_value;
 		}
 
 		BaseVector3(TType p_x, TType p_y, TType p_z)
@@ -404,14 +410,6 @@ namespace jgl
 		BaseVector4() : Vector<TType, 4>()
 		{
 
-		}
-
-		BaseVector4(const TType& p_value)
-		{
-			this->values[0] = p_value;
-			this->values[1] = p_value;
-			this->values[2] = p_value;
-			this->values[3] = p_value;
 		}
 
 		BaseVector4(TType p_x, TType p_y, TType p_z, TType p_w)
@@ -489,4 +487,27 @@ namespace jgl
 	using Vector4 = BaseVector4<jgl::Float>;
 	using Vector4Int = BaseVector4<jgl::Int>;
 	using Vector4UInt = BaseVector4<jgl::UInt>;
+
+	template <typename TType, jgl::Size_t C_NB_DIM>
+	Vector<TType, C_NB_DIM> clamp(const Vector<TType, C_NB_DIM>& p_min, const Vector<TType, C_NB_DIM>& p_value, const Vector<TType, C_NB_DIM>& p_max)
+	{
+		Vector<TType, C_NB_DIM> result;
+
+		for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
+		{
+			if (p_min[i] < p_max[i])
+				result[i] = std::clamp(p_value[i], p_min[i], p_max[i]);
+			else
+				result[i] = std::clamp(p_value[i], p_max[i], p_min[i]);
+		}
+
+		return (result);
+	}
+
+	template <typename TType, jgl::Size_t C_NB_DIM>
+	Vector<TType, C_NB_DIM> clamp(const Vector<TType, C_NB_DIM>& p_valueA, const Vector<TType, C_NB_DIM>& p_valueB)
+	{
+		return (clamp(p_valueA, p_valueA, p_valueB));
+	}
+
 }

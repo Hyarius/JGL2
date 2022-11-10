@@ -3,7 +3,7 @@
 #include "jgl2_includes.h"
 #include "jgl2_basic_types.h"
 #include "jgl2_thread.h"
-#include "jgl2_widget.h"
+#include "Structure/Widget/jgl2_widget.h"
 #include "Structure/jgl2_vector.h"
 #include "Structure/jgl2_openGLContext.h"
 #include "Structure/jgl2_polymorphic_container.h"
@@ -11,6 +11,7 @@
 #include "Structure/jgl2_keyboard.h"
 #include "Structure/jgl2_mouse.h"
 #include "Structure/jgl2_shader.h"
+#include "Structure/jgl2_viewport.h"
 #include "jgl2_basic_functions.h"
 
 namespace jgl
@@ -18,6 +19,7 @@ namespace jgl
 	class Application
 	{
 	public:
+		friend class Viewport;
 		friend class Widget;
 		friend LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -76,6 +78,7 @@ namespace jgl
 		void activateMultiThread();
 		void deactivateMultiThread();
 
+		void setMaxDepth(jgl::Float p_maxDepth);
 		void resize(jgl::Vector2Int p_size);
 
 		const ULong& time() const;

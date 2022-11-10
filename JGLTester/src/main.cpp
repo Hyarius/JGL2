@@ -1,71 +1,94 @@
 #include "jgl2.h"
 
-namespace jgl
+class Test : public jgl::Widget
 {
-	class Frame : public jgl::Widget
+private:
+	jgl::Frame* _firstFrame;
+	jgl::Frame* _secondFrame;
+	jgl::Frame* _thirdFrame;
+	jgl::Frame* _selectedFrame;
+
+	jgl::Bool _onUpdate()
 	{
-	private:
-		jgl::Color _backgroundColor = jgl::Color(120, 120, 120);
-		jgl::Color _frontgroundColor = jgl::Color(150, 150, 150);
-
-		jgl::Bool _onUpdate()
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Key_1) == jgl::InputStatus::Released)
 		{
-			return (false);
+			_selectedFrame = _firstFrame;
+		}
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Key_2) == jgl::InputStatus::Released)
+		{
+			_selectedFrame = _secondFrame;
+		}
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Key_3) == jgl::InputStatus::Released)
+		{
+			_selectedFrame = _thirdFrame;
 		}
 
-		void _onRender()
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Z) == jgl::InputStatus::Released)
 		{
-			jgl::drawRectangleColor(_backgroundColor, anchor(), size(), depth());
-			jgl::drawRectangleColor(_frontgroundColor, anchor() + jgl::Vector2Int(5, 5), size() - jgl::Vector2Int(10, 10), depth() + 0.1f);
+			_selectedFrame->move(jgl::Vector2Int(0, -10));
 		}
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::S) == jgl::InputStatus::Released)
+		{
+			_selectedFrame->move(jgl::Vector2Int(0, 10));
+		}
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Q) == jgl::InputStatus::Released)
+		{
+			_selectedFrame->move(jgl::Vector2Int(-10, 0));
+		}
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::D) == jgl::InputStatus::Released)
+		{
+			_selectedFrame->move(jgl::Vector2Int(10, 0));
+		}
+		return (false);
+	}
 
-		void _onGeometryChange()
-		{
+	void _onGeometryChange()
+	{
+		jgl::Vector2Int tmp_anchor = jgl::Vector2Int(50, 50);
+		jgl::Vector2Int tmp_size = size() - tmp_anchor * jgl::Vector2Int(2, 2);
 
-		}
+		_firstFrame->setGeometry(tmp_anchor, tmp_size);
+		tmp_size -= tmp_anchor * jgl::Vector2Int(2, 2);
 
-	public:
-		Frame(jgl::Widget* p_parent) : jgl::Widget(p_parent)
-		{
-			_setViewportAnchorOffset(5);
-			_setViewportSizeOffset(10);
-		}
-		void setColor(jgl::Color p_backgroundColor, jgl::Color p_frontgroundColor)
-		{
-			_frontgroundColor = p_frontgroundColor;
-			_backgroundColor = p_backgroundColor;
-		}
-	};
-}
+		_secondFrame->setGeometry(tmp_anchor, tmp_size);
+		tmp_size -= tmp_anchor * jgl::Vector2Int(2, 2);
+
+		_thirdFrame->setGeometry(tmp_anchor, tmp_size);
+
+		_selectedFrame = _firstFrame;
+	}
+
+	void _onRender()
+	{
+
+	}
+
+public:
+	Test(jgl::Widget* p_parent) : jgl::Widget(p_parent)
+	{
+		_firstFrame = new jgl::Frame(this);
+		_firstFrame->setColor(jgl::Color(255, 0, 0), jgl::Color(255, 0, 0));
+		_firstFrame->activate();
+
+		_secondFrame = new jgl::Frame(_firstFrame);
+		_secondFrame->setColor(jgl::Color(0, 255, 0), jgl::Color(0, 255, 0));
+		_secondFrame->activate();
+
+		_thirdFrame = new jgl::Frame(_secondFrame);
+		_thirdFrame->setColor(jgl::Color(0, 0, 255), jgl::Color(0, 0, 255));
+		_thirdFrame->activate();
+	}
+};
 
 int main(int argc, char** argv)
 {
 	jgl::Application app = jgl::Application("JGLTester", jgl::Vector2Int(800, 800), jgl::Color(50, 50, 50));
+	app.setMaxDepth(4);
 	jgl::cout.setEncoding("fr-FR");
 
-	jgl::Frame* tmpWidget1 = new jgl::Frame(nullptr);
-	tmpWidget1->setName("Red frame");
-	tmpWidget1->setColor(jgl::Color(255, 0, 0), jgl::Color(255, 100, 100));
-	tmpWidget1->setGeometry(40, app.size() - jgl::Vector2Int(80, 80));
-	tmpWidget1->activate();
-
-	jgl::Frame* tmpWidget2 = new jgl::Frame(tmpWidget1);
-	tmpWidget2->setName("Green frame");
-	tmpWidget2->setColor(jgl::Color(0, 255, 0), jgl::Color(100, 255, 100));
-	tmpWidget2->setGeometry(0, tmpWidget1->usableSize() - jgl::Vector2Int(80, 80));
-	tmpWidget2->activate();
-
-	jgl::Frame* tmpWidget3 = new jgl::Frame(tmpWidget2);
-	tmpWidget3->setName("Blue frame");
-	tmpWidget3->setColor(jgl::Color(0, 0, 255), jgl::Color(100, 100, 255));
-	tmpWidget3->setGeometry(0, tmpWidget2->usableSize() - jgl::Vector2Int(80, 80));
-	tmpWidget3->activate();
-
-	jgl::Frame* tmpWidget4 = new jgl::Frame(tmpWidget3);
-	tmpWidget4->setName("Magenta frame");
-	tmpWidget4->setColor(jgl::Color(255, 0, 255), jgl::Color(255, 100, 255));
-	tmpWidget4->setGeometry(0, tmpWidget3->usableSize() - jgl::Vector2Int(80, 80));
-	tmpWidget4->activate();
+	Test* test = new Test(nullptr);
+	test->setGeometry(jgl::Vector2Int(0, 0), app.size());
+	test->activate();
 
 	return (app.run());
 }
