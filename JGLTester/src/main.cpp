@@ -47,13 +47,13 @@ private:
 		jgl::Vector2Int tmp_anchor = jgl::Vector2Int(50, 50);
 		jgl::Vector2Int tmp_size = size() - tmp_anchor * jgl::Vector2Int(2, 2);
 
-		_firstFrame->setGeometry(tmp_anchor, tmp_size);
+		_firstFrame->setGeometry(tmp_anchor - jgl::Vector2Int(5, 5), tmp_size);
 		tmp_size -= tmp_anchor * jgl::Vector2Int(2, 2);
 
-		_secondFrame->setGeometry(tmp_anchor, tmp_size);
+		_secondFrame->setGeometry(jgl::Vector2Int(-10, -10), tmp_size);
 		tmp_size -= tmp_anchor * jgl::Vector2Int(2, 2);
 
-		_thirdFrame->setGeometry(tmp_anchor, tmp_size);
+		_thirdFrame->setGeometry(tmp_anchor + jgl::Vector2Int(50, 50), tmp_size);
 
 		_selectedFrame = _firstFrame;
 	}
@@ -67,15 +67,15 @@ public:
 	Test(jgl::Widget* p_parent) : jgl::Widget(p_parent)
 	{
 		_firstFrame = new jgl::Frame(this);
-		_firstFrame->setColor(jgl::Color(255, 0, 0), jgl::Color(255, 0, 0));
+		_firstFrame->setColor(jgl::Color(255, 0, 0), jgl::Color(255, 100, 100));
 		_firstFrame->activate();
 
 		_secondFrame = new jgl::Frame(_firstFrame);
-		_secondFrame->setColor(jgl::Color(0, 255, 0), jgl::Color(0, 255, 0));
+		_secondFrame->setColor(jgl::Color(0, 255, 0), jgl::Color(20, 180, 100));
 		_secondFrame->activate();
 
 		_thirdFrame = new jgl::Frame(_secondFrame);
-		_thirdFrame->setColor(jgl::Color(0, 0, 255), jgl::Color(0, 0, 255));
+		_thirdFrame->setColor(jgl::Color(0, 0, 255), jgl::Color(100, 100, 255));
 		_thirdFrame->activate();
 	}
 };

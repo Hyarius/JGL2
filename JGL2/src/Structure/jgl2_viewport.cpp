@@ -29,7 +29,13 @@ namespace jgl
 		else
 		{
 			_anchor = jgl::clamp(_parent->anchor() + (_parent->_cropped == true ? Vector2Int(0, 0) : _parent->anchorOffset()), p_anchor, _parent->anchor() + _parent->size() - _parent->sizeOffset());
-			_size = Vector2Int::composeMin(p_size + p_anchor, _parent->anchor() + (_parent->_cropped == true ? Vector2Int(0, 0) : _parent->anchorOffset()) + _parent->size() - (_parent->_cropped == true ? Vector2Int(0, 0) : _parent->sizeOffset())) - _anchor;
+			Vector2Int tmp;
+			
+			if (p_anchor == _anchor)
+				tmp = _parent->sizeOffset() / Vector2Int(2, 2);
+			else
+				tmp = _parent->sizeOffset() / Vector2Int(2, 2);
+			_size = Vector2Int::composeMin(p_size + p_anchor, _parent->anchor() + (_parent->_cropped == true ? Vector2Int(0, 0) : _parent->anchorOffset()) + _parent->size() - (_parent->_cropped == true ? (Vector2Int(_parent->sizeOffset().x() / 2, _parent->sizeOffset().y() / 2)) : _parent->sizeOffset())) - _anchor;
 
 			if (_anchor != p_anchor || _size != p_size)
 				_cropped = true;
