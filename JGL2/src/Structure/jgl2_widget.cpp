@@ -18,7 +18,8 @@ namespace jgl
 
 	Widget::Widget(std::string p_name, Widget* p_parent) :
 		_name(p_name),
-		_activated(false)
+		_activated(false),
+		_viewport(this)
 	{
 		setParent(p_parent);
 		if (p_parent == nullptr)

@@ -10,6 +10,9 @@ private:
 
 	jgl::Bool _onUpdate()
 	{
+		static jgl::ULong nextInput = 0;
+		jgl::ULong inputDelay = 150;
+
 		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Key_1) == jgl::InputStatus::Released)
 		{
 			_selectedFrame = _firstFrame;
@@ -23,21 +26,25 @@ private:
 			_selectedFrame = _thirdFrame;
 		}
 
-		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Z) == jgl::InputStatus::Released)
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Z) == jgl::InputStatus::Down && jgl::Application::instance()->time() > nextInput)
 		{
 			_selectedFrame->move(jgl::Vector2Int(0, -10));
+			nextInput = jgl::Application::instance()->time() + inputDelay;
 		}
-		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::S) == jgl::InputStatus::Released)
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::S) == jgl::InputStatus::Down && jgl::Application::instance()->time() > nextInput)
 		{
 			_selectedFrame->move(jgl::Vector2Int(0, 10));
+			nextInput = jgl::Application::instance()->time() + inputDelay;
 		}
-		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Q) == jgl::InputStatus::Released)
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Q) == jgl::InputStatus::Down && jgl::Application::instance()->time() > nextInput)
 		{
 			_selectedFrame->move(jgl::Vector2Int(-10, 0));
+			nextInput = jgl::Application::instance()->time() + inputDelay;
 		}
-		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::D) == jgl::InputStatus::Released)
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::D) == jgl::InputStatus::Down && jgl::Application::instance()->time() > nextInput)
 		{
 			_selectedFrame->move(jgl::Vector2Int(10, 0));
+			nextInput = jgl::Application::instance()->time() + inputDelay;
 		}
 		return (false);
 	}
@@ -48,33 +55,34 @@ private:
 		jgl::Vector2Int tmp_size = size() - tmp_anchor * jgl::Vector2Int(2, 2);
 
 		_firstFrame->setGeometry(tmp_anchor - jgl::Vector2Int(5, 5), tmp_size);
-		tmp_size -= tmp_anchor * jgl::Vector2Int(2, 2);
 
-		_secondFrame->setGeometry(jgl::Vector2Int(-10, -10), tmp_size);
-		tmp_size -= tmp_anchor * jgl::Vector2Int(2, 2);
+		_secondFrame->setGeometry(jgl::Vector2Int(300, 300), jgl::Vector2Int(400, 400));
 
-		_thirdFrame->setGeometry(tmp_anchor + jgl::Vector2Int(50, 50), tmp_size);
+		_thirdFrame->setGeometry(jgl::Vector2Int(320, 320), jgl::Vector2Int(100, 100));
 
-		_selectedFrame = _firstFrame;
+		_selectedFrame = _thirdFrame;
 	}
 
 	void _onRender()
 	{
-
+		jgl::drawRectangleColor(jgl::Color(255, 255, 255), jgl::Vector2Int(750, 750), jgl::Vector2Int(10, 10), 150);
 	}
 
 public:
 	Test(jgl::Widget* p_parent) : jgl::Widget(p_parent)
 	{
 		_firstFrame = new jgl::Frame(this);
+		_firstFrame->setName("firstName");
 		_firstFrame->setColor(jgl::Color(255, 0, 0), jgl::Color(255, 100, 100));
 		_firstFrame->activate();
 
 		_secondFrame = new jgl::Frame(_firstFrame);
+		_secondFrame->setName("secondName");
 		_secondFrame->setColor(jgl::Color(0, 255, 0), jgl::Color(20, 180, 100));
 		_secondFrame->activate();
 
 		_thirdFrame = new jgl::Frame(_secondFrame);
+		_thirdFrame->setName("thirdName");
 		_thirdFrame->setColor(jgl::Color(0, 0, 255), jgl::Color(100, 100, 255));
 		_thirdFrame->activate();
 	}
@@ -83,7 +91,6 @@ public:
 int main(int argc, char** argv)
 {
 	jgl::Application app = jgl::Application("JGLTester", jgl::Vector2Int(800, 800), jgl::Color(50, 50, 50));
-	app.setMaxDepth(4);
 	jgl::cout.setEncoding("fr-FR");
 
 	Test* test = new Test(nullptr);

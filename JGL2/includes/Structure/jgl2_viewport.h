@@ -4,6 +4,7 @@
 
 namespace jgl
 {
+	class Widget;
 	class Viewport
 	{
 	public:
@@ -12,9 +13,12 @@ namespace jgl
 		static inline Vector2Int C_SCREEN_SIZE = Vector2Int(0, 0);
 		
 	private:
-
+		Widget* _owner;
 		Viewport* _parent;
-		Bool _cropped = false;
+		Bool _croppedTop = false;
+		Bool _croppedDown = false;
+		Bool _croppedLeft = false;
+		Bool _croppedRight = false;
 		Vector2Int _origin = Vector2Int(0, 0);
 		Vector2Int _anchor = Vector2Int(0, 0);
 		Vector2Int _size = Vector2Int(0, 0);
@@ -24,7 +28,7 @@ namespace jgl
 	public:
 		static void reset();
 
-		Viewport();
+		Viewport(Widget* p_owner);
 
 		const Vector2Int& origin() const { return (_origin); }
 		const Vector2Int& anchor() const { return (_anchor); }
