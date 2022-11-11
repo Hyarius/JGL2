@@ -56,9 +56,9 @@ private:
 
 		_firstFrame->setGeometry(tmp_anchor - jgl::Vector2Int(5, 5), tmp_size);
 
-		_secondFrame->setGeometry(jgl::Vector2Int(300, 300), jgl::Vector2Int(400, 400));
+		_secondFrame->setGeometry(jgl::Vector2Int(-10, 300), jgl::Vector2Int(400, 400));
 
-		_thirdFrame->setGeometry(jgl::Vector2Int(320, 320), jgl::Vector2Int(100, 100));
+		_thirdFrame->setGeometry(jgl::Vector2Int(320, -10), jgl::Vector2Int(100, 100));
 
 		_selectedFrame = _thirdFrame;
 	}

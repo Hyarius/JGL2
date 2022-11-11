@@ -39,8 +39,8 @@ namespace jgl
 			);
 
 			jgl::Vector2Int parentSizeOffsetCropped = Vector2Int(
-				(_parent->_croppedRight == true ? _parent->sizeOffset().x() / 2 : _parent->sizeOffset().x()),
-				(_parent->_croppedDown == true ? _parent->sizeOffset().y() / 2 : _parent->sizeOffset().y())
+				(_parent->_croppedRight == true ? _parent->sizeOffset().x() / 2 : _parent->sizeOffset().x() / (_parent->_croppedLeft == true ? 2 : 1)),
+				(_parent->_croppedDown == true ? _parent->sizeOffset().y() / 2 : _parent->sizeOffset().y() / (_parent->_croppedTop == true ? 2 : 1))
 			);
 
 			jgl::Vector2Int selfTopLeftCorner = p_anchor;
