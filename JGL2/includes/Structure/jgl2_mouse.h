@@ -31,8 +31,8 @@ namespace jgl
 		void _updateState();
 
 	public:
-		jgl::Float wheel();
-		jgl::Vector2Int pos();
-		jgl::InputStatus button(Button p_button);
+		jgl::Float wheel() const;
+		jgl::Vector2Int pos() const;
+		jgl::InputStatus button(Button p_button) const;
 	};
 }

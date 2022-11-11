@@ -84,7 +84,18 @@ namespace jgl
 	{
 		_activated = p_state;
 	}
-		
+
+	Bool Widget::isPointed() const
+	{
+		Vector2Int pos = jgl::Application::instance()->mouse().pos();
+
+		if (pos.x() < _viewport.anchor().x() || pos.x() >= _viewport.anchor().x() + _viewport.size().x() ||
+			pos.y() < _viewport.anchor().y() || pos.y() >= _viewport.anchor().y() + _viewport.size().y())
+			return (false);
+
+		return (true);
+	}
+
 	jgl::Bool Widget::isActivated()
 	{
 		return (_activated);

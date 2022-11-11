@@ -52,6 +52,8 @@ namespace jgl
 		void setActivate(Bool p_state);
 		Bool isActivated();
 
+		Bool isPointed() const;
+
 		void setDepth(Float p_depth);
 		void setGeometry(Vector2Int p_anchor, Vector2Int p_size);
 		void move(Vector2Int p_deltaAnchor);

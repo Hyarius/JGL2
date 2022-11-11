@@ -5,7 +5,6 @@ class Test : public jgl::Widget
 private:
 	jgl::Frame* _firstFrame;
 	jgl::Frame* _secondFrame;
-	jgl::Frame* _thirdFrame;
 	jgl::Frame* _selectedFrame;
 
 	jgl::Bool _onUpdate()
@@ -20,10 +19,6 @@ private:
 		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Key_2) == jgl::InputStatus::Released)
 		{
 			_selectedFrame = _secondFrame;
-		}
-		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Key_3) == jgl::InputStatus::Released)
-		{
-			_selectedFrame = _thirdFrame;
 		}
 
 		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Z) == jgl::InputStatus::Down && jgl::Application::instance()->time() > nextInput)
@@ -46,6 +41,7 @@ private:
 			_selectedFrame->move(jgl::Vector2Int(10, 0));
 			nextInput = jgl::Application::instance()->time() + inputDelay;
 		}
+
 		return (false);
 	}
 
@@ -58,9 +54,7 @@ private:
 
 		_secondFrame->setGeometry(jgl::Vector2Int(-10, 300), jgl::Vector2Int(400, 400));
 
-		_thirdFrame->setGeometry(jgl::Vector2Int(320, -10), jgl::Vector2Int(100, 100));
-
-		_selectedFrame = _thirdFrame;
+		_selectedFrame = _secondFrame;
 	}
 
 	void _onRender()
@@ -80,11 +74,6 @@ public:
 		_secondFrame->setName("secondName");
 		_secondFrame->setColor(jgl::Color(0, 255, 0), jgl::Color(20, 180, 100));
 		_secondFrame->activate();
-
-		_thirdFrame = new jgl::Frame(_secondFrame);
-		_thirdFrame->setName("thirdName");
-		_thirdFrame->setColor(jgl::Color(0, 0, 255), jgl::Color(100, 100, 255));
-		_thirdFrame->activate();
 	}
 };
 

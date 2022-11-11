@@ -25,17 +25,17 @@ namespace jgl
         }
 	}
 
-    jgl::Float Mouse::wheel()
+    jgl::Float Mouse::wheel() const
     {
         return (_wheel);
     }
 
-    jgl::Vector2Int Mouse::pos()
+    jgl::Vector2Int Mouse::pos() const
     {
         return (_pos);
     }
     
-    jgl::InputStatus Mouse::button(Mouse::Button p_button)
+    jgl::InputStatus Mouse::button(Mouse::Button p_button) const
     {
         return (_buttons[static_cast<jgl::Size_t>(p_button)]);
     }
