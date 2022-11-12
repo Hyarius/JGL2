@@ -2,14 +2,14 @@
 
 #include "Structure/jgl2_color.h"
 #include "Structure/Widget/jgl2_widget.h"
+#include "Structure/Widget/Component/jgl2_box_component.h"
 
 namespace jgl
 {
 	class Frame : public jgl::Widget
 	{
 	private:
-		jgl::Color _backgroundColor = jgl::Color(120, 120, 120);
-		jgl::Color _frontgroundColor = jgl::Color(150, 150, 150);
+		WidgetComponent::BoxComponent _box;
 
 		jgl::Bool _onUpdate();
 		void _onRender();

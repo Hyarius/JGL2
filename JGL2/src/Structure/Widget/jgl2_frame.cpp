@@ -10,22 +10,23 @@ namespace jgl
 
 	void Frame::_onRender()
 	{
-		drawRectangleColor(_backgroundColor, Vector2Int(0, 0), size(), depth());
-		drawRectangleColor(_frontgroundColor, anchorOffset(), size() - sizeOffset(), depth() + 0.1f);
+		_box.render();
+		jgl::drawRectangleColor(jgl::Color(255, 255, 255), Vector2Int(0, 0), Vector2Int(10, 10), depth() + 1);
 	}
 
 	void Frame::_onGeometryChange()
 	{
-
+		_box.setGeometry(anchor(), size());
 	}
 
-	Frame::Frame(Widget* p_parent) : Widget(p_parent)
+	Frame::Frame(Widget* p_parent) : Widget(p_parent),
+		_box(this)
 	{
 		_setViewportOffset(Vector2Int(5, 5), Vector2Int(10, 10));
+		_box.setBorderSize(Vector2Int(5, 5));
 	}
 	void Frame::setColor(Color p_backgroundColor, Color p_frontgroundColor)
 	{
-		_frontgroundColor = p_frontgroundColor;
-		_backgroundColor = p_backgroundColor;
+		_box.setColor(p_backgroundColor, p_frontgroundColor);
 	}
 }

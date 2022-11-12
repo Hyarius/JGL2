@@ -59,13 +59,13 @@ namespace jgl
 		void move(Vector2Int p_deltaAnchor);
 		void place(Vector2Int p_anchor);
 		Viewport* viewport() { return (&_viewport); }
-		Vector2Int anchor() { return (_anchor); }
-		Vector2Int size() { return (_size); }
-		Vector2Int anchorOffset() { return (_viewport.anchorOffset()); }
-		Vector2Int sizeOffset() { return (_viewport.sizeOffset()); }
-		Float depth() { return (_depth); }
-		Vector2Int usableAnchor() { return (_anchor + anchorOffset()); }
-		Vector2Int usableSize() { return (_size - sizeOffset()); }
+		const Vector2Int& anchor() const { return (_anchor); }
+		const Vector2Int& size() const { return (_size); }
+		const Vector2Int& anchorOffset() const { return (_viewport.anchorOffset()); }
+		const Vector2Int& sizeOffset() const { return (_viewport.sizeOffset()); }
+		const Float& depth() const { return (_depth); }
+		const Vector2Int& usableAnchor() const { return (_anchor + anchorOffset()); }
+		const Vector2Int& usableSize() const { return (_size - sizeOffset()); }
 
 		Bool update();
 		void render();

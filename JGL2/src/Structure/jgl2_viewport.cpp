@@ -4,6 +4,12 @@
 
 namespace jgl
 {
+	void Viewport::reset()
+	{
+		C_ORIGIN = Vector2Int(0, 0);
+		jgl::Application::instance()->_setViewport(Vector2Int(0, 0), jgl::Application::instance()->size());
+	}
+
 	Viewport::Viewport(Widget* p_owner)
 	{
 		_owner = p_owner;
@@ -26,8 +32,10 @@ namespace jgl
 		_croppedDown = false;
 		_croppedLeft = false;
 		_croppedRight = false;
+
 		if (_parent == nullptr)
 		{
+			jgl::cout << "Coucou ?" << jgl::endl;
 			_anchor = p_anchor;
 			_size = p_size;
 		}
@@ -63,6 +71,9 @@ namespace jgl
 			_size = Vector2Int::composeMin(p_size + p_anchor, _parent->anchor() + parentAnchorOffsetCropped + _parent->size() - parentSizeOffsetCropped) - _anchor;
 		}
 		_origin = _anchor - p_anchor;
+		jgl::cout << "Anchor : " << _anchor << jgl::endl;
+		jgl::cout << "Size : " << _size << jgl::endl;
+		jgl::cout << "Origin : " << _origin << jgl::endl;
 	}
 
 	void Viewport::use()

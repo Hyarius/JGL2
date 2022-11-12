@@ -46,6 +46,7 @@
     <ClInclude Include="includes\Structure\jgl2_vector.h" />
     <ClInclude Include="includes\Structure\jgl2_viewport.h" />
     <ClInclude Include="includes\Structure\jgl2_widgets.h" />
+    <ClInclude Include="includes\Structure\Widget\Component\jgl2_box_component.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_widget.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_frame.h" />
   </ItemGroup>
@@ -68,6 +69,7 @@
     <ClCompile Include="src\Structure\jgl2_viewport.cpp" />
     <ClCompile Include="src\Structure\jgl2_widget.cpp" />
     <ClCompile Include="src\Structure\jgl2_application_opengl_function.cpp" />
+    <ClCompile Include="src\Structure\Widget\Component\jgl2_box_component.cpp" />
     <ClCompile Include="src\Structure\Widget\jgl2_frame.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

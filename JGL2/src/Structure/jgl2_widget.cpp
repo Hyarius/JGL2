@@ -170,6 +170,8 @@ namespace jgl
 	{
 		Vector2Int result;
 		const Widget* tmp = this;
+		result += tmp->anchor();
+		tmp = tmp->_parent;
 		while (tmp != nullptr)
 		{
 			result += tmp->_anchor + tmp->_viewport.anchorOffset();
@@ -187,6 +189,11 @@ namespace jgl
 		{
 			_composeViewportInfo();
 			_calculated = true;
+		}
+
+		if (_parent == nullptr)
+		{
+			Viewport::reset();
 		}
 
 		_viewport.use();
