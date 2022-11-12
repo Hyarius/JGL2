@@ -11,7 +11,6 @@ namespace jgl
 	void Frame::_onRender()
 	{
 		_box.render();
-		jgl::drawRectangleColor(jgl::Color(255, 255, 255), Vector2Int(0, 0), Vector2Int(10, 10), depth() + 1);
 	}
 
 	void Frame::_onGeometryChange()
