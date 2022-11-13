@@ -32,7 +32,7 @@ namespace jgl
 		static inline std::vector<Vector2> _modelUvData = std::vector<Vector2>();
 		static inline std::vector<UInt> _indexesData = std::vector<UInt>();
 		static inline Uniform* _textureUniform = nullptr;
-
+		
 		GLuint _id;
 		std::vector<Glyph_data> _atlas;
 

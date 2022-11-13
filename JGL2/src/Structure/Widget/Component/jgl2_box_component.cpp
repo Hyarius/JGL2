@@ -1,20 +1,13 @@
 #include "Structure/Widget/Component/jgl2_box_component.h"
 #include "jgl2_drawing_functions.h"
-#include "Structure/Widget/jgl2_widget.h"
 
 namespace jgl
 {
 	namespace WidgetComponent
 	{
-		Box::Box(Widget* p_owner) :
-			_owner(p_owner)
+		Box::Box()
 		{
 
-		}
-
-		const Widget* Box::owner() const
-		{
-			return (_owner);
 		}
 
 		const Color& Box::backgroundColor() const
@@ -52,10 +45,10 @@ namespace jgl
 			return (_usableSize);
 		}
 
-		void Box::render()
+		void Box::render(jgl::Float p_depthDelta)
 		{
-			drawRectangleColor(_backgroundColor, _anchor, _size, _owner->depth());
-			drawRectangleColor(_frontgroundColor, _anchor + _borderSize, _size - _borderSize * jgl::Vector2Int(2, 2), _owner->depth() + 0.1f);
+			drawRectangleColor(_backgroundColor, _anchor, _size, p_depthDelta);
+			drawRectangleColor(_frontgroundColor, _anchor + _borderSize, _size - _borderSize * jgl::Vector2Int(2, 2), p_depthDelta + 0.1f);
 		}
 
 		void Box::setColor(Color p_backgroundColor, Color p_frontgroundColor)

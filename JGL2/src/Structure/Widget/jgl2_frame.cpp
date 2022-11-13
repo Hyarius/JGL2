@@ -10,7 +10,7 @@ namespace jgl
 
 	void Frame::_onRender()
 	{
-		_box.render();
+		_box.render(depth());
 	}
 
 	void Frame::_onGeometryChange()
@@ -18,8 +18,7 @@ namespace jgl
 		_box.setGeometry(anchor(), size());
 	}
 
-	Frame::Frame(Widget* p_parent) : Widget(p_parent),
-		_box(this)
+	Frame::Frame(Widget* p_parent) : Widget(p_parent)
 	{
 		_setViewportOffset(Vector2Int(5, 5), Vector2Int(10, 10));
 		_box.setBorderSize(Vector2Int(5, 5));

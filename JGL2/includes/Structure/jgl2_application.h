@@ -37,6 +37,8 @@ namespace jgl
 		std::vector<Widget*> _widgets;
 		jgl::Float _maxDepth = 10000.0f;
 
+		Font* _defaultFont;
+
 		std::map<std::string, Shader*> _shaders;
 
 		Keyboard _keyboard;
@@ -68,6 +70,9 @@ namespace jgl
 		Application(std::string p_title, Vector2Int p_size, jgl::Color p_backgroundColor);
 		void quit();
 		Int run();
+
+		void setDefaultFont(Font* p_defaultFont);
+		Font* defaultFont() const;
 
 		void addShader(std::string p_shaderName, Shader* p_shader);
 		Shader* shader(std::string p_shaderName);

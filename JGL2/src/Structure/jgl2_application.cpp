@@ -155,6 +155,16 @@ namespace jgl
 		_multithreaded = true;
 	}
 
+	void Application::setDefaultFont(Font* p_defaultFont)
+	{
+		_defaultFont = p_defaultFont;
+	}
+	
+	Font* Application::defaultFont() const
+	{
+		return (_defaultFont);
+	}
+
 	int Application::run()
 	{
 		try
