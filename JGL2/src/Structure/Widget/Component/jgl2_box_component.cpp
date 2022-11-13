@@ -54,8 +54,8 @@ namespace jgl
 
 		void Box::render()
 		{
-			drawRectangleColor(_backgroundColor, Vector2Int(0, 0), _size, _owner->depth());
-			drawRectangleColor(_frontgroundColor, _borderSize, _size - _borderSize * jgl::Vector2Int(2, 2), _owner->depth() + 0.1f);
+			drawRectangleColor(_backgroundColor, _anchor, _size, _owner->depth());
+			drawRectangleColor(_frontgroundColor, _anchor + _borderSize, _size - _borderSize * jgl::Vector2Int(2, 2), _owner->depth() + 0.1f);
 		}
 
 		void Box::setColor(Color p_backgroundColor, Color p_frontgroundColor)
