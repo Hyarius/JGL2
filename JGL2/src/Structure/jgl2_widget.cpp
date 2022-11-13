@@ -168,10 +168,8 @@ namespace jgl
 
 	Vector2Int Widget::_cumulatedAnchor() const
 	{
-		Vector2Int result;
-		const Widget* tmp = this;
-		result += tmp->anchor();
-		tmp = tmp->_parent;
+		Vector2Int result = this->anchor();
+		const Widget* tmp = this->_parent;
 		while (tmp != nullptr)
 		{
 			result += tmp->_anchor + tmp->_viewport.anchorOffset();

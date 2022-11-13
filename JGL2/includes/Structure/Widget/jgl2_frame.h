@@ -9,7 +9,7 @@ namespace jgl
 	class Frame : public jgl::Widget
 	{
 	private:
-		WidgetComponent::BoxComponent _box;
+		WidgetComponent::Box _box;
 
 		jgl::Bool _onUpdate();
 		void _onRender();

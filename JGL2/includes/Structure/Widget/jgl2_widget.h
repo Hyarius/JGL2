@@ -4,6 +4,7 @@
 #include "jgl2_basic_types.h"
 #include "Structure/jgl2_vector.h"
 #include "Structure/jgl2_viewport.h"
+#include "Structure/Widget/jgl2_widget_components.h"
 
 namespace jgl
 {

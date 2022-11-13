@@ -47,8 +47,10 @@
     <ClInclude Include="includes\Structure\jgl2_viewport.h" />
     <ClInclude Include="includes\Structure\jgl2_widgets.h" />
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_box_component.h" />
+    <ClInclude Include="includes\Structure\Widget\Component\jgl2_text_label_component.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_widget.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_frame.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_widget_components.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\jgl2_basic_functions.cpp" />
@@ -70,6 +72,7 @@
     <ClCompile Include="src\Structure\jgl2_widget.cpp" />
     <ClCompile Include="src\Structure\jgl2_application_opengl_function.cpp" />
     <ClCompile Include="src\Structure\Widget\Component\jgl2_box_component.cpp" />
+    <ClCompile Include="src\Structure\Widget\Component\jgl2_text_label_component.cpp" />
     <ClCompile Include="src\Structure\Widget\jgl2_frame.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

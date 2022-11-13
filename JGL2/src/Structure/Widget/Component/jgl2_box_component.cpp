@@ -6,63 +6,77 @@ namespace jgl
 {
 	namespace WidgetComponent
 	{
-		BoxComponent::BoxComponent(Widget* p_owner) :
+		Box::Box(Widget* p_owner) :
 			_owner(p_owner)
 		{
 
 		}
 
-		const Widget* BoxComponent::owner() const
+		const Widget* Box::owner() const
 		{
 			return (_owner);
 		}
 
-		const Color& BoxComponent::backgroundColor() const
+		const Color& Box::backgroundColor() const
 		{
 			return (_backgroundColor);
 		}
 
-		const Color& BoxComponent::frontgroundColor() const
+		const Color& Box::frontgroundColor() const
 		{
 			return (_frontgroundColor);
 		}
 
-		const Vector2Int& BoxComponent::anchor() const
+		const Vector2Int& Box::anchor() const
 		{
 			return (_anchor);
 		}
 
-		const Vector2Int& BoxComponent::size() const
+		const Vector2Int& Box::size() const
 		{
 			return (_size);
 		}
 
-		const Vector2Int& BoxComponent::borderSize() const
+		const Vector2Int& Box::borderSize() const
 		{
 			return (_borderSize);
 		}
 
-		void BoxComponent::render()
+		const Vector2Int& Box::usableAnchor() const
+		{
+			return (_usableAnchor);
+		}
+		
+		const Vector2Int& Box::usableSize() const
+		{
+			return (_usableSize);
+		}
+
+		void Box::render()
 		{
 			drawRectangleColor(_backgroundColor, Vector2Int(0, 0), _size, _owner->depth());
 			drawRectangleColor(_frontgroundColor, _borderSize, _size - _borderSize * jgl::Vector2Int(2, 2), _owner->depth() + 0.1f);
 		}
 
-		void BoxComponent::setColor(Color p_backgroundColor, Color p_frontgroundColor)
+		void Box::setColor(Color p_backgroundColor, Color p_frontgroundColor)
 		{
 			_frontgroundColor = p_frontgroundColor;
 			_backgroundColor = p_backgroundColor;
 		}
 
-		void BoxComponent::setGeometry(Vector2Int p_anchor, Vector2Int p_size)
+		void Box::setGeometry(Vector2Int p_anchor, Vector2Int p_size)
 		{
 			_anchor = p_anchor;
 			_size = p_size;
+			_usableAnchor = _anchor + _borderSize;
+			_usableSize = _size - _borderSize * Vector2Int(2, 2);
 		}
 
-		void BoxComponent::setBorderSize(jgl::Vector2Int p_borderSize)
+		void Box::setBorderSize(jgl::Vector2Int p_borderSize)
 		{
 			_borderSize = p_borderSize;
+			_usableAnchor = _anchor + _borderSize;
+			_usableSize = _size - _borderSize * Vector2Int(2, 2);
 		}
 	}
 }

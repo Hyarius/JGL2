@@ -35,7 +35,6 @@ namespace jgl
 
 		if (_parent == nullptr)
 		{
-			jgl::cout << "Coucou ?" << jgl::endl;
 			_anchor = p_anchor;
 			_size = p_size;
 		}
@@ -71,9 +70,6 @@ namespace jgl
 			_size = Vector2Int::composeMin(p_size + p_anchor, _parent->anchor() + parentAnchorOffsetCropped + _parent->size() - parentSizeOffsetCropped) - _anchor;
 		}
 		_origin = _anchor - p_anchor;
-		jgl::cout << "Anchor : " << _anchor << jgl::endl;
-		jgl::cout << "Size : " << _size << jgl::endl;
-		jgl::cout << "Origin : " << _origin << jgl::endl;
 	}
 
 	void Viewport::use()
