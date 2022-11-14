@@ -17,6 +17,7 @@ namespace jgl
 			Color _outlineColor;
 
 			Size_t _textSize;
+			Size_t _textOutlineSize;
 
 			Vector2Int _anchor = Vector2Int(0, 0);
 			Vector2Int _size = Vector2Int(0, 0);
@@ -32,7 +33,7 @@ namespace jgl
 
 			void render(jgl::Float p_depthDelta);
 			void setText(std::string p_text);
-			void setTextSize(Size_t p_textSize);
+			void setTextOutlineSize(jgl::Size_t p_textOutlineSize);
 			void setColor(Color p_textColor, Color p_outlineColor);
 			void setGeometry(Vector2Int p_anchor, Vector2Int p_size);
 

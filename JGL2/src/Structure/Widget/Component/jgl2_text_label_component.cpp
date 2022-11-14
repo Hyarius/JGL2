@@ -57,13 +57,18 @@ namespace jgl
 				_computeTextSize(tmp_font);
 			}
 
-			tmp_font->draw(_text, _anchor, _textSize, _textColor, _outlineColor, p_depth);
+			tmp_font->draw(_text, _anchor, _textSize, _textColor, _textOutlineSize, _outlineColor, p_depth);
 		}
 
 		void TextLabel::setText(std::string p_text)
 		{
 			_text = p_text;
 			_computed = false;
+		}
+
+		void TextLabel::setTextOutlineSize(jgl::Size_t p_textOutlineSize)
+		{
+			_textOutlineSize = p_textOutlineSize;
 		}
 
 		void TextLabel::setColor(Color p_textColor, Color p_outlineColor)

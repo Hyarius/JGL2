@@ -6,8 +6,6 @@
 
 namespace jgl
 {
-	extern Vector2Int g_viewport_actual_size;
-
 	ImageOutput::ImageOutput(Vector2UInt p_size)
 	{
 		desassociate();
@@ -51,7 +49,6 @@ namespace jgl
 		glViewport(0, 0, _size.x(), _size.y());
 		glColorMask(TRUE, TRUE, TRUE, TRUE);
 		glClearColor(0, 0, 0, 0);
-		g_viewport_actual_size = Vector2Int(_size.x(), _size.y());
 		glClear(GL_COLOR_BUFFER_BIT);
 	}
 
