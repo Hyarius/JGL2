@@ -23,8 +23,14 @@ namespace jgl
 		_setViewportOffset(Vector2Int(5, 5), Vector2Int(10, 10));
 		_box.setBorderSize(Vector2Int(5, 5));
 	}
-	void Frame::setColor(Color p_backgroundColor, Color p_frontgroundColor)
+
+	WidgetComponent::Box& Frame::box()
 	{
-		_box.setColor(p_backgroundColor, p_frontgroundColor);
+		return (_box);
+	}
+	
+	const WidgetComponent::Box& Frame::box() const
+	{
+		return (_box);
 	}
 }

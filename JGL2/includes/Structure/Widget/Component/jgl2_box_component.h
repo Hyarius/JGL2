@@ -17,7 +17,7 @@ namespace jgl
 			Vector2Int _size = Vector2Int(0, 0);
 			Vector2Int _usableAnchor = Vector2Int(0, 0);
 			Vector2Int _usableSize = Vector2Int(0, 0);
-			Vector2Int _borderSize = Vector2Int(0, 0);
+			Vector2Int _borderSize = Vector2Int(5, 5);
 
 		public:
 			Box();

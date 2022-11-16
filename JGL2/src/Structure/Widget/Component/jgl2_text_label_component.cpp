@@ -8,7 +8,8 @@ namespace jgl
 	{
 		TextLabel::TextLabel()
 		{
-			_computed = false;
+			_computedTextSize = false;
+			_computedTextOffset = false;
 		}
 
 		void TextLabel::_computeTextSize(jgl::Font* p_font)
@@ -38,7 +39,63 @@ namespace jgl
 				}
 			}
 
-			_computed = true;
+			_computedTextSize = true;
+		}
+
+		void TextLabel::_computeTextOffset(jgl::Font* p_font)
+		{
+			jgl::Vector2Int textSize = p_font->calcStringSize(_text, _textSize);
+
+			switch (_verticalAlignment)
+			{
+			case jgl::VerticalAlignment::Top:
+			{
+				_textAnchor.y() = 0;
+				break;
+			}
+			case jgl::VerticalAlignment::Centred:
+			{
+				_textAnchor.y() = (_size.y() - textSize.y()) / 2;
+				break;
+			}
+			case jgl::VerticalAlignment::Down:
+			{
+				_textAnchor.y() = _size.y() - textSize.y();
+				break;
+			}
+			default:
+			{
+				_textAnchor.y() = 0;
+				break;
+			}
+			}
+
+
+			switch (_horizontalAlignment)
+			{
+			case jgl::HorizontalAlignment::Left:
+			{
+				_textAnchor.x() = 0;
+				break;
+			}
+			case jgl::HorizontalAlignment::Centred:
+			{
+				_textAnchor.x() = (_size.x() - textSize.x()) / 2;
+				break;
+			}
+			case jgl::HorizontalAlignment::Right:
+			{
+				_textAnchor.x() = _size.x() - textSize.x();
+				break;
+			}
+			default:
+			{
+				_textAnchor.x() = 0;
+				break;
+			}
+			}
+
+			_computedTextOffset = true;
 		}
 
 		void TextLabel::render(jgl::Float p_depth)
@@ -52,37 +109,63 @@ namespace jgl
 				tmp_font = jgl::Application::instance()->defaultFont();
 			}
 
-			if (_computed == false)
+			if (_computedTextSize == false)
 			{
 				_computeTextSize(tmp_font);
 			}
 
-			tmp_font->draw(_text, _anchor, _textSize, _textColor, _textOutlineSize, _outlineColor, p_depth);
+			if (_computedTextOffset == false)
+			{
+				_computeTextOffset(tmp_font);
+			}
+
+			tmp_font->draw(_text, _anchor + _textAnchor, _textSize, _textColor, _textOutlineSize, _outlineColor, p_depth);
 		}
 
-		void TextLabel::setText(std::string p_text)
+		void TextLabel::setText(const std::string& p_text)
 		{
 			_text = p_text;
-			_computed = false;
+			_computedTextSize = false;
+			_computedTextOffset = false;
 		}
 
-		void TextLabel::setTextOutlineSize(jgl::Size_t p_textOutlineSize)
+		void TextLabel::setTextSize(const Size_t& p_textSize)
+		{
+			_textSize = p_textSize;
+			_computedTextSize = true;
+			_computedTextOffset = false;
+		}
+
+		void TextLabel::setTextOutlineSize(const jgl::Size_t& p_textOutlineSize)
 		{
 			_textOutlineSize = p_textOutlineSize;
 		}
 
-		void TextLabel::setColor(Color p_textColor, Color p_outlineColor)
+		void TextLabel::setColor(const Color& p_textColor, const Color& p_outlineColor)
 		{
 			_textColor = p_textColor;
 			_outlineColor = p_outlineColor;
 		}
 		
-		void TextLabel::setGeometry(Vector2Int p_anchor, Vector2Int p_size)
+		void TextLabel::setGeometry(const Vector2Int& p_anchor, const Vector2Int& p_size)
 		{
 			_anchor = p_anchor;
 			_size = p_size;
 			_textSize = _size.y();
-			_computed = false;
+			_computedTextSize = false;
+			_computedTextOffset = false;
+		}
+
+		void TextLabel::setVerticalAlignment(const VerticalAlignment& p_alignement)
+		{
+			_verticalAlignment = p_alignement;
+			_computedTextOffset = false;
+		}
+		
+		void TextLabel::setHorizontalAlignment(const HorizontalAlignment& p_alignement)
+		{
+			_horizontalAlignment = p_alignement;
+			_computedTextOffset = false;
 		}
 
 		const std::string& TextLabel::text() const

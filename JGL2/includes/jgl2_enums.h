@@ -13,4 +13,22 @@ namespace jgl
 	};
 
 	std::string to_string(const InputStatus& p_status);
+
+	enum class VerticalAlignment
+	{
+		Top,
+		Centred,
+		Down
+	};
+
+	std::string to_string(const VerticalAlignment& p_align);
+
+	enum class HorizontalAlignment
+	{
+		Left,
+		Centred,
+		Right
+	};
+
+	std::string to_string(const HorizontalAlignment& p_align);
 }

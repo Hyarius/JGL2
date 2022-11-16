@@ -17,6 +17,7 @@ namespace jgl
 
 	public:
 		Frame(jgl::Widget* p_parent);
-		void setColor(jgl::Color p_backgroundColor, jgl::Color p_frontgroundColor);
+		WidgetComponent::Box& box();
+		const WidgetComponent::Box& box() const;
 	};
 }

@@ -179,4 +179,32 @@ namespace jgl
 		}
 		return ("Unknow");
 	}
+
+	std::string to_string(const VerticalAlignment& p_align)
+	{
+		switch (p_align)
+		{
+		case jgl::VerticalAlignment::Down:
+			return ("Down");
+		case jgl::VerticalAlignment::Centred:
+			return ("Centred");
+		case jgl::VerticalAlignment::Top:
+			return ("Top");
+		}
+		return ("Unknow");
+	}
+
+	std::string to_string(const HorizontalAlignment& p_align)
+	{
+		switch (p_align)
+		{
+		case jgl::HorizontalAlignment::Left:
+			return ("Left");
+		case jgl::HorizontalAlignment::Centred:
+			return ("Centred");
+		case jgl::HorizontalAlignment::Right:
+			return ("Right");
+		}
+		return ("Unknow");
+	}
 }
