@@ -10,6 +10,7 @@
 #include <mutex>
 
 #include <algorithm>
+#include <functional>
 
 #include <string>
 #include <deque>

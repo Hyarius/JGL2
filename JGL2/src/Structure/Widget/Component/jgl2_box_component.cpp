@@ -1,5 +1,6 @@
 #include "Structure/Widget/Component/jgl2_box_component.h"
 #include "jgl2_drawing_functions.h"
+#include "Structure/jgl2_application.h"
 
 namespace jgl
 {
@@ -49,6 +50,17 @@ namespace jgl
 		{
 			drawRectangleColor(_backgroundColor, _anchor, _size, p_depthDelta);
 			drawRectangleColor(_frontgroundColor, _anchor + _borderSize, _size - _borderSize * jgl::Vector2Int(2, 2), p_depthDelta + 0.1f);
+		}
+
+		Bool Box::isPointed() const
+		{
+			Vector2Int pos = jgl::Application::instance()->mouse().pos();
+
+			if (pos.x() < anchor().x() || pos.x() >= anchor().x() + size().x() ||
+				pos.y() < anchor().y() || pos.y() >= anchor().y() + size().y())
+				return (false);
+
+			return (true);
 		}
 
 		void Box::setColor(Color p_backgroundColor, Color p_frontgroundColor)

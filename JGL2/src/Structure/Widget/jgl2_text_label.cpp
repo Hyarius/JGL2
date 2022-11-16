@@ -22,9 +22,9 @@ namespace jgl
 		_label.render(depth() + 0.2f);
 	}
 
-	TextLabel::TextLabel(jgl::Widget* p_parent) : jgl::Widget(p_parent)
+	TextLabel::TextLabel(std::string p_text, jgl::Widget* p_parent) : jgl::Widget(p_parent)
 	{
-
+		_label.setText(p_text);
 	}
 
 	void TextLabel::setDefinedTextSize(const jgl::Size_t& p_definedTextSize)

@@ -48,6 +48,7 @@
     <ClInclude Include="includes\Structure\jgl2_widgets.h" />
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_box_component.h" />
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_text_label_component.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_button.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_text_label.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_widget.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_frame.h" />
@@ -76,6 +77,7 @@
     <ClCompile Include="src\Structure\Widget\Component\jgl2_box_component.cpp" />
     <ClCompile Include="src\Structure\Widget\Component\jgl2_text_label_component.cpp" />
     <ClCompile Include="src\Structure\Widget\jgl2_frame.cpp" />
+    <ClCompile Include="src\Structure\Widget\jgl_button.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

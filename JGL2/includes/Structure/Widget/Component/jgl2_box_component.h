@@ -22,6 +22,7 @@ namespace jgl
 		public:
 			Box();
 			void render(jgl::Float p_depthDelta);
+			Bool isPointed() const;
 
 			void setColor(Color p_backgroundColor, Color p_frontgroundColor);
 			void setGeometry(Vector2Int p_anchor, Vector2Int p_size);
