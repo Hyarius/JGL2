@@ -64,16 +64,16 @@ namespace jgl
 
 		void _loadFontTexture(Font::FontData p_fontData);
 		FontGlyphData& _getFontGlyphData(Size_t p_textSize, Size_t p_outlineSize);
-		GlyphData& _getData(Size_t p_textSize, Size_t p_outlineSize, WChar p_char);
-		GlyphData& _getData(FontGlyphData& p_fontGlyphData, WChar p_char);
+		GlyphData& _getData(Size_t p_textSize, Size_t p_outlineSize, UChar p_char);
+		GlyphData& _getData(FontGlyphData& p_fontGlyphData, UChar p_char);
 
 		void _initCharRender();
-		Vector2Int _prepareCharRender(FontGlyphData& p_fontGlyphData, WChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth);
+		Vector2Int _prepareCharRender(FontGlyphData& p_fontGlyphData, UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth);
 		void _castCharRender(GLuint p_id);
 
 		void _initShaderData();
 
-		Vector2 _calcCharSize(FontGlyphData& p_fontGlyphData, WChar p_char);
+		Vector2 _calcCharSize(FontGlyphData& p_fontGlyphData, UChar p_char);
 
 	public:
 		Font(std::string path);
@@ -81,12 +81,12 @@ namespace jgl
 
 		GLuint textureID(Size_t p_textSize, Size_t p_outlineSize);
 
-		Vector2Int calcCharSize(WChar p_char, UInt p_size, Size_t p_outlineSize = 0);
+		Vector2Int calcCharSize(UChar p_char, UInt p_size, Size_t p_outlineSize = 0);
 		Vector2Int calcStringSize(std::string p_string, UInt p_size);
 
-		Vector2Int draw(WChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth);
+		Vector2Int draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth);
 		Vector2Int draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth);
-		Vector2Int draw(WChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth);
+		Vector2Int draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth);
 		Vector2Int draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth);
 	};
 }

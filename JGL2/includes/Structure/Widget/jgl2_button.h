@@ -24,6 +24,7 @@ namespace jgl
 		Button(std::function< void() > p_funct, jgl::Widget* p_parent);
 		void setDefinedTextSize(const jgl::Size_t& p_definedTextSize);
 		const jgl::Size_t definedTextSize();
+		void setText(std::string p_text);
 		jgl::WidgetComponent::Box* boxes();
 		jgl::WidgetComponent::TextLabel* labels();
 	};

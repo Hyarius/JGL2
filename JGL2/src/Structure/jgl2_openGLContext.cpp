@@ -130,7 +130,7 @@ namespace jgl
 		_majorVersion = p_major_version;
 		_minorVersion = p_minor_version;
 
-		_convertedTitle = new jgl::WChar[p_title.size() + 1];
+		_convertedTitle = new wchar_t[p_title.size() + 1];
 		size_t convertedChars = 0;
 		mbstowcs_s(&convertedChars, _convertedTitle, p_title.size() + 1, p_title.c_str(), _TRUNCATE);
 

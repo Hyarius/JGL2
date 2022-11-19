@@ -22,6 +22,4 @@ namespace jgl
 
 	using Float = float_t;
 	using Double = double_t;
-
-	using WChar = wchar_t;
 }

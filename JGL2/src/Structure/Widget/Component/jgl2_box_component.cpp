@@ -46,10 +46,10 @@ namespace jgl
 			return (_usableSize);
 		}
 
-		void Box::render(jgl::Float p_depthDelta)
+		void Box::render(jgl::Float p_depth)
 		{
-			drawRectangleColor(_backgroundColor, _anchor, _size, p_depthDelta);
-			drawRectangleColor(_frontgroundColor, _anchor + _borderSize, _size - _borderSize * jgl::Vector2Int(2, 2), p_depthDelta + 0.1f);
+			drawRectangleColor(_frontgroundColor, _anchor + _borderSize, _size - _borderSize * jgl::Vector2Int(2, 2), p_depth);
+			drawRectangleColor(_backgroundColor, _anchor, _size, p_depth);
 		}
 
 		Bool Box::isPointed() const

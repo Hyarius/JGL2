@@ -88,7 +88,7 @@ namespace jgl
 		return (*this);
 	}
 
-	IOStream& IOStream::operator << (const jgl::WChar* p_str)
+	IOStream& IOStream::operator << (const jgl::UChar* p_str)
 	{
 		for (jgl::Size_t i = 0; p_str[i] != '\0'; i++)
 		{

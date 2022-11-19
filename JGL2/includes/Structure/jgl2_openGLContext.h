@@ -9,7 +9,7 @@ namespace jgl
 	class OpenGLContext
 	{
 	private:
-		WChar* _convertedTitle = nullptr;
+		wchar_t* _convertedTitle = nullptr;
 		Vector2Int _size;
 		Vector2Int _actualSize;
 		Int _majorVersion;

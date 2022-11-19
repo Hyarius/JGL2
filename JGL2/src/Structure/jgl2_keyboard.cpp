@@ -22,10 +22,10 @@ namespace jgl
         {Keyboard::Key::Next, "Next"},
         {Keyboard::Key::End, "End"},
         {Keyboard::Key::Home, "Home"},
-        {Keyboard::Key::Left_arrow, "Left_arrow"},
-        {Keyboard::Key::Up_arrow, "Up_arrow"},
-        {Keyboard::Key::Right_arrow, "Right_arrow"},
-        {Keyboard::Key::Down_arrow, "Down_arrow"},
+        {Keyboard::Key::LeftArrow, "LeftArrow"},
+        {Keyboard::Key::UpArrow, "UpArrow"},
+        {Keyboard::Key::RightArrow, "RightArrow"},
+        {Keyboard::Key::DownArrow, "DownArrow"},
         {Keyboard::Key::Select, "Select"},
         {Keyboard::Key::Print, "Print"},
         {Keyboard::Key::Execute, "Execute"},
@@ -33,16 +33,16 @@ namespace jgl
         {Keyboard::Key::Insert, "Insert"},
         {Keyboard::Key::Delete, "Delete"},
         {Keyboard::Key::Help, "Help"},
-        {Keyboard::Key::Key_0, "Key_0"},
-        {Keyboard::Key::Key_1, "Key_1"},
-        {Keyboard::Key::Key_2, "Key_2"},
-        {Keyboard::Key::Key_3, "Key_3"},
-        {Keyboard::Key::Key_4, "Key_4"},
-        {Keyboard::Key::Key_5, "Key_5"},
-        {Keyboard::Key::Key_6, "Key_6"},
-        {Keyboard::Key::Key_7, "Key_7"},
-        {Keyboard::Key::Key_8, "Key_8"},
-        {Keyboard::Key::Key_9, "Key_9"},
+        {Keyboard::Key::Key0, "Key0"},
+        {Keyboard::Key::Key1, "Key1"},
+        {Keyboard::Key::Key2, "Key2"},
+        {Keyboard::Key::Key3, "Key3"},
+        {Keyboard::Key::Key4, "Key4"},
+        {Keyboard::Key::Key5, "Key5"},
+        {Keyboard::Key::Key6, "Key6"},
+        {Keyboard::Key::Key7, "Key7"},
+        {Keyboard::Key::Key8, "Key8"},
+        {Keyboard::Key::Key9, "Key9"},
         {Keyboard::Key::A, "A"},
         {Keyboard::Key::B, "B"},
         {Keyboard::Key::C, "C"},
@@ -69,26 +69,26 @@ namespace jgl
         {Keyboard::Key::X, "X"},
         {Keyboard::Key::Y, "Y"},
         {Keyboard::Key::Z, "Z"},
-        {Keyboard::Key::Left_windows, "Left_windows"},
-        {Keyboard::Key::Right_windows, "Right_windows"},
+        {Keyboard::Key::LeftWindows, "LeftWindows"},
+        {Keyboard::Key::RightWindows, "RightWindows"},
         {Keyboard::Key::App, "App"},
         {Keyboard::Key::Sleep, "Sleep"},
-        {Keyboard::Key::Numpad_0, "Numpad_0"},
-        {Keyboard::Key::Numpad_1, "Numpad_1"},
-        {Keyboard::Key::Numpad_2, "Numpad_2"},
-        {Keyboard::Key::Numpad_3, "Numpad_3"},
-        {Keyboard::Key::Numpad_4, "Numpad_4"},
-        {Keyboard::Key::Numpad_5, "Numpad_5"},
-        {Keyboard::Key::Numpad_6, "Numpad_6"},
-        {Keyboard::Key::Numpad_7, "Numpad_7"},
-        {Keyboard::Key::Numpad_8, "Numpad_8"},
-        {Keyboard::Key::Numpad_9, "Numpad_9"},
-        {Keyboard::Key::Numpad_multiply, "Numpad_multiply"},
-        {Keyboard::Key::Numpad_plus, "Numpad_plus"},
-        {Keyboard::Key::Numpad_separator, "Numpad_separator"},
-        {Keyboard::Key::Numpad_minus, "Numpad_minus"},
-        {Keyboard::Key::Numpad_decimal, "Numpad_decimal"},
-        {Keyboard::Key::Numpad_divide, "Numpad_divide"},
+        {Keyboard::Key::Numpad0, "Numpad0"},
+        {Keyboard::Key::Numpad1, "Numpad1"},
+        {Keyboard::Key::Numpad2, "Numpad2"},
+        {Keyboard::Key::Numpad3, "Numpad3"},
+        {Keyboard::Key::Numpad4, "Numpad4"},
+        {Keyboard::Key::Numpad5, "Numpad5"},
+        {Keyboard::Key::Numpad6, "Numpad6"},
+        {Keyboard::Key::Numpad7, "Numpad7"},
+        {Keyboard::Key::Numpad8, "Numpad8"},
+        {Keyboard::Key::Numpad9, "Numpad9"},
+        {Keyboard::Key::NumpadMultiply, "NumpadMultiply"},
+        {Keyboard::Key::NumpadPlus, "NumpadPlus"},
+        {Keyboard::Key::NumpadSeparator, "NumpadSeparator"},
+        {Keyboard::Key::NumpadMinus, "NumpadMinus"},
+        {Keyboard::Key::NumpadDecimal, "NumpadDecimal"},
+        {Keyboard::Key::NumpadDivide, "NumpadDivide"},
         {Keyboard::Key::F1, "F1"},
         {Keyboard::Key::F2, "F2"},
         {Keyboard::Key::F3, "F3"},
@@ -113,27 +113,27 @@ namespace jgl
         {Keyboard::Key::F22, "F22"},
         {Keyboard::Key::F23, "F23"},
         {Keyboard::Key::F24, "F24"},
-        {Keyboard::Key::Num_lock, "Num_lock"},
+        {Keyboard::Key::NumLock, "NumLock"},
         {Keyboard::Key::Scroll, "Scroll"},
-        {Keyboard::Key::Left_shift, "Left_shift"},
-        {Keyboard::Key::Right_shift, "Right_shift"},
-        {Keyboard::Key::Left_control, "Left_control"},
-        {Keyboard::Key::Right_control, "Right_control"},
-        {Keyboard::Key::Left_menu, "Left_menu"},
-        {Keyboard::Key::Right_menu, "Right_menu"},
-        {Keyboard::Key::Semi_colon, "Semi_colon"},
+        {Keyboard::Key::LeftShift, "LeftShift"},
+        {Keyboard::Key::RightShift, "RightShift"},
+        {Keyboard::Key::LeftControl, "LeftControl"},
+        {Keyboard::Key::RightControl, "RightControl"},
+        {Keyboard::Key::LeftMenu, "LeftMenu"},
+        {Keyboard::Key::RightMenu, "RightMenu"},
+        {Keyboard::Key::SemiColon, "SemiColon"},
         {Keyboard::Key::Plus, "Plus"},
         {Keyboard::Key::Comma, "Comma"},
         {Keyboard::Key::Minus, "Minus"},
         {Keyboard::Key::Period, "Period"},
-        {Keyboard::Key::Question_mark, "Question_mark"},
+        {Keyboard::Key::QuestionMark, "QuestionMark"},
         {Keyboard::Key::Tilde, "Tilde"},
-        {Keyboard::Key::Left_bracket, "Left_bracket"},
-        {Keyboard::Key::Vertical_line, "Vertical_line"},
-        {Keyboard::Key::Right_bracket, "Right_bracket"},
+        {Keyboard::Key::LeftBracket, "LeftBracket"},
+        {Keyboard::Key::VerticalLine, "VerticalLine"},
+        {Keyboard::Key::RightBracket, "RightBracket"},
         {Keyboard::Key::Quote, "Quote"},
         {Keyboard::Key::Unknow, "Unknow"},
-        {Keyboard::Key::Angle_bracket, "Angle_bracket"},
+        {Keyboard::Key::AngleBracket, "AngleBracket"},
         {Keyboard::Key::Process, "Process"},
     };
 
@@ -145,6 +145,7 @@ namespace jgl
 
     void Keyboard::_updateState()
     {
+        _entry = '\0';
         for (Size_t i = 0; i < C_NB_KEY; i++)
         {
             if (_keys[i] == InputStatus::Pressed)
@@ -158,7 +159,7 @@ namespace jgl
         }
     }
 
-    void Keyboard::_updateEntry(WChar p_entry)
+    void Keyboard::_updateEntry(UChar p_entry)
     {
         _entry = p_entry;
     }
@@ -168,7 +169,7 @@ namespace jgl
         return (_keys[static_cast<Size_t>(p_key)]);
     }
     
-    const WChar& Keyboard::getEntry() const
+    const UChar& Keyboard::getEntry() const
     {
         return (_entry);
     }

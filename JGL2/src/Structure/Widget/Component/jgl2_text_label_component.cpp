@@ -122,6 +122,11 @@ namespace jgl
 			tmp_font->draw(_text, _anchor + _textAnchor, _textSize, _textColor, _textOutlineSize, _outlineColor, p_depth);
 		}
 
+		void TextLabel::setFont(jgl::Font* p_font)
+		{
+			_font = p_font;
+		}
+
 		void TextLabel::setText(const std::string& p_text)
 		{
 			_text = p_text;
@@ -166,6 +171,19 @@ namespace jgl
 		{
 			_horizontalAlignment = p_alignement;
 			_computedTextOffset = false;
+		}
+
+		jgl::Font* TextLabel::font() const
+		{
+			jgl::Font* tmp_font = _font;
+			if (tmp_font == nullptr)
+			{
+				if (jgl::Application::instance()->defaultFont() == nullptr)
+					throw std::runtime_error("No default font found in jgl::Application");
+
+				tmp_font = jgl::Application::instance()->defaultFont();
+			}
+			return (tmp_font);
 		}
 
 		const std::string& TextLabel::text() const

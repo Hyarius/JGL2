@@ -28,12 +28,12 @@ namespace jgl
 	{
 		_pressed = false;
 		if (jgl::Application::instance()->mouse().button(jgl::Mouse::Button::Left) == jgl::InputStatus::Down &&
-			_boxes[0].isPointed() == true)
+			isPointed() == true)
 		{
 			_pressed = true;
 		}
 		if (jgl::Application::instance()->mouse().button(jgl::Mouse::Button::Left) == jgl::InputStatus::Released &&
-			_boxes[0].isPointed() == true)
+			isPointed() == true)
 		{
 			_funct();
 		}
@@ -73,6 +73,11 @@ namespace jgl
 	const jgl::Size_t Button::definedTextSize()
 	{
 		return (_definedTextSize);
+	}
+	void Button::setText(std::string p_text)
+	{
+		for (jgl::Size_t i = 0; i < 2; i++)
+			_labels[i].setText(p_text);
 	}
 	jgl::WidgetComponent::Box* Button::boxes()
 	{

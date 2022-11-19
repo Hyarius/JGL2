@@ -35,7 +35,7 @@ namespace jgl
 		IOStream& operator << (const jgl::Char p_char);
 		IOStream& operator << (const jgl::UChar p_char);
 		IOStream& operator << (const jgl::Char* p_str);
-		IOStream& operator << (const jgl::WChar* p_str);
+		IOStream& operator << (const jgl::UChar* p_str);
 		IOStream& operator << (const jgl::Short p_value);
 		IOStream& operator << (const jgl::UShort p_value);
 		IOStream& operator << (const jgl::Int p_value);
@@ -46,6 +46,17 @@ namespace jgl
 		IOStream& operator << (const jgl::Double p_value);
 		IOStream& operator << (const void* p_address);
 		IOStream& operator << (const std::string p_string);
+		template <typename TType>
+		IOStream& operator << (const std::vector<TType> p_vector)
+		{
+			for (jgl::Size_t i = 0; i < p_vector.size(); i++)
+			{
+				if (i != 0)
+					(*this) << " - ";
+				(*this) << "[" << p_vector[i] << "]";
+			}
+			return (*this);
+		}
 
 	};
 

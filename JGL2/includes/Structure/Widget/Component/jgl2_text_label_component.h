@@ -37,6 +37,7 @@ namespace jgl
 			TextLabel();
 
 			void render(jgl::Float p_depthDelta);
+			void setFont(jgl::Font* p_font);
 			void setText(const std::string& p_text);
 			void setTextSize(const Size_t& p_textSize);
 			void setTextOutlineSize(const jgl::Size_t& p_textOutlineSize);
@@ -46,6 +47,7 @@ namespace jgl
 			void setHorizontalAlignment(const HorizontalAlignment& p_alignement);
 
 			const std::string& text() const;
+			jgl::Font* font() const;
 			const Size_t& textSize() const;
 			const Color& textColor() const;
 			const Color& outlineColor() const;

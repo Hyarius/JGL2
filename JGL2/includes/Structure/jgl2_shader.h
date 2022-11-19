@@ -354,6 +354,8 @@ namespace jgl
 		{
 			if (_uniformChecker(Mode::Element, Type::Int, Size::One) == true)
 				glUniform1i(_location, data);
+			else
+				throw std::runtime_error("Unexpected type send to a One Int element");
 		}
 		template <typename T, typename std::enable_if < std::is_same <UInt, T>::value == true > ::type* = nullptr >
 		void send(T data)

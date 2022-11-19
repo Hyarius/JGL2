@@ -15,7 +15,7 @@ namespace jgl
 
 	void Frame::_onGeometryChange()
 	{
-		_box.setGeometry(anchor(), size());
+		_box.setGeometry(Vector2Int(0, 0), size());
 	}
 
 	Frame::Frame(Widget* p_parent) : Widget(p_parent)
