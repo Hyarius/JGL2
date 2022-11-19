@@ -1,5 +1,11 @@
 #include "jgl2.h"
 
+enum class Event
+{
+	A,
+	B
+};
+
 class MainMenu : public jgl::Widget
 {
 private:
@@ -88,16 +94,18 @@ MainMenu::MainMenu(jgl::Widget* p_parent) : jgl::Widget(p_parent)
 	_usernameLabel->activate();
 
 	_usernameEntry = new jgl::TextEntry(_backgroundFrame);
+	_usernameEntry->setCursorColor(jgl::Color(50, 50, 50));
 	_usernameEntry->activate();
 
 	_passwordLabel = new jgl::TextLabel("Password :", _backgroundFrame);
 	_passwordLabel->activate();
 
 	_passwordEntry = new jgl::TextEntry(_backgroundFrame);
+	_passwordEntry->setCursorColor(jgl::Color(50, 50, 50));
 	_passwordEntry->activate();
 
 	_connectButton = new jgl::Button([&]() {
-
+			jgl::Observer<Event>::notify(Event::A);
 		}, _backgroundFrame);
 	_connectButton->setText("Connect");
 	_connectButton->activate();
@@ -108,6 +116,8 @@ int main(int argc, char** argv)
 	jgl::cout.setEncoding("fr-FR");
 	jgl::Application app = jgl::Application("JGLPositioner", jgl::Vector2Int(800, 800), jgl::Color(50, 50, 50));
 	app.setDefaultFont(new jgl::Font("karma suture.ttf"));
+
+	jgl::Observer<Event>::subscribe(Event::A, []() {jgl::cout << "Event A notified" << jgl::endl; });
 
 	MainMenu* mainMenu = new MainMenu(nullptr);
 	mainMenu->setGeometry(jgl::Vector2Int(0, 0), app.size());

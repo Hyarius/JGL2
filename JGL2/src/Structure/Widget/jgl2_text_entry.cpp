@@ -31,7 +31,7 @@ namespace jgl
 	{
 		_box.setGeometry(jgl::Vector2Int(0, 0), size());
 		_label.setGeometry(_box.usableAnchor(), _box.usableSize());
-		_cursorSize = jgl::Vector2Int((_label.size().y() - _box.borderSize().y() * 2) / 5, _label.size().y() - _box.borderSize().y());
+		_cursorSize = jgl::Vector2Int((_label.size().y() - _box.borderSize().y() * 2) / 7, _label.size().y() - _box.borderSize().y() * 1.2f);
 		_computeCursorPosition();
 
 		if (_definedTextSize != 0)

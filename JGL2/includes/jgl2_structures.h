@@ -8,5 +8,6 @@
 #include "Structure/jgl2_image_output.h"
 #include "Structure/jgl2_sprite_sheet.h"
 #include "Structure/jgl2_font.h"
+#include "Structure/jgl2_observer.h"
 
 #include "Structure/jgl2_widgets.h"

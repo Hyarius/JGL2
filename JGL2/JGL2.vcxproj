@@ -37,6 +37,7 @@
     <ClInclude Include="includes\Structure\jgl2_iostream.h" />
     <ClInclude Include="includes\Structure\jgl2_keyboard.h" />
     <ClInclude Include="includes\Structure\jgl2_mouse.h" />
+    <ClInclude Include="includes\Structure\jgl2_observer.h" />
     <ClInclude Include="includes\Structure\jgl2_openGLContext.h" />
     <ClInclude Include="includes\Structure\jgl2_polymorphic_container.h" />
     <ClInclude Include="includes\Structure\jgl2_pool.h" />
