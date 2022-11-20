@@ -4,26 +4,15 @@
 
 namespace jgl
 {
-	std::string TextEntry::_computeRenderableText()
-	{
-		std::string result = _totalText;
-
-		return (result);
-	}
-
-	void TextEntry::_updateText(std::string p_totalText)
-	{
-		_totalText = p_totalText;
-		_label.setText(_computeRenderableText());
-	}
 
 	void TextEntry::_onRender()
 	{
 		_box.render(depth());
 		_label.render(depth() + 0.2f);
+
 		if (_selected == true && (jgl::Application::instance()->time() % 1000) > 500)
 		{
-			jgl::drawRectangleColor(_cursorColor, _cursorPosition, _cursorSize, depth() + 0.4f);
+			jgl::drawRectangleColor( _cursorColor, _label.anchor() + jgl::Vector2Int(0, _box.borderSize().y()) + _cursorPosition, _cursorSize, depth() + 0.4f);
 		}
 	}
 
@@ -31,11 +20,131 @@ namespace jgl
 	{
 		_box.setGeometry(jgl::Vector2Int(0, 0), size());
 		_label.setGeometry(_box.usableAnchor(), _box.usableSize());
-		_cursorSize = jgl::Vector2Int((_label.size().y() - _box.borderSize().y() * 2) / 7, _label.size().y() - _box.borderSize().y() * 1.2f);
-		_computeCursorPosition();
+		_label.setTextPredefinedSize(_label.size().y());
 
-		if (_definedTextSize != 0)
-			_label.setTextSize(_definedTextSize);
+		_cursorSize = jgl::Vector2Int(_label.size().y() / 7, _label.size().y() - _box.borderSize().y());
+	}
+
+	void TextEntry::_calcTextToRender()
+	{
+		_label.setText(_entry.substr(_lowerCursor, _higherCursor - _lowerCursor));
+	}
+
+	void TextEntry::_addCharInEntry(jgl::Char p_char)
+	{
+		_entry.insert(_entry.begin() + _cursor, p_char);
+		_moveCursor(1);
+		_computeHigherCursor();
+		_calcTextToRender();
+	}
+
+	void TextEntry::_deleteCharInEntry(jgl::Int p_cursorPositionDelta)
+	{
+		if (_cursor == 0 && p_cursorPositionDelta < 0)
+			throw std::runtime_error("Error while deleting char in textEntry");
+
+		_moveCursor(p_cursorPositionDelta);
+		_entry.erase(_entry.begin() + _cursor);
+		_computeHigherCursor();
+		_calcTextToRender();
+	}
+
+	void TextEntry::_moveHigherCursor()
+	{
+		_lowerCursor = _cursor;
+		_higherCursor = _cursor;
+
+		while (true)
+		{
+			std::string tmp_text = _entry.substr(_lowerCursor, _higherCursor - _lowerCursor);
+			jgl::Vector2Int tmp_textSize = _label.font()->calcStringSize(tmp_text, _label.textPredefinedSize());
+
+			if (tmp_textSize.x() >= _label.size().x())
+			{
+				_lowerCursor++;
+				break;
+			}
+			if (_lowerCursor <= 0)
+			{
+				break;
+			}
+
+			_lowerCursor--;
+		}
+	}
+
+	void TextEntry::_moveLowerCursor()
+	{
+		_lowerCursor = _cursor;
+		_higherCursor = _cursor;
+
+		while (true)
+		{
+			std::string tmp_text = _entry.substr(_lowerCursor, _higherCursor - _lowerCursor);
+			jgl::Vector2Int tmp_textSize = _label.font()->calcStringSize(tmp_text, _label.textPredefinedSize());
+
+			if (tmp_textSize.x() >= _label.size().x())
+			{
+				_higherCursor--;
+				break;
+			}
+			if (_higherCursor >= _entry.size())
+			{
+				break;
+			}
+
+			_higherCursor++;
+		}
+	}
+
+	void TextEntry::_computeHigherCursor()
+	{
+		_higherCursor = _cursor;
+
+		while (true)
+		{
+			std::string tmp_text = _entry.substr(_lowerCursor, _higherCursor - _lowerCursor);
+			jgl::Vector2Int tmp_textSize = _label.font()->calcStringSize(tmp_text, _label.textPredefinedSize());
+
+			if (tmp_textSize.x() >= _label.size().x())
+			{
+				_higherCursor--;
+				break;
+			}
+			if (_higherCursor >= _entry.size())
+			{
+				break;
+			}
+
+			_higherCursor++;
+		}
+	}
+
+	void TextEntry::_computeCursorPosition()
+	{
+		std::string tmp_text = _entry.substr(_lowerCursor, _cursor - _lowerCursor);
+		jgl::Vector2Int tmp_textSize = _label.font()->calcStringSize(tmp_text, _label.textPredefinedSize());
+		_cursorPosition = jgl::Vector2Int(tmp_textSize.x(), 0);
+	}
+
+	void TextEntry::_moveCursor(jgl::Int p_cursorPositionDelta)
+	{
+		if ((_cursor == 0 && p_cursorPositionDelta < 0) ||
+			(_cursor >= _entry.size() && p_cursorPositionDelta > 0))
+			return;
+
+		_cursor += p_cursorPositionDelta;
+
+		if (_cursor > _higherCursor)
+		{
+			_moveHigherCursor();
+		}
+		else if (_cursor < _lowerCursor)
+		{
+			_moveLowerCursor();
+		}
+
+		_computeCursorPosition();
 	}
 
 	jgl::Bool TextEntry::_onUpdate()
@@ -56,37 +165,25 @@ namespace jgl
 		{
 			if (jgl::Application::instance()->keyboard().getEntry() >= ' ')
 			{
-				_totalText.insert(_totalText.begin() + _cursor, jgl::Application::instance()->keyboard().getEntry());
-				_cursor++;
-				_label.setText(_totalText);
-				_computeCursorPosition();
+				_addCharInEntry(jgl::Application::instance()->keyboard().getEntry());
 			}
-			if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Backspace) == jgl::InputStatus::Released &&
-				_totalText.size() >= 1)
+			else if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Delete) == jgl::InputStatus::Released)
 			{
-				_totalText.erase(_totalText.begin() + _cursor - 1);
-				_cursor--;
-				_label.setText(_totalText);
-				_computeCursorPosition();
+				_deleteCharInEntry(0);
 			}
-			if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Delete) == jgl::InputStatus::Released &&
-				_totalText.size() >= _cursor)
+			else if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Backspace) == jgl::InputStatus::Released)
 			{
-				_totalText.erase(_totalText.begin() + _cursor);
-				_label.setText(_totalText);
-				_computeCursorPosition();
+				_deleteCharInEntry(-1);
 			}
-			if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::LeftArrow) == jgl::InputStatus::Released &&
-				_cursor > 0)
+			else if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::LeftArrow) == jgl::InputStatus::Released)
 			{
-				_cursor--;
-				_computeCursorPosition();
+				_moveCursor(-1);
+				_calcTextToRender();
 			}
-			if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::RightArrow) == jgl::InputStatus::Released &&
-				_cursor < _totalText.size())
+			else if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::RightArrow) == jgl::InputStatus::Released)
 			{
-				_cursor++;
-				_computeCursorPosition();
+				_moveCursor(1);
+				_calcTextToRender();
 			}
 		}
 
@@ -98,28 +195,12 @@ namespace jgl
 
 	}
 
-	void TextEntry::_computeCursorPosition()
+	void TextEntry::setCursorColor(jgl::Color p_color)
 	{
-		jgl::Vector2Int tmp_delta = _label.font()->calcStringSize(_totalText.substr(0, _cursor), _label.textSize());
-		_cursorPosition = jgl::Vector2Int(_box.borderSize().x() * 1, _box.borderSize().y() * 2) + jgl::Vector2Int(tmp_delta.x(), 0) + _box.anchor();
-	}
-
-	void TextEntry::setDefinedTextSize(const jgl::Size_t& p_definedTextSize)
-	{
-		_definedTextSize = p_definedTextSize;
-	}
-
-	const jgl::Size_t TextEntry::definedTextSize()
-	{
-		return (_definedTextSize);
-	}
-
-	void TextEntry::setCursorColor(const jgl::Color& p_cursorColor)
-	{
-		_cursorColor = p_cursorColor;
+		_cursorColor = p_color;
 	}
 	
-	const jgl::Color TextEntry::cursorColor()
+	const jgl::Color& TextEntry::cursorColor() const
 	{
 		return (_cursorColor);
 	}

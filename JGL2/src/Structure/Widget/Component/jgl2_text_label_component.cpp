@@ -14,6 +14,12 @@ namespace jgl
 
 		void TextLabel::_computeTextSize(jgl::Font* p_font)
 		{
+			if (_textPredefinedSize != 0)
+			{
+				_textSize = _textPredefinedSize;
+				return;
+			}
+
 			int delta[5] = { 100, 50, 20, 10, 1 };
 			_textSize = 2;
 
@@ -141,6 +147,11 @@ namespace jgl
 			_computedTextOffset = false;
 		}
 
+		void TextLabel::setTextPredefinedSize(const Size_t& p_textPredefinedSize)
+		{
+			_textPredefinedSize = p_textPredefinedSize;
+		}
+
 		void TextLabel::setTextOutlineSize(const jgl::Size_t& p_textOutlineSize)
 		{
 			_textOutlineSize = p_textOutlineSize;
@@ -194,6 +205,11 @@ namespace jgl
 		const Size_t& TextLabel::textSize() const
 		{
 			return (_textSize);
+		}
+
+		const Size_t& TextLabel::textPredefinedSize() const
+		{
+			return (_textPredefinedSize);
 		}
 
 		const Color& TextLabel::textColor() const

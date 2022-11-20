@@ -17,6 +17,7 @@ namespace jgl
 			Color _textColor = Color(255, 255, 255);
 			Color _outlineColor = Color(0, 0, 0);
 
+			Size_t _textPredefinedSize = 0;
 			Size_t _textSize;
 			Size_t _textOutlineSize;
 
@@ -40,6 +41,7 @@ namespace jgl
 			void setFont(jgl::Font* p_font);
 			void setText(const std::string& p_text);
 			void setTextSize(const Size_t& p_textSize);
+			void setTextPredefinedSize(const Size_t& p_textPredefinedSize);
 			void setTextOutlineSize(const jgl::Size_t& p_textOutlineSize);
 			void setColor(const Color& p_textColor, const Color& p_outlineColor);
 			void setGeometry(const Vector2Int& p_anchor, const Vector2Int& p_size);
@@ -49,6 +51,7 @@ namespace jgl
 			const std::string& text() const;
 			jgl::Font* font() const;
 			const Size_t& textSize() const;
+			const Size_t& textPredefinedSize() const;
 			const Color& textColor() const;
 			const Color& outlineColor() const;
 			const Vector2Int& anchor() const;

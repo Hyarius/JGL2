@@ -66,25 +66,60 @@ namespace jgl
 			_labels[i].setVerticalAlignment(jgl::VerticalAlignment::Centred);
 		}
 	}
+
 	void Button::setDefinedTextSize(const jgl::Size_t& p_definedTextSize)
 	{
 		_definedTextSize = p_definedTextSize;
 	}
+
 	const jgl::Size_t Button::definedTextSize()
 	{
 		return (_definedTextSize);
 	}
+
+	void Button::setFunct(const std::function<void()>& p_funct)
+	{
+		_funct = p_funct;
+	}
+	
+	const std::function<void()>& Button::funct()
+	{
+		return (_funct);
+	}
+
 	void Button::setText(std::string p_text)
 	{
 		for (jgl::Size_t i = 0; i < 2; i++)
 			_labels[i].setText(p_text);
 	}
+
 	jgl::WidgetComponent::Box* Button::boxes()
 	{
 		return (_boxes);
 	}
+
+	jgl::WidgetComponent::Box& Button::selectedBox()
+	{
+		return (_boxes[1]);
+	}
+
+	jgl::WidgetComponent::Box& Button::unselectedBox()
+	{
+		return (_boxes[0]);
+	}
+
 	jgl::WidgetComponent::TextLabel* Button::labels()
 	{
 		return (_labels);
+	}
+
+	jgl::WidgetComponent::TextLabel& Button::selectedTextLabel()
+	{
+		return (_labels[1]);
+	}
+	
+	jgl::WidgetComponent::TextLabel& Button::unselectedTextLabel()
+	{
+		return (_labels[0]);
 	}
 }

@@ -8,34 +8,42 @@ namespace jgl
 	class TextEntry : public jgl::Widget
 	{
 	private:
-		jgl::Size_t _definedTextSize = 0;
 		jgl::WidgetComponent::Box _box;
 		jgl::WidgetComponent::TextLabel _label;
 
 		jgl::Bool _selected = false;
 
-		jgl::Size_t _cursor = 0;
-		jgl::Color _cursorColor = jgl::Color(0, 0, 0);
-		jgl::Vector2Int _cursorPosition = jgl::Vector2Int(0, 0);
-		jgl::Vector2Int _cursorSize = jgl::Vector2Int(3, 10);
+		std::string _entry;
 
-		std::string _totalText;
+		jgl::Size_t _cursor = 0;
+		jgl::Size_t _lowerCursor = 0;
+		jgl::Size_t _higherCursor = 0;
+		
+		jgl::Color _cursorColor = jgl::Color(0, 0, 0);
+		jgl::Vector2Int _cursorPosition;
+		jgl::Vector2Int _cursorSize;
 
 		jgl::Bool _onUpdate();
 		void _onRender();
 		void _onGeometryChange();
 
+		void _addCharInEntry(jgl::Char p_char);
+		void _deleteCharInEntry(jgl::Int p_cursorPositionDelta);
+		void _moveCursor(jgl::Int p_cursorPositionDelta);
+
+		void _computeHigherCursor();
+		void _moveHigherCursor();
+		void _moveLowerCursor();
+
 		void _computeCursorPosition();
-		std::string _computeRenderableText();
-		void _updateText(std::string p_totalText);
+
+		void _calcTextToRender();
 
 	public:
 		TextEntry(jgl::Widget* p_parent);
-		void setDefinedTextSize(const jgl::Size_t& p_definedTextSize);
-		const jgl::Size_t definedTextSize();
 
-		void setCursorColor(const jgl::Color& p_cursorColor);
-		const jgl::Color cursorColor();
+		void setCursorColor(jgl::Color p_color);
+		const jgl::Color& cursorColor() const;
 
 		void select();
 		void unselect();
