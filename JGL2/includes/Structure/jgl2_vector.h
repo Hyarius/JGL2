@@ -6,6 +6,9 @@
 
 namespace jgl
 {
+	jgl::Float degreeToRadian(const jgl::Float& angle);
+	jgl::Float radianToDegree(const jgl::Float& radian);
+
 	template <typename TType, jgl::Size_t C_NB_DIM>
 	struct Vector
 	{
@@ -343,6 +346,90 @@ namespace jgl
 			}
 
 			return (*this);
+		}
+
+		jgl::Float length() const
+		{
+			return (sqrt(pow(x(), 2.0f)
+				+ pow(y(), 2.0f)));
+		}
+
+		jgl::Float distance(const BaseVector2& other) const
+		{
+			return (std::sqrt(pow(other.x() - x(), 2) + pow(other.y() - y(), 2)));
+		}
+
+		BaseVector2<jgl::Float> normalize() const
+		{
+			jgl::Float tmp_length;
+
+			tmp_length = length();
+
+			if (tmp_length == 0)
+				std::runtime_error("Trying to divide by 0");
+			return (BaseVector2<jgl::Float>(static_cast<jgl::Float>(x()) / tmp_length, static_cast<jgl::Float>(y()) / tmp_length));
+		}
+
+		BaseVector2 cross(const BaseVector2 other = 0) const
+		{
+			BaseVector2 result;
+
+			result = BaseVector2(-(other.y() - y()), other.x() - x());
+
+			return (result);
+		}
+
+		jgl::Float dot(const BaseVector2 other, const BaseVector2 center = 0) const
+		{
+			jgl::Float result;
+
+			result = (x() - center.x()) * (other.x() - center.x()) + (y() - center.y()) * (other.y() - center.y());
+
+			return (result);
+		}
+
+		jgl::Float angle(const BaseVector2 other, const BaseVector2 center = 0) const
+		{
+			jgl::Float rdot = dot(other, center);
+
+			rdot = (rdot < -1.0f ? -1.0f : (rdot > 1.0f ? 1.0f : rdot));
+
+			jgl::Float angle = std::acos(rdot);
+
+			return (jgl::radianToDegree(angle));
+		}
+
+		jgl::Float angle() const
+		{
+			jgl::Float degree = jgl::radianToDegree(std::atan(static_cast<jgl::Float>(y()) / static_cast<jgl::Float>(x())));
+
+			if (x() >= 0 && y() >= 0)
+				return (degree);
+			else if (x() >= 0 && y() < 0)
+				return (360 + degree);
+			else if (x() < 0 && y() >= 0)
+				return (180 + degree);
+			else
+				return (180 + degree);
+		}
+
+		BaseVector2 invert() const
+		{
+			return (BaseVector2(x() * -1, y() * -1));
+		}
+
+		BaseVector2 rotate(BaseVector2 center, jgl::Float angle) const
+		{
+			float theta = jgl::degreeToRadian(angle);
+
+			float pcos = cos(theta);
+			float psin = sin(theta);
+
+			jgl::BaseVector2 result;
+			result.x() = (x() - center.x()) * pcos - (y() - center.y()) * psin;
+			result.y() = (x() - center.x()) * psin + (y() - center.y()) * pcos;
+
+			return (result + center);
 		}
 	};
 

@@ -207,4 +207,33 @@ namespace jgl
 		}
 		return ("Unknow");
 	}
+	
+	std::string methodName(const std::string& prettyFunction)
+	{
+		size_t begin = prettyFunction.rfind("::") + 2;
+		size_t end = prettyFunction.rfind("(") - begin;
+
+		return prettyFunction.substr(begin, end) + "()";
+	}
+
+	std::string className(const std::string& prettyFunction)
+	{
+		size_t colons = prettyFunction.rfind("::");
+		if (colons == std::string::npos)
+			return "::";
+		size_t begin = prettyFunction.substr(0, colons).rfind(" ") + 1;
+		size_t end = colons - begin;
+
+		return prettyFunction.substr(begin, end);
+	}
+
+	jgl::Float degreeToRadian(const jgl::Float& angle)
+	{
+		return ((angle * static_cast<jgl::Float>(M_PI)) / 180.0f);
+	}
+
+	jgl::Float radianToDegree(const jgl::Float& radian)
+	{
+		return ((radian * 180.0f) / static_cast<jgl::Float>(M_PI));
+	}
 }
