@@ -69,12 +69,15 @@ MainMenu::MainMenu(jgl::Widget* p_parent) : jgl::Widget(p_parent)
 	_usernameLabel->activate();
 
 	_usernameEntry = new jgl::TextEntry(_backgroundFrame);
+	_usernameEntry->setCursorColor(jgl::Color(50, 50, 50));
 	_usernameEntry->activate();
 
 	_passwordLabel = new jgl::TextLabel("Password :", _backgroundFrame);
 	_passwordLabel->activate();
 
 	_passwordEntry = new jgl::TextEntry(_backgroundFrame);
+	_passwordEntry->setCursorColor(jgl::Color(50, 50, 50));
+	_passwordEntry->maskText();
 	_passwordEntry->activate();
 
 	_connectButton = new jgl::Button([&]() {

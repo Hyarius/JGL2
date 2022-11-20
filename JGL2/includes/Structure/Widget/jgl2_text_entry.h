@@ -15,6 +15,8 @@ namespace jgl
 
 		std::string _entry;
 
+		jgl::Bool _masked = false;
+
 		jgl::Size_t _cursor = 0;
 		jgl::Size_t _lowerCursor = 0;
 		jgl::Size_t _higherCursor = 0;
@@ -37,13 +39,18 @@ namespace jgl
 
 		void _computeCursorPosition();
 
-		void _calcTextToRender();
+		std::string _computeTextToRender();
 
 	public:
 		TextEntry(jgl::Widget* p_parent);
 
 		void setCursorColor(jgl::Color p_color);
 		const jgl::Color& cursorColor() const;
+
+		void maskText();
+		void unmaskText();
+		void setMaskedText(jgl::Bool p_status);
+		const jgl::Bool& maskedText() const;
 
 		void select();
 		void unselect();

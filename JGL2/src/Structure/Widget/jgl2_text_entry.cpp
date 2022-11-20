@@ -25,9 +25,20 @@ namespace jgl
 		_cursorSize = jgl::Vector2Int(_label.size().y() / 7, _label.size().y() - _box.borderSize().y());
 	}
 
-	void TextEntry::_calcTextToRender()
+	std::string TextEntry::_computeTextToRender()
 	{
-		_label.setText(_entry.substr(_lowerCursor, _higherCursor - _lowerCursor));
+		std::string tmp_text;
+
+		if (_masked == true)
+		{
+			tmp_text = std::string(_higherCursor - _lowerCursor, '*');
+		}
+		else
+		{
+			tmp_text = _entry.substr(_lowerCursor, _higherCursor - _lowerCursor);
+		}
+
+		return (tmp_text);
 	}
 
 	void TextEntry::_addCharInEntry(jgl::Char p_char)
@@ -35,7 +46,7 @@ namespace jgl
 		_entry.insert(_entry.begin() + _cursor, p_char);
 		_moveCursor(1);
 		_computeHigherCursor();
-		_calcTextToRender();
+		_label.setText(_computeTextToRender());
 	}
 
 	void TextEntry::_deleteCharInEntry(jgl::Int p_cursorPositionDelta)
@@ -46,7 +57,7 @@ namespace jgl
 		_moveCursor(p_cursorPositionDelta);
 		_entry.erase(_entry.begin() + _cursor);
 		_computeHigherCursor();
-		_calcTextToRender();
+		_label.setText(_computeTextToRender());
 	}
 
 	void TextEntry::_moveHigherCursor()
@@ -56,7 +67,7 @@ namespace jgl
 
 		while (true)
 		{
-			std::string tmp_text = _entry.substr(_lowerCursor, _higherCursor - _lowerCursor);
+			std::string tmp_text = _computeTextToRender();
 			jgl::Vector2Int tmp_textSize = _label.font()->calcStringSize(tmp_text, _label.textPredefinedSize());
 
 			if (tmp_textSize.x() >= _label.size().x())
@@ -76,25 +87,7 @@ namespace jgl
 	void TextEntry::_moveLowerCursor()
 	{
 		_lowerCursor = _cursor;
-		_higherCursor = _cursor;
-
-		while (true)
-		{
-			std::string tmp_text = _entry.substr(_lowerCursor, _higherCursor - _lowerCursor);
-			jgl::Vector2Int tmp_textSize = _label.font()->calcStringSize(tmp_text, _label.textPredefinedSize());
-
-			if (tmp_textSize.x() >= _label.size().x())
-			{
-				_higherCursor--;
-				break;
-			}
-			if (_higherCursor >= _entry.size())
-			{
-				break;
-			}
-
-			_higherCursor++;
-		}
+		_computeHigherCursor();
 	}
 
 	void TextEntry::_computeHigherCursor()
@@ -103,7 +96,7 @@ namespace jgl
 
 		while (true)
 		{
-			std::string tmp_text = _entry.substr(_lowerCursor, _higherCursor - _lowerCursor);
+			std::string tmp_text = _computeTextToRender();
 			jgl::Vector2Int tmp_textSize = _label.font()->calcStringSize(tmp_text, _label.textPredefinedSize());
 
 			if (tmp_textSize.x() >= _label.size().x())
@@ -122,7 +115,16 @@ namespace jgl
 
 	void TextEntry::_computeCursorPosition()
 	{
-		std::string tmp_text = _entry.substr(_lowerCursor, _cursor - _lowerCursor);
+		std::string tmp_text;
+		
+		if (_masked == true)
+		{
+			tmp_text = std::string(_cursor - _lowerCursor, '*');
+		}
+		else
+		{
+			tmp_text = _entry.substr(_lowerCursor, _cursor - _lowerCursor);
+		}
 		jgl::Vector2Int tmp_textSize = _label.font()->calcStringSize(tmp_text, _label.textPredefinedSize());
 		_cursorPosition = jgl::Vector2Int(tmp_textSize.x(), 0);
 	}
@@ -178,12 +180,12 @@ namespace jgl
 			else if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::LeftArrow) == jgl::InputStatus::Released)
 			{
 				_moveCursor(-1);
-				_calcTextToRender();
+				_label.setText(_computeTextToRender());
 			}
 			else if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::RightArrow) == jgl::InputStatus::Released)
 			{
 				_moveCursor(1);
-				_calcTextToRender();
+				_label.setText(_computeTextToRender());
 			}
 		}
 
@@ -203,6 +205,26 @@ namespace jgl
 	const jgl::Color& TextEntry::cursorColor() const
 	{
 		return (_cursorColor);
+	}
+
+	void TextEntry::maskText()
+	{
+		_masked = true;
+	}
+	
+	void TextEntry::unmaskText()
+	{
+		_masked = false;
+	}
+
+	void TextEntry::setMaskedText(jgl::Bool p_status)
+	{
+		_masked = p_status;
+	}
+	
+	const jgl::Bool& TextEntry::maskedText() const
+	{
+		return (_masked);
 	}
 
 	void TextEntry::select()
