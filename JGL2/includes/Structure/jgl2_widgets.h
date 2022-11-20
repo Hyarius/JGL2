@@ -5,3 +5,5 @@
 #include "Structure/Widget/jgl2_text_label.h"
 #include "Structure/Widget/jgl2_text_entry.h"
 #include "Structure/Widget/jgl2_button.h"
+
+#include "Structure/Widget/jgl2_singleton_widget.h"

@@ -44,7 +44,9 @@
     <ClInclude Include="includes\Structure\jgl2_shader.h" />
     <ClInclude Include="includes\Structure\jgl2_singleton.h" />
     <ClInclude Include="includes\Structure\jgl2_sprite_sheet.h" />
+    <ClInclude Include="includes\Structure\jgl2_state_machine.h" />
     <ClInclude Include="includes\Structure\jgl2_thread.h" />
+    <ClInclude Include="includes\Structure\jgl2_timer.h" />
     <ClInclude Include="includes\Structure\jgl2_vector.h" />
     <ClInclude Include="includes\Structure\jgl2_viewport.h" />
     <ClInclude Include="includes\Structure\jgl2_widgets.h" />
@@ -74,6 +76,7 @@
     <ClCompile Include="src\Structure\jgl2_shader.cpp" />
     <ClCompile Include="src\Structure\jgl2_sprite_sheet.cpp" />
     <ClCompile Include="src\Structure\jgl2_thread.cpp" />
+    <ClCompile Include="src\Structure\jgl2_timer.cpp" />
     <ClCompile Include="src\Structure\jgl2_viewport.cpp" />
     <ClCompile Include="src\Structure\Widget\jgl2_text_entry.cpp" />
     <ClCompile Include="src\Structure\Widget\jgl2_text_label.cpp" />
