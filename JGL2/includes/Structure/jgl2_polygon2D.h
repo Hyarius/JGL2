@@ -11,46 +11,46 @@ namespace jgl
 		friend class Polygon2D;
 
 	private:
-		struct Segment_data
+		struct SegmentData
 		{
 			jgl::Size_t a;
 			jgl::Size_t b;
 			jgl::Vector2 norm;
 		};
 
-		jgl::Vector2 center;
-		jgl::Vector2 size = jgl::Vector2(1, 1);
-		std::vector<jgl::Vector2> points;
-		std::vector<Segment_data> segments;
+		jgl::Vector2 _center;
+		jgl::Vector2 _size = jgl::Vector2(1, 1);
+		std::vector<jgl::Vector2> _points;
+		std::vector<SegmentData> _segments;
 
-		struct Axis_projection
+		struct AxisProjection
 		{
 			jgl::Float min;
 			jgl::Float max;
 		};
 
-		Axis_projection _project_point_on_axis(jgl::Vector2 p_point, jgl::Vector2 p_axis, jgl::Vector2 p_delta_pos = jgl::Vector2(0, 0)) const
+		AxisProjection _projectPointOnAxis(jgl::Vector2 p_point, jgl::Vector2 p_axis, jgl::Vector2 p_deltaPos = jgl::Vector2(0, 0)) const
 		{
-			Axis_projection result;
+			AxisProjection result;
 
-			jgl::Float tmp_dot = p_axis.dot(p_point + p_delta_pos);
+			jgl::Float tmp_dot = p_axis.dot(p_point + p_deltaPos);
 			result.min = tmp_dot;
 			result.max = tmp_dot;
 
 			return (result);
 		}
 
-		Axis_projection _projection_on_axis(jgl::Vector2 p_axis, jgl::Vector2 p_delta_pos = jgl::Vector2(0, 0)) const
+		AxisProjection _projectionOnAxis(jgl::Vector2 p_axis, jgl::Vector2 p_deltaPos = jgl::Vector2(0, 0)) const
 		{
-			Axis_projection result;
+			AxisProjection result;
 
-			jgl::Float tmp_dot = p_axis.dot(points[0] * size + center + p_delta_pos);
+			jgl::Float tmp_dot = p_axis.dot(_points[0] * _size + _center + p_deltaPos);
 			result.min = tmp_dot;
 			result.max = tmp_dot;
 
-			for (jgl::Size_t i = 1; i < points.size(); i++)
+			for (jgl::Size_t i = 1; i < _points.size(); i++)
 			{
-				tmp_dot = p_axis.dot(points[i] * size + center + p_delta_pos);
+				tmp_dot = p_axis.dot(_points[i] * _size + _center + p_deltaPos);
 				if (tmp_dot < result.min)
 					result.min = tmp_dot;
 				else if (tmp_dot > result.max)
@@ -60,7 +60,7 @@ namespace jgl
 			return (result);
 		}
 
-		jgl::Float _calc_distance(Axis_projection p_a, Axis_projection p_b) const
+		jgl::Float _calcDistance(AxisProjection p_a, AxisProjection p_b) const
 		{
 			if (p_a.min < p_b.min)
 				return p_b.min - p_a.max;
@@ -69,64 +69,64 @@ namespace jgl
 		}
 
 	public:
-		void set_center(jgl::Vector2 p_center)
+		void setCenter(jgl::Vector2 p_center)
 		{
-			center = p_center;
+			_center = p_center;
 		}
-		void set_size(jgl::Vector2 p_size)
+		void setSize(jgl::Vector2 p_size)
 		{
-			size = p_size;
+			_size = p_size;
 		}
-		void add_point(jgl::Vector2 p_point)
+		void addPoint(jgl::Vector2 p_point)
 		{
-			points.push_back(p_point);
+			_points.push_back(p_point);
 		}
-		void add_segment(jgl::Size_t p_a, jgl::Size_t p_b)
+		void addSegment(jgl::Size_t p_a, jgl::Size_t p_b)
 		{
-			Segment_data result;
+			SegmentData result;
 
 			result.a = p_a;
 			result.b = p_b;
-			result.norm = points[p_a].cross(points[p_b]).normalize();
+			result.norm = _points[p_a].cross(_points[p_b]).normalize();
 
-			segments.push_back(result);
+			_segments.push_back(result);
 		}
 
-		void reset_points()
+		void resetPoints()
 		{
-			points.clear();
+			_points.clear();
 		}
-		void reset_indexes()
+		void resetIndexes()
 		{
-			segments.clear();
+			_segments.clear();
 		}
 
-		jgl::Bool collide(const Polygon2D& p_other, jgl::Vector2 p_delta_pos = jgl::Vector2(0, 0))
+		jgl::Bool collideWithPolygon(const Polygon2D& p_other, jgl::Vector2 p_deltaPos = jgl::Vector2(0, 0))
 		{
 			jgl::Bool result = true;
 
-			for (jgl::Size_t i = 0; i < segments.size(); i++)
+			for (jgl::Size_t i = 0; i < _segments.size(); i++)
 			{
-				Axis_projection projection_a = _projection_on_axis(segments[i].norm);
-				Axis_projection projection_b = p_other._projection_on_axis(segments[i].norm, p_delta_pos);
+				AxisProjection projectionA = _projectionOnAxis(_segments[i].norm);
+				AxisProjection projectionB = p_other._projectionOnAxis(_segments[i].norm, p_deltaPos);
 
-				if (_calc_distance(projection_a, projection_b) > 0)
+				if (_calcDistance(projectionA, projectionB) > 0)
 					result = false;
 			}
 
 			return (result);
 		}
 
-		jgl::Bool collide(const jgl::Vector2& p_point, jgl::Vector2 p_delta_pos = jgl::Vector2(0, 0))
+		jgl::Bool collideWithPoint(const jgl::Vector2& p_point, jgl::Vector2 p_deltaPos = jgl::Vector2(0, 0))
 		{
 			jgl::Bool result = true;
 
-			for (jgl::Size_t i = 0; i < segments.size(); i++)
+			for (jgl::Size_t i = 0; i < _segments.size(); i++)
 			{
-				Axis_projection projection_a = _projection_on_axis(segments[i].norm);
-				Axis_projection projection_b = _project_point_on_axis(p_point, segments[i].norm, p_delta_pos);
+				AxisProjection projectionA = _projectionOnAxis(_segments[i].norm);
+				AxisProjection projectionB = _projectPointOnAxis(p_point, _segments[i].norm, p_deltaPos);
 
-				if (_calc_distance(projection_a, projection_b) > 0)
+				if (_calcDistance(projectionA, projectionB) > 0)
 					result = false;
 			}
 
