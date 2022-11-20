@@ -42,6 +42,7 @@
     <ClInclude Include="includes\Structure\jgl2_polymorphic_container.h" />
     <ClInclude Include="includes\Structure\jgl2_pool.h" />
     <ClInclude Include="includes\Structure\jgl2_shader.h" />
+    <ClInclude Include="includes\Structure\jgl2_singleton.h" />
     <ClInclude Include="includes\Structure\jgl2_sprite_sheet.h" />
     <ClInclude Include="includes\Structure\jgl2_thread.h" />
     <ClInclude Include="includes\Structure\jgl2_vector.h" />
@@ -50,6 +51,7 @@
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_box_component.h" />
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_text_label_component.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_button.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_singleton_widget.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_text_entry.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_text_label.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_widget.h" />

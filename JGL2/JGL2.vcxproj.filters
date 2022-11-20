@@ -123,6 +123,12 @@
     <ClInclude Include="includes\Structure\jgl2_observer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_singleton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\Widget\jgl2_singleton_widget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Structure\jgl2_iostream.cpp">
