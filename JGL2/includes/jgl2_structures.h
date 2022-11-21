@@ -14,3 +14,5 @@
 #include "Structure/jgl2_timer.h"
 
 #include "Structure/jgl2_widgets.h"
+
+#include "Structure/jgl2_network.h"

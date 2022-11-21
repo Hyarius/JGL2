@@ -25,6 +25,7 @@
     <ClInclude Include="includes\jgl2.h" />
     <ClInclude Include="includes\jgl2_basic_functions.h" />
     <ClInclude Include="includes\jgl2_basic_types.h" />
+    <ClInclude Include="includes\jgl2_dirent.h" />
     <ClInclude Include="includes\jgl2_drawing_functions.h" />
     <ClInclude Include="includes\jgl2_enums.h" />
     <ClInclude Include="includes\jgl2_includes.h" />
@@ -36,10 +37,14 @@
     <ClInclude Include="includes\Structure\jgl2_image_output.h" />
     <ClInclude Include="includes\Structure\jgl2_iostream.h" />
     <ClInclude Include="includes\Structure\jgl2_keyboard.h" />
+    <ClInclude Include="includes\Structure\jgl2_locked_queue.h" />
+    <ClInclude Include="includes\Structure\Network\jgl2_client.h" />
+    <ClInclude Include="includes\Structure\Network\jgl2_connection.h" />
+    <ClInclude Include="includes\Structure\Network\jgl2_message.h" />
     <ClInclude Include="includes\Structure\jgl2_mouse.h" />
+    <ClInclude Include="includes\Structure\jgl2_network.h" />
     <ClInclude Include="includes\Structure\jgl2_observer.h" />
     <ClInclude Include="includes\Structure\jgl2_openGLContext.h" />
-    <ClInclude Include="includes\Structure\jgl2_polygon2D.h" />
     <ClInclude Include="includes\Structure\jgl2_polymorphic_container.h" />
     <ClInclude Include="includes\Structure\jgl2_pool.h" />
     <ClInclude Include="includes\Structure\jgl2_shader.h" />
@@ -51,6 +56,7 @@
     <ClInclude Include="includes\Structure\jgl2_vector.h" />
     <ClInclude Include="includes\Structure\jgl2_viewport.h" />
     <ClInclude Include="includes\Structure\jgl2_widgets.h" />
+    <ClInclude Include="includes\Structure\Network\jgl2_server.h" />
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_box_component.h" />
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_text_label_component.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_button.h" />

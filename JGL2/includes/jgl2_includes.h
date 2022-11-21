@@ -17,6 +17,8 @@
 #include <vector>
 #include <map>
 
+#include "jgl2_dirent.h"
+
 #include <windows.h>
 
 #define GLEW_STATIC
@@ -27,3 +29,10 @@
 #include <GL/GLU.h>
 #include <GL/wglew.h>
 #pragma comment(lib, "opengl32.lib")
+
+#include <bitset>
+
+#define ASIO_STANDALONE
+#include <ExternalLibraries/asio.hpp>
+#include <ExternalLibraries/asio/ts/buffer.hpp>
+#include <ExternalLibraries/asio/ts/internet.hpp>

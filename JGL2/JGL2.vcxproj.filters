@@ -135,7 +135,25 @@
     <ClInclude Include="includes\Structure\jgl2_timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\Structure\jgl2_polygon2D.h">
+    <ClInclude Include="includes\Structure\jgl2_network.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\Network\jgl2_message.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\Network\jgl2_connection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\Network\jgl2_client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\Network\jgl2_server.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_locked_queue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\jgl2_dirent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
