@@ -9,6 +9,11 @@ namespace jgl
 	private:
 		std::thread* _thread;
 
+		~Thread()
+		{
+
+		}
+
 	public:
 		template< class Function, class... Args>
 		Thread(std::string p_name, Function&& p_funct, Args&&... p_argv)

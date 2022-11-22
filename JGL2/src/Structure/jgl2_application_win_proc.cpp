@@ -305,8 +305,8 @@ namespace jgl
 	{
 		MSG msg;
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) { // If we have a message to process, process it
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+			int translateResult = TranslateMessage(&msg);
+			int dispatchResult = DispatchMessage(&msg);
 		}
 	}
 
@@ -468,25 +468,32 @@ namespace jgl
 			case WM_SIZING:
 			case WM_MOUSEACTIVATE:
 			case WM_DEADCHAR:
+			case WM_CONTEXTMENU:
+			case WM_ENTERIDLE:
+			case WM_MENUSELECT:
+			case WM_ENTERMENULOOP:
+			case WM_EXITMENULOOP:
+			case WM_INITMENU:
+			case WM_NCDESTROY:
 			{
 				//Ignored message
 				break;
 			}
-			case 799:
-			case 49367:
-			case 144:
-			case 4261281277:
-			case 684:
-			case 719:
-			case 568:
-			case 617:
-			case 647:
-			case 480:
-			case 49366:
-			{
-				//Ignored message, but not stored in convert map
-				break;
-			}
+			//case 799:
+			//case 49367:
+			//case 144:
+			//case 4261281277:
+			//case 684:
+			//case 719:
+			//case 568:
+			//case 617:
+			//case 647:
+			//case 480:
+			//case 49366:
+			//{
+			//	//Ignored message, but not stored in convert map
+			//	break;
+			//}
 			default :
 			{
 				jgl::cout << "Unexpected message received : ";
@@ -537,8 +544,12 @@ namespace jgl
 		{
 			jgl::UInt width = LOWORD(lParam);
 			jgl::UInt height = HIWORD(lParam);
-			*newMessage << width << height;
-			break;
+
+			jgl::Application::instance()->resize(jgl::Vector2Int(width, height));
+
+			jgl::Application::instance()->_releaseWinMessage(newMessage);
+			
+			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
 
 		case WM_MOUSEHWHEEL:

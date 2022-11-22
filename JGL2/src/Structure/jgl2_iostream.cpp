@@ -34,6 +34,11 @@ namespace jgl
 
 	}
 
+	void IOStream::setPrefix(std::string p_prefix)
+	{
+		_prefix = p_prefix;
+	}
+
 	void IOStream::setEncoding(const char* locale, jgl::Int category)
 	{
 		setlocale(category, locale);
@@ -64,6 +69,19 @@ namespace jgl
 	IOStream& IOStream::operator << (const long p_value)
 	{
 		_addString(std::to_string(p_value));
+		return (*this);
+	}
+
+	IOStream& IOStream::operator << (const jgl::Bool p_bool)
+	{
+		if (p_bool == true)
+		{
+			_addString("True");
+		}
+		else
+		{
+			_addString("False");
+		}
 		return (*this);
 	}
 

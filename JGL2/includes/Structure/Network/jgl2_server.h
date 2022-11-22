@@ -125,15 +125,18 @@ namespace jgl
 			realResult = _computeMagicNumber(key);
 			if (realResult == clientResult)
 			{
-				client->acceptedByServer();
-				if (_loginFunct != nullptr)
-					_loginFunct(client);
+				jgl::cout << "Accepting client id [" << client->id() << "]" << jgl::endl;
 
 				msg.clear();
 				jgl::Bool response = true;
 				msg << response;
 
 				client->send(msg);
+				client->acceptedByServer();
+				if (_loginFunct != nullptr)
+				{
+					_loginFunct(client);
+				}
 				return (true);
 			}
 			else

@@ -5,6 +5,7 @@
 #include "Structure/jgl2_locked_queue.h"
 #include "Structure/Network/jgl2_message.h"
 #include "Structure/Network/jgl2_connection.h"
+#include "Structure/jgl2_thread.h"
 
 namespace jgl
 {
@@ -15,7 +16,7 @@ namespace jgl
 		using ActivityFunction = std::function< void(jgl::Message<TServerMessageEnum>&) >;
 	protected:
 		asio::io_context _asioContext;
-		std::thread _threadContext;
+		jgl::Thread* _threadContext;
 		jgl::Connection<TServerMessageEnum>* _connection;
 
 		jgl::ULong _messageTimeoutDelay = 0;
@@ -82,7 +83,10 @@ namespace jgl
 
 				_connection->connectToServer(endpoints);
 
-				_threadContext = std::thread([this]() { _asioContext.run(); });
+				_threadContext = new jgl::Thread("AsioContext", [&]()
+					{
+						_asioContext.run();
+					});
 			}
 			catch (const std::exception& e)
 			{
@@ -106,7 +110,7 @@ namespace jgl
 				asio::ip::tcp::resolver resolver(_asioContext);
 				asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(hostConverted, std::to_string(port));
 
-				_connection->connect_to_server(endpoints);
+				_connection->connectToServer(endpoints);
 				_connection->input()->clear();
 			}
 			catch (const std::exception& e)
@@ -131,10 +135,7 @@ namespace jgl
 			}
 
 			_asioContext.stop();
-			if (_threadContext.joinable())
-			{
-				_threadContext.join();
-			}
+			_threadContext->join();
 			_input.clear();
 		}
 
@@ -150,9 +151,9 @@ namespace jgl
 		{
 			if (_connection == nullptr)
 				return;
-			if (_connection->state() == jgl::Connection<TServerMessageEnum>::State::Unknown)
+			if (_input.empty() == false)
 			{
-				if (_input.empty() == false)
+				if (_connection->state() == jgl::Connection<TServerMessageEnum>::State::Unknown)
 				{
 					auto msg = _input.pop_front().msg;
 
@@ -171,10 +172,10 @@ namespace jgl
 					}
 					else if (msg.size() == sizeof(bool))
 					{
-						bool Accepted;
+						bool accepted;
 
-						msg >> Accepted;
-						if (Accepted == true)
+						msg >> accepted;
+						if (accepted == true)
 						{
 							_connection->acceptedByServer();
 						}
@@ -188,10 +189,7 @@ namespace jgl
 
 					}
 				}
-			}
-			else if (_connection->state() == jgl::Connection<TServerMessageEnum>::State::Accepted)
-			{
-				while (_input.empty() == false)
+				else if (_connection->state() == jgl::Connection<TServerMessageEnum>::State::Accepted)
 				{
 					auto input = _input.pop_front();
 					auto msg = input.msg;
@@ -207,7 +205,7 @@ namespace jgl
 					else
 					{
 						std::string errorMessage = "[CLIENT] - Message_received of unknow id (" + std::to_string(msg.type()) + ")";
-						std::runtime_error(errorMessage.c_str());
+						throw std::runtime_error(errorMessage.c_str());
 					}
 				}
 			}

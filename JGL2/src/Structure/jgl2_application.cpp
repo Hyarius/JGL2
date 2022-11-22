@@ -107,6 +107,7 @@ namespace jgl
 
 	void Application::_run()
 	{
+		jgl::cout.setPrefix("Renderer thread");
 		_updateThread = new jgl::Thread("Update thread", [&]() {
 			_runUpdate();
 			});

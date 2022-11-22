@@ -1,8 +1,6 @@
 #include "Structure/jgl2_shader.h"
 #include "jgl2_basic_functions.h"
 
-#define DEBUG_LINE() jgl::cout << __FUNCTION__ << "::" << static_cast<jgl::ULong>(__LINE__) << jgl::endl
-
 namespace jgl
 {
 	std::vector<std::vector<std::string>> element_type = {

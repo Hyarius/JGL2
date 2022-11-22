@@ -37,7 +37,7 @@ namespace jgl
 	private:
 		void _writeHeader()
 		{
-			asio::async_write(_socket, asio::buffer(&_output.front().header, sizeof(Message_header<TServerMessageEnum>)),
+			asio::async_write(_socket, asio::buffer(&_output.front().header, sizeof(MessageHeader<TServerMessageEnum>)),
 				[this](std::error_code ec, size_t length)
 				{
 					if (!ec)
@@ -80,7 +80,7 @@ namespace jgl
 
 		void _readHeader()
 		{
-			asio::async_read(_socket, asio::buffer(&_tmp_message.header, sizeof(Message_header<TServerMessageEnum>)),
+			asio::async_read(_socket, asio::buffer(&_tmp_message.header, sizeof(MessageHeader<TServerMessageEnum>)),
 				[this](std::error_code ec, size_t length)
 				{
 					if (!ec)
@@ -173,6 +173,7 @@ namespace jgl
 					_readHeader();
 				}
 			}
+			jgl::cout << "[Connection] - Connected to client" << jgl::endl;
 		}
 
 		void connectToServer(const asio::ip::tcp::resolver::results_type& endpoints)
@@ -189,6 +190,7 @@ namespace jgl
 							_readHeader();
 					});
 			}
+			jgl::cout << "[Connection] - Connected to server" << jgl::endl;
 		}
 
 		void disconnect()

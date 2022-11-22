@@ -14,19 +14,19 @@ namespace jgl
 		Size	uint16_t				4 bytes
 	*/
 	template <typename TServerMessageEnum >
-	struct Message_header
+	struct MessageHeader
 	{
 		TServerMessageEnum id{};
 		jgl::Size_t size = 0;
 		jgl::Size_t readed = 0;
 
-		Message_header()
+		MessageHeader()
 		{
 
 		}
-		Message_header(TServerMessageEnum type)
+		MessageHeader(TServerMessageEnum p_value)
 		{
-			id = type;
+			id = p_value;
 			size = 0;
 			readed = 0;
 		}
@@ -35,7 +35,7 @@ namespace jgl
 	template <typename TServerMessageEnum >
 	struct Message
 	{
-		Message_header<TServerMessageEnum> header{};
+		MessageHeader<TServerMessageEnum> header{};
 		std::vector<jgl::UChar> content;
 
 		/*
@@ -67,7 +67,7 @@ namespace jgl
 		*/
 		Message()
 		{
-			header = Message_header<TServerMessageEnum>();
+			header = MessageHeader<TServerMessageEnum>(0);
 			content.clear();
 		}
 
@@ -76,7 +76,7 @@ namespace jgl
 		*/
 		Message(TServerMessageEnum type)
 		{
-			header = Message_header<TServerMessageEnum>(type);
+			header = MessageHeader<TServerMessageEnum>(type);
 			content.clear();
 		}
 
