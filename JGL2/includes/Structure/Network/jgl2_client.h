@@ -30,14 +30,14 @@ namespace jgl
 
 		jgl::LockedQueue<jgl::InputMessage<TServerMessageEnum>> _input;
 
-		jgl::Long _computeMagicNumber(jgl::Int value)
+		jgl::Long _computeMagicNumber(jgl::Int p_value)
 		{
-			return (((_majorKeyNumber << 48) ^ value) + ((_mediumKeysNumber << 32) & value) + ((_minorKeysNumber << 16) | value) + (_abstractKeysNumber));
+			return (((_majorKeyNumber << 48) ^ p_value) + ((_mediumKeysNumber << 32) & p_value) + ((_minorKeysNumber << 16) | p_value) + (_abstractKeysNumber));
 		}
 
-		void _unsecuredSend(const jgl::Message<TServerMessageEnum>& msg)
+		void _unsecuredSend(const jgl::Message<TServerMessageEnum>& p_msg)
 		{
-			_connection->send(msg);
+			_connection->send(p_msg);
 		}
 
 		virtual ~Client()
@@ -51,26 +51,25 @@ namespace jgl
 
 		}
 
-		void addActivity(TServerMessageEnum msg_type, ActivityFunction funct)
+		void addActivity(TServerMessageEnum p_msg_type, ActivityFunction p_funct)
 		{
-			_activityMap[msg_type] = funct;
+			_activityMap[p_msg_type] = p_funct;
 		}
 
-		void setKeys(jgl::Int major_keys, jgl::Int medium_keys, jgl::Int minor_keys, jgl::Int abstract_keys)
+		void setKeys(jgl::Int p_major_keys, jgl::Int p_medium_keys, jgl::Int p_minor_keys, jgl::Int p_abstract_keys)
 		{
-			_majorKeyNumber = major_keys;
-			_mediumKeysNumber = medium_keys;
-			_minorKeysNumber = minor_keys;
-			_abstractKeysNumber = abstract_keys;
+			_majorKeyNumber = p_major_keys;
+			_mediumKeysNumber = p_medium_keys;
+			_minorKeysNumber = p_minor_keys;
+			_abstractKeysNumber = p_abstract_keys;
 		}
 
-		bool connect(std::string host, const jgl::UShort port)
+		bool connect(std::string p_host, const jgl::UShort p_port)
 		{
 			try
 			{
-				std::string hostConverted = std::string(host.c_str());
 				asio::ip::tcp::resolver resolver(_asioContext);
-				asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(hostConverted, std::to_string(port));
+				asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(p_host, std::to_string(p_port));
 
 				asio::ip::tcp::socket socket(_asioContext);
 
@@ -102,13 +101,12 @@ namespace jgl
 			return true;
 		}
 
-		bool reconnect(std::string host, const jgl::UShort port)
+		bool reconnect(std::string p_host, const jgl::UShort p_port)
 		{
 			try
 			{
-				std::string hostConverted = std::string(host.c_str());
 				asio::ip::tcp::resolver resolver(_asioContext);
-				asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(hostConverted, std::to_string(port));
+				asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(p_host, std::to_string(port));
 
 				_connection->connectToServer(endpoints);
 				_connection->input()->clear();
@@ -211,10 +209,10 @@ namespace jgl
 			}
 		}
 
-		void send(const jgl::Message<TServerMessageEnum>& msg)
+		void send(const jgl::Message<TServerMessageEnum>& p_msg)
 		{
 			if (_connection->state() == jgl::Connection<TServerMessageEnum>::State::Accepted)
-				_connection->send(msg);
+				_connection->send(p_msg);
 		}
 
 		jgl::LockedQueue<jgl::InputMessage<TServerMessageEnum>>& input()

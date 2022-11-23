@@ -38,51 +38,27 @@ namespace jgl
 		MessageHeader<TServerMessageEnum> header{};
 		std::vector<jgl::UChar> content;
 
-		/*
-			Return the type of the message, stored in the header
-		*/
 		TServerMessageEnum type() const
 		{
 			return (header.id);
 		}
 
-		/*
-			Return the size of the message, stored in the header
-		*/
 		jgl::UInt size() const
 		{
 			return (static_cast<jgl::UInt>(header.size - header.readed));
 		}
 
-		/*
-			Check if the message is empty
-		*/
 		jgl::Bool empty()
 		{
 			return (header.size <= header.readed);
 		}
 
-		/*
-			Create a new empty message with undefined ID
-		*/
-		Message()
+		Message(TServerMessageEnum p_type = {})
 		{
-			header = MessageHeader<TServerMessageEnum>(0);
+			header = MessageHeader<TServerMessageEnum>(p_type);
 			content.clear();
 		}
 
-		/*
-			Create a new message of ID [type]
-		*/
-		Message(TServerMessageEnum type)
-		{
-			header = MessageHeader<TServerMessageEnum>(type);
-			content.clear();
-		}
-
-		/*
-			Clear message content and reset the size in header
-		*/
 		void clear()
 		{
 			header.size = 0;
@@ -90,26 +66,17 @@ namespace jgl
 			content.clear();
 		}
 
-		/*
-			Skip a number of bytes inside the message
-		*/
 		void skip(jgl::Size_t p_nb_to_skip)
 		{
 			header.readed += p_nb_to_skip;
 		}
 
-		/*
-			Print the header data of the message
-		*/
-		friend std::ostream& operator << (std::ostream& os, const Message<TServerMessageEnum>& msg)
+		friend std::ostream& operator << (std::ostream& p_os, const Message<TServerMessageEnum>& p_msg)
 		{
-			os << "ID:" << int(msg.header.id) << " Size:" << msg.header.size;
-			return os;
+			p_os << "ID:" << int(p_msg.header.id) << " Size:" << p_msg.header.size;
+			return p_os;
 		}
 
-		/*
-			Add an array of data into the message
-		*/
 		void addInArray(jgl::UChar* p_array, jgl::Size_t p_length)
 		{
 			jgl::Size_t old_size = content.size();
@@ -121,9 +88,6 @@ namespace jgl
 			header.size = content.size();
 		}
 
-		/*
-			Load an array of data from the message
-		*/
 		void loadFromArray(void* p_address, jgl::Size_t p_length)
 		{
 			jgl::Size_t next_size = header.readed;// content.size() - sizeof(DataType);
@@ -153,11 +117,8 @@ namespace jgl
 			jgl::cout << jgl::endl;
 		}
 
-		/*
-			Add a data to the message, storing bytes in content for transmition
-		*/
 		template<typename DataType>
-		Message<TServerMessageEnum>& operator << (const DataType& data)
+		Message<TServerMessageEnum>& operator << (const DataType& p_data)
 		{
 			static_assert(std::is_standard_layout<DataType>::value, "Data is too complex to be pushed into vector");
 
@@ -165,7 +126,7 @@ namespace jgl
 
 			(*this).content.resize((*this).content.size() + sizeof(DataType));
 
-			std::memcpy((*this).content.data() + old_size, &data, sizeof(DataType));
+			std::memcpy((*this).content.data() + old_size, &p_data, sizeof(DataType));
 
 			(*this).header.size = static_cast<jgl::Size_t>((*this).content.size());
 
@@ -173,13 +134,13 @@ namespace jgl
 		}
 
 		template<typename DataType>
-		Message<TServerMessageEnum>& operator >> (DataType& data)
+		Message<TServerMessageEnum>& operator >> (DataType& p_data)
 		{
 			static_assert(std::is_standard_layout<DataType>::value, "Data is too complex to be pulled from vector");
 
 			jgl::Size_t next_size = (*this).header.readed;// (*this).content.size() - sizeof(DataType);
 
-			std::memcpy(&data, (*this).content.data() + next_size, sizeof(DataType));
+			std::memcpy(&p_data, (*this).content.data() + next_size, sizeof(DataType));
 
 			(*this).header.readed += sizeof(DataType);
 
@@ -187,27 +148,27 @@ namespace jgl
 		}
 
 		template<>
-		Message<TServerMessageEnum>& operator << <std::string>	(const std::string& text)
+		Message<TServerMessageEnum>& operator << <std::string>	(const std::string& p_text)
 		{
-			*this << text.size();
-			for (jgl::Size_t i = 0; i < text.size(); i++)
-				*this << text[i];
+			*this << p_text.size();
+			for (jgl::Size_t i = 0; i < p_text.size(); i++)
+				*this << p_text[i];
 			return *this;
 		}
 
 		template<>
-		Message<TServerMessageEnum>& operator >> <std::string>	(std::string& text)
+		Message<TServerMessageEnum>& operator >> <std::string>	(std::string& p_text)
 		{
 			jgl::Size_t size;
 			jgl::UInt i = 0;
 
 			*this >> size;
-			text.clear();
+			p_text.clear();
 			while (empty() == false && i < size)
 			{
 				jgl::Char c;
 				*this >> c;
-				text.push_back(c);
+				p_text.push_back(c);
 				i++;
 			}
 

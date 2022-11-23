@@ -130,12 +130,12 @@ namespace jgl
 		}
 
 	public:
-		Connection(Connection::Owner parent, asio::io_context& p_context, asio::ip::tcp::socket p_socket, jgl::LockedQueue<jgl::InputMessage<TServerMessageEnum>>* p_input)
+		Connection(Connection::Owner p_parent, asio::io_context& p_context, asio::ip::tcp::socket p_socket, jgl::LockedQueue<jgl::InputMessage<TServerMessageEnum>>* p_input)
 			: _context(p_context), _socket(std::move(p_socket)), _input(p_input), _tmp_message({})
 		{
 			_state = Connection::State::Unknown;
 			_id = 0;
-			_owner = parent;
+			_owner = p_parent;
 		}
 
 		State state() { return (_state); }
@@ -176,12 +176,12 @@ namespace jgl
 			jgl::cout << "[Connection] - Connected to client" << jgl::endl;
 		}
 
-		void connectToServer(const asio::ip::tcp::resolver::results_type& endpoints)
+		void connectToServer(const asio::ip::tcp::resolver::results_type& p_endpoints)
 		{
 			if (_owner == Connection::Owner::Client)
 			{
 				asio::async_connect(_socket, endpoints,
-					[this](std::error_code ec, asio::ip::tcp::endpoint endpoint)
+					[this](std::error_code ec, asio::ip::tcp::endpoint p_endpoint)
 					{
 						asio::ip::tcp::no_delay no_delay(true);
 						_socket.set_option(no_delay);
@@ -206,16 +206,16 @@ namespace jgl
 			return (_socket.is_open());
 		}
 
-		void send(const jgl::Message<TServerMessageEnum>& msg)
+		void send(const jgl::Message<TServerMessageEnum>& p_msg)
 		{
 			if (isConnected() == false)
 				return;
 
 			asio::post(_context,
-				[this, msg]()
+				[this, p_msg]()
 				{
 					bool state = _output.empty();
-					_output.push_back(msg);
+					_output.push_back(p_msg);
 					if (state == true)
 						_writeHeader();
 				});

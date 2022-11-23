@@ -42,24 +42,24 @@ namespace jgl
 
 		jgl::UInt _idCount = 10000;
 
-		jgl::Long _computeMagicNumber(jgl::Long value)
+		jgl::Long _computeMagicNumber(jgl::Long p_value)
 		{
-			return (((_majorKeysNumber << 48) ^ value) + ((_mediumKeysNumber << 32) & value) + ((_minorKeysNumber << 16) | value) + (_abstractKeysNumber));
+			return (((_majorKeysNumber << 48) ^ p_value) + ((_mediumKeysNumber << 32) & p_value) + ((_minorKeysNumber << 16) | p_value) + (_abstractKeysNumber));
 		}
 
 		void _waitForConnection()
 		{
 			_acceptor.async_accept(
-				[this](std::error_code ec, asio::ip::tcp::socket socket)
+				[this](std::error_code p_ec, asio::ip::tcp::socket p_socket)
 				{
 					try
 					{
-						if (!ec)
+						if (!p_ec)
 						{
 							asio::ip::tcp::no_delay noDelay(true);
-							socket.set_option(noDelay);
+							p_socket.set_option(noDelay);
 
-							ServerConnection* newConnection = new ServerConnection(ServerConnection::Owner::Server, _asioContext, std::move(socket), &_input);
+							ServerConnection* newConnection = new ServerConnection(ServerConnection::Owner::Server, _asioContext, std::move(p_socket), &_input);
 
 							_clientConnect(newConnection);
 
@@ -85,17 +85,17 @@ namespace jgl
 				});
 		}
 
-		void _onMessageReception(ServerConnection* client, jgl::Message<TServerMessageEnum>& msg)
+		void _onMessageReception(ServerConnection* p_client, jgl::Message<TServerMessageEnum>& p_msg)
 		{
 			if (client->state() == ServerConnection::State::Accepted)
 			{
-				if (_activityMap.count(msg.type()) != 0)
+				if (_activityMap.count(p_msg.type()) != 0)
 				{
-					_activityMap[msg.type()](client, msg);
+					_activityMap[p_msg.type()](p_client, p_msg);
 				}
 				else
 				{
-					jgl::cout << "[SERVER] - Message_received of unknow id(" << static_cast<jgl::Int>(msg.type()) << ")" << jgl::endl;
+					jgl::cout << "[SERVER] - Message_received of unknow id(" << static_cast<jgl::Int>(p_msg.type()) << ")" << jgl::endl;
 				}
 			}
 			else if (client->state() == ServerConnection::State::Unknown)
@@ -104,56 +104,56 @@ namespace jgl
 			}
 		}
 
-		void _clientConnect(ServerConnection* client)
+		void _clientConnect(ServerConnection* p_client)
 		{
 			jgl::Message<TServerMessageEnum> msg;
 
 			msg << _validationKey;
 
-			client->send(msg);
+			p_client->send(msg);
 		};
 
-		jgl::Bool _validateClientConnection(ServerConnection* client, jgl::Message<TServerMessageEnum>& msg)
+		jgl::Bool _validateClientConnection(ServerConnection* p_client, jgl::Message<TServerMessageEnum>& p_msg)
 		{
 			jgl::Long key;
 			jgl::Long clientResult;
 			jgl::Long realResult;
 
-			msg >> key;
-			msg >> clientResult;
+			p_msg >> key;
+			p_msg >> clientResult;
 
 			realResult = _computeMagicNumber(key);
 			if (realResult == clientResult)
 			{
-				jgl::cout << "Accepting client id [" << client->id() << "]" << jgl::endl;
+				jgl::cout << "Accepting client id [" << p_client->id() << "]" << jgl::endl;
 
-				msg.clear();
+				p_msg.clear();
 				jgl::Bool response = true;
-				msg << response;
+				p_msg << response;
 
-				client->send(msg);
-				client->acceptedByServer();
+				p_client->send(msg);
+				p_client->acceptedByServer();
 				if (_loginFunct != nullptr)
 				{
-					_loginFunct(client);
+					_loginFunct(p_client);
 				}
 				return (true);
 			}
 			else
 			{
-				client->refusedByServer();
-				msg.clear();
+				p_client->refusedByServer();
+				p_msg.clear();
 				jgl::Bool response = false;
-				msg << response;
-				client->send(msg);
+				p_msg << response;
+				p_client->send(p_msg);
 				return (false);
 			}
 		}
 
-		void _clientDisconnect(ServerConnection* client)
+		void _clientDisconnect(ServerConnection* p_client)
 		{
 			if (_logoutFunct != nullptr)
-				_logoutFunct(client);
+				_logoutFunct(p_client);
 		};
 
 		virtual ~Server()
@@ -162,9 +162,9 @@ namespace jgl
 		}
 
 	public:
-		Server(uint16_t port) :
+		Server(uint16_t p_port) :
 			_asioContext(),
-			_acceptor(_asioContext, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), port))
+			_acceptor(_asioContext, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), p_port))
 		{
 
 		}
@@ -186,9 +186,9 @@ namespace jgl
 			return (nullptr);
 		}
 
-		void addActivity(TServerMessageEnum msg_type, ActivityFunct funct)
+		void addActivity(TServerMessageEnum p_msg_type, ActivityFunct p_funct)
 		{
-			_activityMap[msg_type] = funct;
+			_activityMap[p_msg_type] = p_funct;
 		}
 
 		void setLoginFunction(LoginFunct p_loginFunct)
@@ -206,12 +206,12 @@ namespace jgl
 			_validationKey = p_validationKey;
 		}
 
-		void setKeys(jgl::Int major_version, jgl::Int medium_version, jgl::Int minor_version, jgl::Int abstract_version)
+		void setKeys(jgl::Int p_major_version, jgl::Int p_medium_version, jgl::Int p_minor_version, jgl::Int p_abstract_version)
 		{
-			_majorKeysNumber = major_version;
-			_mediumKeysNumber = medium_version;
-			_minorKeysNumber = minor_version;
-			_abstractKeysNumber = abstract_version;
+			_majorKeysNumber = p_major_version;
+			_mediumKeysNumber = p_medium_version;
+			_minorKeysNumber = p_minor_version;
+			_abstractKeysNumber = p_abstract_version;
 		}
 
 		void start()
@@ -250,15 +250,15 @@ namespace jgl
 			return (_isActive);
 		}
 
-		void sendTo(ServerConnection* client, const jgl::Message<TServerMessageEnum>& msg)
+		void sendTo(ServerConnection* p_client, const jgl::Message<TServerMessageEnum>& p_msg)
 		{
-			if (client != nullptr && client->isConnected())
+			if (p_client != nullptr && p_client->isConnected())
 			{
-				client->send(msg);
+				p_client->send(p_msg);
 			}
 			else
 			{
-				_clientDisconnect(client);
+				_clientDisconnect(p_client);
 				_activeConnection.erase(
 					std::remove(_activeConnection.begin(), _activeConnection.end(), client), _activeConnection.end());
 				_acceptedConnection.erase(
@@ -266,7 +266,7 @@ namespace jgl
 			}
 		}
 
-		void sendToAll(const jgl::Message<TServerMessageEnum>& msg, ServerConnection* p_ignore = nullptr)
+		void sendToAll(const jgl::Message<TServerMessageEnum>& p_msg, ServerConnection* p_ignore = nullptr)
 		{
 			jgl::Bool error = false;
 
@@ -274,7 +274,7 @@ namespace jgl
 			{
 				if (client != nullptr && client != p_ignore)
 				{
-					sendTo(client, msg);
+					sendTo(client, p_msg);
 				}
 			}
 
