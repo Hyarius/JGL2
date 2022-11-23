@@ -180,7 +180,7 @@ namespace jgl
 		{
 			if (_owner == Connection::Owner::Client)
 			{
-				asio::async_connect(_socket, endpoints,
+				asio::async_connect(_socket, p_endpoints,
 					[this](std::error_code ec, asio::ip::tcp::endpoint p_endpoint)
 					{
 						asio::ip::tcp::no_delay no_delay(true);

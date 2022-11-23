@@ -87,7 +87,7 @@ namespace jgl
 
 		void _onMessageReception(ServerConnection* p_client, jgl::Message<TServerMessageEnum>& p_msg)
 		{
-			if (client->state() == ServerConnection::State::Accepted)
+			if (p_client->state() == ServerConnection::State::Accepted)
 			{
 				if (_activityMap.count(p_msg.type()) != 0)
 				{
@@ -98,9 +98,9 @@ namespace jgl
 					jgl::cout << "[SERVER] - Message_received of unknow id(" << static_cast<jgl::Int>(p_msg.type()) << ")" << jgl::endl;
 				}
 			}
-			else if (client->state() == ServerConnection::State::Unknown)
+			else if (p_client->state() == ServerConnection::State::Unknown)
 			{
-				_validateClientConnection(client, msg);
+				_validateClientConnection(p_client, p_msg);
 			}
 		}
 
@@ -131,7 +131,7 @@ namespace jgl
 				jgl::Bool response = true;
 				p_msg << response;
 
-				p_client->send(msg);
+				p_client->send(p_msg);
 				p_client->acceptedByServer();
 				if (_loginFunct != nullptr)
 				{
@@ -260,9 +260,9 @@ namespace jgl
 			{
 				_clientDisconnect(p_client);
 				_activeConnection.erase(
-					std::remove(_activeConnection.begin(), _activeConnection.end(), client), _activeConnection.end());
+					std::remove(_activeConnection.begin(), _activeConnection.end(), p_client), _activeConnection.end());
 				_acceptedConnection.erase(
-					std::remove(_acceptedConnection.begin(), _acceptedConnection.end(), client), _acceptedConnection.end());
+					std::remove(_acceptedConnection.begin(), _acceptedConnection.end(), p_client), _acceptedConnection.end());
 			}
 		}
 

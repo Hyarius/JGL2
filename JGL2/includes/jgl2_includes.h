@@ -16,6 +16,7 @@
 #include <deque>
 #include <vector>
 #include <map>
+#include <set>
 
 #include "jgl2_dirent.h"
 

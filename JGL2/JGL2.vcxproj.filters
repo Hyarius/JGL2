@@ -156,6 +156,9 @@
     <ClInclude Include="includes\jgl2_dirent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_tilemap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Structure\jgl2_iostream.cpp">

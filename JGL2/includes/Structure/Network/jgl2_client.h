@@ -106,7 +106,7 @@ namespace jgl
 			try
 			{
 				asio::ip::tcp::resolver resolver(_asioContext);
-				asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(p_host, std::to_string(port));
+				asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(p_host, std::to_string(p_port));
 
 				_connection->connectToServer(endpoints);
 				_connection->input()->clear();
