@@ -16,3 +16,5 @@
 #include "Structure/jgl2_widgets.h"
 
 #include "Structure/jgl2_network.h"
+
+#include "Structure/jgl2_tilemap.h"

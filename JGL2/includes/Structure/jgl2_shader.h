@@ -367,55 +367,55 @@ namespace jgl
 		void send(T data)
 		{
 			if (_uniformChecker(Mode::Element, Type::Float, Size::Two) == true)
-				glUniform2f(_location, data.x, data.y);
+				glUniform2f(_location, data.x(), data.y());
 		}
 		template <typename T, typename std::enable_if < std::is_same <Vector2Int, T>::value == true > ::type* = nullptr >
 		void send(T data)
 		{
 			if (_uniformChecker(Mode::Element, Type::Int, Size::Two) == true)
-				glUniform2i(_location, data.x, data.y);
+				glUniform2i(_location, data.x(), data.y());
 		}
 		template <typename T, typename std::enable_if < std::is_same <Vector2UInt, T>::value == true > ::type* = nullptr >
 		void send(T data)
 		{
 			if (_uniformChecker(Mode::Element, Type::UInt, Size::Two) == true)
-				glUniform2ui(_location, data.x, data.y);
+				glUniform2ui(_location, data.x(), data.y());
 		}
 		template <typename T, typename std::enable_if < std::is_same <Vector3, T>::value == true > ::type* = nullptr >
 		void send(T data)
 		{
 			if (_uniformChecker(Mode::Element, Type::Float, Size::Three) == true)
-				glUniform3f(_location, data.x, data.y, data.z);
+				glUniform3f(_location, data.x(), data.y(), data.z());
 		}
 		template <typename T, typename std::enable_if < std::is_same <Vector3Int, T>::value == true > ::type* = nullptr >
 		void send(T data)
 		{
 			if (_uniformChecker(Mode::Element, Type::Int, Size::Three) == true)
-				glUniform3i(_location, data.x, data.y, data.z);
+				glUniform3i(_location, data.x(), data.y(), data.z());
 		}
 		template <typename T, typename std::enable_if < std::is_same <Vector3UInt, T>::value == true > ::type* = nullptr >
 		void send(T data)
 		{
 			if (_uniformChecker(Mode::Element, Type::UInt, Size::Three) == true)
-				glUniform3ui(_location, data.x, data.y, data.z);
+				glUniform3ui(_location, data.x(), data.y(), data.z());
 		}
 		template <typename T, typename std::enable_if < std::is_same <Vector4, T>::value == true > ::type* = nullptr >
 		void send(T data)
 		{
 			if (_uniformChecker(Mode::Element, Type::Float, Size::Four) == true)
-				glUniform4f(_location, data.x, data.y, data.z, data.w);
+				glUniform4f(_location, data.x(), data.y(), data.z(), data.w());
 		}
 		template <typename T, typename std::enable_if < std::is_same <Vector4Int, T>::value == true > ::type* = nullptr >
 		void send(T data)
 		{
 			if (_uniformChecker(Mode::Element, Type::Int, Size::Four) == true)
-				glUniform4i(_location, data.x, data.y, data.z, data.w);
+				glUniform4i(_location, data.x(), data.y(), data.z(), data.w());
 		}
 		template <typename T, typename std::enable_if < std::is_same <Vector4UInt, T>::value == true > ::type* = nullptr >
 		void send(T data)
 		{
 			if (_uniformChecker(Mode::Element, Type::UInt, Size::Four) == true)
-				glUniform4ui(_location, data.x, data.y, data.z, data.w);
+				glUniform4ui(_location, data.x(), data.y(), data.z(), data.w());
 		}
 		/*
 		template <typename T, typename std::enable_if < std::is_same <Matrix2x2, T>::value == true > ::type* = nullptr >

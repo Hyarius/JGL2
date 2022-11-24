@@ -210,21 +210,38 @@ namespace jgl
 	
 	std::string methodName(const std::string& prettyFunction)
 	{
-		size_t begin = prettyFunction.rfind("::") + 2;
-		size_t end = prettyFunction.rfind("(") - begin;
-
-		return prettyFunction.substr(begin, end) + "()";
+		size_t end = prettyFunction.rfind("(");
+		size_t beginColon = prettyFunction.substr(0, end).rfind("::") + 2;
+		size_t beginSpace = prettyFunction.substr(0, end).rfind(" ") + 1;
+		size_t begin = std::max(beginColon, beginSpace);
+		std::string result = prettyFunction.substr(begin, end - begin);
+		return (result + "()");
 	}
 
 	std::string className(const std::string& prettyFunction)
 	{
-		size_t colons = prettyFunction.rfind("::");
-		if (colons == std::string::npos)
-			return "::";
-		size_t begin = prettyFunction.substr(0, colons).rfind(" ") + 1;
-		size_t end = colons - begin;
+		size_t methodEnd = prettyFunction.rfind("(");
+		size_t beginColon = prettyFunction.substr(0, methodEnd).rfind("::") + 2;
+		size_t beginSpace = prettyFunction.substr(0, methodEnd).rfind(" ") + 1;
+		size_t methodBegin = std::max(beginColon, beginSpace);
+		jgl::Int closingBracket = 0;
+		jgl::Size_t resultStart = 0;
 
-		return prettyFunction.substr(begin, end);
+		for (jgl::Int i = methodBegin; i > 0; i--)
+		{
+			if (prettyFunction[i] == '>')
+				closingBracket++;
+			if (prettyFunction[i] == '<')
+				closingBracket--;
+			if ((prettyFunction[i] == ' ' || prettyFunction[i] == '\t') && closingBracket == 0)
+				break;
+			resultStart = i;
+		}
+
+		if (resultStart == methodBegin)
+			return ("No class");
+
+		return (prettyFunction.substr(resultStart, methodBegin - resultStart - 2));
 	}
 
 	jgl::Float degreeToRadian(const jgl::Float& angle)

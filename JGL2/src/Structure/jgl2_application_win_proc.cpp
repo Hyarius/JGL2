@@ -322,8 +322,6 @@ namespace jgl
 			switch (messageId)
 			{
 			case WM_DESTROY:
-			case WM_QUIT:
-			case WM_CLOSE:
 			{
 				quit();
 				break;
@@ -439,6 +437,8 @@ namespace jgl
 				_keyboard._keys[value] = jgl::InputStatus::Released;
 				break;
 			}
+			case WM_QUIT:
+			case WM_CLOSE:
 			case WM_NCHITTEST :
 			case WM_SETCURSOR :
 			case WM_NCMOUSEMOVE :

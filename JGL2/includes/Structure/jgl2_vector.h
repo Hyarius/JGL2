@@ -198,6 +198,44 @@ namespace jgl
 			return (result);
 		}
 
+		Vector<TType, C_NB_DIM> floor() const
+		{
+			Vector<TType, C_NB_DIM> result;
+
+			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
+			{
+				result.values[i] = std::floor(values[i]);
+			}
+
+			return (result);
+		}
+
+		Vector<TType, C_NB_DIM> ceil() const
+		{
+			Vector<TType, C_NB_DIM> result;
+
+			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
+			{
+				result.values[i] = std::ceil(values[i]);
+			}
+
+			return (result);
+		}
+
+		Vector<TType, C_NB_DIM> round() const
+		{
+			Vector<TType, C_NB_DIM> result;
+
+			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
+			{
+				result.values[i] = std::round(values[i]);
+			}
+
+			return (result);
+		}
+
+
+
 		template <typename TOtherType>
 		bool operator == (const Vector<TOtherType, C_NB_DIM>& p_other) const
 		{
@@ -439,6 +477,9 @@ namespace jgl
 		TType& x() { return (this->values[0]); };
 		TType& y() { return (this->values[1]); };
 		TType& z() { return (this->values[2]); };
+		const TType& x() const { return (this->values[0]); };
+		const TType& y() const { return (this->values[1]); };
+		const TType& z() const { return (this->values[2]); };
 
 		BaseVector3() : Vector<TType, 3>()
 		{
@@ -492,7 +533,11 @@ namespace jgl
 		TType& x() { return (this->values[0]); };
 		TType& y() { return (this->values[1]); };
 		TType& z() { return (this->values[2]); };
-		TType& w() { return (this->values[3]); };
+		TType& w() { return (this->values[3]); }; 
+		const TType& x() const { return (this->values[0]); };
+		const TType& y() const { return (this->values[1]); };
+		const TType& z() const { return (this->values[2]); };
+		const TType& w() const { return (this->values[3]); };
 
 		BaseVector4() : Vector<TType, 4>()
 		{

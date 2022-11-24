@@ -16,8 +16,8 @@ namespace jgl
 		static const jgl::Short SOUTH_WALKABLE = 0b0000000000000100;
 		static const jgl::Short WEST_WALKABLE = 0b0000000000001000;
 		static const jgl::Short WALKABLE = 0b0000000000001111;
-		static jgl::Size_t SIZE;
-		static jgl::Vector3 UNIT;
+		static inline jgl::Size_t SIZE = 1;
+		static inline jgl::Vector3 UNIT = jgl::Vector3(0, 0, 0);
 		jgl::ULong id;
 		jgl::Vector2 sprite;
 		jgl::Char animationSize;
@@ -69,7 +69,7 @@ namespace jgl
 
 		IChunk(jgl::Vector2Int p_pos) :
 			_pos(p_pos),
-			_deltaPosToApply(p_pos* NChunkSize)
+			_deltaPosToApply(p_pos* jgl::Vector2Int(NChunkSize, NChunkSize))
 		{
 			static_assert(NChunkDepth != 0, "Chunk can't have a depth of 0");
 			static_assert(std::is_base_of<INode, TNodeType>::value, "Chunk can only allow INode inherenced template");
@@ -95,17 +95,17 @@ namespace jgl
 
 		jgl::Short content(jgl::Vector2Int p_pos)
 		{
-			return (content(p_pos.x, p_pos.y, 0));
+			return (content(p_pos.x(), p_pos.y(), 0));
 		}
 
 		jgl::Short content(jgl::Vector2Int p_pos, jgl::Int p_z)
 		{
-			return (content(p_pos.x, p_pos.y, p_z));
+			return (content(p_pos.x(), p_pos.y(), p_z));
 		}
 
 		jgl::Short content(jgl::Vector3Int p_pos)
 		{
-			return (content(p_pos.x, p_pos.y, p_pos.z));
+			return (content(p_pos.x(), p_pos.y(), p_pos.z()));
 		}
 
 		jgl::Short content(jgl::Int p_x, jgl::Int p_y, jgl::Int p_z)
@@ -124,18 +124,18 @@ namespace jgl
 
 		void setContent(jgl::Vector2Int p_pos, jgl::Short p_value)
 		{
-			setContent(p_pos.x, p_pos.y, 0, p_value);
+			setContent(p_pos.x(), p_pos.y(), 0, p_value);
 		}
 
 
 		void setContent(jgl::Vector2Int p_pos, jgl::Int p_depth, jgl::Short p_value)
 		{
-			setContent(p_pos.x, p_pos.y, p_depth, p_value);
+			setContent(p_pos.x(), p_pos.y(), p_depth, p_value);
 		}
 
 		void setContent(jgl::Vector3Int p_pos, jgl::Short p_value)
 		{
-			setContent(p_pos.x, p_pos.y, p_pos.z, p_value);
+			setContent(p_pos.x(), p_pos.y(), p_pos.z(), p_value);
 		}
 	};
 
@@ -198,7 +198,10 @@ void main()
 				{
 					shader = jgl::Application::instance()->shader("ChunkShader");
 					if (shader == nullptr)
-						shader = jgl::Application::instance()->addShader("ChunkShader", C_VERTEX_SHADER_CODE, C_FRAGMENT_SHADER_CODE);
+					{
+						jgl::Application::instance()->addShader("ChunkShader", new jgl::Shader(C_VERTEX_SHADER_CODE, C_FRAGMENT_SHADER_CODE));
+						shader = jgl::Application::instance()->shader("ChunkShader");
+					}
 				}
 
 				if (modelSpaceBuffer == nullptr)
@@ -208,7 +211,7 @@ void main()
 				if (animationSpriteDeltaBuffer == nullptr)
 					animationSpriteDeltaBuffer = shader->buffer("animation_sprite_delta")->copy();
 				if (indexesBuffer == nullptr)
-					indexesBuffer = shader->indexesBuffer()->copy();
+					indexesBuffer = shader->elementBuffer()->copy();
 
 				if (deltaModelUniform == nullptr)
 					deltaModelUniform = shader->uniform("delta_model")->copy();
@@ -240,7 +243,7 @@ void main()
 					animationSpriteDeltaBuffer->activate();
 					indexesBuffer->activate();
 
-					shader->cast(jgl::Shader::Mode::Triangle, indexesBuffer->size() / sizeof(jgl::Uint));
+					shader->cast(jgl::Shader::Mode::Triangle, indexesBuffer->size() / sizeof(jgl::UInt));
 				}
 			}
 		};
@@ -384,21 +387,21 @@ void main()
 			jgl::Vector2(1, 0),
 			jgl::Vector2(1, 1)
 		};
-		static inline jgl::Uint _elementIndex[6] = {
+		static inline jgl::UInt _elementIndex[6] = {
 			0, 3, 1, 2, 3, 0
 		};
 		static inline jgl::SpriteSheet* _nodeTexture = nullptr;
-		static inline std::vector<jgl::Vector3> vertexArray;
-		static inline std::vector<jgl::Vector2> uvsArray;
-		static inline std::vector<jgl::Float> animationSpriteDeltaArray;
-		static inline std::vector<jgl::Uint> elementArray;
+		static inline std::vector<jgl::Vector3> _vertexArray;
+		static inline std::vector<jgl::Vector2> _uvsArray;
+		static inline std::vector<jgl::Float> _animationSpriteDeltaArray;
+		static inline std::vector<jgl::UInt> _elementArray;
 
 	protected:
 		void _initializeOpenglData()
 		{
-			if (TNodeType::UNIT == 0.0f)
+			if (TNodeType::UNIT == jgl::Vector3(0, 0, 0))
 			{
-				TNodeType::UNIT = jgl::Application::instance()->convertScreenToOpenGL(jgl::Vector2Int(TNodeType::SIZE, TNodeType::SIZE), 1) - jgl::Application::instance()->convertScreenToOpenGL(0, 0);
+				TNodeType::UNIT = jgl::Application::instance()->convertScreenToOpenGL(jgl::Vector2Int(TNodeType::SIZE, TNodeType::SIZE)) - jgl::Application::instance()->convertScreenToOpenGL(jgl::Vector2Int(0, 0));
 			}
 			if (_shaderData.generated == false)
 				_shaderData.generate();
@@ -413,19 +416,19 @@ void main()
 			jgl::Bool values[3] = { false, false, false };
 			for (jgl::Size_t j = 0; j < 3; j++)
 			{
-				jgl::Vector2Int next_pos = jgl::Vector2Int(p_x + _bakingNeightbourNode[p_sub_part][j].x, p_y + _bakingNeightbourNode[p_sub_part][j].y);
-				jgl::Int chunk_x = (next_pos.x == -1 ? 0 : (next_pos.x != NChunkSize ? 1 : 2));
-				jgl::Int chunk_y = (next_pos.y == -1 ? 0 : (next_pos.y != NChunkSize ? 1 : 2));
+				jgl::Vector2Int next_pos = jgl::Vector2Int(p_x + _bakingNeightbourNode[p_sub_part][j].x(), p_y + _bakingNeightbourNode[p_sub_part][j].y());
+				jgl::Int chunk_x = (next_pos.x() == -1 ? 0 : (next_pos.x() != NChunkSize ? 1 : 2));
+				jgl::Int chunk_y = (next_pos.y() == -1 ? 0 : (next_pos.y() != NChunkSize ? 1 : 2));
 
-				if (next_pos.x == -1)
-					next_pos.x = NChunkSize - 1;
-				if (next_pos.y == -1)
-					next_pos.y = NChunkSize - 1;
+				if (next_pos.x() == -1)
+					next_pos.x() = NChunkSize - 1;
+				if (next_pos.y() == -1)
+					next_pos.y() = NChunkSize - 1;
 
-				if (next_pos.x == NChunkSize)
-					next_pos.x = 0;
-				if (next_pos.y == NChunkSize)
-					next_pos.y = 0;
+				if (next_pos.x() == NChunkSize)
+					next_pos.x() = 0;
+				if (next_pos.y() == NChunkSize)
+					next_pos.y() = 0;
 
 				jgl::Int nextValue;
 
@@ -463,7 +466,7 @@ void main()
 			for (jgl::Size_t face = 0; face < 4; face++)
 			{
 				jgl::Vector2Int sprite_value = p_node->sprite + _calcSubPartSprite(p_x, p_y, p_z, face);
-				jgl::Uint sprite_id = (_nodeTexture->size().x * sprite_value.y) + sprite_value.x;
+				jgl::UInt sprite_id = (_nodeTexture->size().x() * sprite_value.y()) + sprite_value.x();
 				jgl::Vector3 node_pos = jgl::Vector3(p_x, p_y, p_z) + _deltaAutotilePosition[face];
 				jgl::Vector2 sprite = _nodeTexture->sprite(sprite_id);
 				jgl::Vector2 unit = _nodeTexture->unit();
@@ -490,7 +493,7 @@ void main()
 			TNodeType* p_node,
 			jgl::Int p_x, jgl::Int p_y, jgl::Int p_z)
 		{
-			jgl::Uint sprite_id = (_nodeTexture->size().x * p_node->sprite.y) + p_node->sprite.x;
+			jgl::UInt sprite_id = (_nodeTexture->size().x() * p_node->sprite.y()) + p_node->sprite.x();
 			jgl::Vector3 node_pos = jgl::Vector3(p_x, p_y, p_z);
 			jgl::Vector2 sprite = _nodeTexture->sprite(sprite_id);
 			jgl::Vector2 unit = _nodeTexture->unit();
@@ -518,7 +521,7 @@ void main()
 			{
 				TNodeType* tmpNode = this->_nodes[value];
 
-				if (tmpNode->sprite.x >= 0 && tmpNode->sprite.y >= 0)
+				if (tmpNode->sprite.x() >= 0 && tmpNode->sprite.y() >= 0)
 				{
 					if (tmpNode->autotiled == true)
 					{
@@ -583,10 +586,10 @@ void main()
 			}
 
 
-			vertexArray.clear();
-			uvsArray.clear();
-			animationSpriteDeltaArray.clear();
-			elementArray.clear();
+			_vertexArray.clear();
+			_uvsArray.clear();
+			_animationSpriteDeltaArray.clear();
+			_elementArray.clear();
 
 			for (jgl::Size_t i = 0; i < NChunkSize; i++)
 				for (jgl::Size_t j = 0; j < NChunkSize; j++)
@@ -595,10 +598,10 @@ void main()
 						_bakeContent(i, j, h);
 					}
 
-			_shaderData.modelSpaceBuffer->send(vertexArray.all(), vertexArray.size());
-			_shaderData.modelUvsBuffer->send(uvsArray.all(), uvsArray.size());
-			_shaderData.animationSpriteDeltaBuffer->send(animationSpriteDeltaArray.all(), animationSpriteDeltaArray.size());
-			_shaderData.indexesBuffer->send(elementArray.all(), elementArray.size());
+			_shaderData.modelSpaceBuffer->send(_vertexArray.data(), _vertexArray.size());
+			_shaderData.modelUvsBuffer->send(_uvsArray.data(), _uvsArray.size());
+			_shaderData.animationSpriteDeltaBuffer->send(_animationSpriteDeltaArray.data(), _animationSpriteDeltaArray.size());
+			_shaderData.indexesBuffer->send(_elementArray.data(), _elementArray.size());
 
 			_baked = true;
 			_mutex.unlock();
@@ -639,16 +642,15 @@ void main()
 		{
 			jgl::Vector2 result;
 
-			result.x = static_cast<jgl::Float>(p_pos.x) / static_cast<jgl::Float>(TBakableChunkType::C_SIZE);
-			result.y = static_cast<jgl::Float>(p_pos.y) / static_cast<jgl::Float>(TBakableChunkType::C_SIZE);
+			result.x() = static_cast<jgl::Float>(p_pos.x()) / static_cast<jgl::Float>(TBakableChunkType::C_SIZE);
+			result.y() = static_cast<jgl::Float>(p_pos.y()) / static_cast<jgl::Float>(TBakableChunkType::C_SIZE);
 
 			return (result.floor());
 		}
 
 		virtual jgl::Vector2Int convertWorldToChunk(const jgl::Vector3Int& p_pos)
 		{
-			jgl::Vector2Int converted = jgl::Vector2Int(p_pos.x, p_pos.y);
-			return (convertWorldToChunk(converted));
+			return (convertWorldToChunk(jgl::Vector2Int(p_pos.x(), p_pos.y())));
 		}
 
 		virtual TBakableChunkType* chunk(jgl::Vector2Int p_pos) = 0;
@@ -667,7 +669,7 @@ void main()
 
 		void setContent(jgl::Vector3Int p_pos, jgl::Short p_value)
 		{
-			setContent(jgl::Vector2Int(p_pos.x, p_pos.y), p_pos.z, p_value);
+			setContent(jgl::Vector2Int(p_pos.x(), p_pos.y()), p_pos.z(), p_value);
 		}
 
 		jgl::Short content(jgl::Vector2Int p_pos, jgl::Int p_depth)
@@ -685,7 +687,7 @@ void main()
 
 		jgl::Short content(jgl::Vector3Int p_pos)
 		{
-			return (content(jgl::Vector2Int(p_pos.x, p_pos.y), p_pos.z));
+			return (content(jgl::Vector2Int(p_pos.x(), p_pos.y()), p_pos.z()));
 		}
 
 		void set_emptyObstacle(jgl::Short p_emptyObstacle)
@@ -704,7 +706,7 @@ void main()
 
 			for (jgl::Size_t i = 0; i < TBakableChunkType::C_DEPTH; i++)
 			{
-				jgl::Short tmp_content = p_chunk->content(converted_pos.x, converted_pos.y, i);
+				jgl::Short tmp_content = p_chunk->content(converted_pos.x(), converted_pos.y(), i);
 
 				result += (tmp_content == -1 ? _emptyObstacle : TBakableChunkType::node(tmp_content)->obstacle);
 			}
@@ -758,7 +760,7 @@ void main()
 			if (destinationValue == TBakableChunkType::NodeType::OBSTACLE)
 				return (false);
 
-			jgl::Size_t index[2] = { (p_direction.x < 0 ? 0u : (p_direction.x == 0 ? 1u : 2u)), (p_direction.y < 0 ? 0u : (p_direction.y == 0 ? 1u : 2u)) };
+			jgl::Size_t index[2] = { (p_direction.x() < 0 ? 0u : (p_direction.x() == 0 ? 1u : 2u)), (p_direction.y() < 0 ? 0u : (p_direction.y() == 0 ? 1u : 2u)) };
 
 			if (index[0] == 1 && index[1] == 1)
 				return (!(destinationValue == TBakableChunkType::NodeType::OBSTACLE));
@@ -773,8 +775,6 @@ void main()
 				return (false);
 			return (true);
 		}
-
-	public:
 	};
 
 	template<typename TBakableChunkType, const jgl::Size_t NSize_x, const jgl::Size_t NSize_y>
@@ -792,16 +792,16 @@ void main()
 	public:
 		jgl::Vector2Int convertWorldToChunk(const jgl::Vector2Int& p_pos)
 		{
-			if (p_pos.x < 0 || p_pos.y < 0 || p_pos.x >= C_SIZE_X * TBakableChunkType::C_SIZE || p_pos.y >= C_SIZE_Y * TBakableChunkType::C_SIZE)
+			if (p_pos.x() < 0 || p_pos.y() < 0 || p_pos.x() >= C_SIZE_X * TBakableChunkType::C_SIZE || p_pos.y() >= C_SIZE_Y * TBakableChunkType::C_SIZE)
 				return (-1);
 
-			if (_converterWorldToChunk[p_pos.x][p_pos.y].x == -1 && _converterWorldToChunk[p_pos.x][p_pos.y].y == -1)
+			if (_converterWorldToChunk[p_pos.x()][p_pos.y()].x() == -1 && _converterWorldToChunk[p_pos.x()][p_pos.y()].y() == -1)
 			{
-				_converterWorldToChunk[p_pos.x][p_pos.y].x = static_cast<jgl::Float>(p_pos.x) / static_cast<jgl::Float>(TBakableChunkType::C_SIZE);
-				_converterWorldToChunk[p_pos.x][p_pos.y].y = static_cast<jgl::Float>(p_pos.y) / static_cast<jgl::Float>(TBakableChunkType::C_SIZE);
+				_converterWorldToChunk[p_pos.x()][p_pos.y()].x() = static_cast<jgl::Float>(p_pos.x()) / static_cast<jgl::Float>(TBakableChunkType::C_SIZE);
+				_converterWorldToChunk[p_pos.x()][p_pos.y()].y() = static_cast<jgl::Float>(p_pos.y()) / static_cast<jgl::Float>(TBakableChunkType::C_SIZE);
 			}
 
-			return (_converterWorldToChunk[p_pos.x][p_pos.y]);
+			return (_converterWorldToChunk[p_pos.x()][p_pos.y()]);
 		}
 
 		FiniteTilemap()
@@ -823,7 +823,7 @@ void main()
 					{
 						for (jgl::Size_t y = 0; y < TBakableChunkType::C_SIZE; y++)
 						{
-							_converterWorldToChunk[chunk_pos.x * TBakableChunkType::C_SIZE + x][chunk_pos.y * TBakableChunkType::C_SIZE + y] = -1;
+							_converterWorldToChunk[chunk_pos.x() * TBakableChunkType::C_SIZE + x][chunk_pos.y() * TBakableChunkType::C_SIZE + y] = -1;
 						}
 					}
 				}
@@ -843,27 +843,27 @@ void main()
 
 		TBakableChunkType* requestChunk(jgl::Vector2Int p_pos)
 		{
-			if (p_pos.x >= C_SIZE_X || p_pos.y >= C_SIZE_Y)
+			if (p_pos.x() >= C_SIZE_X || p_pos.y() >= C_SIZE_Y)
 				return (nullptr);
-			else if (_chunks[p_pos.x][p_pos.y] == nullptr)
-				_chunks[p_pos.x][p_pos.y] = new TBakableChunkType(p_pos);
-			return (_chunks[p_pos.x][p_pos.y]);
+			else if (_chunks[p_pos.x()][p_pos.y()] == nullptr)
+				_chunks[p_pos.x()][p_pos.y()] = new TBakableChunkType(p_pos);
+			return (_chunks[p_pos.x()][p_pos.y()]);
 		}
 
 		TBakableChunkType* chunk(jgl::Vector2Int p_pos)
 		{
-			if (p_pos.x >= C_SIZE_X || p_pos.y >= C_SIZE_Y)
+			if (p_pos.x() >= C_SIZE_X || p_pos.y() >= C_SIZE_Y)
 				return (nullptr);
-			return (_chunks[p_pos.x][p_pos.y]);
+			return (_chunks[p_pos.x()][p_pos.y()]);
 		}
 
 		void addChunk(jgl::Vector2Int p_pos, TBakableChunkType* p_chunk)
 		{
-			if (p_pos.x >= C_SIZE_X || p_pos.y >= C_SIZE_Y)
+			if (p_pos.x() >= C_SIZE_X || p_pos.y() >= C_SIZE_Y)
 				return;
-			else if (_chunks[p_pos.x][p_pos.y] != nullptr)
-				delete _chunks[p_pos.x][p_pos.y];
-			_chunks[p_pos.x][p_pos.y] = p_chunk;
+			else if (_chunks[p_pos.x()][p_pos.y()] != nullptr)
+				delete _chunks[p_pos.x()][p_pos.y()];
+			_chunks[p_pos.x()][p_pos.y()] = p_chunk;
 		}
 	};
 
@@ -898,16 +898,24 @@ void main()
 
 		TBakableChunkType* chunk(jgl::Vector2Int p_pos)
 		{
+			DEBUG_LINE("Requesting chunk at pos " + p_pos.text());
 			if (_chunks.count(p_pos) == 0)
+			{
+				DEBUG_LINE();
 				return (nullptr);
+			}
+			DEBUG_LINE();
 			return (_chunks[p_pos]);
 		}
 
 		void addChunk(jgl::Vector2Int p_pos, TBakableChunkType* p_chunk)
 		{
+			DEBUG_LINE("Inserting chunk at pos " + p_pos.text());
 			if (_chunks.count(p_pos) != 0)
 				delete _chunks[p_pos];
+			DEBUG_LINE();
 			_chunks[p_pos] = p_chunk;
+			DEBUG_LINE();
 		}
 	};
 

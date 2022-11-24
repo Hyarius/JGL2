@@ -28,3 +28,4 @@ namespace jgl
 #define __CLASS__ jgl::className(__PRETTY_FUNCTION__)
 
 #define DEBUG_LINE() jgl::cout << __CLASS__ << " - " << __METHOD__ << " : " << __FUNCTION__ << "::" << __LINE__ << jgl::endl
+#define DEBUG_LINE_TEXT(p_text) jgl::cout << __CLASS__ << " - " << __METHOD__ << " : " << __FUNCTION__ << "::" << __LINE__ << " - " << p_text << jgl::endl
