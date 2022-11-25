@@ -133,7 +133,6 @@ namespace jgl
 			setContent(p_pos.x(), p_pos.y(), 0, p_value);
 		}
 
-
 		void setContent(jgl::Vector2Int p_pos, jgl::Int p_depth, jgl::Short p_value)
 		{
 			setContent(p_pos.x(), p_pos.y(), p_depth, p_value);
@@ -148,8 +147,8 @@ namespace jgl
 	template<typename TChunkType>
 	class ITilemap;
 
-	template <typename TNodeType, const jgl::Size_t NChunkSize>
-	class BakableChunk2D : public IChunk<TNodeType, NChunkSize, 1>
+	template <typename TNodeType, const jgl::Size_t NChunkSize, const jgl::Size_t NChunkDepth = 1>
+	class BakableChunk2D : public IChunk<TNodeType, NChunkSize, NChunkDepth>
 	{
 	protected:
 		struct ShaderData
@@ -257,7 +256,7 @@ void main()
 		ShaderData _shaderData;
 		jgl::Bool _baked;
 
-		BakableChunk2D<TNodeType, NChunkSize>* _neightbourChunks[3][3];
+		BakableChunk2D<TNodeType, NChunkSize, NChunkDepth>* _neightbourChunks[3][3];
 
 		static inline jgl::Vector2Int _bakingNeightbourNode[4][3] = {
 		{
@@ -407,7 +406,10 @@ void main()
 		{
 			if (TNodeType::UNIT == jgl::Vector3(0, 0, 0))
 			{
-				TNodeType::UNIT = jgl::Application::instance()->convertScreenToOpenGL(jgl::Vector2Int(TNodeType::SIZE, TNodeType::SIZE)) - jgl::Application::instance()->convertScreenToOpenGL(jgl::Vector2Int(0, 0));
+				TNodeType::UNIT = jgl::Vector3(
+					jgl::Application::instance()->convertScreenToOpenGL(jgl::Vector2Int(TNodeType::SIZE, TNodeType::SIZE)) - jgl::Application::instance()->convertScreenToOpenGL(jgl::Vector2Int(0, 0)),
+					static_cast<jgl::Float>(1) / jgl::Application::instance()->maxDepth()
+				);
 			}
 			if (_shaderData.generated == false)
 				_shaderData.generate();
@@ -543,11 +545,20 @@ void main()
 		
 		virtual void _onContentEdit()
 		{
-			_baked = false;
+			for (jgl::Int i = 0; i < 3; i++)
+			{
+				for (jgl::Int j = 0; j < 3; j++)
+				{
+					if (_neightbourChunks[i][j] != nullptr)
+					{
+						_neightbourChunks[i][j]->_baked = false;
+					}
+				}
+			}
 		}
 
 	public:
-		BakableChunk2D(jgl::Vector2Int p_pos) : IChunk<TNodeType, NChunkSize, 1>(p_pos),
+		BakableChunk2D(jgl::Vector2Int p_pos) : IChunk<TNodeType, NChunkSize, NChunkDepth>(p_pos),
 			_baked(false)
 		{
 			for (jgl::Int i = 0; i < 3; i++)
@@ -613,8 +624,9 @@ void main()
 
 			for (jgl::Size_t i = 0; i < NChunkSize; i++)
 				for (jgl::Size_t j = 0; j < NChunkSize; j++)
+					for (jgl::Size_t h = 0; h < NChunkDepth; h++)
 					{
-						_bakeContent(i, j, 0);
+						_bakeContent(i, j, h);
 					}
 
 			_shaderData.modelSpaceBuffer->send(_vertexArray.data(), static_cast<jgl::Size_t>(_vertexArray.size()));
@@ -638,12 +650,12 @@ void main()
 			}
 		}
 
-		void render(jgl::Vector3 p_offset, jgl::Int p_animationState)
+		void render(jgl::Vector2 p_offset, jgl::Float p_depth, jgl::Int p_animationState)
 		{
 			if (_nodeTexture != nullptr)
 			{
 				if (_shaderData.generated == true)
-					_shaderData.cast(p_offset, p_animationState);
+					_shaderData.cast(jgl::Vector3(p_offset, p_depth), p_animationState);
 			}
 		}
 	};

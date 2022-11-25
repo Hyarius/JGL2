@@ -3,7 +3,7 @@
 class MapRenderer : public jgl::Widget
 {
 	using Node = jgl::INode;
-	using Chunk = jgl::BakableChunk2D<Node, 16>; 
+	using Chunk = jgl::BakableChunk2D<Node, 16, 2>; 
 	using Tilemap = jgl::Tilemap<Chunk>;
 private:
 	jgl::SpriteSheet* _spriteSheet = nullptr;
@@ -82,7 +82,7 @@ void MapRenderer::_onRender()
 		{
 			Chunk* tmp = _tilemap->chunk(jgl::Vector2Int(x, y));
 			if (tmp != nullptr)
-			{
+			{ 
 				if (tmp->baked() == false)
 				{
 					tmp->bake<Chunk>(_tilemap, false);
@@ -93,7 +93,11 @@ void MapRenderer::_onRender()
 						convertWorldToScreen(tmp->pos() * jgl::Vector2Int(Chunk::C_SIZE, Chunk::C_SIZE))
 						),
 					depth());
-				tmp->render(tmp_anchor, 0);
+				tmp->render(
+					jgl::Application::instance()->convertScreenToOpenGL(convertWorldToScreen(tmp->pos() * jgl::Vector2Int(Chunk::C_SIZE, Chunk::C_SIZE))),
+					depth(), 
+					0
+				);
 			}
 		}
 	}
@@ -108,30 +112,49 @@ void MapRenderer::_onGeometryChange()
 
 jgl::Bool MapRenderer::_onUpdate()
 {
+	static const jgl::Vector2Int deltaChunkPos[9] = {
+		 jgl::Vector2Int(-1, -1), jgl::Vector2Int(0, -1), jgl::Vector2Int(1, -1),
+		 jgl::Vector2Int(-1,  0), jgl::Vector2Int(0,  0), jgl::Vector2Int(1,  0),
+		 jgl::Vector2Int(-1,  1), jgl::Vector2Int(0,  1), jgl::Vector2Int(1,  1),
+	};
+
 	if (jgl::Application::instance()->mouse().button(jgl::Mouse::Button::Left) == jgl::InputStatus::Released)
 	{
 		jgl::Vector2Int worldPos = convertScreenToWorld(jgl::Application::instance()->mouse().pos());
 		
 		jgl::Vector2Int chunkPos = _tilemap->convertWorldToChunk(worldPos);
 		_tilemap->requestChunk(chunkPos);
-		_tilemap->setContent(worldPos, 0);
+		_tilemap->setContent(worldPos, 1, 4); 
+		for (jgl::Size_t i = 0; i < 9; i++)
+		{
+			Chunk* tmp_chunk = _tilemap->chunk(chunkPos + deltaChunkPos[i]);
+
+			if (tmp_chunk != nullptr)
+			{
+				tmp_chunk->unbake();
+			}
+		}
 	}
 	return (false);
 }
 
 MapRenderer::MapRenderer(jgl::Widget* p_parent) : jgl::Widget(p_parent)
 {
-	_spriteSheet = new jgl::SpriteSheet("tilemapSprite.png", jgl::Vector2Int(2, 2));
+	_spriteSheet = new jgl::SpriteSheet("tilemapSprite.png", jgl::Vector2Int(5, 6));
 	_tilemap = new Tilemap();
 
-	Chunk::addNode(new Node(0, jgl::Vector2Int(0, 0), false, false, 1));
-	Chunk::addNode(new Node(1, jgl::Vector2Int(1, 0), false, false, 1));
-	Chunk::addNode(new Node(2, jgl::Vector2Int(0, 1), false, false, 1));
-	Chunk::addNode(new Node(3, jgl::Vector2Int(1, 1), false, false, 1));
+	Chunk::addNode(new Node(0, jgl::Vector2Int(0, 0), true, false, 1));
+	Chunk::addNode(new Node(1, jgl::Vector2Int(4, 0), false, false, 1));
+	Chunk::addNode(new Node(2, jgl::Vector2Int(4, 1), false, false, 1));
+	Chunk::addNode(new Node(3, jgl::Vector2Int(4, 2), false, false, 1));
+	Chunk::addNode(new Node(4, jgl::Vector2Int(4, 3), false, false, 1));
+	Chunk::addNode(new Node(5, jgl::Vector2Int(4, 4), false, false, 1));
+	Chunk::addNode(new Node(6, jgl::Vector2Int(4, 5), false, false, 1));
 	Chunk::setNodeTexture(_spriteSheet);
 	_tilemap->addChunk(jgl::Vector2Int(0, 0), new Chunk(jgl::Vector2Int(0, 0)));
 	_tilemap->setContent(jgl::Vector2Int(0, 0), 0);
 	_tilemap->setContent(jgl::Vector2Int(1, 0), 0);
+	_tilemap->setContent(jgl::Vector2Int(1, 0), 1, 4);
 	_tilemap->setContent(jgl::Vector2Int(0, 1), 0);
 	_tilemap->setContent(jgl::Vector2Int(1, 1), 0);
 	_tilemap->setContent(jgl::Vector2Int(2, 0), 1);
