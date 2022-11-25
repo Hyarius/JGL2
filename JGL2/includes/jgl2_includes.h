@@ -18,6 +18,8 @@
 #include <map>
 #include <set>
 
+#include <random>
+
 #include "jgl2_dirent.h"
 
 #define _CRT_RAND_S

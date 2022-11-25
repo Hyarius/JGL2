@@ -38,6 +38,7 @@
     <ClInclude Include="includes\Structure\jgl2_iostream.h" />
     <ClInclude Include="includes\Structure\jgl2_keyboard.h" />
     <ClInclude Include="includes\Structure\jgl2_locked_queue.h" />
+    <ClInclude Include="includes\Structure\jgl2_perlin.h" />
     <ClInclude Include="includes\Structure\jgl2_tilemap.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_client.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_connection.h" />
@@ -81,6 +82,7 @@
     <ClCompile Include="src\Structure\jgl2_mouse.cpp" />
     <ClCompile Include="src\Structure\jgl2_openGLContext.cpp" />
     <ClCompile Include="src\Structure\jgl2_iostream.cpp" />
+    <ClCompile Include="src\Structure\jgl2_perlin.cpp" />
     <ClCompile Include="src\Structure\jgl2_shader.cpp" />
     <ClCompile Include="src\Structure\jgl2_sprite_sheet.cpp" />
     <ClCompile Include="src\Structure\jgl2_thread.cpp" />
