@@ -265,6 +265,8 @@ namespace jgl
 			{
 				if (values[i] < p_other.values[i])
 					return (true);
+				if (values[i] > p_other.values[i])
+					return (false);
 			}
 			return (false);
 		}
@@ -274,6 +276,8 @@ namespace jgl
 		{
 			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
 			{
+				if (values[i] < p_other.values[i])
+					return (false);
 				if (values[i] > p_other.values[i])
 					return (true);
 			}

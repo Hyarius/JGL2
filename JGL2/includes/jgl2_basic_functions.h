@@ -22,6 +22,8 @@ namespace jgl
 	std::string className(const std::string& prettyFunction);
 	jgl::Float degreeToRadian(const jgl::Float& angle);
 	jgl::Float radianToDegree(const jgl::Float& radian);
+	jgl::Long generateNumberFrom2D(const jgl::Long seed, const jgl::Long x, const jgl::Long y);
+	jgl::Long generateNumber(const jgl::Long min, const jgl::Long max);
 }
 
 #define __METHOD__ jgl::methodName(__PRETTY_FUNCTION__)

@@ -227,7 +227,7 @@ namespace jgl
 		jgl::Int closingBracket = 0;
 		jgl::Size_t resultStart = 0;
 
-		for (jgl::Int i = methodBegin; i > 0; i--)
+		for (jgl::Int i = static_cast<jgl::Int>(methodBegin); i > 0; i--)
 		{
 			if (prettyFunction[i] == '>')
 				closingBracket++;
@@ -252,5 +252,28 @@ namespace jgl
 	jgl::Float radianToDegree(const jgl::Float& radian)
 	{
 		return ((radian * 180.0f) / static_cast<jgl::Float>(M_PI));
+	}
+
+	jgl::Long generateNumberFrom2D(const jgl::Long seed, const jgl::Long x, const jgl::Long y)
+	{
+		jgl::Size_t h = static_cast<jgl::UInt>(seed + static_cast<jgl::ULong>(x) * 374761393 + static_cast<jgl::ULong>(y) * 668265263); //all constants are prime
+		h = (h ^ (h >> 13)) * 1274126177;
+		return h ^ (h >> 16);
+	}
+
+	jgl::Long generateNumber(const jgl::Long min, const jgl::Long max)
+	{
+		if (min == max)
+			return (min);
+
+		jgl::Long value = 0;
+
+		for (jgl::Size_t i = 0; i < 4; i++)
+		{
+			value = value << 8;
+			jgl::UInt value_tmp = rand();
+			value += value_tmp;
+		}
+		return((value % (max - min)) + min);
 	}
 }

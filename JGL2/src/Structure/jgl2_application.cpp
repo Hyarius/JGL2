@@ -120,6 +120,8 @@ namespace jgl
 			throw std::runtime_error("Application already created");
 		_instance = this;
 
+		srand(::time(NULL));
+
 		_messagePool.setDefaultObject(new jgl::PolymorphicContainer());
 		_context.initialize(p_title, p_size, 4, 2);
 

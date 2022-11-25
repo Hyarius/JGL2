@@ -20,6 +20,9 @@
 
 #include "jgl2_dirent.h"
 
+#define _CRT_RAND_S
+#include <stdlib.h>
+
 #include <windows.h>
 
 #define GLEW_STATIC

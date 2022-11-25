@@ -13,6 +13,7 @@
 #include "Structure/jgl2_shader.h"
 #include "Structure/jgl2_viewport.h"
 #include "jgl2_basic_functions.h"
+#include "Structure/jgl2_locked_queue.h"
 
 namespace jgl
 {
@@ -26,9 +27,10 @@ namespace jgl
 	private:
 		OpenGLContext _context;
 		
+		std::recursive_mutex _messageMutex;
 		static std::map<UInt, std::string> WinMessageToString;
 		Pool< PolymorphicContainer> _messagePool;
-		std::deque< PolymorphicContainer*> _messagesToTreat;
+		jgl::LockedQueue< PolymorphicContainer*> _messagesToTreat;
 
 		Thread* _updateThread = nullptr;
 		Bool _running = false;
