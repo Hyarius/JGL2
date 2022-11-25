@@ -145,11 +145,11 @@ namespace jgl
 		}
 	};
 
-	template<typename TBakableChunkType>
+	template<typename TChunkType>
 	class ITilemap;
 
-	template <typename TNodeType, const jgl::Size_t NChunkSize, const jgl::Size_t NChunkDepth = 1>
-	class IBakableChunk : public IChunk<TNodeType, NChunkSize, NChunkDepth>
+	template <typename TNodeType, const jgl::Size_t NChunkSize>
+	class BakableChunk2D : public IChunk<TNodeType, NChunkSize, 1>
 	{
 	protected:
 		struct ShaderData
@@ -242,7 +242,7 @@ void main()
 
 				if (indexesBuffer->size() != 0 && _nodeTexture != nullptr)
 				{
-					IBakableChunk::nodeTexture()->activate();
+					BakableChunk2D::nodeTexture()->activate();
 
 					modelSpaceBuffer->activate();
 					modelUvsBuffer->activate();
@@ -257,7 +257,7 @@ void main()
 		ShaderData _shaderData;
 		jgl::Bool _baked;
 
-		IBakableChunk<TNodeType, NChunkSize, NChunkDepth>* _neightbourChunks[3][3];
+		BakableChunk2D<TNodeType, NChunkSize>* _neightbourChunks[3][3];
 
 		static inline jgl::Vector2Int _bakingNeightbourNode[4][3] = {
 		{
@@ -547,7 +547,7 @@ void main()
 		}
 
 	public:
-		IBakableChunk(jgl::Vector2Int p_pos) : IChunk<TNodeType, NChunkSize, NChunkDepth>(p_pos),
+		BakableChunk2D(jgl::Vector2Int p_pos) : IChunk<TNodeType, NChunkSize, 1>(p_pos),
 			_baked(false)
 		{
 			for (jgl::Int i = 0; i < 3; i++)
@@ -613,9 +613,8 @@ void main()
 
 			for (jgl::Size_t i = 0; i < NChunkSize; i++)
 				for (jgl::Size_t j = 0; j < NChunkSize; j++)
-					for (jgl::Size_t h = 0; h < NChunkDepth; h++)
 					{
-						_bakeContent(i, j, h);
+						_bakeContent(i, j, 0);
 					}
 
 			_shaderData.modelSpaceBuffer->send(_vertexArray.data(), static_cast<jgl::Size_t>(_vertexArray.size()));
@@ -649,21 +648,21 @@ void main()
 		}
 	};
 
-	template<typename TBakableChunkType>
+	template<typename TChunkType>
 	class ITilemap
 	{
 	public:
-		using ChunkType = TBakableChunkType;
+		using ChunkType = TChunkType;
 		static const jgl::Short outsideWorldNode = -2;
 
-		jgl::Short _emptyObstacle = TBakableChunkType::NodeType::OBSTACLE;
+		jgl::Short _emptyObstacle = TChunkType::NodeType::OBSTACLE;
 	public:
 		virtual jgl::Vector2Int convertWorldToChunk(const jgl::Vector2Int& p_pos)
 		{
 			jgl::Vector2 result;
 
-			result.x() = static_cast<jgl::Float>(p_pos.x()) / static_cast<jgl::Float>(TBakableChunkType::C_SIZE);
-			result.y() = static_cast<jgl::Float>(p_pos.y()) / static_cast<jgl::Float>(TBakableChunkType::C_SIZE);
+			result.x() = static_cast<jgl::Float>(p_pos.x()) / static_cast<jgl::Float>(TChunkType::C_SIZE);
+			result.y() = static_cast<jgl::Float>(p_pos.y()) / static_cast<jgl::Float>(TChunkType::C_SIZE);
 
 			return (result.floor());
 		}
@@ -673,11 +672,11 @@ void main()
 			return (convertWorldToChunk(jgl::Vector2Int(p_pos.x(), p_pos.y())));
 		}
 
-		virtual TBakableChunkType* chunk(jgl::Vector2Int p_pos) = 0;
+		virtual TChunkType* chunk(jgl::Vector2Int p_pos) = 0;
 
 		void setContent(jgl::Vector2Int p_pos, jgl::Int p_depth, jgl::Short p_value)
 		{
-			TBakableChunkType* tmp_chunk = this->chunk(this->convertWorldToChunk(p_pos));
+			TChunkType* tmp_chunk = this->chunk(this->convertWorldToChunk(p_pos));
 			if (tmp_chunk != nullptr)
 				tmp_chunk->setContent(p_pos - tmp_chunk->deltaPosToApply(), p_depth, p_value);
 		}
@@ -694,7 +693,7 @@ void main()
 
 		jgl::Short content(jgl::Vector2Int p_pos, jgl::Int p_depth)
 		{
-			TBakableChunkType* tmp_chunk = this->chunk(this->convertWorldToChunk(p_pos));
+			TChunkType* tmp_chunk = this->chunk(this->convertWorldToChunk(p_pos));
 			if (tmp_chunk != nullptr)
 				return (tmp_chunk->content(p_pos - tmp_chunk->deltaPosToApply(), p_depth));
 			return (outsideWorldNode);
@@ -715,20 +714,20 @@ void main()
 			_emptyObstacle = p_emptyObstacle;
 		}
 
-		virtual jgl::Short _calcAccesPos(TBakableChunkType* p_chunk, const jgl::Vector2Int& p_pos)
+		virtual jgl::Short _calcAccesPos(TChunkType* p_chunk, const jgl::Vector2Int& p_pos)
 		{
 			if (p_chunk == nullptr)
-				return (TBakableChunkType::NodeType::OBSTACLE);
+				return (TChunkType::NodeType::OBSTACLE);
 
 			jgl::Vector2Int converted_pos = p_pos - p_chunk->deltaPosToApply();
 
-			jgl::Short result = TBakableChunkType::NodeType::OBSTACLE;
+			jgl::Short result = TChunkType::NodeType::OBSTACLE;
 
-			for (jgl::Size_t i = 0; i < TBakableChunkType::C_DEPTH; i++)
+			for (jgl::Size_t i = 0; i < TChunkType::C_DEPTH; i++)
 			{
 				jgl::Short tmp_content = p_chunk->content(converted_pos.x(), converted_pos.y(), i);
 
-				result += (tmp_content == -1 ? _emptyObstacle : TBakableChunkType::node(tmp_content)->obstacle);
+				result += (tmp_content == -1 ? _emptyObstacle : TChunkType::node(tmp_content)->obstacle);
 			}
 
 			return (result);
@@ -736,54 +735,54 @@ void main()
 
 		static inline jgl::Int direction_mask[3][3] = {
 			{// x < 0
-				TBakableChunkType::NodeType::EAST_WALKABLE | TBakableChunkType::NodeType::SOUTH_WALKABLE,	// x < 0 && y < 0
-				TBakableChunkType::NodeType::EAST_WALKABLE | TBakableChunkType::NodeType::NOT_AFFECTED,	// x < 0 && y == 0
-				TBakableChunkType::NodeType::EAST_WALKABLE | TBakableChunkType::NodeType::NORTH_WALKABLE	// x < 0 && y > 0
+				TChunkType::NodeType::EAST_WALKABLE | TChunkType::NodeType::SOUTH_WALKABLE,	// x < 0 && y < 0
+				TChunkType::NodeType::EAST_WALKABLE | TChunkType::NodeType::NOT_AFFECTED,	// x < 0 && y == 0
+				TChunkType::NodeType::EAST_WALKABLE | TChunkType::NodeType::NORTH_WALKABLE	// x < 0 && y > 0
 			},
 			{// x == 0
-				TBakableChunkType::NodeType::NOT_AFFECTED | TBakableChunkType::NodeType::SOUTH_WALKABLE,	// x == 0 && y < 0
-				TBakableChunkType::NodeType::WALKABLE | TBakableChunkType::NodeType::WALKABLE,	// x == 0 && y == 0
-				TBakableChunkType::NodeType::NOT_AFFECTED | TBakableChunkType::NodeType::NORTH_WALKABLE	// x == 0 && y > 0
+				TChunkType::NodeType::NOT_AFFECTED | TChunkType::NodeType::SOUTH_WALKABLE,	// x == 0 && y < 0
+				TChunkType::NodeType::WALKABLE | TChunkType::NodeType::WALKABLE,	// x == 0 && y == 0
+				TChunkType::NodeType::NOT_AFFECTED | TChunkType::NodeType::NORTH_WALKABLE	// x == 0 && y > 0
 			},
 			{ // x > 0
-				TBakableChunkType::NodeType::WEST_WALKABLE | TBakableChunkType::NodeType::SOUTH_WALKABLE,	// x > 0 && y < 0
-				TBakableChunkType::NodeType::WEST_WALKABLE | TBakableChunkType::NodeType::NOT_AFFECTED,	// x > 0 && y == 0
-				TBakableChunkType::NodeType::WEST_WALKABLE | TBakableChunkType::NodeType::NORTH_WALKABLE	// x > 0 && y > 0
+				TChunkType::NodeType::WEST_WALKABLE | TChunkType::NodeType::SOUTH_WALKABLE,	// x > 0 && y < 0
+				TChunkType::NodeType::WEST_WALKABLE | TChunkType::NodeType::NOT_AFFECTED,	// x > 0 && y == 0
+				TChunkType::NodeType::WEST_WALKABLE | TChunkType::NodeType::NORTH_WALKABLE	// x > 0 && y > 0
 			},
 		};
 
 		static inline jgl::Int rev_direction_mask[3][3] = {
 			{// x < 0
-				TBakableChunkType::NodeType::WEST_WALKABLE | TBakableChunkType::NodeType::NORTH_WALKABLE,	// x < 0 && y < 0
-				TBakableChunkType::NodeType::WEST_WALKABLE | TBakableChunkType::NodeType::NOT_AFFECTED,	// x < 0 && y == 0
-				TBakableChunkType::NodeType::WEST_WALKABLE | TBakableChunkType::NodeType::SOUTH_WALKABLE	// x < 0 && y > 0
+				TChunkType::NodeType::WEST_WALKABLE | TChunkType::NodeType::NORTH_WALKABLE,	// x < 0 && y < 0
+				TChunkType::NodeType::WEST_WALKABLE | TChunkType::NodeType::NOT_AFFECTED,	// x < 0 && y == 0
+				TChunkType::NodeType::WEST_WALKABLE | TChunkType::NodeType::SOUTH_WALKABLE	// x < 0 && y > 0
 			},
 			{// x == 0
-				TBakableChunkType::NodeType::NOT_AFFECTED | TBakableChunkType::NodeType::NORTH_WALKABLE,	// x == 0 && y < 0
-				TBakableChunkType::NodeType::WALKABLE | TBakableChunkType::NodeType::WALKABLE,	// x == 0 && y == 0
-				TBakableChunkType::NodeType::NOT_AFFECTED | TBakableChunkType::NodeType::SOUTH_WALKABLE	// x == 0 && y > 0
+				TChunkType::NodeType::NOT_AFFECTED | TChunkType::NodeType::NORTH_WALKABLE,	// x == 0 && y < 0
+				TChunkType::NodeType::WALKABLE | TChunkType::NodeType::WALKABLE,	// x == 0 && y == 0
+				TChunkType::NodeType::NOT_AFFECTED | TChunkType::NodeType::SOUTH_WALKABLE	// x == 0 && y > 0
 			},
 			{ // x > 0
-				TBakableChunkType::NodeType::EAST_WALKABLE | TBakableChunkType::NodeType::NORTH_WALKABLE,	// x > 0 && y < 0
-				TBakableChunkType::NodeType::EAST_WALKABLE | TBakableChunkType::NodeType::NOT_AFFECTED,	// x > 0 && y == 0
-				TBakableChunkType::NodeType::EAST_WALKABLE | TBakableChunkType::NodeType::SOUTH_WALKABLE	// x > 0 && y > 0
+				TChunkType::NodeType::EAST_WALKABLE | TChunkType::NodeType::NORTH_WALKABLE,	// x > 0 && y < 0
+				TChunkType::NodeType::EAST_WALKABLE | TChunkType::NodeType::NOT_AFFECTED,	// x > 0 && y == 0
+				TChunkType::NodeType::EAST_WALKABLE | TChunkType::NodeType::SOUTH_WALKABLE	// x > 0 && y > 0
 			},
 		};
 
-		virtual jgl::Bool canAcces(const jgl::Vector2& p_pos, const jgl::Vector2& p_direction, TBakableChunkType* p_actual_chunk = nullptr, TBakableChunkType* p_destination_chunk = nullptr)
+		virtual jgl::Bool canAcces(const jgl::Vector2& p_pos, const jgl::Vector2& p_direction, TChunkType* p_actual_chunk = nullptr, TChunkType* p_destination_chunk = nullptr)
 		{
 			if (p_destination_chunk == nullptr)
 				p_destination_chunk = this->chunk(this->convertWorldToChunk(p_pos + p_direction));
 
 			jgl::Short destinationValue = _calcAccesPos(p_destination_chunk, p_pos + p_direction);
 
-			if (destinationValue == TBakableChunkType::NodeType::OBSTACLE)
+			if (destinationValue == TChunkType::NodeType::OBSTACLE)
 				return (false);
 
 			jgl::Size_t index[2] = { (p_direction.x() < 0 ? 0u : (p_direction.x() == 0 ? 1u : 2u)), (p_direction.y() < 0 ? 0u : (p_direction.y() == 0 ? 1u : 2u)) };
 
 			if (index[0] == 1 && index[1] == 1)
-				return (!(destinationValue == TBakableChunkType::NodeType::OBSTACLE));
+				return (!(destinationValue == TChunkType::NodeType::OBSTACLE));
 
 			if (p_actual_chunk == nullptr)
 				p_actual_chunk = this->chunk(convertWorldToChunk(p_pos));
@@ -797,28 +796,28 @@ void main()
 		}
 	};
 
-	template<typename TBakableChunkType, const jgl::Size_t NSize_x, const jgl::Size_t NSize_y>
-	class FiniteTilemap : public ITilemap <TBakableChunkType>
+	template<typename TChunkType, const jgl::Size_t NSize_x, const jgl::Size_t NSize_y>
+	class FiniteTilemap : public ITilemap <TChunkType>
 	{
 	public:
 		static const jgl::Size_t C_SIZE_X = NSize_x;
 		static const jgl::Size_t C_SIZE_Y = NSize_y;
 
 	protected:
-		TBakableChunkType* _chunks[C_SIZE_X][C_SIZE_Y];
+		TChunkType* _chunks[C_SIZE_X][C_SIZE_Y];
 
-		static inline jgl::Vector2Int _converterWorldToChunk[C_SIZE_X * TBakableChunkType::C_SIZE][C_SIZE_Y * TBakableChunkType::C_SIZE];
+		static inline jgl::Vector2Int _converterWorldToChunk[C_SIZE_X * TChunkType::C_SIZE][C_SIZE_Y * TChunkType::C_SIZE];
 
 	public:
 		jgl::Vector2Int convertWorldToChunk(const jgl::Vector2Int& p_pos)
 		{
-			if (p_pos.x() < 0 || p_pos.y() < 0 || p_pos.x() >= C_SIZE_X * TBakableChunkType::C_SIZE || p_pos.y() >= C_SIZE_Y * TBakableChunkType::C_SIZE)
+			if (p_pos.x() < 0 || p_pos.y() < 0 || p_pos.x() >= C_SIZE_X * TChunkType::C_SIZE || p_pos.y() >= C_SIZE_Y * TChunkType::C_SIZE)
 				return (-1);
 
 			if (_converterWorldToChunk[p_pos.x()][p_pos.y()].x() == -1 && _converterWorldToChunk[p_pos.x()][p_pos.y()].y() == -1)
 			{
-				_converterWorldToChunk[p_pos.x()][p_pos.y()].x() = static_cast<jgl::Float>(p_pos.x()) / static_cast<jgl::Float>(TBakableChunkType::C_SIZE);
-				_converterWorldToChunk[p_pos.x()][p_pos.y()].y() = static_cast<jgl::Float>(p_pos.y()) / static_cast<jgl::Float>(TBakableChunkType::C_SIZE);
+				_converterWorldToChunk[p_pos.x()][p_pos.y()].x() = static_cast<jgl::Float>(p_pos.x()) / static_cast<jgl::Float>(TChunkType::C_SIZE);
+				_converterWorldToChunk[p_pos.x()][p_pos.y()].y() = static_cast<jgl::Float>(p_pos.y()) / static_cast<jgl::Float>(TChunkType::C_SIZE);
 			}
 
 			return (_converterWorldToChunk[p_pos.x()][p_pos.y()]);
@@ -839,11 +838,11 @@ void main()
 				{
 					jgl::Vector2Int chunk_pos = jgl::Vector2Int(i, j);
 
-					for (jgl::Size_t x = 0; x < TBakableChunkType::C_SIZE; x++)
+					for (jgl::Size_t x = 0; x < TChunkType::C_SIZE; x++)
 					{
-						for (jgl::Size_t y = 0; y < TBakableChunkType::C_SIZE; y++)
+						for (jgl::Size_t y = 0; y < TChunkType::C_SIZE; y++)
 						{
-							_converterWorldToChunk[chunk_pos.x() * TBakableChunkType::C_SIZE + x][chunk_pos.y() * TBakableChunkType::C_SIZE + y] = -1;
+							_converterWorldToChunk[chunk_pos.x() * TChunkType::C_SIZE + x][chunk_pos.y() * TChunkType::C_SIZE + y] = -1;
 						}
 					}
 				}
@@ -852,7 +851,7 @@ void main()
 
 		void unbake()
 		{
-			TBakableChunkType::NodeType::UNIT = 0;
+			TChunkType::NodeType::UNIT = 0;
 			for (jgl::Size_t i = 0; i < C_SIZE_X; i++)
 				for (jgl::Size_t j = 0; j < C_SIZE_Y; j++)
 				{
@@ -861,23 +860,23 @@ void main()
 				}
 		}
 
-		TBakableChunkType* requestChunk(jgl::Vector2Int p_pos)
+		TChunkType* requestChunk(jgl::Vector2Int p_pos)
 		{
 			if (p_pos.x() >= C_SIZE_X || p_pos.y() >= C_SIZE_Y)
 				return (nullptr);
 			else if (_chunks[p_pos.x()][p_pos.y()] == nullptr)
-				_chunks[p_pos.x()][p_pos.y()] = new TBakableChunkType(p_pos);
+				_chunks[p_pos.x()][p_pos.y()] = new TChunkType(p_pos);
 			return (_chunks[p_pos.x()][p_pos.y()]);
 		}
 
-		TBakableChunkType* chunk(jgl::Vector2Int p_pos)
+		TChunkType* chunk(jgl::Vector2Int p_pos)
 		{
 			if (p_pos.x() >= C_SIZE_X || p_pos.y() >= C_SIZE_Y)
 				return (nullptr);
 			return (_chunks[p_pos.x()][p_pos.y()]);
 		}
 
-		void addChunk(jgl::Vector2Int p_pos, TBakableChunkType* p_chunk)
+		void addChunk(jgl::Vector2Int p_pos, TChunkType* p_chunk)
 		{
 			if (p_pos.x() >= C_SIZE_X || p_pos.y() >= C_SIZE_Y)
 				return;
@@ -887,11 +886,11 @@ void main()
 		}
 	};
 
-	template<typename TBakableChunkType>
-	class Tilemap : public ITilemap <TBakableChunkType>
+	template<typename TChunkType>
+	class Tilemap : public ITilemap <TChunkType>
 	{
 	protected:
-		std::map<jgl::Vector2Int, TBakableChunkType*> _chunks;
+		std::map<jgl::Vector2Int, TChunkType*> _chunks;
 
 	public:
 		Tilemap()
@@ -902,28 +901,28 @@ void main()
 
 		void unbake()
 		{
-			TBakableChunkType::NodeType::UNIT = 0;
+			TChunkType::NodeType::UNIT = jgl::Vector2(0, 0);
 			for (auto tmp : this->_chunks)
 			{
 				tmp.second->unbake();
 			}
 		}
 
-		TBakableChunkType* requestChunk(jgl::Vector2Int p_pos)
+		TChunkType* requestChunk(jgl::Vector2Int p_pos)
 		{
 			if (_chunks.count(p_pos) == 0)
-				_chunks[p_pos] = new TBakableChunkType(p_pos);
+				_chunks[p_pos] = new TChunkType(p_pos);
 			return (_chunks[p_pos]);
 		}
 
-		TBakableChunkType* chunk(jgl::Vector2Int p_pos)
+		TChunkType* chunk(jgl::Vector2Int p_pos)
 		{
 			if (_chunks.count(p_pos) == 0)
 				return (nullptr);
 			return (_chunks[p_pos]);
 		}
 
-		void addChunk(jgl::Vector2Int p_pos, TBakableChunkType* p_chunk)
+		void addChunk(jgl::Vector2Int p_pos, TChunkType* p_chunk)
 		{
 			if (_chunks.count(p_pos) != 0)
 				delete _chunks[p_pos];

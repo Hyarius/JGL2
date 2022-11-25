@@ -3,7 +3,7 @@
 class MapRenderer : public jgl::Widget
 {
 	using Node = jgl::INode;
-	using Chunk = jgl::IBakableChunk<Node, 16, 1>;
+	using Chunk = jgl::BakableChunk2D<Node, 16>; 
 	using Tilemap = jgl::Tilemap<Chunk>;
 private:
 	jgl::SpriteSheet* _spriteSheet = nullptr;
@@ -67,7 +67,7 @@ jgl::Vector2 MapRenderer::convertScreenToChunk(jgl::Vector2Int p_pos)
 	result /= jgl::Vector2Int(Chunk::C_SIZE, Chunk::C_SIZE);
 
 	result = result.floor();
-
+	 
 	return (result);
 }
 
@@ -103,6 +103,7 @@ void MapRenderer::_onRender()
 void MapRenderer::_onGeometryChange()
 {
 	Node::SIZE = 32;
+	_tilemap->unbake();
 }
 
 jgl::Bool MapRenderer::_onUpdate()
