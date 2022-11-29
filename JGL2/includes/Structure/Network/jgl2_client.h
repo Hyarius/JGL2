@@ -14,6 +14,9 @@ namespace jgl
 	{
 	public:
 		using ActivityFunction = std::function< void(jgl::Message<TServerMessageEnum>&) >;
+		using LoginSucessfulActivity = std::function< void() >;
+		using LoginFailedActivity = std::function< void() >;
+		using DisconnectionActivity = std::function< void() >;
 	protected:
 		asio::io_context _asioContext;
 		jgl::Thread* _threadContext;
@@ -25,6 +28,10 @@ namespace jgl
 		jgl::Long _mediumKeysNumber = 0;
 		jgl::Long _minorKeysNumber = 0;
 		jgl::Long _abstractKeysNumber = 0;
+
+		LoginSucessfulActivity _onSuccessfulLogin = nullptr;
+		LoginFailedActivity _onFailedLogin = nullptr;
+		DisconnectionActivity _onDisconnection = nullptr;
 
 		std::map<TServerMessageEnum, ActivityFunction> _activityMap;
 
@@ -49,6 +56,21 @@ namespace jgl
 		Client() : _connection()
 		{
 
+		}
+
+		void setSuccessfulLoginActivity(LoginSucessfulActivity p_funct)
+		{
+			_onSuccessfulLogin = p_funct;
+		}
+
+		void setFailedLoginActivity(LoginFailedActivity p_funct)
+		{
+			_onFailedLogin = p_funct;
+		}
+
+		void setDisconnectionActivity(DisconnectionActivity p_funct)
+		{
+			_onDisconnection = p_funct;
 		}
 
 		void addActivity(TServerMessageEnum p_msg_type, ActivityFunction p_funct)
@@ -135,6 +157,11 @@ namespace jgl
 			_asioContext.stop();
 			_threadContext->join();
 			_input.clear();
+
+			if (_onDisconnection != nullptr)
+			{
+				_onDisconnection();
+			}
 		}
 
 		bool isConnected()
@@ -176,10 +203,14 @@ namespace jgl
 						if (accepted == true)
 						{
 							_connection->acceptedByServer();
+							if (_onSuccessfulLogin != nullptr)
+								_onSuccessfulLogin();
 						}
 						else
 						{
 							_connection->refusedByServer();
+							if (_onFailedLogin != nullptr)
+								_onFailedLogin();
 						}
 					}
 					else
@@ -202,7 +233,7 @@ namespace jgl
 					}
 					else
 					{
-						std::string errorMessage = "[CLIENT] - Message_received of unknow id (" + std::to_string(msg.type()) + ")";
+						std::string errorMessage = "[CLIENT] - Message_received of unknow id (" + std::to_string(static_cast<jgl::Int>(msg.type())) + ")";
 						throw std::runtime_error(errorMessage.c_str());
 					}
 				}

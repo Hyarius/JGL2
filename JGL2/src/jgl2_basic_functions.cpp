@@ -254,7 +254,7 @@ namespace jgl
 		return ((radian * 180.0f) / static_cast<jgl::Float>(M_PI));
 	}
 
-	jgl::Long generateNumberFrom2D(const jgl::Long seed, const jgl::Long x, const jgl::Long y)
+	jgl::Long generateNumberFromSeed(const jgl::Long seed, const jgl::Long x, const jgl::Long y, const jgl::Long z)
 	{
 		jgl::Size_t h = static_cast<jgl::UInt>(seed + static_cast<jgl::ULong>(x) * 374761393 + static_cast<jgl::ULong>(y) * 668265263); //all constants are prime
 		h = (h ^ (h >> 13)) * 1274126177;

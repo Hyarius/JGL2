@@ -18,3 +18,4 @@
 #include "Structure/jgl2_network.h"
 
 #include "Structure/jgl2_tilemap.h"
+#include "Structure/jgl2_perlin.h"

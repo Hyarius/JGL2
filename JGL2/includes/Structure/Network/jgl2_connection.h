@@ -173,7 +173,6 @@ namespace jgl
 					_readHeader();
 				}
 			}
-			jgl::cout << "[Connection] - Connected to client" << jgl::endl;
 		}
 
 		void connectToServer(const asio::ip::tcp::resolver::results_type& p_endpoints)
@@ -190,7 +189,6 @@ namespace jgl
 							_readHeader();
 					});
 			}
-			jgl::cout << "[Connection] - Connected to server" << jgl::endl;
 		}
 
 		void disconnect()

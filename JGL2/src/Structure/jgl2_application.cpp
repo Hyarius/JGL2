@@ -67,12 +67,10 @@ namespace jgl
 
 			_pullWinMessage();
 
-			glEnable(GL_STENCIL_TEST);
 			for (jgl::Size_t i = 0; i < _widgets.size(); i++)
 			{
 				_widgets[i]->render();
 			}
-			glDisable(GL_STENCIL_TEST);
 		
 			_context.render();
 		}
@@ -112,6 +110,7 @@ namespace jgl
 			_runUpdate();
 			});
 		_runRender();
+		_updateThread->join();
 	}
 
 	Application::Application(std::string p_title, jgl::Vector2Int p_size, jgl::Color p_backgroundColor)
@@ -139,11 +138,10 @@ namespace jgl
 
 	void Application::resize(jgl::Vector2Int p_size)
 	{
-		jgl::Vector2 scale = jgl::Vector2(p_size) / jgl::Vector2(_context.size());
 		_context.resize(p_size.x(), p_size.y());
 		for (jgl::Size_t i = 0; i < _widgets.size(); i++)
 		{
-			_widgets[i]->setGeometry(_widgets[i]->anchor() * scale, _widgets[i]->size() * scale);
+			_widgets[i]->setGeometry(jgl::Vector2Int(0, 0), size());
 		}
 	}
 

@@ -22,12 +22,12 @@ namespace jgl
 	std::string className(const std::string& prettyFunction);
 	jgl::Float degreeToRadian(const jgl::Float& angle);
 	jgl::Float radianToDegree(const jgl::Float& radian);
-	jgl::Long generateNumberFrom2D(const jgl::Long seed, const jgl::Long x, const jgl::Long y);
+	jgl::Long generateNumberFromSeed(const jgl::Long seed, const jgl::Long x, const jgl::Long y = 0, const jgl::Long z = 0);
 	jgl::Long generateNumber(const jgl::Long min, const jgl::Long max);
 }
 
 #define __METHOD__ jgl::methodName(__PRETTY_FUNCTION__)
 #define __CLASS__ jgl::className(__PRETTY_FUNCTION__)
 
-#define DEBUG_LINE() jgl::cout << __CLASS__ << " - " << __METHOD__ << " : " << __FUNCTION__ << "::" << __LINE__ << jgl::endl
-#define DEBUG_LINE_TEXT(p_text) jgl::cout << __CLASS__ << " - " << __METHOD__ << " : " << __FUNCTION__ << "::" << __LINE__ << " - " << p_text << jgl::endl
+#define DEBUG_LINE() jgl::cout << __CLASS__ << " - " << __METHOD__ << "::" << __LINE__ << jgl::endl
+#define DEBUG_LINE_TEXT(p_text) jgl::cout << __CLASS__ << " - " << __METHOD__ << "::" << __LINE__ << " - " << p_text << jgl::endl

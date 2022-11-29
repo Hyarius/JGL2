@@ -412,7 +412,7 @@ namespace jgl
 			return (BaseVector2<jgl::Float>(static_cast<jgl::Float>(x()) / tmp_length, static_cast<jgl::Float>(y()) / tmp_length));
 		}
 
-		BaseVector2 cross(const BaseVector2 other = 0) const
+		BaseVector2 cross(const BaseVector2 other = BaseVector2(0, 0)) const
 		{
 			BaseVector2 result;
 
@@ -421,7 +421,7 @@ namespace jgl
 			return (result);
 		}
 
-		jgl::Float dot(const BaseVector2 other, const BaseVector2 center = 0) const
+		jgl::Float dot(const BaseVector2 other, const BaseVector2 center = BaseVector2(0, 0)) const
 		{
 			jgl::Float result;
 
@@ -430,7 +430,7 @@ namespace jgl
 			return (result);
 		}
 
-		jgl::Float angle(const BaseVector2 other, const BaseVector2 center = 0) const
+		jgl::Float angle(const BaseVector2 other, const BaseVector2 center = BaseVector2(0, 0)) const
 		{
 			jgl::Float rdot = dot(other, center);
 

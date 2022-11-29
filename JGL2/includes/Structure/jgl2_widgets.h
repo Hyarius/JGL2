@@ -7,3 +7,5 @@
 #include "Structure/Widget/jgl2_button.h"
 
 #include "Structure/Widget/jgl2_singleton_widget.h"
+
+#include "Structure/Widget/jgl2_abstract_2D_tilemap_renderer.h"

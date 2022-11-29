@@ -404,7 +404,7 @@ void main()
 	protected:
 		void _initializeOpenglData()
 		{
-			if (TNodeType::UNIT == jgl::Vector3(0, 0, 0))
+			if (TNodeType::UNIT.x() == 0 || TNodeType::UNIT.y() == 0)
 			{
 				TNodeType::UNIT = jgl::Vector3(
 					jgl::Application::instance()->convertScreenToOpenGL(jgl::Vector2Int(TNodeType::SIZE, TNodeType::SIZE)) - jgl::Application::instance()->convertScreenToOpenGL(jgl::Vector2Int(0, 0)),
@@ -484,7 +484,12 @@ void main()
 				for (size_t i = 0; i < 4; i++)
 				{
 					_vertexArray.push_back(TNodeType::UNIT * (node_pos + _deltaAutotilePosition[i]));
-					_uvsArray.push_back(sprite + unit * _deltaUvs[i]);
+					jgl::Vector2 tmp_uvs = sprite + unit * _deltaUvs[i];
+					if (_deltaUvs[i].x() != 0)
+						tmp_uvs.x() -= 0.00001f;
+					if (_deltaUvs[i].y() != 0)
+						tmp_uvs.y() -= 0.00001f;
+					_uvsArray.push_back(tmp_uvs);
 				}
 				for (jgl::Size_t i = 0; i < 6; i++)
 				{
@@ -545,16 +550,7 @@ void main()
 		
 		virtual void _onContentEdit()
 		{
-			for (jgl::Int i = 0; i < 3; i++)
-			{
-				for (jgl::Int j = 0; j < 3; j++)
-				{
-					if (_neightbourChunks[i][j] != nullptr)
-					{
-						_neightbourChunks[i][j]->_baked = false;
-					}
-				}
-			}
+			_baked = false;
 		}
 
 	public:
@@ -655,7 +651,9 @@ void main()
 			if (_nodeTexture != nullptr)
 			{
 				if (_shaderData.generated == true)
+				{
 					_shaderData.cast(jgl::Vector3(p_offset, p_depth), p_animationState);
+				}
 			}
 		}
 	};
@@ -863,7 +861,7 @@ void main()
 
 		void unbake()
 		{
-			TChunkType::NodeType::UNIT = 0;
+			TChunkType::NodeType::UNIT = jgl::Vector3(0, 0, 0);
 			for (jgl::Size_t i = 0; i < C_SIZE_X; i++)
 				for (jgl::Size_t j = 0; j < C_SIZE_Y; j++)
 				{
@@ -888,13 +886,13 @@ void main()
 			return (_chunks[p_pos.x()][p_pos.y()]);
 		}
 
-		void addChunk(jgl::Vector2Int p_pos, TChunkType* p_chunk)
+		void addChunk(TChunkType* p_chunk)
 		{
-			if (p_pos.x() >= C_SIZE_X || p_pos.y() >= C_SIZE_Y)
+			if (p_chunk->pos().x() >= C_SIZE_X || p_chunk->pos().y() >= C_SIZE_Y)
 				return;
-			else if (_chunks[p_pos.x()][p_pos.y()] != nullptr)
-				delete _chunks[p_pos.x()][p_pos.y()];
-			_chunks[p_pos.x()][p_pos.y()] = p_chunk;
+			else if (_chunks[p_chunk->pos().x()][p_chunk->pos().y()] != nullptr)
+				delete _chunks[p_chunk->pos().x()][p_chunk->pos().y()];
+			_chunks[p_chunk->pos().x()][p_chunk->pos().y()] = p_chunk;
 		}
 	};
 
@@ -913,7 +911,7 @@ void main()
 
 		void unbake()
 		{
-			TChunkType::NodeType::UNIT = jgl::Vector2(0, 0);
+			TChunkType::NodeType::UNIT = jgl::Vector3(0, 0, 0);
 			for (auto tmp : this->_chunks)
 			{
 				tmp.second->unbake();
@@ -934,11 +932,11 @@ void main()
 			return (_chunks[p_pos]);
 		}
 
-		void addChunk(jgl::Vector2Int p_pos, TChunkType* p_chunk)
+		void addChunk(TChunkType* p_chunk)
 		{
-			if (_chunks.count(p_pos) != 0)
-				delete _chunks[p_pos];
-			_chunks[p_pos] = p_chunk;
+			if (_chunks.count(p_chunk->pos()) != 0)
+				delete _chunks[p_chunk->pos()];
+			_chunks[p_chunk->pos()] = p_chunk;
 		}
 	};
 

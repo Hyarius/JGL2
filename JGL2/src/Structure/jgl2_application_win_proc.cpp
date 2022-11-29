@@ -330,17 +330,6 @@ namespace jgl
 			{
 				break;
 			}
-			case WM_SIZE:
-			{
-				jgl::UInt x, y;
-
-				*tmpMessage >> x;
-				*tmpMessage >> y;
-
-				resize(jgl::Vector2Int(x, y));
-
-				break;
-			}
 			case WM_MDIRESTORE:
 			{
 				break;
@@ -475,25 +464,12 @@ namespace jgl
 			case WM_EXITMENULOOP:
 			case WM_INITMENU:
 			case WM_NCDESTROY:
+			case WM_QUERYOPEN:
+			case WM_SIZE:
 			{
 				//Ignored message
 				break;
 			}
-			//case 799:
-			//case 49367:
-			//case 144:
-			//case 4261281277:
-			//case 684:
-			//case 719:
-			//case 568:
-			//case 617:
-			//case 647:
-			//case 480:
-			//case 49366:
-			//{
-			//	//Ignored message, but not stored in convert map
-			//	break;
-			//}
 			default :
 			{
 				jgl::cout << "Unexpected message received : ";
@@ -545,7 +521,10 @@ namespace jgl
 			jgl::UInt width = LOWORD(lParam);
 			jgl::UInt height = HIWORD(lParam);
 
-			jgl::Application::instance()->resize(jgl::Vector2Int(width, height));
+			if (width != 0 && height != 0)
+			{
+				jgl::Application::instance()->resize(jgl::Vector2Int(width, height));
+			}
 
 			jgl::Application::instance()->_releaseWinMessage(newMessage);
 			
