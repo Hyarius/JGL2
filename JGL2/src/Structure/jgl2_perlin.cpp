@@ -65,6 +65,11 @@ namespace jgl
 
 	}
 
+	void Perlin::configureSeed(jgl::ULong p_seed)
+	{
+		_seed = p_seed;
+	}
+
 	void Perlin::configureFrequency(jgl::Float p_frequency)
 	{
 		_frequency = p_frequency;
@@ -94,8 +99,9 @@ namespace jgl
 
 	jgl::Float Perlin::sample2D(jgl::Float p_x, jgl::Float p_y)
 	{
-		p_x = std::fabs(p_x + 545000.0f);
-		p_y = std::fabs(p_y + 545000.0f);
+		p_x = std::fabs(p_x + _seed);
+		p_y = std::fabs(p_y + _seed);
+
 		jgl::Float result = 0;
 		jgl::Float amplitude = 1.0f;
 		jgl::Float frequency = _frequency;

@@ -11,10 +11,10 @@ private:
 
 	jgl::Bool _onUpdate()
 	{
-		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::A) == jgl::InputStatus::Released)
-			randomType = (randomType - 1) % C_DEPTH;
-		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Z) == jgl::InputStatus::Released)
-			randomType = (randomType + 1) % C_DEPTH;
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::A) == jgl::InputStatus::Released && randomType > 0)
+			randomType--;
+		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Z) == jgl::InputStatus::Released && randomType < C_DEPTH - 1)
+			randomType++;
 		return (false);
 	}
 
@@ -48,7 +48,7 @@ public:
 				for (jgl::Size_t h = 0; h < C_DEPTH; h++)
 				{
 					perlin.setOctaveValue(h + 1);
-					content[h][i][j] = perlin.sample2D(i - (C_SIZE / 2), j - (C_SIZE / 2));
+					content[h][i][j] = perlin.sample2D(i - 15000, j - 15000);
 				}
 			}
 		}
