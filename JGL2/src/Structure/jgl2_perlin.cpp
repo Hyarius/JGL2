@@ -1,108 +1,117 @@
 #include "Structure/jgl2_perlin.h"
+#include "Structure/jgl2_vector.h"
+#include "jgl2_basic_functions.h"
 
 namespace jgl
 {
-	jgl::Float jgl::Perlin::fade(jgl::Float t)
+	jgl::Float Perlin::_computeWaveLength(jgl::Float p_x, jgl::Float p_y, jgl::Float p_frequency)
 	{
-		return t * t * t * (t * (t * 6 - 15) + 10);
+		p_x /= p_frequency;
+		p_y /= p_frequency;
+
+		jgl::Vector2 directions[8] = {
+			jgl::Vector2(0.707f, 0.707f),
+			jgl::Vector2(-0.707f, 0.707f),
+			jgl::Vector2(0.707f, -0.707f),
+			jgl::Vector2(-0.707f, -0.707f),
+
+			jgl::Vector2(1.0f, 0.0f),
+			jgl::Vector2(-1.0f, 0.0f),
+			jgl::Vector2(0.0f, 1.0f),
+			jgl::Vector2(0.0f, -1.0f),
+		};
+
+		jgl::Vector2 targetPoint = jgl::Vector2(p_x, p_y);
+		jgl::Vector2 pointA = jgl::Vector2((int)(p_x), (int)(p_y));
+		jgl::Vector2 pointB = jgl::Vector2((int)(p_x + 1), (int)(p_y));
+		jgl::Vector2 pointC = jgl::Vector2((int)(p_x), (int)(p_y + 1));
+		jgl::Vector2 pointD = jgl::Vector2((int)(p_x + 1), (int)(p_y + 1));
+		jgl::Vector2 targetDelta = targetPoint - pointA;
+
+		jgl::Int ii = static_cast<jgl::Int>(pointA.x()) & 255;
+		jgl::Int jj = static_cast<jgl::Int>(pointA.y()) & 255;
+
+		jgl::Int directionIndexA = jgl::generateNumberFromSeed(_seed, (ii + jgl::generateNumberFromSeed(_seed, jj))) % 8;
+		jgl::Int directionIndexB = jgl::generateNumberFromSeed(_seed, (ii + 1 + jgl::generateNumberFromSeed(_seed, jj))) % 8;
+		jgl::Int directionIndexC = jgl::generateNumberFromSeed(_seed, (ii + jgl::generateNumberFromSeed(_seed, jj + 1))) % 8;
+		jgl::Int directionIndexD = jgl::generateNumberFromSeed(_seed, (ii + 1 + jgl::generateNumberFromSeed(_seed, jj + 1))) % 8;
+
+		jgl::Float dotA = directions[directionIndexA].dot(targetPoint - pointA);
+		jgl::Float dotB = directions[directionIndexB].dot(targetPoint - pointB);
+		jgl::Float dotC = directions[directionIndexC].dot(targetPoint - pointC);
+		jgl::Float dotD = directions[directionIndexD].dot(targetPoint - pointD);
+
+		jgl::Float smoothX = 3 * targetDelta.x() * targetDelta.x() - 2 * targetDelta.x() * targetDelta.x() * targetDelta.x();
+		jgl::Float smoothY = 3 * targetDelta.y() * targetDelta.y() - 2 * targetDelta.y() * targetDelta.y() * targetDelta.y();
+
+		jgl::Float dotInterpolate1 = dotA + smoothX * (dotB - dotA);
+		jgl::Float dotInterpolate2 = dotC + smoothX * (dotD - dotC);
+
+		jgl::Float percent = dotInterpolate1 + smoothY * (dotInterpolate2 - dotInterpolate1);
+
+		return (percent);
 	}
 
-	jgl::Float jgl::Perlin::lerp(jgl::Float t, jgl::Float a, jgl::Float b)
+	Perlin::Perlin(jgl::ULong p_seed) :
+		_seed(p_seed),
+		_min(),
+		_max(),
+		_range(),
+		_octaveValue(3),
+		_frequency(50),
+		_persistance(0.5f),
+		_lacunarity(2.0f)
 	{
-		return a + t * (b - a);
+
 	}
 
-	jgl::Float jgl::Perlin::grad(jgl::UChar hash, jgl::Float x, jgl::Float y, jgl::Float z)
+	void Perlin::configureFrequency(jgl::Float p_frequency)
 	{
-		const jgl::UChar h = hash & 15;
-		const jgl::Float u = h < 8 ? x : y;
-		const jgl::Float v = h < 4 ? y : h == 12 || h == 14 ? x : z;
-		return ((h & 1) == 0 ? u : -u) + ((h & 2) == 0 ? v : -v);
+		_frequency = p_frequency;
 	}
 
-	jgl::Float jgl::Perlin::weight(jgl::Int octaves)
+	void Perlin::configurePersistance(jgl::Float p_persistance)
 	{
-		jgl::Float amp = 1;
-		jgl::Float value = 0;
-
-		for (jgl::Int i = 0; i < octaves; ++i)
-		{
-			value += amp;
-			amp /= 2;
-		}
-
-		return value;
+		_persistance = p_persistance;
 	}
 
-	jgl::Perlin::Perlin(jgl::Int seed)
+	void Perlin::configureLacunarity(jgl::Float p_lacunarity)
 	{
-		reseed(seed);
+		_lacunarity = p_lacunarity;
 	}
 
-	void jgl::Perlin::reseed(jgl::UInt seed)
+	void Perlin::setOctaveValue(jgl::Size_t p_octaveValue)
 	{
-		for (jgl::Int i = 0; i < 256; ++i)
-		{
-			p[i] = static_cast<jgl::UChar>(i);
-		}
-
-		std::shuffle(std::begin(p), std::begin(p) + 256, std::default_random_engine(seed));
-
-		for (jgl::Int i = 0; i < 256; ++i)
-		{
-			p[256 + i] = p[i];
-		}
+		_octaveValue = p_octaveValue;
 	}
 
-	jgl::Float jgl::Perlin::noise(jgl::Float x, jgl::Float y, jgl::Float z, jgl::Float p_zoom)
+	void Perlin::configureRange(jgl::Float p_min, jgl::Float p_max)
 	{
-		x /= p_zoom;
-		y /= p_zoom;
-		z /= p_zoom;
-
-		const jgl::Int X = static_cast<jgl::Int>(std::floor(x)) & 255;
-		const jgl::Int Y = static_cast<jgl::Int>(std::floor(y)) & 255;
-		const jgl::Int Z = static_cast<jgl::Int>(std::floor(z)) & 255;
-
-		x -= std::floor(x);
-		y -= std::floor(y);
-		z -= std::floor(z);
-
-		const jgl::Float u = fade(x);
-		const jgl::Float v = fade(y);
-		const jgl::Float w = fade(z);
-
-		const jgl::Int A = p[X] + Y, AA = p[A] + Z, AB = p[A + 1] + Z;
-		const jgl::Int B = p[X + 1] + Y, BA = p[B] + Z, BB = p[B + 1] + Z;
-
-		return (lerp(w, lerp(v, lerp(u, grad(p[AA], x, y, z),
-			grad(p[BA], x - 1, y, z)),
-			lerp(u, grad(p[AB], x, y - 1, z),
-				grad(p[BB], x - 1, y - 1, z))),
-			lerp(v, lerp(u, grad(p[AA + 1], x, y, z - 1),
-				grad(p[BA + 1], x - 1, y, z - 1)),
-				lerp(u, grad(p[AB + 1], x, y - 1, z - 1),
-					grad(p[BB + 1], x - 1, y - 1, z - 1)))) + 1) / 2;
+		_min = p_min;
+		_max = p_max;
+		_range = _max - _min;
 	}
 
-	jgl::Float jgl::Perlin::accumulated_noise(jgl::Int octaves, jgl::Float x, jgl::Float y, jgl::Float z, jgl::Float p_zoom)
+	jgl::Float Perlin::sample2D(jgl::Float p_x, jgl::Float p_y)
 	{
+		p_x = std::fabs(p_x + 545000.0f);
+		p_y = std::fabs(p_y + 545000.0f);
 		jgl::Float result = 0;
-		jgl::Float amp = 1;
+		jgl::Float amplitude = 1.0f;
+		jgl::Float frequency = _frequency;
 
-		x /= p_zoom;
-		y /= p_zoom;
-		z /= p_zoom;
-
-		for (jgl::Int i = 0; i < octaves; ++i)
+		for (jgl::Size_t i = 0; i < _octaveValue; i++)
 		{
-			result += noise(x, y, z) * amp;
-			x *= 2.0;
-			y *= 2.0;
-			z *= 2.0;
-			amp /= 2.0;
+			result += _computeWaveLength(p_x, p_y, frequency) * amplitude;
+			amplitude *= _persistance;
+			frequency /= _lacunarity;
 		}
 
-		return (result / weight(octaves));
+		result += 1;
+		result /= 2;
+		result *= _range;
+		result += _min;
+
+		return (result);
 	}
 }
