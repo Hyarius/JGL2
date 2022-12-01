@@ -17,7 +17,7 @@ namespace jgl
 		for (jgl::Size_t i = 0; i < 2; i++)
 		{
 			_boxes[i].setGeometry(jgl::Vector2Int(0, 0), size());
-			_labels[i].setGeometry(_boxes[0].usableAnchor(), _boxes[0].usableSize());
+			_labels[i].setGeometry(_boxes[0].usableAnchor() + _labels[i].labelOffset(), _boxes[0].usableSize() - _labels[i].labelOffset() * jgl::Vector2Int(2, 2));
 			if (_definedTextSize != 0)
 				_labels[i].setTextSize(_definedTextSize);
 		}

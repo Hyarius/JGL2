@@ -19,8 +19,10 @@ namespace jgl
 
 	public:
 		TextLabel(std::string p_text, jgl::Widget* p_parent);
+		
 		void setDefinedTextSize(const jgl::Size_t& p_definedTextSize);
-		const jgl::Size_t definedTextSize();
+		const jgl::Size_t& definedTextSize();
+
 		jgl::WidgetComponent::Box& box();
 		jgl::WidgetComponent::TextLabel& label();
 	};

@@ -10,7 +10,7 @@ namespace jgl
 	void TextLabel::_onGeometryChange()
 	{
 		_box.setGeometry(jgl::Vector2Int(0, 0), size());
-		_label.setGeometry(_box.usableAnchor(), _box.usableSize());
+		_label.setGeometry(_box.usableAnchor() + _label.labelOffset(), _box.usableSize() - _label.labelOffset() * jgl::Vector2Int(2, 2));
 
 		if (_definedTextSize != 0)
 			_label.setTextSize(_definedTextSize);
@@ -32,7 +32,7 @@ namespace jgl
 		_definedTextSize = p_definedTextSize;
 	}
 
-	const jgl::Size_t TextLabel::definedTextSize()
+	const jgl::Size_t& TextLabel::definedTextSize()
 	{
 		return (_definedTextSize);
 	}

@@ -24,8 +24,8 @@ namespace jgl
 		void configureSeed(jgl::ULong p_seed);
 		void configureFrequency(jgl::Float p_frequency);
 		void configurePersistance(jgl::Float p_persistance);
-		void configureLacunarity(jgl::Float p_lacunarity);
-		void setOctaveValue(jgl::Size_t p_octaveValue);
+		void configureLacunarity(jgl::Float p_lacunarity); 
+		void configureOctave(jgl::Size_t p_octaveValue);
 		void configureRange(jgl::Float p_min, jgl::Float p_max);
 		jgl::Float sample2D(jgl::Float p_x, jgl::Float p_y);
 	};

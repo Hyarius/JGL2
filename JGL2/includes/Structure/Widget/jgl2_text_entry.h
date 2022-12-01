@@ -44,6 +44,9 @@ namespace jgl
 	public:
 		TextEntry(jgl::Widget* p_parent);
 
+		jgl::WidgetComponent::Box& box();
+		jgl::WidgetComponent::TextLabel& label();
+
 		void setCursorColor(jgl::Color p_color);
 		const jgl::Color& cursorColor() const;
 
@@ -56,5 +59,8 @@ namespace jgl
 		void unselect();
 		void setSelectStatus(jgl::Bool p_status);
 		jgl::Bool isSelected();
+
+		void setText(const std::string& p_text);
+		const std::string& text() const;
 	};
 }

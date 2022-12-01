@@ -85,7 +85,7 @@ namespace jgl
 		_lacunarity = p_lacunarity;
 	}
 
-	void Perlin::setOctaveValue(jgl::Size_t p_octaveValue)
+	void Perlin::configureOctave(jgl::Size_t p_octaveValue)
 	{
 		_octaveValue = p_octaveValue;
 	}

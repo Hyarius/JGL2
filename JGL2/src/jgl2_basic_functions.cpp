@@ -276,4 +276,48 @@ namespace jgl
 		}
 		return((value % (max - min)) + min);
 	}
+
+	std::vector<std::string> stringSplit(const std::string& p_string, const std::string& p_delim)
+	{
+		std::vector<std::string> result;
+
+		auto start = 0U;
+		auto end = p_string.find(p_delim);
+		while (end != std::string::npos)
+		{
+			result.push_back(p_string.substr(start, end - start));
+			start = end + p_delim.length();
+			end = p_string.find(p_delim, start);
+		}
+
+		result.push_back(p_string.substr(start, end - start));
+
+		return (result);
+	}
+
+	std::string getStr(std::fstream& file)
+	{
+		std::string line;
+
+		if (file.eof())
+			return ("");
+		std::getline(file, line);
+		if (line.size() == 0)
+			return ("");
+		if (line[line.size() - 1] == L'\n')
+			line[line.size() - 1] = L'\0';
+		return (line);
+	}
+
+	std::vector<std::string> getStringSplit(std::fstream& p_file, const std::string& p_delim, const jgl::Int& p_expectedSize)
+	{
+		std::string line = getStr(p_file);
+		std::vector<std::string> result = stringSplit(line, p_delim);
+		if (p_expectedSize != -1 && result.size() != p_expectedSize)
+		{
+			throw std::runtime_error("Unexpected number of string after parsing");
+		}
+
+		return (result);
+	}
 }

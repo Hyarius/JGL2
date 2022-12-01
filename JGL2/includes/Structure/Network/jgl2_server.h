@@ -125,8 +125,6 @@ namespace jgl
 			realResult = _computeMagicNumber(key);
 			if (realResult == clientResult)
 			{
-				jgl::cout << "Accepting client id [" << p_client->id() << "]" << jgl::endl;
-
 				p_msg.clear();
 				jgl::Bool response = true;
 				p_msg << response;
@@ -285,7 +283,7 @@ namespace jgl
 			}
 		}
 
-		void sendToArray(const jgl::Message<TServerMessageEnum>& p_msg, std::vector<ServerConnection*>& p_list)
+		void sendToArray(const jgl::Message<TServerMessageEnum>& p_msg, const std::vector<ServerConnection*>& p_list)
 		{
 			for (jgl::Size_t i = 0; i < p_list.size(); i++)
 			{

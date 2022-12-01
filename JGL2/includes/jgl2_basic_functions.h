@@ -24,6 +24,9 @@ namespace jgl
 	jgl::Float radianToDegree(const jgl::Float& radian);
 	jgl::Long generateNumberFromSeed(const jgl::Long seed, const jgl::Long x, const jgl::Long y = 0, const jgl::Long z = 0);
 	jgl::Long generateNumber(const jgl::Long min, const jgl::Long max);
+	std::vector<std::string> stringSplit(const std::string& p_string, const std::string& p_delim);
+	std::string getStr(std::fstream& p_file);
+	std::vector<std::string> getStringSplit(std::fstream& p_file, const std::string& p_delim, const jgl::Int& p_expectedSize = -1);
 }
 
 #define __METHOD__ jgl::methodName(__PRETTY_FUNCTION__)

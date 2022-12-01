@@ -104,7 +104,7 @@ namespace jgl
 			_computedTextOffset = true;
 		}
 
-		void TextLabel::render(jgl::Float p_depth)
+		jgl::Vector2Int TextLabel::render(jgl::Float p_depth)
 		{
 			jgl::Font* tmp_font = _font;
 			if (tmp_font == nullptr)
@@ -125,7 +125,7 @@ namespace jgl
 				_computeTextOffset(tmp_font);
 			}
 
-			tmp_font->draw(_text, _anchor + _textAnchor, _textSize, _textColor, _textOutlineSize, _outlineColor, p_depth);
+			return (tmp_font->draw(_text, _anchor + _textAnchor, _textSize, _textColor, _textOutlineSize, _outlineColor, p_depth));
 		}
 
 		void TextLabel::setFont(jgl::Font* p_font)
@@ -184,6 +184,11 @@ namespace jgl
 			_computedTextOffset = false;
 		}
 
+		void TextLabel::setLabelOffset(const jgl::Vector2Int& p_labelOffset)
+		{
+			_labelOffset = p_labelOffset;
+		}
+
 		jgl::Font* TextLabel::font() const
 		{
 			jgl::Font* tmp_font = _font;
@@ -230,6 +235,11 @@ namespace jgl
 		const Vector2Int& TextLabel::size() const
 		{
 			return (_size);
+		}
+
+		const jgl::Vector2Int& TextLabel::labelOffset()
+		{
+			return (_labelOffset);
 		}
 	}
 }

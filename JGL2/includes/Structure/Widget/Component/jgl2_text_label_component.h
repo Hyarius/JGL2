@@ -23,6 +23,7 @@ namespace jgl
 
 			Vector2Int _anchor = Vector2Int(0, 0);
 			Vector2Int _size = Vector2Int(0, 0);
+			Vector2Int _labelOffset = Vector2Int(0, 0);
 			VerticalAlignment _verticalAlignment = VerticalAlignment::Top;
 			HorizontalAlignment _horizontalAlignment = HorizontalAlignment::Left;
 
@@ -37,7 +38,8 @@ namespace jgl
 		public:
 			TextLabel();
 
-			void render(jgl::Float p_depthDelta);
+			jgl::Vector2Int render(jgl::Float p_depthDelta);
+
 			void setFont(jgl::Font* p_font);
 			void setText(const std::string& p_text);
 			void setTextSize(const Size_t& p_textSize);
@@ -47,6 +49,7 @@ namespace jgl
 			void setGeometry(const Vector2Int& p_anchor, const Vector2Int& p_size);
 			void setVerticalAlignment(const VerticalAlignment& p_alignement);
 			void setHorizontalAlignment(const HorizontalAlignment& p_alignement);
+			void setLabelOffset(const jgl::Vector2Int& p_labelOffset);
 
 			const std::string& text() const;
 			jgl::Font* font() const;
@@ -56,6 +59,7 @@ namespace jgl
 			const Color& outlineColor() const;
 			const Vector2Int& anchor() const;
 			const Vector2Int& size() const;
+			const jgl::Vector2Int& labelOffset();
 		};
 	}
 }

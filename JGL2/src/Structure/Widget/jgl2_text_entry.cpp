@@ -8,7 +8,13 @@ namespace jgl
 	void TextEntry::_onRender()
 	{
 		_box.render(depth());
-		_label.render(depth() + 0.2f);
+		jgl::Vector2Int labelTextSize = _label.render(depth() + 0.2f);
+
+		if (labelTextSize.x() > _label.size().x())
+		{
+			_moveHigherCursor();
+			_label.setText(_computeTextToRender());
+		}
 
 		if (_selected == true && (jgl::Application::instance()->time() % 1000) > 500)
 		{
@@ -19,7 +25,7 @@ namespace jgl
 	void TextEntry::_onGeometryChange()
 	{
 		_box.setGeometry(jgl::Vector2Int(0, 0), size());
-		_label.setGeometry(_box.usableAnchor(), _box.usableSize());
+		_label.setGeometry(_box.usableAnchor() + _label.labelOffset(), _box.usableSize() - _label.labelOffset() * jgl::Vector2Int(2, 2));
 		_label.setTextPredefinedSize(_label.size().y());
 
 		_cursorSize = jgl::Vector2Int(_label.size().y() / 7, _label.size().y() - _box.borderSize().y());
@@ -245,5 +251,28 @@ namespace jgl
 	jgl::Bool TextEntry::isSelected()
 	{
 		return (_selected);
+	}
+
+	jgl::WidgetComponent::Box& TextEntry::box()
+	{
+		return (_box);
+	}
+
+	jgl::WidgetComponent::TextLabel& TextEntry::label()
+	{
+		return (_label);
+	}
+
+	void TextEntry::setText(const std::string& p_text)
+	{
+		_entry = p_text;
+		_higherCursor = _cursor;
+		_lowerCursor = 0;
+		_label.setText(_entry);
+	}
+
+	const std::string& TextEntry::text() const
+	{
+		return (_entry);
 	}
 }
