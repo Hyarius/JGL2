@@ -41,6 +41,11 @@ namespace jgl
 			return (false);
 		}
 
+		void _onPositionChange()
+		{
+
+		}
+
 	public:
 		DebugScreen(jgl::Widget* p_parent) : jgl::Widget(p_parent)
 		{

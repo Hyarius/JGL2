@@ -28,6 +28,7 @@ namespace jgl
 		jgl::Bool _onUpdate();
 		void _onRender();
 		void _onGeometryChange();
+		void _onPositionChange();
 
 		void _addCharInEntry(jgl::Char p_char);
 		void _deleteCharInEntry(jgl::Int p_cursorPositionDelta);

@@ -16,6 +16,7 @@ namespace jgl
 		jgl::Bool _onUpdate();
 		void _onGeometryChange();
 		void _onRender();
+		void _onPositionChange();
 
 	public:
 		TextLabel(std::string p_text, jgl::Widget* p_parent);

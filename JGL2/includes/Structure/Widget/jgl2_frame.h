@@ -14,6 +14,7 @@ namespace jgl
 		jgl::Bool _onUpdate();
 		void _onRender();
 		void _onGeometryChange();
+		void _onPositionChange();
 
 	public:
 		Frame(jgl::Widget* p_parent);

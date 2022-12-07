@@ -19,6 +19,7 @@ namespace jgl
 		jgl::Bool _onUpdate();
 		void _onRender();
 		void _onGeometryChange();
+		void _onPositionChange();
 
 	public:
 		Button(std::function< void() > p_funct, jgl::Widget* p_parent);

@@ -198,6 +198,12 @@ namespace jgl
 		return (false);
 	}
 
+	void TextEntry::_onPositionChange()
+	{
+		_box.recalc();
+		_label.recalc();
+	}
+
 	TextEntry::TextEntry(jgl::Widget* p_parent) : jgl::Widget(p_parent)
 	{
 

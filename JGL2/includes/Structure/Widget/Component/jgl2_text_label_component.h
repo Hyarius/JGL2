@@ -56,6 +56,7 @@ namespace jgl
 			TextLabel();
 
 			Vector2Int render(Float p_depthDelta);
+			void recalc();
 
 			void setFont(Font* p_font);
 			void setText(const std::string& p_text);

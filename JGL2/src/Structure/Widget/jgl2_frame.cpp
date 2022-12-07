@@ -18,6 +18,11 @@ namespace jgl
 		_box.setGeometry(Vector2Int(0, 0), size());
 	}
 
+	void Frame::_onPositionChange()
+	{
+		_box.recalc();
+	}
+
 	Frame::Frame(Widget* p_parent) : Widget(p_parent)
 	{
 		_setViewportOffset(Vector2Int(5, 5), Vector2Int(10, 10));

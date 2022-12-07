@@ -126,6 +126,11 @@ namespace jgl
 			_castRender();
 		}
 
+		void Box::recalc()
+		{
+			_computed = false;
+		}
+
 		Bool Box::isPointed() const
 		{
 			Vector2Int pos = jgl::Application::instance()->mouse().pos();

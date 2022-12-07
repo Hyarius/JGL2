@@ -22,6 +22,12 @@ namespace jgl
 		_label.render(depth() + 0.2f);
 	}
 
+	void TextLabel::_onPositionChange()
+	{
+		_box.recalc();
+		_label.recalc();
+	}
+
 	TextLabel::TextLabel(std::string p_text, jgl::Widget* p_parent) : jgl::Widget(p_parent)
 	{
 		_label.setText(p_text);

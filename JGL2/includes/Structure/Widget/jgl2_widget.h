@@ -37,6 +37,8 @@ namespace jgl
 		virtual void _onRender() = 0;
 		virtual void _onGeometryChange() = 0;
 
+		virtual void _onPositionChange();
+
 		virtual void _onDeactivation();
 		virtual void _onActivation();
 

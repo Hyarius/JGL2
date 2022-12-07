@@ -40,6 +40,15 @@ namespace jgl
 		return (false);
 	}
 
+	void Button::_onPositionChange()
+	{
+		for (jgl::Size_t i = 0; i < 2; i++)
+		{
+			_boxes[i].recalc();
+			_labels[i].recalc();
+		}
+	}
+
 	Button::Button(std::function< void() > p_funct, jgl::Widget* p_parent) : jgl::Widget(p_parent),
 		_funct(p_funct)
 	{

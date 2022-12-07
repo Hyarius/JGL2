@@ -159,12 +159,22 @@ namespace jgl
 	{
 		_anchor += p_deltaAnchor;
 		_resetCalculation();
+		_onPositionChange();
 	}
 
 	void Widget::place(jgl::Vector2Int p_anchor)
 	{
 		_anchor = p_anchor;
 		_resetCalculation();
+		_onPositionChange();
+	}
+	
+	void Widget::_onPositionChange()
+	{
+		for (jgl::Size_t i = 0; i < _childrens.size(); i++)
+		{
+			_childrens[i]->_onPositionChange();
+		}
 	}
 
 	jgl::Bool Widget::update()

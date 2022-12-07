@@ -14,9 +14,12 @@ namespace jgl
 
 		void TextLabel::_computeTextSize(jgl::Font* p_font)
 		{
+			jgl::Size_t oldTextSize = _textSize;
 			if (_textPredefinedSize != 0)
 			{
 				_textSize = _textPredefinedSize;
+				if (oldTextSize != _textSize)
+					_selectedTextureID = 0;
 				return;
 			}
 
@@ -26,6 +29,8 @@ namespace jgl
 			if (_text == "")
 			{
 				_textSize = _size.y();
+				if (oldTextSize != _textSize)
+					_selectedTextureID = 0;
 				return;
 			}
 
@@ -45,6 +50,8 @@ namespace jgl
 				}
 			}
 
+			if (oldTextSize != _textSize)
+				_selectedTextureID = 0;
 			_computedTextSize = true;
 		}
 
@@ -125,6 +132,8 @@ namespace jgl
 		
 		void TextLabel::_computeShaderBuffer(Float p_depth)
 		{
+			Font* tmp_font = _selectedFont;
+
 			_selectedFont = _font;
 			if (_selectedFont == nullptr)
 			{
@@ -133,6 +142,8 @@ namespace jgl
 
 				_selectedFont = jgl::Application::instance()->defaultFont();
 			}
+			if (_selectedFont != tmp_font)
+				_selectedTextureID = 0;
 
 			if (_computedTextSize == false)
 			{
@@ -148,7 +159,10 @@ namespace jgl
 
 			_selectedFont->exportShaderData(_modelSpaceBuffer, _modelColorBuffer, _modelOutlineColorBuffer, _modelUvBuffer, _indexesBuffer);
 
-			_selectedTextureID = _selectedFont->textureID(_textSize, _textOutlineSize);
+			if (_selectedTextureID == 0)
+			{
+				_selectedTextureID = _selectedFont->textureID(_textSize, _textOutlineSize);
+			}
 		}
 		
 		void TextLabel::_castRender()
@@ -182,10 +196,16 @@ namespace jgl
 			return (_savedTextSize);
 		}
 
+		void TextLabel::recalc()
+		{
+			_computed = false;
+		}
+
 		void TextLabel::setFont(jgl::Font* p_font)
 		{
 			_font = p_font;
 			_computed = false;
+			_selectedFont = nullptr;
 		}
 
 		void TextLabel::setText(const std::string& p_text)
@@ -202,18 +222,21 @@ namespace jgl
 			_computedTextSize = true;
 			_computedTextOffset = false;
 			_computed = false;
+			_selectedTextureID = 0;
 		}
 
 		void TextLabel::setTextPredefinedSize(const Size_t& p_textPredefinedSize)
 		{
 			_textPredefinedSize = p_textPredefinedSize;
 			_computed = false;
+			_selectedTextureID = 0;
 		}
 
 		void TextLabel::setTextOutlineSize(const jgl::Size_t& p_textOutlineSize)
 		{
 			_textOutlineSize = p_textOutlineSize;
 			_computed = false;
+			_selectedTextureID = 0;
 		}
 
 		void TextLabel::setColor(const Color& p_textColor, const Color& p_outlineColor)
@@ -231,6 +254,7 @@ namespace jgl
 			_computedTextSize = false;
 			_computedTextOffset = false;
 			_computed = false;
+			_selectedTextureID = 0;
 		}
 
 		void TextLabel::setVerticalAlignment(const VerticalAlignment& p_alignement)
