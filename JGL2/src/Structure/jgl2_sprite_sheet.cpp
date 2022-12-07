@@ -39,7 +39,7 @@ namespace jgl
 	const Vector2& SpriteSheet::sprite(Size_t index) const
 	{
 		if (_sprites.size() <= index)
-			throw std::runtime_error("Segfault");
+			throw std::runtime_error("Segfault : sprite id out of range");
 		return (_sprites[index]);
 	}
 

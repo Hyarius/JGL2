@@ -56,17 +56,24 @@ namespace jgl
 					{
 						if (!p_ec)
 						{
+							DEBUG_TRACE("New connection received");
+							DEBUG_TRACE("Setting up sicket option option");
 							asio::ip::tcp::no_delay noDelay(true);
 							p_socket.set_option(noDelay);
 
+							DEBUG_TRACE("Creating new connection for the new socket");
 							ServerConnection* newConnection = new ServerConnection(ServerConnection::Owner::Server, _asioContext, std::move(p_socket), &_input);
 
+							DEBUG_TRACE("Starting connection validation process");
 							_clientConnect(newConnection);
 
+							DEBUG_TRACE("Adding new connection to the pull");
 							_activeConnection.push_back(std::move(newConnection));
 
 							if (_activeConnection.size() == 1)
 								_self = _activeConnection.front();
+
+							DEBUG_TRACE("Connecting the new connection to destined client");
 
 							_activeConnection.back()->connectToClient(_idCount++);
 						}
@@ -89,6 +96,7 @@ namespace jgl
 		{
 			if (p_client->state() == ServerConnection::State::Accepted)
 			{
+				DEBUG_TRACE("Reception of a new message : Connection status Accepted");
 				if (_activityMap.count(p_msg.type()) != 0)
 				{
 					_activityMap[p_msg.type()](p_client, p_msg);
@@ -100,12 +108,14 @@ namespace jgl
 			}
 			else if (p_client->state() == ServerConnection::State::Unknown)
 			{
+				DEBUG_TRACE("Reception of a new message : Connection status Accepted");
 				_validateClientConnection(p_client, p_msg);
 			}
 		}
 
 		void _clientConnect(ServerConnection* p_client)
 		{
+			DEBUG_TRACE("Send the validation key to client [" + std::to_string(p_client->id()) + "]");
 			jgl::Message<TServerMessageEnum> msg;
 
 			msg << _validationKey;
@@ -121,10 +131,14 @@ namespace jgl
 
 			p_msg >> key;
 			p_msg >> clientResult;
+			DEBUG_TRACE("Receptioning client [" + std::to_string(p_client->id()) + "] validation result [" + std::to_string(clientResult) + "] to key [" + std::to_string(key) + "]");
 
 			realResult = _computeMagicNumber(key);
+			DEBUG_TRACE("Expected result [" + std::to_string(realResult) + "]");
+
 			if (realResult == clientResult)
 			{
+				DEBUG_TRACE("Connection accepted, validation magic number are matching");
 				p_msg.clear();
 				jgl::Bool response = true;
 				p_msg << response;
@@ -139,6 +153,7 @@ namespace jgl
 			}
 			else
 			{
+				DEBUG_TRACE("Connection refused, validation magic number are different");
 				p_client->refusedByServer();
 				p_msg.clear();
 				jgl::Bool response = false;
@@ -150,12 +165,14 @@ namespace jgl
 
 		void _clientDisconnect(ServerConnection* p_client)
 		{
+			DEBUG_TRACE("Calling client disconnection process");
 			if (_logoutFunct != nullptr)
 				_logoutFunct(p_client);
 		};
 
 		virtual ~Server()
 		{
+			DEBUG_TRACE("Server destructor");
 			stop();
 		}
 
@@ -164,7 +181,7 @@ namespace jgl
 			_asioContext(),
 			_acceptor(_asioContext, asio::ip::tcp::endpoint(asio::ip::tcp::v4(), p_port))
 		{
-
+			DEBUG_TRACE("Server constructor");
 		}
 
 		Connection<TServerMessageEnum>* self()
@@ -216,8 +233,10 @@ namespace jgl
 		{
 			try
 			{
+				DEBUG_TRACE("Server starting process");
 				_waitForConnection();
 
+				DEBUG_TRACE("Starting context thread");
 				_threadContext = std::thread([this]() { _asioContext.run(); });
 			}
 			catch (std::exception& e)
@@ -232,12 +251,15 @@ namespace jgl
 
 		void stop()
 		{
+			DEBUG_TRACE("Server stopping process");
 			_asioContext.stop();
+			DEBUG_TRACE("Joining context thread");
 			if (_threadContext.joinable())
 			{
 				_threadContext.join();
 			}
 
+			DEBUG_TRACE("Closing acceptor");
 			_acceptor.close();
 
 			_isActive = false;

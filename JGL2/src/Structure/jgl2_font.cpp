@@ -314,24 +314,71 @@ namespace jgl
 		return (Vector2Int(glyphData.step.x(), glyphData.step.y()));
 	}
 
+
+	void Font::exportShaderData(Buffer* p_modelSpaceBuffer, Buffer* p_modelColorBuffer, Buffer* p_modelOutlineColorBuffer, Buffer* p_modelUvBuffer, Buffer* p_indexesBuffer)
+	{
+		p_modelSpaceBuffer->send(_modelSpaceData.data(), static_cast<Size_t>(_modelSpaceData.size()));
+		p_modelUvBuffer->send(_modelUvData.data(), static_cast<Size_t>(_modelUvData.size()));
+		p_modelColorBuffer->send(_modelColorData.data(), static_cast<Size_t>(_modelColorData.size()));
+		p_modelOutlineColorBuffer->send(_modelOutlineColorData.data(), static_cast<Size_t>(_modelOutlineColorData.size()));
+		p_indexesBuffer->send(_indexesData.data(), static_cast<Size_t>(_indexesData.size()));
+	}
+
 	void Font::_castCharRender(GLuint p_id)
 	{
+		exportShaderData(_modelSpaceBuffer, _modelUvBuffer, _modelColorBuffer, _modelOutlineColorBuffer, _indexesBuffer);
+
 		_shader->activate();
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, p_id);
-
-		_modelSpaceBuffer->send(_modelSpaceData.data(), static_cast<Size_t>(_modelSpaceData.size()));
-		_modelUvBuffer->send(_modelUvData.data(), static_cast<Size_t>(_modelUvData.size()));
-		_modelColorBuffer->send(_modelColorData.data(), static_cast<Size_t>(_modelColorData.size()));
-		_modelOutlineColorBuffer->send(_modelOutlineColorData.data(), static_cast<Size_t>(_modelOutlineColorData.size()));
-		_indexesBuffer->send(_indexesData.data(), static_cast<Size_t>(_indexesData.size()));
 
 		_textureUniform->send(0);
 
 		_shader->launch(jgl::Shader::Mode::Triangle);
 	}
 	Vector2Int Font::draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth)
+	{
+		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, 0);
+
+		Vector2Int result = prepareDraw(p_char, p_pos, p_size, p_color, 0, p_color, p_depth);
+
+		_castCharRender(tmp_fontGlyphData.id);
+
+		return (result);
+	}
+	Vector2Int Font::draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth)
+	{
+		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, 0);
+
+		Vector2Int result = prepareDraw(p_string, p_pos, p_size, p_color, 0, p_color, p_depth);
+
+		_castCharRender(tmp_fontGlyphData.id);
+
+		return (result);
+	}
+	Vector2Int Font::draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth)
+	{
+		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, p_outlineSize);
+
+		Vector2Int result = prepareDraw(p_char, p_pos, p_size, p_color, p_outlineSize, p_outlineColor, p_depth);
+
+		_castCharRender(tmp_fontGlyphData.id);
+
+		return (result);
+	}
+	Vector2Int Font::draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth)
+	{
+		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, p_outlineSize);
+
+		Vector2Int result = prepareDraw(p_string, p_pos, p_size, p_color, p_outlineSize, p_outlineColor, p_depth);
+
+		_castCharRender(tmp_fontGlyphData.id);
+
+		return (result);
+	}
+
+	Vector2Int Font::prepareDraw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth)
 	{
 		_initCharRender();
 
@@ -345,7 +392,8 @@ namespace jgl
 
 		return (result);
 	}
-	Vector2Int Font::draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth)
+	
+	Vector2Int Font::prepareDraw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth)
 	{
 		_initCharRender();
 
@@ -360,11 +408,10 @@ namespace jgl
 			result.x() += tmp.x();
 		}
 
-		_castCharRender(tmp_fontGlyphData.id);
-
 		return (result);
 	}
-	Vector2Int Font::draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth)
+	
+	Vector2Int Font::prepareDraw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth)
 	{
 		_initCharRender();
 
@@ -378,7 +425,8 @@ namespace jgl
 
 		return (result);
 	}
-	Vector2Int Font::draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth)
+	
+	Vector2Int Font::prepareDraw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth)
 	{
 		_initCharRender();
 
@@ -394,8 +442,6 @@ namespace jgl
 
 			result.x() += tmp.x();
 		}
-
-		_castCharRender(tmp_fontGlyphData.id);
 
 		return (result);
 	}

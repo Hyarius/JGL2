@@ -37,6 +37,9 @@ namespace jgl
 		virtual void _onRender() = 0;
 		virtual void _onGeometryChange() = 0;
 
+		virtual void _onDeactivation();
+		virtual void _onActivation();
+
 	protected:
 		void _setViewportOffset(Vector2Int p_anchorOffset, Vector2Int p_sizeOffset);
 

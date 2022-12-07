@@ -2,7 +2,7 @@
 
 namespace jgl
 {
-    std::map<Keyboard::Key, std::string> Keyboard::_convertKeyToString = {
+    std::map<Keyboard::Key, std::string> KeyToStringMap = {
         {Keyboard::Key::Backspace, "Backspace"},
         {Keyboard::Key::Tab, "Tab"},
         {Keyboard::Key::Clear, "Clear"},
@@ -172,5 +172,12 @@ namespace jgl
     const UChar& Keyboard::getEntry() const
     {
         return (_entry);
+    }
+
+    std::string to_string(const jgl::Keyboard::Key& p_key)
+    {
+        if (KeyToStringMap.count(p_key) == 0)
+            return ("Unknow key");
+        return (KeyToStringMap[p_key]);
     }
 }

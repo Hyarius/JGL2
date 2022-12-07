@@ -21,6 +21,7 @@ namespace jgl
 
 	public:
 		Perlin(jgl::ULong p_seed = 12500);
+		const jgl::ULong& seed() const;
 		void configureSeed(jgl::ULong p_seed);
 		void configureFrequency(jgl::Float p_frequency);
 		void configurePersistance(jgl::Float p_persistance);

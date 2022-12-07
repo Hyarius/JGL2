@@ -234,7 +234,17 @@ namespace jgl
 			return (result);
 		}
 
+		static Vector<TType, C_NB_DIM> lerp(const Vector<TType, C_NB_DIM>& p_start, const Vector<TType, C_NB_DIM>& p_final, const jgl::Float& ratio)
+		{
+			Vector<TType, C_NB_DIM> result;
 
+			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
+			{
+				result.values[i] = std::lerp(p_start[i], p_final[i], ratio);
+			}
+
+			return (result);
+		}
 
 		template <typename TOtherType>
 		bool operator == (const Vector<TOtherType, C_NB_DIM>& p_other) const

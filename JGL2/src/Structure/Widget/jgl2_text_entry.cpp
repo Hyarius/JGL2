@@ -157,7 +157,7 @@ namespace jgl
 
 	jgl::Bool TextEntry::_onUpdate()
 	{
-		if (jgl::Application::instance()->mouse().button(jgl::Mouse::Button::Left) == jgl::InputStatus::Released)
+		if (jgl::Application::instance()->mouse().getButton(jgl::Mouse::Button::Left) == jgl::InputStatus::Released)
 		{
 			if (isPointed() == true)
 			{

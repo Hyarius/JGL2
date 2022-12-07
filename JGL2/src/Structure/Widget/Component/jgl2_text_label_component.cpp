@@ -104,33 +104,88 @@ namespace jgl
 			_computedTextOffset = true;
 		}
 
-		jgl::Vector2Int TextLabel::render(jgl::Float p_depth)
+		void TextLabel::_initiatizeOpenGL()
 		{
-			jgl::Font* tmp_font = _font;
-			if (tmp_font == nullptr)
+			if (_shader == nullptr)
+				_shader = Application::instance()->shader("TextTexture2D");
+
+			if (_modelSpaceBuffer == nullptr)
+				_modelSpaceBuffer = _shader->buffer("model_space")->copy();
+			if (_modelUvBuffer == nullptr)
+				_modelUvBuffer = _shader->buffer("model_uv")->copy();
+			if (_modelColorBuffer == nullptr)
+				_modelColorBuffer = _shader->buffer("model_color")->copy();
+			if (_modelOutlineColorBuffer == nullptr)
+				_modelOutlineColorBuffer = _shader->buffer("model_outline_color")->copy();
+			if (_indexesBuffer == nullptr)
+				_indexesBuffer = _shader->elementBuffer()->copy();
+			if (_textureUniform == nullptr)
+				_textureUniform = _shader->uniform("textureID")->copy();
+		}
+		
+		void TextLabel::_computeShaderBuffer(Float p_depth)
+		{
+			_selectedFont = _font;
+			if (_selectedFont == nullptr)
 			{
 				if (jgl::Application::instance()->defaultFont() == nullptr)
 					throw std::runtime_error("No default font found in jgl::Application");
 
-				tmp_font = jgl::Application::instance()->defaultFont();
+				_selectedFont = jgl::Application::instance()->defaultFont();
 			}
 
 			if (_computedTextSize == false)
 			{
-				_computeTextSize(tmp_font);
+				_computeTextSize(_selectedFont);
 			}
 
 			if (_computedTextOffset == false)
 			{
-				_computeTextOffset(tmp_font);
+				_computeTextOffset(_selectedFont);
 			}
 
-			return (tmp_font->draw(_text, _anchor + _textAnchor, _textSize, _textColor, _textOutlineSize, _outlineColor, p_depth));
+			_savedTextSize = _selectedFont->prepareDraw(_text, _anchor + _textAnchor, _textSize, _textColor, _textOutlineSize, _outlineColor, p_depth);
+
+			_selectedFont->exportShaderData(_modelSpaceBuffer, _modelColorBuffer, _modelOutlineColorBuffer, _modelUvBuffer, _indexesBuffer);
+
+			_selectedTextureID = _selectedFont->textureID(_textSize, _textOutlineSize);
+		}
+		
+		void TextLabel::_castRender()
+		{
+			_shader->activate();
+
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, _selectedTextureID);
+
+			_modelSpaceBuffer->activate();
+			_modelColorBuffer->activate();
+			_modelOutlineColorBuffer->activate();
+			_modelUvBuffer->activate();
+			_indexesBuffer->activate();
+
+			_textureUniform->send(0);
+
+			_shader->cast(jgl::Shader::Mode::Triangle, _indexesBuffer->size() / sizeof(jgl::UInt));
+		}
+
+		jgl::Vector2Int TextLabel::render(jgl::Float p_depth)
+		{
+			if (_initialized == false)
+				_initiatizeOpenGL();
+
+			if (_computed == false || (_font == nullptr && _selectedFont != jgl::Application::instance()->defaultFont()))
+				_computeShaderBuffer(p_depth);
+
+			_castRender();
+
+			return (_savedTextSize);
 		}
 
 		void TextLabel::setFont(jgl::Font* p_font)
 		{
 			_font = p_font;
+			_computed = false;
 		}
 
 		void TextLabel::setText(const std::string& p_text)
@@ -138,6 +193,7 @@ namespace jgl
 			_text = p_text;
 			_computedTextSize = false;
 			_computedTextOffset = false;
+			_computed = false;
 		}
 
 		void TextLabel::setTextSize(const Size_t& p_textSize)
@@ -145,22 +201,26 @@ namespace jgl
 			_textSize = p_textSize;
 			_computedTextSize = true;
 			_computedTextOffset = false;
+			_computed = false;
 		}
 
 		void TextLabel::setTextPredefinedSize(const Size_t& p_textPredefinedSize)
 		{
 			_textPredefinedSize = p_textPredefinedSize;
+			_computed = false;
 		}
 
 		void TextLabel::setTextOutlineSize(const jgl::Size_t& p_textOutlineSize)
 		{
 			_textOutlineSize = p_textOutlineSize;
+			_computed = false;
 		}
 
 		void TextLabel::setColor(const Color& p_textColor, const Color& p_outlineColor)
 		{
 			_textColor = p_textColor;
 			_outlineColor = p_outlineColor;
+			_computed = false;
 		}
 		
 		void TextLabel::setGeometry(const Vector2Int& p_anchor, const Vector2Int& p_size)
@@ -170,23 +230,27 @@ namespace jgl
 			_textSize = _size.y();
 			_computedTextSize = false;
 			_computedTextOffset = false;
+			_computed = false;
 		}
 
 		void TextLabel::setVerticalAlignment(const VerticalAlignment& p_alignement)
 		{
 			_verticalAlignment = p_alignement;
 			_computedTextOffset = false;
+			_computed = false;
 		}
 		
 		void TextLabel::setHorizontalAlignment(const HorizontalAlignment& p_alignement)
 		{
 			_horizontalAlignment = p_alignement;
 			_computedTextOffset = false;
+			_computed = false;
 		}
 
 		void TextLabel::setLabelOffset(const jgl::Vector2Int& p_labelOffset)
 		{
 			_labelOffset = p_labelOffset;
+			_computed = false;
 		}
 
 		jgl::Font* TextLabel::font() const

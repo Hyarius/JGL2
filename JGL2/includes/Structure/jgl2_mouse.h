@@ -33,6 +33,8 @@ namespace jgl
 	public:
 		jgl::Float wheel() const;
 		jgl::Vector2Int pos() const;
-		jgl::InputStatus button(Button p_button) const;
+		jgl::InputStatus getButton(Button p_button) const;
 	};
+
+	std::string to_string(const Mouse::Button& p_button);
 }

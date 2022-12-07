@@ -77,20 +77,20 @@ namespace jgl
 			return p_os;
 		}
 
-		void addInArray(jgl::UChar* p_array, jgl::Size_t p_length)
+		void pushToMessage(jgl::UChar* p_array, jgl::Size_t p_length)
 		{
-			jgl::Size_t old_size = content.size();
+			jgl::Size_t old_size = static_cast<jgl::Size_t>(content.size());
 
 			content.resize(content.size() + p_length);
 
 			std::memcpy(content.data() + old_size, p_array, p_length);
 
-			header.size = content.size();
+			header.size = static_cast<jgl::Size_t>(content.size());
 		}
 
-		void loadFromArray(void* p_address, jgl::Size_t p_length)
+		void pullFromMessage(void* p_address, jgl::Size_t p_length)
 		{
-			jgl::Size_t next_size = header.readed;// content.size() - sizeof(DataType);
+			jgl::Size_t next_size = header.readed;// content.size() - sizeof(TDataType);
 
 			std::memcpy(p_address, content.data() + next_size, p_length);
 
@@ -117,32 +117,32 @@ namespace jgl
 			jgl::cout << jgl::endl;
 		}
 
-		template<typename DataType>
-		Message<TServerMessageEnum>& operator << (const DataType& p_data)
+		template<typename TDataType>
+		Message<TServerMessageEnum>& operator << (const TDataType& p_data)
 		{
-			static_assert(std::is_standard_layout<DataType>::value, "Data is too complex to be pushed into vector");
+			static_assert(std::is_standard_layout<TDataType>::value, "Data is too complex to be pushed into vector");
 
 			size_t old_size = (*this).content.size();
 
-			(*this).content.resize((*this).content.size() + sizeof(DataType));
+			(*this).content.resize((*this).content.size() + sizeof(TDataType));
 
-			std::memcpy((*this).content.data() + old_size, &p_data, sizeof(DataType));
+			std::memcpy((*this).content.data() + old_size, &p_data, sizeof(TDataType));
 
 			(*this).header.size = static_cast<jgl::Size_t>((*this).content.size());
 
 			return (*this);
 		}
 
-		template<typename DataType>
-		Message<TServerMessageEnum>& operator >> (DataType& p_data)
+		template<typename TDataType>
+		Message<TServerMessageEnum>& operator >> (TDataType& p_data)
 		{
-			static_assert(std::is_standard_layout<DataType>::value, "Data is too complex to be pulled from vector");
+			static_assert(std::is_standard_layout<TDataType>::value, "Data is too complex to be pulled from vector");
 
-			jgl::Size_t next_size = (*this).header.readed;// (*this).content.size() - sizeof(DataType);
+			jgl::Size_t next_size = (*this).header.readed;// (*this).content.size() - sizeof(TDataType);
 
-			std::memcpy(&p_data, (*this).content.data() + next_size, sizeof(DataType));
+			std::memcpy(&p_data, (*this).content.data() + next_size, sizeof(TDataType));
 
-			(*this).header.readed += sizeof(DataType);
+			(*this).header.readed += sizeof(TDataType);
 
 			return (*this);
 		}
@@ -173,6 +173,16 @@ namespace jgl
 			}
 
 			return *this;
+		}
+
+		template<typename TDataType>
+		TDataType pull()
+		{
+			TDataType result;
+
+			this->operator>>(result);
+
+			return (result);
 		}
 	};
 

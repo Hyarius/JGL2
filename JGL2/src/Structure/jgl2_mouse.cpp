@@ -35,8 +35,22 @@ namespace jgl
         return (_pos);
     }
     
-    jgl::InputStatus Mouse::button(Mouse::Button p_button) const
+    jgl::InputStatus Mouse::getButton(Mouse::Button p_button) const
     {
         return (_buttons[static_cast<jgl::Size_t>(p_button)]);
+    }
+
+    std::string to_string(const Mouse::Button& p_button)
+    {
+        switch (p_button)
+        {
+        case (Mouse::Button::Center):
+            return ("Center");
+        case (Mouse::Button::Right):
+            return ("Right");
+        case (Mouse::Button::Left):
+            return ("Left");
+        }
+        return ("Unknow");
     }
 }

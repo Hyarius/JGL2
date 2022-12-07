@@ -35,11 +35,14 @@
     <ClInclude Include="includes\Structure\jgl2_font.h" />
     <ClInclude Include="includes\Structure\jgl2_image.h" />
     <ClInclude Include="includes\Structure\jgl2_image_output.h" />
+    <ClInclude Include="includes\Structure\jgl2_input_controller.h" />
     <ClInclude Include="includes\Structure\jgl2_iostream.h" />
     <ClInclude Include="includes\Structure\jgl2_keyboard.h" />
     <ClInclude Include="includes\Structure\jgl2_locked_queue.h" />
     <ClInclude Include="includes\Structure\jgl2_perlin.h" />
+    <ClInclude Include="includes\Structure\jgl2_texture_atlas.h" />
     <ClInclude Include="includes\Structure\jgl2_tilemap.h" />
+    <ClInclude Include="includes\Structure\jgl2_translation_atlas.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_client.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_connection.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_message.h" />
@@ -63,6 +66,7 @@
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_text_label_component.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_abstract_2D_tilemap_renderer.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_button.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_debug_screen.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_singleton_widget.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_text_entry.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_text_label.h" />

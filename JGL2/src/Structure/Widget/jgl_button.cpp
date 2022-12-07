@@ -27,12 +27,12 @@ namespace jgl
 	jgl::Bool Button::_onUpdate()
 	{
 		_pressed = false;
-		if (jgl::Application::instance()->mouse().button(jgl::Mouse::Button::Left) == jgl::InputStatus::Down &&
+		if (jgl::Application::instance()->mouse().getButton(jgl::Mouse::Button::Left) == jgl::InputStatus::Down &&
 			isPointed() == true)
 		{
 			_pressed = true;
 		}
-		if (jgl::Application::instance()->mouse().button(jgl::Mouse::Button::Left) == jgl::InputStatus::Released &&
+		if (jgl::Application::instance()->mouse().getButton(jgl::Mouse::Button::Left) == jgl::InputStatus::Released &&
 			isPointed() == true)
 		{
 			_funct();

@@ -150,7 +150,6 @@ namespace jgl
 
         friend class Application;
     private:
-        static std::map<Keyboard::Key, std::string> _convertKeyToString;
         InputStatus _keys[C_NB_KEY];
         UChar _entry;
 
@@ -162,4 +161,6 @@ namespace jgl
         const InputStatus& getKey(Keyboard::Key p_key) const;
         const UChar& getEntry() const;
     };
+    
+    std::string to_string(const jgl::Keyboard::Key& p_key);
 }

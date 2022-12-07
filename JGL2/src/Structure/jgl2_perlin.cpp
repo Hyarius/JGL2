@@ -120,4 +120,9 @@ namespace jgl
 
 		return (result);
 	}
+
+	const jgl::ULong& Perlin::seed() const
+	{
+		return (_seed);
+	}
 }

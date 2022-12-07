@@ -26,7 +26,7 @@ namespace jgl
 		_state = State::Stopped;
 	}
 
-	Timer::State Timer::timeout()
+	Timer::State Timer::state()
 	{
 		if (_state == State::Running && _startingTime + _timerDuration <= jgl::Application::instance()->time())
 		{
@@ -35,6 +35,16 @@ namespace jgl
 
 		return (_state);
 	}
+	
+	jgl::Bool Timer::isRunning()
+	{
+		Timer::State p_state = state();
+
+		if (p_state == Timer::State::Running)
+			return (true);
+		return (false);
+	}
+
 
 	jgl::ULong Timer::elapsedTime()
 	{
@@ -43,6 +53,20 @@ namespace jgl
 
 	jgl::Float Timer::percent()
 	{
-		return std::clamp(0.0f, static_cast<jgl::Float>(elapsedTime()) / _timerDuration, 100.0f);
+		return (static_cast<jgl::Float>(elapsedTime()) / _timerDuration);
+	}
+
+	std::string to_string(Timer::State p_state)
+	{
+		switch (p_state)
+		{
+		case Timer::State::Running:
+			return ("Running");
+		case Timer::State::Stopped:
+			return ("Stopped");
+		case Timer::State::Timeout:
+			return ("Timeout");
+		}
+		return ("Unknow");
 	}
 }

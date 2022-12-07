@@ -88,5 +88,12 @@ namespace jgl
 		Vector2Int draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth);
 		Vector2Int draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth);
 		Vector2Int draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth);
+
+		Vector2Int prepareDraw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth);
+		Vector2Int prepareDraw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth);
+		Vector2Int prepareDraw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth);
+		Vector2Int prepareDraw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth);
+
+		void exportShaderData(Buffer* p_modelSpaceBuffer, Buffer* p_modelColorBuffer, Buffer* p_modelOutlineColorBuffer, Buffer* p_modelUvBuffer, Buffer* p_indexesBuffer);
 	};
 }

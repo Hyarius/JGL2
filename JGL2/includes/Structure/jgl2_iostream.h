@@ -66,3 +66,9 @@ namespace jgl
 
 	IOStream& endl(IOStream& os);
 }
+
+#ifndef _DEBUG // works in VS
+#define DEBUG_TRACE(text) 
+#else
+#define DEBUG_TRACE(text) jgl::cout << text << jgl::endl
+#endif

@@ -35,9 +35,14 @@ namespace jgl
 		Thread* _updateThread = nullptr;
 		Bool _running = false;
 		Bool _multithreaded = false;
+		Bool _isCursorVisible = true;
+		HCURSOR _defaultCursor;
 		ULong _time = 0;
 		std::vector<Widget*> _widgets;
 		jgl::Float _maxDepth = 10000.0f;
+
+		jgl::ULong _nbUpdateFrame = 0;
+		jgl::ULong _nbRenderFrame = 0;
 
 		Font* _defaultFont;
 
@@ -72,6 +77,14 @@ namespace jgl
 		Application(std::string p_title, Vector2Int p_size, jgl::Color p_backgroundColor);
 		void quit();
 		Int run();
+
+		jgl::ULong nbUpdateFrame() { return (_nbUpdateFrame); }
+		jgl::ULong nbRenderFrame() { return (_nbRenderFrame); }
+
+		void hideCursor();
+		void revealCursor();
+		void setCursorVisibleStatus(jgl::Bool p_state);
+		jgl::Bool isCursorVisible();
 
 		void setDefaultFont(Font* p_defaultFont);
 		Font* defaultFont() const;

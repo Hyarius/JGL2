@@ -8,20 +8,12 @@ namespace jgl
 	class Timer
 	{
 	public:
-		struct State
-		{
-			enum {
-				Stopped,
-				Timeout,
-				Running
-			} value;
-
-			State(decltype(value) p_value = decltype(value)::Stopped) : value(p_value) {}
-			
-			operator bool() const {
-				return value == State::Running;
-			}
+		enum class State {
+			Stopped,
+			Timeout,
+			Running
 		};
+
 	private:
 		State _state;
 		jgl::ULong _startingTime;
@@ -36,7 +28,10 @@ namespace jgl
 		jgl::Float percent();
 		void start();
 		void stop();
-		State timeout();
+		State state();
+		jgl::Bool isRunning();
 
 	};
+
+	std::string to_string(Timer::State p_state);
 }

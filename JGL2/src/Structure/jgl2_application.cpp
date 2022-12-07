@@ -32,6 +32,31 @@ namespace jgl
 		_context.setViewport(p_anchor.x(), p_anchor.y(), p_size.x(), p_size.y());
 	}
 
+
+	void Application::hideCursor()
+	{
+		setCursorVisibleStatus(FALSE);
+	}
+	void Application::revealCursor()
+	{
+		setCursorVisibleStatus(TRUE);
+	}
+	void Application::setCursorVisibleStatus(jgl::Bool p_state)
+	{
+		if (_running == true)
+			throw std::runtime_error("Setting cursor isn't accessible during program execution");
+		_isCursorVisible = p_state;
+
+		if (p_state == false)
+			while (ShowCursor(p_state) >= 0);
+		else 
+			while (ShowCursor(p_state) < 0);
+	}
+	jgl::Bool Application::isCursorVisible()
+	{
+		return (_isCursorVisible);
+	}
+
 	void Application::_updateTime()
 	{
 		auto epoch = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()).time_since_epoch();
@@ -43,10 +68,19 @@ namespace jgl
 	{
 		_updateTime();
 
-		jgl::ULong next_time = _time + 1000;
+		jgl::ULong actualNbFrame = 0;
+		jgl::ULong nextTime = _time;
 
 		while (_running == true)
 		{
+			if (nextTime < _time)
+			{
+				_nbUpdateFrame = actualNbFrame * 4;
+				nextTime = _time + 250;
+				actualNbFrame = 0;
+			}
+			actualNbFrame++;
+
 			_updateTime();
 			_handleWinMessage();
 
@@ -61,8 +95,19 @@ namespace jgl
 	}
 	void Application::_runRender()
 	{
+		jgl::ULong actualNbFrame = 0;
+		jgl::ULong nextTime = _time;
+
 		while (_running == true)
 		{
+			if (nextTime < _time)
+			{
+				_nbRenderFrame = actualNbFrame * 4;
+				nextTime = _time + 250;
+				actualNbFrame = 0;
+			}
+			actualNbFrame++;
+
 			_context.clear();
 
 			_pullWinMessage();
@@ -78,8 +123,21 @@ namespace jgl
 
 	void Application::_runMonoThread()
 	{
+
+		jgl::ULong actualNbFrame = 0;
+		jgl::ULong nextTime = _time;
+
 		while (_running == true)
 		{
+			if (nextTime < _time)
+			{
+				_nbUpdateFrame = actualNbFrame * 4;
+				_nbRenderFrame = actualNbFrame * 4;
+				nextTime = _time + 250;
+				actualNbFrame = 0;
+			}
+			actualNbFrame++;
+
 			_context.clear();
 
 			_pullWinMessage();
@@ -158,7 +216,7 @@ namespace jgl
 
 	void Application::deactivateMultiThread()
 	{
-		_multithreaded = true;
+		_multithreaded = false;
 	}
 
 	void Application::setDefaultFont(Font* p_defaultFont)

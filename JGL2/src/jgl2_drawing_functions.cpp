@@ -47,6 +47,7 @@ namespace jgl
 		model_buffer->send(vertex_content, 4);
 		color_buffer->send(color_content, 4);
 		tmp_shader->elementBuffer()->send(element_index, 6);
+
 		tmp_shader->launch(jgl::Shader::Mode::Triangle);
 	}
 }

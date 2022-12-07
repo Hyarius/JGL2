@@ -40,6 +40,7 @@ namespace jgl
 	{
 	public:
 		typedef TNodeType NodeType;
+		static const jgl::Size_t C_CONTENT_SIZE = NChunkSize * NChunkSize * NChunkDepth * sizeof(jgl::Short);
 		static const jgl::Size_t C_SIZE = NChunkSize;
 		static const jgl::Size_t C_DEPTH = NChunkDepth;
 		static inline jgl::Short C_OUTSIDE_NODE = -2;
@@ -123,7 +124,10 @@ namespace jgl
 		virtual void setContent(jgl::Int p_x, jgl::Int p_y, jgl::Int p_z, jgl::Short p_value)
 		{
 			if (p_x < 0 || p_x >= C_SIZE || p_y < 0 || p_y >= C_SIZE || p_z < 0 || p_z >= C_DEPTH)
+			{
+				jgl::cout << "Setting content out of range" << jgl::endl;
 				return;
+			}
 			_content[p_x][p_y][p_z] = p_value;
 			_onContentEdit();
 		}
@@ -466,6 +470,7 @@ void main()
 			return (_bakingDeltaNodeSprite[p_sub_part][values[0]][values[1]][values[2]]);
 		}
 
+		std::map<jgl::Int, jgl::Bool> depthMap;
 
 		void _bakeAutotile(
 			TNodeType* p_node,
@@ -483,7 +488,8 @@ void main()
 
 				for (size_t i = 0; i < 4; i++)
 				{
-					_vertexArray.push_back(TNodeType::UNIT * (node_pos + _deltaAutotilePosition[i]));
+					jgl::Vector3 vertex = TNodeType::UNIT * (node_pos + _deltaAutotilePosition[i]);
+					_vertexArray.push_back(vertex);
 					jgl::Vector2 tmp_uvs = sprite + unit * _deltaUvs[i];
 					if (_deltaUvs[i].x() != 0)
 						tmp_uvs.x() -= 0.00001f;
@@ -646,13 +652,13 @@ void main()
 			}
 		}
 
-		void render(jgl::Vector2 p_offset, jgl::Float p_depth, jgl::Int p_animationState)
+		void render(jgl::Vector2 p_screenPosition, jgl::Float p_depth, jgl::Int p_animationState)
 		{
 			if (_nodeTexture != nullptr)
 			{
 				if (_shaderData.generated == true)
 				{
-					_shaderData.cast(jgl::Vector3(p_offset, p_depth), p_animationState);
+					_shaderData.cast(jgl::Vector3(jgl::Application::instance()->convertScreenToOpenGL(p_screenPosition), p_depth / jgl::Application::instance()->maxDepth()), p_animationState);
 				}
 			}
 		}

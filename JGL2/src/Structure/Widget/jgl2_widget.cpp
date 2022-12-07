@@ -69,14 +69,28 @@ namespace jgl
 			_viewport.setParentViewport(nullptr);
 		}
 	}
+	
+	void Widget::_onDeactivation()
+	{
+
+	}
+	
+	void Widget::_onActivation()
+	{
+
+	}
 
 	void Widget::activate()
 	{
+		if (_activated == false)
+			_onActivation();
 		_activated = true;
 	}
 
 	void Widget::deactivate()
 	{
+		if (_activated == true)
+			_onDeactivation();
 		_activated = false;
 	}
 		

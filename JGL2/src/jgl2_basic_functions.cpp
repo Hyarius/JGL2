@@ -274,19 +274,19 @@ namespace jgl
 			jgl::UInt value_tmp = rand();
 			value += value_tmp;
 		}
-		return((value % (max - min)) + min);
+		return((value % (max + 1 - min)) + min);
 	}
 
 	std::vector<std::string> stringSplit(const std::string& p_string, const std::string& p_delim)
 	{
 		std::vector<std::string> result;
 
-		auto start = 0U;
-		auto end = p_string.find(p_delim);
+		size_t start = 0;
+		size_t end = p_string.find(p_delim);
 		while (end != std::string::npos)
 		{
 			result.push_back(p_string.substr(start, end - start));
-			start = end + p_delim.length();
+			start = end + static_cast<size_t>(p_delim.length());
 			end = p_string.find(p_delim, start);
 		}
 

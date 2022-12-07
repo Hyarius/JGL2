@@ -20,6 +20,11 @@ namespace jgl
 
 		virtual ~LockedQueue() { clear(); }
 
+		const T& operator [] (const jgl::Size_t& p_index) const
+		{
+			return (_content[p_index]);
+		}
+
 		const T& front()
 		{
 			std::scoped_lock lock(muxQueue);
@@ -75,7 +80,7 @@ namespace jgl
 		jgl::Size_t size()
 		{
 			std::scoped_lock lock(muxQueue);
-			return _content.size();
+			return static_cast<jgl::Size_t>(_content.size());
 		}
 
 		void clear()
