@@ -1,5 +1,7 @@
 #include "Structure/jgl2_application.h"
 
+#include "Structure/jgl2_timer.h"
+
 namespace jgl
 {
 	Application* Application::instance()

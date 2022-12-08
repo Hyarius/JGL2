@@ -120,7 +120,7 @@ namespace jgl
 			if (_initialized == false)
 				_initiatizeOpenGL();
 
-			if (_computed == false)
+			//if (_computed == false)
 				_computeShaderBuffer(p_depth);
 
 			_castRender();

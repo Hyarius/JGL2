@@ -62,6 +62,8 @@ namespace jgl
 					if (UV.x < 0 || UV.x > 1 || UV.y < 0 || UV.y > 1)
 						discard;
 					color = texture(textureID, UV).rgba;
+					if (color.a == 0)
+						discard;
 				})";
 
 		addShader("Texture2D", new jgl::Shader(textureShaderVertex, textureShaderFragment));
@@ -109,6 +111,8 @@ namespace jgl
 							color = fragmentColor;
 						else
 							color = fragmentOutlineColor;
+					if (color.a == 0)
+						discard;
 				})";
 
 		addShader("TextTexture2D", new jgl::Shader(textTextureShaderVertex, textTextureShaderFragment));

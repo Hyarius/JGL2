@@ -28,6 +28,7 @@ namespace jgl
 		Vector2Int _size = Vector2Int(0, 0);
 
 		void _resetCalculation();
+		void _recalcPositionChange();
 		void _composeViewportInfo();
 		Vector2Int _cumulatedAnchor() const;
 		void _addChildren(Widget* p_widget);
