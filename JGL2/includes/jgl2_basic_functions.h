@@ -27,6 +27,7 @@ namespace jgl
 	std::vector<std::string> stringSplit(const std::string& p_string, const std::string& p_delim);
 	std::string getStr(std::fstream& p_file);
 	std::vector<std::string> getStringSplit(std::fstream& p_file, const std::string& p_delim, const jgl::Int& p_expectedSize = -1);
+	jgl::Int positive_modulo(jgl::Int i, jgl::Int n);
 }
 
 #define __METHOD__ jgl::methodName(__PRETTY_FUNCTION__)

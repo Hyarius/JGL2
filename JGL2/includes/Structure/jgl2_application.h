@@ -39,7 +39,7 @@ namespace jgl
 		HCURSOR _defaultCursor;
 		ULong _time = 0;
 		std::vector<Widget*> _widgets;
-		jgl::Float _maxDepth = 10000.0f;
+		jgl::Float _maxDepth = 1000000.0f;
 
 		jgl::ULong _nbUpdateFrame = 0;
 		jgl::ULong _nbRenderFrame = 0;
