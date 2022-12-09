@@ -55,14 +55,14 @@ namespace jgl
 		return (sprite(sprite_id));
 	}
 
-	void SpriteSheet::draw(UInt sprite_id, Vector2Int pos, Vector2UInt size)
+	void SpriteSheet::draw(UInt sprite_id, Vector2Int pos, Vector2UInt size, jgl::Float p_depth)
 	{
-		jgl::Image::draw(pos, size, _sprites[sprite_id], _unit);
+		jgl::Image::draw(pos, size, _sprites[sprite_id], _unit, p_depth);
 	}
 
-	void SpriteSheet::draw(Vector2Int sprite, Vector2Int pos, Vector2UInt size)
+	void SpriteSheet::draw(Vector2Int sprite, Vector2Int pos, Vector2UInt size, jgl::Float p_depth)
 	{
 		UInt sprite_id = (_size.x() * sprite.y()) + sprite.x();
-		this->draw(sprite_id, pos, size);
+		this->draw(sprite_id, pos, size, p_depth);
 	}
 }

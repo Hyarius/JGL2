@@ -108,7 +108,7 @@ namespace jgl
 			throw std::runtime_error("Error : no texture ID uniform found in shader");
 	}
 
-	void Image::draw(Vector2Int pos, Vector2Int size, Vector2 uv_pos, Vector2 uv_size)
+	void Image::draw(Vector2Int pos, Vector2Int size, Vector2 uv_pos, Vector2 uv_size, jgl::Float p_depth)
 	{
 		static UInt elementIndex[6] = { 0, 3, 1, 2, 3, 0 };
 		static Vector2Int deltaPos[4] = {
@@ -125,9 +125,10 @@ namespace jgl
 
 		for (size_t i = 0; i < 4; i++)
 		{
-			vertexContent[i] = Vector3(jgl::Application::instance()->convertScreenToOpenGL(pos + size * deltaPos[i]), 0);
+			vertexContent[i] = Vector3(jgl::Application::instance()->convertScreenToOpenGL(pos + size * deltaPos[i]), p_depth / jgl::Application::instance()->maxDepth());
 			uvContent[i] = (uv_pos + uv_size * deltaPos[i]);
 		}
+		activate();
 
 		_modelSpaceBuffer->send(vertexContent, 4);
 		_modelUvBuffer->send(uvContent, 4);

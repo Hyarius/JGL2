@@ -31,11 +31,13 @@ namespace jgl
 			isPointed() == true)
 		{
 			_pressed = true;
+			return (true);
 		}
 		if (jgl::Application::instance()->mouse().getButton(jgl::Mouse::Button::Left) == jgl::InputStatus::Released &&
 			isPointed() == true)
 		{
 			_funct();
+			return (true);
 		}
 		return (false);
 	}

@@ -40,6 +40,6 @@ namespace jgl
 		void activate(GLenum texture = GL_TEXTURE0);
 		void desactivate(GLenum texture = GL_TEXTURE0);
 
-		void draw(jgl::Vector2Int pos, jgl::Vector2Int size, jgl::Vector2 uv_pos, jgl::Vector2 uv_size);
+		void draw(jgl::Vector2Int pos, jgl::Vector2Int size, jgl::Vector2 uv_pos, jgl::Vector2 uv_size, jgl::Float p_depth);
 	};
 }

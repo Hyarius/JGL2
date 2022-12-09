@@ -59,6 +59,8 @@ namespace jgl
 		void setActivate(Bool p_state);
 		Bool isActivated();
 
+		void sortChildrenByDepth();
+
 		virtual Bool isPointed() const;
 
 		void setDepth(Float p_depth);

@@ -22,7 +22,7 @@ namespace jgl
 		const Vector2& sprite(Vector2UInt sprite_value) const;
 		const Vector2& sprite(Vector2Int sprite_value) const;
 
-		void draw(UInt sprite_id, Vector2Int pos, Vector2UInt size);
-		void draw(Vector2Int sprite, Vector2Int pos, Vector2UInt size);
+		void draw(UInt sprite_id, Vector2Int pos, Vector2UInt size, jgl::Float p_depth);
+		void draw(Vector2Int sprite, Vector2Int pos, Vector2UInt size, jgl::Float p_depth);
 	};
 }

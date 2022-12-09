@@ -130,6 +130,13 @@ namespace jgl
 		}
 	}
 
+	void Widget::sortChildrenByDepth()
+	{
+		std::sort(_childrens.begin(), _childrens.end(), [](jgl::Widget* lhs, jgl::Widget* rhs) {
+			return lhs->depth() > rhs->depth();
+			});
+	}
+
 	void Widget::setDepth(jgl::Float p_depth)
 	{
 		if (p_depth > jgl::Application::instance()->maxDepth())
@@ -143,6 +150,7 @@ namespace jgl
 		{
 			_childrens[i]->setDepth(_childrens[i]->depth() + delta);
 		}
+		sortChildrenByDepth();
 	}
 
 	void Widget::setGeometry(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
