@@ -7,8 +7,11 @@ namespace jgl
 
 	void TextEntry::_onRender()
 	{
-		_box.render(depth());
-		jgl::Vector2Int labelTextSize = _label.render(depth() + 0.2f);
+		if (_selected == true && (jgl::Application::instance()->time() % 1000) > 500)
+		{
+			jgl::drawRectangleColor(_cursorColor, _label.anchor() + jgl::Vector2Int(0, _box.borderSize().y()) + _cursorPosition, _cursorSize, depth());
+		}
+		jgl::Vector2Int labelTextSize = _label.render(depth());
 
 		if (labelTextSize.x() > _label.size().x())
 		{
@@ -16,10 +19,7 @@ namespace jgl
 			_label.setText(_computeTextToRender());
 		}
 
-		if (_selected == true && (jgl::Application::instance()->time() % 1000) > 500)
-		{
-			jgl::drawRectangleColor( _cursorColor, _label.anchor() + jgl::Vector2Int(0, _box.borderSize().y()) + _cursorPosition, _cursorSize, depth() + 0.4f);
-		}
+		_box.render(depth());
 	}
 
 	void TextEntry::_onGeometryChange()

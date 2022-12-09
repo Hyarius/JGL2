@@ -8,8 +8,8 @@ namespace jgl
 		jgl::Size_t index = 0;
 		if (_pressed == true)
 			index = 1;
+		_labels[index].render(depth());
 		_boxes[index].render(depth());
-		_labels[index].render(depth() + 0.1f);
 	}
 
 	void Button::_onGeometryChange()

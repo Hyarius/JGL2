@@ -103,11 +103,7 @@ namespace jgl
 	{
 		Vector2Int pos = jgl::Application::instance()->mouse().pos();
 
-		if (pos.x() < _viewport.anchor().x() || pos.x() >= _viewport.anchor().x() + _viewport.size().x() ||
-			pos.y() < _viewport.anchor().y() || pos.y() >= _viewport.anchor().y() + _viewport.size().y())
-			return (false);
-
-		return (true);
+		return (pos.isBetween(_viewport.anchor(), _viewport.anchor() + _viewport.size()));
 	}
 
 	jgl::Bool Widget::isActivated()
@@ -139,11 +135,13 @@ namespace jgl
 		if (p_depth > jgl::Application::instance()->maxDepth())
 			throw std::out_of_range("Widget depth out of range");
 
-		jgl::Int oldDepth = _depth;
+		jgl::Float delta = p_depth - _depth;
 		_depth = p_depth;
+		_resetCalculation();
+		_recalcPositionChange();
 		for (jgl::Size_t i = 0; i < _childrens.size(); i++)
 		{
-			_childrens[i]->setDepth(_depth + (_childrens[i]->depth() - oldDepth));
+			_childrens[i]->setDepth(_childrens[i]->depth() + delta);
 		}
 	}
 

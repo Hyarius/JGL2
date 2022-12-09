@@ -18,8 +18,8 @@ namespace jgl
 
 	void TextLabel::_onRender()
 	{
+		_label.render(depth());
 		_box.render(depth());
-		_label.render(depth() + 0.2f);
 	}
 
 	void TextLabel::_onPositionChange()

@@ -362,6 +362,17 @@ namespace jgl
 			p_os << p_values.text();
 			return (p_os);
 		}
+
+		jgl::Bool isBetween(const Vector<TType, C_NB_DIM>& p_min, const Vector<TType, C_NB_DIM>& p_max)
+		{
+			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
+			{
+				if (values[i] < p_min[i] ||
+					values[i] > p_max[i])
+					return (false);
+			}
+			return (true);
+		}
 	};
 
 	template <typename TType>
