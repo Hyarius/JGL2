@@ -63,6 +63,8 @@ namespace jgl
 		void _create2DColorShader();
 		void _create2DTextureShader();
 		void _create2DTextTextureShader();
+		
+		void _create2DOrthographicShader();
 
 		void _setViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size);
 

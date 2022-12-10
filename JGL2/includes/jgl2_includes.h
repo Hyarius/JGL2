@@ -42,3 +42,6 @@
 #include <ExternalLibraries/asio.hpp>
 #include <ExternalLibraries/asio/ts/buffer.hpp>
 #include <ExternalLibraries/asio/ts/internet.hpp>
+
+#include <ExternalLibraries/glm/glm.hpp>
+#include <ExternalLibraries/glm/ext.hpp>

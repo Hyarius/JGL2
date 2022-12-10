@@ -244,7 +244,6 @@ namespace jgl
 				}
 				else if (_connection->state() == jgl::Connection<TServerMessageEnum>::State::Accepted)
 				{
-					DEBUG_TRACE("Treating messages receptionned by client : State Accepted");
 					auto input = _input.pop_front();
 					auto msg = input.msg;
 					if (_activityMap.count(msg.type()) != 0)

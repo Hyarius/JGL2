@@ -324,4 +324,5 @@ namespace jgl
 	jgl::Int positive_modulo(jgl::Int i, jgl::Int n) {
 		return (i % n + n) % n;
 	}
+
 }

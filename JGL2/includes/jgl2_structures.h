@@ -23,3 +23,5 @@
 
 #include "Structure/jgl2_texture_atlas.h"
 #include "Structure/jgl2_translation_atlas.h"
+
+#include "Structure/jgl2_game_object_2D.h"

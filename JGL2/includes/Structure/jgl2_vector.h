@@ -7,7 +7,10 @@
 namespace jgl
 {
 	jgl::Float degreeToRadian(const jgl::Float& angle);
-	jgl::Float radianToDegree(const jgl::Float& radian);
+	jgl::Float radianToDegree(const jgl::Float& radian); 
+	
+	template <typename T>
+	std::string to_string(const T a_value, const jgl::Int n);
 
 	template <typename TType, jgl::Size_t C_NB_DIM>
 	struct Vector
@@ -316,7 +319,7 @@ namespace jgl
 			return (true);
 		}
 
-		std::string text() const
+		std::string text(const jgl::Int& p_precision = 3) const
 		{
 			std::string result = "";
 
@@ -324,7 +327,7 @@ namespace jgl
 			{
 				if (i != 0)
 					result += " / ";
-				std::string tmp = std::to_string(values[i]);
+				std::string tmp = jgl::to_string(values[i], p_precision);
 				result += tmp;
 			}
 

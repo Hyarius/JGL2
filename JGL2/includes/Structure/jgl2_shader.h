@@ -417,26 +417,24 @@ namespace jgl
 			if (_uniformChecker(Mode::Element, Type::UInt, Size::Four) == true)
 				glUniform4ui(_location, data.x(), data.y(), data.z(), data.w());
 		}
-		/*
-		template <typename T, typename std::enable_if < std::is_same <Matrix2x2, T>::value == true > ::type* = nullptr >
+		template <typename T, typename std::enable_if < std::is_same <glm::mat2x2, T>::value == true > ::type* = nullptr >
 		void send(T data)
 		{
 			if (_uniformChecker(Mode::Element, Type::Matrix, Size::Two) == true)
-				glUniformMatrix2fv(_location, 1, GL_FALSE, &(data));
+				glUniformMatrix2fv(_location, 1, GL_FALSE, reinterpret_cast<GLfloat*>(&(data)));
 		}
-		template <typename T, typename std::enable_if < std::is_same <Matrix3x3, T>::value == true > ::type* = nullptr >
+		template <typename T, typename std::enable_if < std::is_same <glm::mat3x3, T>::value == true > ::type* = nullptr >
 		void send(T data)
 		{
 			if (_uniformChecker(Mode::Element, Type::Matrix, Size::Three) == true)
-				glUniformMatrix3fv(_location, 1, GL_FALSE, &(data));
+				glUniformMatrix3fv(_location, 1, GL_FALSE, reinterpret_cast<GLfloat*>(&(data)));
 		}
-		template <typename T, typename std::enable_if < std::is_same <Matrix4x4, T>::value == true > ::type* = nullptr >
+		template <typename T, typename std::enable_if < std::is_same <glm::mat4x4, T>::value == true > ::type* = nullptr >
 		void send(T data)
 		{
 			if (_uniformChecker(Mode::Element, Type::Matrix, Size::Four) == true)
-				glUniformMatrix4fv(_location, 1, GL_FALSE, &(data));
+				glUniformMatrix4fv(_location, 1, GL_FALSE, reinterpret_cast<GLfloat*>(&(data)));
 		}
-		*/
 
 		// Array part
 		template <typename T, typename std::enable_if < std::is_same <Float, T>::value == true > ::type* = nullptr >
@@ -511,26 +509,24 @@ namespace jgl
 			if (_uniformChecker(Mode::Array, Type::UInt, Size::Four) == true)
 				glUniform4uiv(_location, nb_element, data);
 		}
-		/*
-		template <typename T, typename std::enable_if < std::is_same <Matrix2x2, T>::value == true > ::type* = nullptr >
+		template <typename T, typename std::enable_if < std::is_same <glm::mat2x2, T>::value == true > ::type* = nullptr >
 		void send(T* data, Size_t nb_element)
 		{
 			if (_uniformChecker(Mode::Array, Type::Matrix, Size::Two) == true)
 				glUniformMatrix2fv(_location, nb_element, GL_FALSE, &(data));
 		}
-		template <typename T, typename std::enable_if < std::is_same <Matrix3x3, T>::value == true > ::type* = nullptr >
+		template <typename T, typename std::enable_if < std::is_same <glm::mat3x3, T>::value == true > ::type* = nullptr >
 		void send(T* data, Size_t nb_element)
 		{
 			if (_uniformChecker(Mode::Array, Type::Matrix, Size::Three) == true)
 				glUniformMatrix3fv(_location, nb_element, GL_FALSE, &(data));
 		}
-		template <typename T, typename std::enable_if < std::is_same <Matrix4x4, T>::value == true > ::type* = nullptr >
+		template <typename T, typename std::enable_if < std::is_same <glm::mat4x4, T>::value == true > ::type* = nullptr >
 		void send(T* data, Size_t nb_element)
 		{
 			if (_uniformChecker(Mode::Array, Type::Matrix, Size::Four) == true)
 				glUniformMatrix4fv(_location, nb_element, GL_FALSE, &(data));
 		}
-		*/
 	};
 
 	class Shader

@@ -28,6 +28,15 @@ namespace jgl
 	std::string getStr(std::fstream& p_file);
 	std::vector<std::string> getStringSplit(std::fstream& p_file, const std::string& p_delim, const jgl::Int& p_expectedSize = -1);
 	jgl::Int positive_modulo(jgl::Int i, jgl::Int n);
+
+	template <typename T>
+	std::string to_string(const T a_value, const jgl::Int n = 6)
+	{
+		std::ostringstream out;
+		out.precision(n);
+		out << std::fixed << a_value;
+		return out.str();
+	}
 }
 
 #define __METHOD__ jgl::methodName(__PRETTY_FUNCTION__)

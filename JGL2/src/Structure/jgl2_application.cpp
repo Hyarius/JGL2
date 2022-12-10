@@ -189,6 +189,7 @@ namespace jgl
 		_create2DColorShader();
 		_create2DTextureShader();
 		_create2DTextTextureShader();
+		_create2DOrthographicShader();
 
 		//resize(p_size);
 		_updateTime();
