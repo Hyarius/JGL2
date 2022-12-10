@@ -67,6 +67,7 @@
     <ClInclude Include="includes\Structure\Widget\jgl2_abstract_2D_tilemap_renderer.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_button.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_debug_screen.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_network_manager.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_singleton_widget.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_text_entry.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_text_label.h" />

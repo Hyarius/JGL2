@@ -4,6 +4,8 @@
 #include "Structure/Network/jgl2_message.h"
 #include "Structure/Network/jgl2_connection.h"
 
+#include "Structure/jgl2_singleton.h"
+
 namespace jgl
 {
 	template <typename TServerMessageEnum>
@@ -331,6 +333,21 @@ namespace jgl
 					client = nullptr;
 				}
 			}
+		}
+	};
+
+	template <typename TServerMessageEnum>
+	class ServerSingleton : public jgl::Singleton< jgl::Server<TServerMessageEnum> >
+	{
+	public:
+		static jgl::Server<TServerMessageEnum>* instanciate() = delete;
+		static jgl::Server<TServerMessageEnum>* instanciate(jgl::ULong p_port)
+		{
+			if (jgl::Singleton< jgl::Server<TServerMessageEnum> >::_instance == nullptr)
+			{
+				jgl::Singleton< jgl::Server<TServerMessageEnum> >::_instance = new jgl::Server<TServerMessageEnum>(p_port);
+			}
+			return (jgl::Singleton< jgl::Server<TServerMessageEnum> >::_instance);
 		}
 	};
 }

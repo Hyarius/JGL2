@@ -6,6 +6,7 @@
 #include "Structure/Network/jgl2_message.h"
 #include "Structure/Network/jgl2_connection.h"
 #include "Structure/jgl2_thread.h"
+#include "Structure/jgl2_singleton.h"
 
 namespace jgl
 {
@@ -278,5 +279,11 @@ namespace jgl
 		{
 			return (_connection);
 		}
+	};
+
+	template <typename TServerMessageEnum>
+	class ClientSingleton : public jgl::Singleton<jgl::Client<TServerMessageEnum>>
+	{
+
 	};
 }

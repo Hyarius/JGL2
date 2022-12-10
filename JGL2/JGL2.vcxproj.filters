@@ -177,6 +177,9 @@
     <ClInclude Include="includes\Structure\Widget\jgl2_debug_screen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\Structure\Widget\jgl2_network_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Structure\jgl2_iostream.cpp">

@@ -11,3 +11,5 @@
 #include "Structure/Widget/jgl2_abstract_2D_tilemap_renderer.h"
 
 #include "Structure/Widget/jgl2_debug_screen.h"
+
+#include "Structure/Widget/jgl2_network_manager.h"
