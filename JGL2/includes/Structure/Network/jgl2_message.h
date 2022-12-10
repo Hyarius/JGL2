@@ -147,8 +147,7 @@ namespace jgl
 			return (*this);
 		}
 
-		template<>
-		Message<TServerMessageEnum>& operator << <std::string>	(const std::string& p_text)
+		Message<TServerMessageEnum>& operator << (const std::string& p_text)
 		{
 			*this << p_text.size();
 			for (jgl::Size_t i = 0; i < p_text.size(); i++)
@@ -156,8 +155,7 @@ namespace jgl
 			return *this;
 		}
 
-		template<>
-		Message<TServerMessageEnum>& operator >> <std::string>	(std::string& p_text)
+		Message<TServerMessageEnum>& operator >> (std::string& p_text)
 		{
 			jgl::Size_t size;
 			jgl::UInt i = 0;
@@ -170,6 +168,58 @@ namespace jgl
 				*this >> c;
 				p_text.push_back(c);
 				i++;
+			}
+
+			return *this;
+		}
+
+		template<typename TDataType>
+		Message<TServerMessageEnum>& operator << (const std::vector<TDataType>& p_vector)
+		{
+			*this << p_vector.size();
+			for (jgl::Size_t i = 0; i < p_vector.size(); i++)
+				*this << p_vector[i];
+			return *this;
+		}
+
+		template<typename TDataType>
+		Message<TServerMessageEnum>& operator >> (std::vector<TDataType>& p_vector)
+		{
+			jgl::Size_t size;
+			jgl::UInt i = 0;
+
+			*this >> size;
+			p_vector.clear();
+			while (empty() == false && i < size)
+			{
+				TDataType c;
+				*this >> c;
+				p_vector.push_back(c);
+				i++;
+			}
+
+			return *this;
+		}
+
+		template<typename TDataType>
+		Message<TServerMessageEnum>& operator << (const std::deque<TDataType>& p_deque)
+		{
+			*this << p_deque.size();
+			for (jgl::Size_t i = 0; i < p_deque.size(); i++)
+				*this << p_deque[i];
+			return *this;
+		}
+
+		template<typename TDataType>
+		Message<TServerMessageEnum>& operator >> (std::deque<TDataType>& p_deque)
+		{
+			jgl::Size_t size;
+
+			*this >> size;
+			p_deque.resize(size);
+			for (jgl::Size_t i = 0; empty() == false && i < size; i++)
+			{
+				*this >> p_deque[i];
 			}
 
 			return *this;
