@@ -14,7 +14,7 @@ namespace jgl
 		if (_modelSpaceBuffer == nullptr)
 			_modelSpaceBuffer = _shader->buffer("model_space");
 		if (_modelUvBuffer == nullptr)
-			_modelUvBuffer = _shader->buffer("model_uv");
+			_modelUvBuffer = _shader->buffer("model_uvs");
 		if (_modelColorBuffer == nullptr)
 			_modelColorBuffer = _shader->buffer("model_color");
 		if (_modelOutlineColorBuffer == nullptr)

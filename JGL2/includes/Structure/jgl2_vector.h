@@ -404,6 +404,18 @@ namespace jgl
 			this->values[1] = p_other[1];
 		}
 
+		operator glm::vec2() {
+			return (glm::vec2(this->values[0], this->values[1]));
+		}
+
+		operator glm::vec3() {
+			return (glm::vec3(this->values[0], this->values[1], 0));
+		}
+
+		operator glm::vec4() {
+			return (glm::vec4(this->values[0], this->values[1], 0, 1));
+		}
+
 		BaseVector2<TType>& operator = (const BaseVector2<TType>& p_other)
 		{
 			for (jgl::Size_t i = 0; i < 2; i++)
@@ -536,6 +548,18 @@ namespace jgl
 			this->values[2] = p_other[2];
 		}
 
+		operator glm::vec2() {
+			return (glm::vec2(this->values[0], this->values[1]));
+		}
+
+		operator glm::vec3() {
+			return (glm::vec3(this->values[0], this->values[1], this->values[2]));
+		}
+
+		operator glm::vec4() {
+			return (glm::vec4(this->values[0], this->values[1], this->values[2], 1));
+		}
+
 		BaseVector3<TType>& operator = (const BaseVector2<TType>& p_other)
 		{
 			for (jgl::Size_t i = 0; i < 2; i++)
@@ -605,6 +629,18 @@ namespace jgl
 			this->values[1] = p_other[1];
 			this->values[2] = p_other[2];
 			this->values[3] = p_other[3];
+		}
+
+		operator glm::vec2() const {
+			return (glm::vec2(this->values[0], this->values[1]));
+		}
+
+		operator glm::vec3() const {
+			return (glm::vec3(this->values[0], this->values[1], this->values[2]));
+		}
+
+		operator glm::vec4() const {
+			return (glm::vec4(this->values[0], this->values[1], this->values[2], this->values[3]));
 		}
 
 		template <typename TOtherType>

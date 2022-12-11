@@ -40,13 +40,13 @@ namespace jgl
 		std::string textureShaderVertex =
 			R"(	#version 330 core
 				layout(location = 0) in vec3 model_space;
-				layout(location = 1) in vec2 model_uv;
+				layout(location = 1) in vec2 model_uvs;
 
 				out vec2 UV;
 				void main()
 				{
 					gl_Position = vec4(model_space, 1.0f);
-					UV = model_uv;
+					UV = model_uvs;
 				})";
 
 		std::string textureShaderFragment =
@@ -73,7 +73,7 @@ namespace jgl
 		std::string textTextureShaderVertex =
 			R"(	#version 330 core
 				layout(location = 0) in vec3 model_space;
-				layout(location = 1) in vec2 model_uv;
+				layout(location = 1) in vec2 model_uvs;
 				layout(location = 3) in vec4 model_color;
 				layout(location = 4) in vec4 model_outline_color;
 
@@ -84,7 +84,7 @@ namespace jgl
 				void main()
 				{
 					gl_Position = vec4(model_space, 1.0f);
-					fragmentUV = model_uv;
+					fragmentUV = model_uvs;
 					fragmentColor = model_color;
 					fragmentOutlineColor = model_outline_color;
 				})";
@@ -116,44 +116,5 @@ namespace jgl
 				})";
 
 		addShader("TextTexture2D", new jgl::Shader(textTextureShaderVertex, textTextureShaderFragment));
-	}
-
-	void Application::_create2DOrthographicShader()
-	{
-		std::string Orthographic2DShaderVertex =
-			R"(	#version 440 core
-
-				uniform mat4 MVP;
-				uniform float depth;
-
-				layout(location = 0) in vec2 model_space;
-				layout(location = 1) in vec2 model_uvs;
-
-				out vec2 fragmentUV;
-
-				void main()
-				{
-					gl_Position = MVP * vec4(model_space, depth, 1.0);
-					fragmentUV = model_uvs;
-				})";
-
-		std::string Orthographic2DShaderFragment =
-			R"( #version 440 core
-
-				layout(location = 0) out vec4 outputColor;
-
-				in vec2 fragmentUV;
-
-				uniform sampler2D textureID;
-
-				void main()
-				{
-					vec4 texel = texture(textureID, fragmentUV);
-					if(texel.a == 0.0)
-						discard;
-					outputColor = texel;
-				})";
-
-		addShader("Orthographic2DShader", new jgl::Shader(Orthographic2DShaderVertex, Orthographic2DShaderFragment));
 	}
 }

@@ -176,7 +176,7 @@ namespace jgl
 		template<typename TDataType>
 		Message<TServerMessageEnum>& operator << (const std::vector<TDataType>& p_vector)
 		{
-			*this << p_vector.size();
+			*this << static_cast<jgl::Size_t>(p_vector.size());
 			for (jgl::Size_t i = 0; i < p_vector.size(); i++)
 				*this << p_vector[i];
 			return *this;
@@ -204,7 +204,7 @@ namespace jgl
 		template<typename TDataType>
 		Message<TServerMessageEnum>& operator << (const std::deque<TDataType>& p_deque)
 		{
-			*this << p_deque.size();
+			*this << static_cast<jgl::Size_t>(p_deque.size());
 			for (jgl::Size_t i = 0; i < p_deque.size(); i++)
 				*this << p_deque[i];
 			return *this;

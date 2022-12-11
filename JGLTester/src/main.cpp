@@ -1,89 +1,116 @@
-#include "jgl2.h"
+#include "jgl2_game_engine.h"
 
-class Test : public jgl::Widget
+class Gem : public GameObject
 {
 private:
-	jgl::Timer _slideTimer = jgl::Timer(500);
-	jgl::Vector2Int _startPosition;
-	jgl::Vector2Int _endPosition;
+	SpriteRenderer* _spriteRenderer;
+	jgl::SpriteSheet* _texture;
 
-	jgl::Frame* background1;
-	jgl::Frame* background2;
-	jgl::TextLabel* textLabel1;
-	jgl::TextLabel* textLabel2;
-	jgl::TextLabel* textLabel3;
+public:
+	Gem(std::string p_name, GameObject* p_parent = nullptr) : GameObject(p_name, p_parent)
+	{
+		_spriteRenderer = addComponent<SpriteRenderer>();
+	}
+
+	void prepareBake()
+	{
+		_spriteRenderer->mesh().texture = _texture;
+
+		static jgl::UInt element_index[6] = { 0, 3, 1, 2, 3, 0 };
+		static jgl::Vector3 deltaPosition[4] = {
+			jgl::Vector3(0, 0, 1),
+			jgl::Vector3(1, 0, 1),
+			jgl::Vector3(0, 1, 1),
+			jgl::Vector3(1, 1, 1)
+		};
+		static jgl::Vector2 deltaUvs[4] = {
+			jgl::Vector2(0, 0),
+			jgl::Vector2(1, 0),
+			jgl::Vector2(0, 1),
+			jgl::Vector2(1, 1)
+		};
+
+		for (jgl::Size_t i = 0; i < 4; i++)
+		{
+			_spriteRenderer->mesh().vertices.push_back(core().position + core().size * deltaPosition[i]);
+			_spriteRenderer->mesh().uvs.push_back(_texture->unit() * deltaUvs[i]);
+		}
+		for (jgl::Size_t i = 0; i < 6; i++)
+		{
+			_spriteRenderer->mesh().elements.push_back(element_index[i]);
+		}
+	}
+	void setTexture(jgl::SpriteSheet* p_texture)
+	{
+		_texture = p_texture;
+	}
+};
+
+class SceneRenderer : public jgl::Widget
+{
+private:
+	jgl::SpriteSheet* _gameObjectSpriteSheet;
+
+	Scene* _scene;
+
+	Gem* _objects[4];
 
 	jgl::Bool _onUpdate()
 	{
-		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::A) == jgl::InputStatus::Released)
-		{
-			_startPosition = jgl::Vector2Int(0, 0);
-			_endPosition = jgl::Vector2Int(110, 110);
-			_slideTimer.start();
-		}
-		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Q) == jgl::InputStatus::Released)
-		{
-			_startPosition = jgl::Vector2Int(110, 110);
-			_endPosition = jgl::Vector2Int(0, 0);
-			_slideTimer.start();
-		}
-
-		if (anchor() != _endPosition)
-		{
-			this->place(jgl::Vector2Int::lerp(_startPosition, _endPosition, _slideTimer.percent()));
-		}
-
+		_scene->update();
 		return (false);
 	}
+	
 	void _onRender()
 	{
-
+		_scene->render();
 	}
+	
 	void _onGeometryChange()
 	{
-		background1->setGeometry(jgl::Vector2Int(10, 10), size() / jgl::Vector2(1.5f, 1.5f));
-		background2->setGeometry(jgl::Vector2Int(10, 10), size() / jgl::Vector2Int(2, 2));
-		textLabel1->setGeometry(jgl::Vector2Int(100, 100), jgl::Vector2Int(300, 60));
-		textLabel2->setGeometry(jgl::Vector2Int(10, 10), jgl::Vector2Int(200, 60));
-		textLabel3->setGeometry(jgl::Vector2Int(215, 215), jgl::Vector2Int(200, 60));
-
+		jgl::Float cellOnX = size().x() / 32;
+		jgl::Float ratio = static_cast<jgl::Float>(size().y()) / static_cast<jgl::Float>(size().x());
+		_scene->mainCamera()->setViewportSize(jgl::Vector2(cellOnX, ratio * cellOnX));
+		for (jgl::Size_t i = 0; i < 4; i++)
+		{
+			_objects[i]->getComponent<SpriteRenderer>()->unbake();
+		}
 	}
 
 public:
-	Test(jgl::Widget* p_parent) : jgl::Widget(p_parent)
+	SceneRenderer(jgl::Widget* p_parent) : jgl::Widget(p_parent)
 	{
-		background1 = new jgl::Frame(this);
-		background1->activate();
+		_gameObjectSpriteSheet = new jgl::SpriteSheet("gameObjectSpriteSheet.png", jgl::Vector2Int(4, 1));
 
-		background2 = new jgl::Frame(background1);
-		background2->activate();
+		_scene = new Scene();
+		_scene->setMainCamera(new Camera("MainCamera"));
 
-		textLabel1 = new jgl::TextLabel("TextLabel1", background2);
-		textLabel1->activate();
+		_scene->mainCamera()->core().position = jgl::Vector3(0, 0, 10);
+		_scene->mainCamera()->core().forward = jgl::Vector3(0, 0, -1);
 
-		textLabel2 = new jgl::TextLabel("TextLabel2", background2);
-		textLabel2->activate();
+		for (jgl::Size_t i = 0; i < 4; i++)
+		{
+			_objects[i] = new Gem("GemA");
+			_objects[i]->setTexture(_gameObjectSpriteSheet);
+			_objects[i]->core().position = jgl::Vector3(jgl::generateNumber(-5, 5), jgl::generateNumber(-5, 5), jgl::generateNumber(0, 5));
+			_objects[i]->core().size = jgl::Vector2(2, 2);
+			_objects[i]->prepareBake();
 
-		textLabel3 = new jgl::TextLabel("TextLabel3", background2);
-		textLabel3->activate();
+			_scene->addGameObject(_objects[i]);
+		}
 	}
 };
 
 int main(int argc, char** argv)
 {
 	jgl::cout.setEncoding("fr-FR");
-	jgl::Application app = jgl::Application("ProjectName", jgl::Vector2Int(800, 800), jgl::Color(50, 50, 50));
+	jgl::Application app = jgl::Application("ProjectName", jgl::Vector2Int(840, 680), jgl::Color(50, 50, 50));
 	app.setDefaultFont(new jgl::Font("karma suture.ttf"));
-	app.activateMultiThread();
+	app.deactivateMultiThread();
 
-	Test* background = new Test(nullptr);
-	background->setGeometry(jgl::Vector2Int(20, 20), app.size() / jgl::Vector2(1.2f, 1.2f));
-	background->activate();
+	SceneRenderer* sceneRenderer = new SceneRenderer(nullptr);
+	sceneRenderer->setGeometry(jgl::Vector2Int(0, 0), app.size());
+	sceneRenderer->activate();
 
-	app.run();
-
-	jgl::cout << "RenderFPS : " << app.nbRenderFrame() << jgl::endl;
-	jgl::cout << "UpdateFPS : " << app.nbUpdateFrame() << jgl::endl;
-
-	return (0);
+	return (app.run());
 }
