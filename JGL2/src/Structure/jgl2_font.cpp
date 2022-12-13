@@ -284,7 +284,7 @@ namespace jgl
 
 	Vector2Int Font::calcStringSize(std::string p_string, UInt p_size)
 	{
-		Vector2Int result = Vector2Int(0, 0);
+		Vector2Int result = Vector2Int(0, p_size);
 
 		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, 0);
 
@@ -293,9 +293,6 @@ namespace jgl
 			Font::GlyphData& glyphData = _getData(tmp_fontGlyphData, static_cast<UChar>(p_string[i]));
 
 			result.x() += glyphData.step.x();
-
-			if (result.y() < glyphData.step.y())
-				result.y() = glyphData.step.y();
 		}
 
 		return (result);
@@ -512,6 +509,8 @@ namespace jgl
 
 	void Font::prepareDrawUnit(std::string p_string, jgl::Vector3 p_position, jgl::Float p_textSize, Size_t p_outlineSize)
 	{
+		_initCharRender();
+
 		jgl::Float ratio = p_textSize / 100;
 		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(100, p_outlineSize);
 

@@ -88,9 +88,7 @@
   <ItemGroup>
     <ClCompile Include="src\GameEngine\Component\jgl2_sprite_renderer.cpp" />
     <ClCompile Include="src\GameEngine\Component\jgl2_text_renderer.cpp" />
-    <ClCompile Include="src\GameEngine\jgl2_camera.cpp" />
     <ClCompile Include="src\GameEngine\jgl2_game_object.cpp" />
-    <ClCompile Include="src\GameEngine\jgl2_scene.cpp" />
     <ClCompile Include="src\jgl2_basic_functions.cpp" />
     <ClCompile Include="src\jgl2_drawing_functions.cpp" />
     <ClCompile Include="src\Structure\jgl2_application.cpp" />

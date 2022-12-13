@@ -290,13 +290,7 @@
     <ClCompile Include="src\Structure\jgl2_perlin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\GameEngine\jgl2_camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\GameEngine\jgl2_game_object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\GameEngine\jgl2_scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\GameEngine\Component\jgl2_sprite_renderer.cpp">

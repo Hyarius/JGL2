@@ -10,9 +10,11 @@ namespace jgl
 	template <const jgl::Size_t NumberCollumn, const jgl::Size_t NumberLine>
 	class DebugScreen : public jgl::Widget
 	{
-	private:
+	public:
 		static const jgl::Size_t C_NB_LINES = NumberLine;
 		static const jgl::Size_t C_NB_COLLUMNS = NumberCollumn;
+
+	private:
 
 		jgl::TextLabel* _lines[C_NB_LINES][C_NB_COLLUMNS];
 

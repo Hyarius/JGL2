@@ -1,17 +1,18 @@
 #include "jgl2_game_engine.h"
 
-using DebugScreen = jgl::SingletonWidget<jgl::DebugScreen<3, 25>>;
+using DebugScreenType = jgl::DebugScreen<2, 2>;
+using DebugScreen = jgl::SingletonWidget<DebugScreenType>;
 
-class Gem : public GameObject
+class Gem : public jgl::GameObject
 {
 private:
-	SpriteRenderer* _spriteRenderer;
-	TextRenderer* _textRenderer;
+	jgl::SpriteRenderer* _spriteRenderer;
+	jgl::TextRenderer* _textRenderer;
 	jgl::SpriteSheet* _texture;
 
 	void _prepareBakeSprite()
 	{
-		Mesh newMesh;
+		jgl::Mesh newMesh;
 
 		newMesh.texture = _texture;
 
@@ -44,7 +45,7 @@ private:
 
 	void _prepareBakeText()
 	{
-		TextMesh newMesh;
+		jgl::TextMesh newMesh;
 
 		newMesh.text = "aO";
 		newMesh.horizontalAlignment = jgl::HorizontalAlignment::Centred;
@@ -59,10 +60,10 @@ private:
 	}
 
 public:
-	Gem(std::string p_name, GameObject* p_parent = nullptr) : GameObject(p_name, p_parent)
+	Gem(std::string p_name, jgl::GameObject* p_parent = nullptr) : jgl::GameObject(p_name, p_parent)
 	{
-		_spriteRenderer = addComponent<SpriteRenderer>();
-		_textRenderer = addComponent<TextRenderer>();
+		_spriteRenderer = addComponent<jgl::SpriteRenderer>();
+		_textRenderer = addComponent<jgl::TextRenderer>();
 	}
 
 	void prepareBake()
@@ -82,13 +83,12 @@ class SceneRenderer : public jgl::Widget
 private:
 	jgl::SpriteSheet* _gameObjectSpriteSheet;
 
-	Scene* _scene;
+	jgl::Scene* _scene;
 
 	Gem* _object;
 
 	jgl::Bool _onUpdate()
 	{
-		DebugScreen::instance()->setText("Ceci est un test", 1, 16);
 		if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Z) == jgl::InputStatus::Released)
 		{
 			_scene->mainCamera()->core().position += jgl::Vector3(0, 1, 0);
@@ -123,8 +123,8 @@ private:
 		jgl::Float cellOnX = size().x() / 64;
 		jgl::Float ratio = static_cast<jgl::Float>(size().y()) / static_cast<jgl::Float>(size().x());
 		_scene->mainCamera()->setViewportSize(jgl::Vector2(cellOnX, ratio * cellOnX));
-		_object->getComponent<SpriteRenderer>()->unbake();
-		_object->getComponent<TextRenderer>()->unbake();
+		_object->getComponent<jgl::SpriteRenderer>()->unbake();
+		_object->getComponent<jgl::TextRenderer>()->unbake();
 	}
 
 public:
@@ -132,8 +132,8 @@ public:
 	{
 		_gameObjectSpriteSheet = new jgl::SpriteSheet("gameObjectSpriteSheet.png", jgl::Vector2Int(4, 1));
 
-		_scene = new Scene();
-		_scene->setMainCamera(new Camera("MainCamera"));
+		_scene = new jgl::Scene();
+		_scene->setMainCamera(new jgl::Camera("MainCamera"));
 
 		_scene->mainCamera()->core().position = jgl::Vector3(0, 0, 10);
 		_scene->mainCamera()->core().forward = jgl::Vector3(0, 0, -1);
@@ -145,6 +145,7 @@ public:
 		_object->prepareBake();
 
 		_scene->addGameObject(_object);
+
 	}
 };
 
@@ -158,6 +159,15 @@ int main(int argc, char** argv)
 	DebugScreen::instanciate(nullptr);
 	DebugScreen::instance()->setGeometry(jgl::Vector2Int(0, 0), app.size());
 	DebugScreen::instance()->activate();
+
+
+	for (jgl::Size_t i = 0; i < DebugScreenType::C_NB_COLLUMNS; i++)
+	{
+		for (jgl::Size_t j = 0; j < DebugScreenType::C_NB_LINES; j++)
+		{
+			DebugScreen::instance()->setText("Line " + std::to_string(i) + " / " + std::to_string(j), i, j);
+		}
+	}
 
 	SceneRenderer* sceneRenderer = new SceneRenderer(nullptr);
 	sceneRenderer->setGeometry(jgl::Vector2Int(0, 0), app.size());

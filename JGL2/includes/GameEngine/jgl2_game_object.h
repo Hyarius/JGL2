@@ -10,7 +10,7 @@ namespace jgl
 {
 	class GameObject
 	{
-	private:
+	protected:
 		Core _core;
 
 		GameObject* _parent;
