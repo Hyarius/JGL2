@@ -2,88 +2,91 @@
 #include "GameEngine/jgl2_game_object.h"
 #include "GameEngine/jgl2_scene.h"
 
-void SpriteRenderer::_initializeStaticOpenGL()
+namespace jgl
 {
-	if (_shader == nullptr)
+	void SpriteRenderer::_initializeStaticOpenGL()
 	{
-		if (jgl::Application::instance()->shader("SpriteRendererShader") == nullptr)
-			jgl::Application::instance()->addShader("SpriteRendererShader", new jgl::Shader(C_VERTEX_SHADER_CODE, C_FRAGMENT_SHADER_CODE));
-		_shader = jgl::Application::instance()->shader("SpriteRendererShader");
+		if (_shader == nullptr)
+		{
+			if (jgl::Application::instance()->shader("SpriteRendererShader") == nullptr)
+				jgl::Application::instance()->addShader("SpriteRendererShader", new jgl::Shader(C_VERTEX_SHADER_CODE, C_FRAGMENT_SHADER_CODE));
+			_shader = jgl::Application::instance()->shader("SpriteRendererShader");
+		}
+
+		if (_matrixUniform == nullptr)
+			_matrixUniform = _shader->uniform("MVP")->copy();
+		if (_anchorUniform == nullptr)
+			_anchorUniform = _shader->uniform("anchor")->copy();
+		if (_textureUniform == nullptr)
+			_textureUniform = _shader->uniform("textureID")->copy();
+
+		_staticInitialized = true;
 	}
 
-	if (_matrixUniform == nullptr)
-		_matrixUniform = _shader->uniform("MVP")->copy();
-	if (_anchorUniform == nullptr)
-		_anchorUniform = _shader->uniform("anchor")->copy();
-	if (_textureUniform == nullptr)
-		_textureUniform = _shader->uniform("textureID")->copy();
+	void SpriteRenderer::_initializeOpenGL()
+	{
+		if (_staticInitialized == false)
+			_initializeStaticOpenGL();
 
-	_staticInitialized = true;
-}
+		_modelVertexBuffer = _shader->buffer("model_space")->copy();
+		_modelUVSBuffer = _shader->buffer("model_uvs")->copy();
+		_elementBuffer = _shader->elementBuffer()->copy();
 
-void SpriteRenderer::_initializeOpenGL()
-{
-	if (_staticInitialized == false)
-		_initializeStaticOpenGL();
+		_initialized = true;
+	}
 
-	_modelVertexBuffer = _shader->buffer("model_space")->copy();
-	_modelUVSBuffer = _shader->buffer("model_uvs")->copy();
-	_elementBuffer = _shader->elementBuffer()->copy();
+	void SpriteRenderer::_bake()
+	{
+		if (_initialized == false)
+			_initializeOpenGL();
 
-	_initialized = true;
-}
+		_modelVertexBuffer->send(_mesh.vertices.data(), static_cast<jgl::Size_t>(_mesh.vertices.size()));
+		_modelUVSBuffer->send(_mesh.uvs.data(), static_cast<jgl::Size_t>(_mesh.uvs.size()));
+		_elementBuffer->send(_mesh.elements.data(), static_cast<jgl::Size_t>(_mesh.elements.size()));
 
-void SpriteRenderer::_bake()
-{
-	if (_initialized == false)
-		_initializeOpenGL();
+		_baked = true;
+	}
 
-	_modelVertexBuffer->send(_mesh.vertices.data(), static_cast<jgl::Size_t>(_mesh.vertices.size()));
-	_modelUVSBuffer->send(_mesh.uvs.data(), static_cast<jgl::Size_t>(_mesh.uvs.size()));
-	_elementBuffer->send(_mesh.elements.data(), static_cast<jgl::Size_t>(_mesh.elements.size()));
+	void SpriteRenderer::_onRender()
+	{
+		if (_mesh.texture == nullptr)
+			throw std::runtime_error("No texture set to render a GameObject2D");
 
-	_baked = true;
-}
+		if (_baked == false)
+			_bake();
 
-void SpriteRenderer::_onRender()
-{
-	if (_mesh.texture == nullptr)
-		throw std::runtime_error("No texture set to render a GameObject2D");
+		_shader->activate();
 
-	if (_baked == false)
-		_bake();
+		_mesh.texture->activate();
 
-	_shader->activate();
+		_matrixUniform->send(Scene::activeScene->mainCamera()->mvp());
+		_anchorUniform->send(_owner->core().position);
+		_textureUniform->send(0);
+		_modelVertexBuffer->activate();
+		_modelUVSBuffer->activate();
+		_elementBuffer->activate();
 
-	_mesh.texture->activate();
+		_shader->cast(jgl::Shader::Mode::Triangle, _elementBuffer->size() / sizeof(jgl::UInt));
+	}
 
-	_matrixUniform->send(Scene::activeScene->mainCamera()->mvp());
-	_anchorUniform->send(_owner->core().position);
-	_textureUniform->send(0);
-	_modelVertexBuffer->activate();
-	_modelUVSBuffer->activate();
-	_elementBuffer->activate();
+	void SpriteRenderer::_onUpdate()
+	{
 
-	_shader->cast(jgl::Shader::Mode::Triangle, _elementBuffer->size() / sizeof(jgl::UInt));
-}
+	}
 
-void SpriteRenderer::_onUpdate()
-{
+	SpriteRenderer::SpriteRenderer(GameObject* p_owner) : Component(p_owner)
+	{
+		unbake();
+	}
 
-}
+	void SpriteRenderer::setMesh(const Mesh& p_mesh)
+	{
+		_mesh = p_mesh;
+		unbake();
+	}
 
-SpriteRenderer::SpriteRenderer(GameObject* p_owner) : Component(p_owner)
-{
-	unbake();
-}
-
-void SpriteRenderer::setMesh(const Mesh& p_mesh)
-{
-	_mesh = p_mesh;
-	unbake();
-}
-
-void SpriteRenderer::unbake()
-{
-	_baked = false;
+	void SpriteRenderer::unbake()
+	{
+		_baked = false;
+	}
 }

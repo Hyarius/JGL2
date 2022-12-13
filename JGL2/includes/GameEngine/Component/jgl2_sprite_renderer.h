@@ -4,11 +4,13 @@
 #include "GameEngine/Component/jgl2_component.h"
 #include "GameEngine/jgl2_mesh.h"
 
-class SpriteRenderer : public Component
+namespace jgl
 {
-private:
-	static inline std::string C_VERTEX_SHADER_CODE = 
-		R"(	#version 440 core
+	class SpriteRenderer : public Component
+	{
+	private:
+		static inline std::string C_VERTEX_SHADER_CODE =
+			R"(	#version 440 core
 			layout(location = 0) in vec3 model_space;
 			layout(location = 1) in vec2 model_uvs;
 
@@ -23,8 +25,8 @@ private:
 				fragmentUV = model_uvs;
 			})";
 
-	static inline std::string C_FRAGMENT_SHADER_CODE =
-		R"( #version 440 core
+		static inline std::string C_FRAGMENT_SHADER_CODE =
+			R"( #version 440 core
 			in vec2 fragmentUV;
 
 			layout(location = 0) out vec4 color;
@@ -37,31 +39,32 @@ private:
 				if (color.a == 0)
 					discard;
 			})";
-	static inline jgl::Bool _staticInitialized = false;
-	static inline jgl::Shader* _shader = nullptr;
-	static inline jgl::Uniform* _matrixUniform = nullptr;
-	static inline jgl::Uniform* _anchorUniform = nullptr;
-	static inline jgl::Uniform* _textureUniform = nullptr;
+		static inline jgl::Bool _staticInitialized = false;
+		static inline jgl::Shader* _shader = nullptr;
+		static inline jgl::Uniform* _matrixUniform = nullptr;
+		static inline jgl::Uniform* _anchorUniform = nullptr;
+		static inline jgl::Uniform* _textureUniform = nullptr;
 
-	jgl::Bool _initialized = false;
-	jgl::Buffer* _modelVertexBuffer = nullptr;
-	jgl::Buffer* _modelUVSBuffer = nullptr;
-	jgl::Buffer* _elementBuffer = nullptr;
-	jgl::Bool _baked = false;
+		jgl::Bool _initialized = false;
+		jgl::Buffer* _modelVertexBuffer = nullptr;
+		jgl::Buffer* _modelUVSBuffer = nullptr;
+		jgl::Buffer* _elementBuffer = nullptr;
+		jgl::Bool _baked = false;
 
-	Mesh _mesh;
+		Mesh _mesh;
 
-	static void _initializeStaticOpenGL();
-	void _initializeOpenGL();
+		static void _initializeStaticOpenGL();
+		void _initializeOpenGL();
 
-	void _bake();
-	void _onRender();
-	void _onUpdate();
-public:
-	SpriteRenderer(GameObject* p_owner);
+		void _bake();
+		void _onRender();
+		void _onUpdate();
+	public:
+		SpriteRenderer(GameObject* p_owner);
 
-	const Mesh& mesh() const { return (_mesh); }
-	void setMesh(const Mesh& p_mesh);
+		const Mesh& mesh() const { return (_mesh); }
+		void setMesh(const Mesh& p_mesh);
 
-	void unbake();
-};
+		void unbake();
+	};
+}

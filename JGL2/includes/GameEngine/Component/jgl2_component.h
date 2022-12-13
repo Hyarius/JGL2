@@ -1,23 +1,26 @@
 #pragma once
 
-class GameObject;
-
-class Component
+namespace jgl
 {
-	friend class GameObject;
+	class GameObject;
 
-protected:
-	GameObject* _owner = nullptr;
-
-	virtual void _onUpdate() = 0;
-	virtual void _onRender() = 0;
-
-public:
-	Component(GameObject* p_owner) :
-		_owner(p_owner)
+	class Component
 	{
+		friend class GameObject;
 
-	}
+	protected:
+		GameObject* _owner = nullptr;
 
-	GameObject* owner() { return (_owner); }
-};
+		virtual void _onUpdate() = 0;
+		virtual void _onRender() = 0;
+
+	public:
+		Component(GameObject* p_owner) :
+			_owner(p_owner)
+		{
+
+		}
+
+		GameObject* owner() { return (_owner); }
+	};
+}

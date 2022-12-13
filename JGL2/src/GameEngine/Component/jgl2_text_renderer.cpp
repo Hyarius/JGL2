@@ -2,48 +2,50 @@
 #include "GameEngine/jgl2_game_object.h"
 #include "GameEngine/jgl2_scene.h"
 
-void TextRenderer::_initializeStaticOpenGL()
+namespace jgl
 {
-	if (_shader == nullptr)
+	void TextRenderer::_initializeStaticOpenGL()
 	{
-		if (jgl::Application::instance()->shader("TextRendererShader") == nullptr)
-			jgl::Application::instance()->addShader("TextRendererShader", new jgl::Shader(C_VERTEX_SHADER_CODE, C_FRAGMENT_SHADER_CODE));
-		_shader = jgl::Application::instance()->shader("TextRendererShader");
+		if (_shader == nullptr)
+		{
+			if (jgl::Application::instance()->shader("TextRendererShader") == nullptr)
+				jgl::Application::instance()->addShader("TextRendererShader", new jgl::Shader(C_VERTEX_SHADER_CODE, C_FRAGMENT_SHADER_CODE));
+			_shader = jgl::Application::instance()->shader("TextRendererShader");
+		}
+
+		if (_matrixUniform == nullptr)
+			_matrixUniform = _shader->uniform("MVP")->copy();
+		if (_anchorUniform == nullptr)
+			_anchorUniform = _shader->uniform("anchor")->copy();
+		if (_textColorUniform == nullptr)
+			_textColorUniform = _shader->uniform("textColor")->copy();
+		if (_outlineColorUniform == nullptr)
+			_outlineColorUniform = _shader->uniform("outlineColor")->copy();
+		if (_textureUniform == nullptr)
+			_textureUniform = _shader->uniform("textureID")->copy();
+
+		_staticInitialized = true;
 	}
 
-	if (_matrixUniform == nullptr)
-		_matrixUniform = _shader->uniform("MVP")->copy();
-	if (_anchorUniform == nullptr)
-		_anchorUniform = _shader->uniform("anchor")->copy();
-	if (_textColorUniform == nullptr)
-		_textColorUniform = _shader->uniform("textColor")->copy();
-	if (_outlineColorUniform == nullptr)
-		_outlineColorUniform = _shader->uniform("outlineColor")->copy();
-	if (_textureUniform == nullptr)
-		_textureUniform = _shader->uniform("textureID")->copy();
-
-	_staticInitialized = true;
-}
-
-void TextRenderer::_initializeOpenGL()
-{
-	if (_staticInitialized == false)
-		_initializeStaticOpenGL();
-
-	_modelVertexBuffer = _shader->buffer("model_space")->copy();
-	_modelUVSBuffer = _shader->buffer("model_uvs")->copy();
-	_elementBuffer = _shader->elementBuffer()->copy();
-
-	_initialized = true;
-}
-
-jgl::Vector3 TextRenderer::_computeTextOffset()
-{
-	jgl::Vector3 result;
-	jgl::Vector3 textSize = _mesh.font->calcStringSizeUnit(_mesh.text, _mesh.textWorldHeight);
-
-	switch (_mesh.verticalAlignment)
+	void TextRenderer::_initializeOpenGL()
 	{
+		if (_staticInitialized == false)
+			_initializeStaticOpenGL();
+
+		_modelVertexBuffer = _shader->buffer("model_space")->copy();
+		_modelUVSBuffer = _shader->buffer("model_uvs")->copy();
+		_elementBuffer = _shader->elementBuffer()->copy();
+
+		_initialized = true;
+	}
+
+	jgl::Vector3 TextRenderer::_computeTextOffset()
+	{
+		jgl::Vector3 result;
+		jgl::Vector3 textSize = _mesh.font->calcStringSizeUnit(_mesh.text, _mesh.textWorldHeight);
+
+		switch (_mesh.verticalAlignment)
+		{
 		case jgl::VerticalAlignment::Top:
 		{
 			result.y() = 0;
@@ -64,11 +66,11 @@ jgl::Vector3 TextRenderer::_computeTextOffset()
 			result.y() = 0;
 			break;
 		}
-	}
+		}
 
 
-	switch (_mesh.horizontalAlignment)
-	{
+		switch (_mesh.horizontalAlignment)
+		{
 		case jgl::HorizontalAlignment::Left:
 		{
 			result.x() = 0;
@@ -89,68 +91,69 @@ jgl::Vector3 TextRenderer::_computeTextOffset()
 			result.x() = 0;
 			break;
 		}
+		}
+
+		return (result);
 	}
 
-	return (result);
-}
+	void TextRenderer::_bake()
+	{
+		if (_initialized == false)
+			_initializeOpenGL();
 
-void TextRenderer::_bake()
-{
-	if (_initialized == false)
-		_initializeOpenGL();
+		if (_mesh.font == nullptr)
+			_mesh.font = jgl::Application::instance()->defaultFont();
 
-	if (_mesh.font == nullptr)
-		_mesh.font = jgl::Application::instance()->defaultFont();
+		jgl::Vector3 offset = _computeTextOffset();
 
-	jgl::Vector3 offset = _computeTextOffset();
+		_mesh.font->prepareDrawUnit(_mesh.text, offset, _mesh.textWorldHeight, _mesh.oulineSize);
 
-	_mesh.font->prepareDrawUnit(_mesh.text, offset, _mesh.textWorldHeight, _mesh.oulineSize);
+		_mesh.font->exportShaderData(_modelVertexBuffer, _modelUVSBuffer, _elementBuffer);
 
-	_mesh.font->exportShaderData(_modelVertexBuffer, _modelUVSBuffer, _elementBuffer);
+		_baked = true;
+	}
 
-	_baked = true;
-}
+	void TextRenderer::_onRender()
+	{
+		if (_baked == false)
+			_bake();
 
-void TextRenderer::_onRender()
-{
-	if (_baked == false)
-		_bake();
+		_shader->activate();
 
-	_shader->activate();
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, _mesh.font->textureID(100, _mesh.oulineSize));
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, _mesh.font->textureID(100, _mesh.oulineSize));
+		_matrixUniform->send(Scene::activeScene->mainCamera()->mvp());
+		_anchorUniform->send(_owner->core().position);
+		_textColorUniform->send(_mesh.textColor);
+		_outlineColorUniform->send(_mesh.outlineColor);
+		_textureUniform->send(0);
 
-	_matrixUniform->send(Scene::activeScene->mainCamera()->mvp());
-	_anchorUniform->send(_owner->core().position);
-	_textColorUniform->send(_mesh.textColor);
-	_outlineColorUniform->send(_mesh.outlineColor);
-	_textureUniform->send(0);
+		_modelVertexBuffer->activate();
+		_modelUVSBuffer->activate();
+		_elementBuffer->activate();
 
-	_modelVertexBuffer->activate();
-	_modelUVSBuffer->activate();
-	_elementBuffer->activate();
+		_shader->cast(jgl::Shader::Mode::Triangle, _elementBuffer->size() / sizeof(jgl::UInt));
+	}
 
-	_shader->cast(jgl::Shader::Mode::Triangle, _elementBuffer->size() / sizeof(jgl::UInt));
-}
+	void TextRenderer::_onUpdate()
+	{
 
-void TextRenderer::_onUpdate()
-{
+	}
 
-}
+	TextRenderer::TextRenderer(GameObject* p_owner) : Component(p_owner)
+	{
+		unbake();
+	}
 
-TextRenderer::TextRenderer(GameObject* p_owner) : Component(p_owner)
-{
-	unbake();
-}
+	void TextRenderer::setMesh(const TextMesh& p_mesh)
+	{
+		_mesh = p_mesh;
+		unbake();
+	}
 
-void TextRenderer::setMesh(const TextMesh& p_mesh)
-{
-	_mesh = p_mesh;
-	unbake();
-}
-
-void TextRenderer::unbake()
-{
-	_baked = false;
+	void TextRenderer::unbake()
+	{
+		_baked = false;
+	}
 }

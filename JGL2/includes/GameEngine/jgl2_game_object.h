@@ -6,49 +6,52 @@
 #include "GameEngine/jgl2_core.h"
 #include "GameEngine/Component/jgl2_component.h"
 
-class GameObject
+namespace jgl
 {
-private:
-	Core _core;
-
-	GameObject* _parent;
-	std::vector<GameObject*> _childrens;
-	std::vector<Component*> _components;
-
-	void _addChildren(GameObject* p_gameObject);
-	void _removeChildren(GameObject* p_gameObject);
-
-public:
-	GameObject(std::string p_name, GameObject* p_parent = nullptr);
-
-	Core& core() { return (_core); }
-
-	void setParent(GameObject* p_parent);
-
-	void setActive(jgl::Bool p_state);
-	void activate();
-	void deactivate();
-
-	template<typename TComponentType>
-	TComponentType* addComponent()
+	class GameObject
 	{
-		TComponentType* newComponent = new TComponentType(this);
-		_components.push_back(newComponent);
-		return (newComponent);
-	}
+	private:
+		Core _core;
 
-	template<typename TComponentType>
-	TComponentType* getComponent()
-	{
-		auto result = std::find_if(
-			_components.begin(),
-			_components.end(),
-			[](const Component* item) { return (dynamic_cast<const TComponentType*>(item) != nullptr); }
-		);
+		GameObject* _parent;
+		std::vector<GameObject*> _childrens;
+		std::vector<Component*> _components;
 
-		return (dynamic_cast<TComponentType*>(*result));
-	}
+		void _addChildren(GameObject* p_gameObject);
+		void _removeChildren(GameObject* p_gameObject);
 
-	void update();
-	void render();
-};
+	public:
+		GameObject(std::string p_name, GameObject* p_parent = nullptr);
+
+		Core& core() { return (_core); }
+
+		void setParent(GameObject* p_parent);
+
+		void setActive(jgl::Bool p_state);
+		void activate();
+		void deactivate();
+
+		template<typename TComponentType>
+		TComponentType* addComponent()
+		{
+			TComponentType* newComponent = new TComponentType(this);
+			_components.push_back(newComponent);
+			return (newComponent);
+		}
+
+		template<typename TComponentType>
+		TComponentType* getComponent()
+		{
+			auto result = std::find_if(
+				_components.begin(),
+				_components.end(),
+				[](const Component* item) { return (dynamic_cast<const TComponentType*>(item) != nullptr); }
+			);
+
+			return (dynamic_cast<TComponentType*>(*result));
+		}
+
+		void update();
+		void render();
+	};
+}
