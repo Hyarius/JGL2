@@ -74,8 +74,9 @@ namespace jgl
 			R"(	#version 330 core
 				layout(location = 0) in vec3 model_space;
 				layout(location = 1) in vec2 model_uvs;
-				layout(location = 3) in vec4 model_color;
-				layout(location = 4) in vec4 model_outline_color;
+
+				uniform vec4 textColor;
+				uniform vec4 outlineColor;
 
 				out vec2 fragmentUV;
 				out vec4 fragmentColor;
@@ -85,8 +86,8 @@ namespace jgl
 				{
 					gl_Position = vec4(model_space, 1.0f);
 					fragmentUV = model_uvs;
-					fragmentColor = model_color;
-					fragmentOutlineColor = model_outline_color;
+					fragmentColor = textColor;
+					fragmentOutlineColor = outlineColor;
 				})";
 
 		std::string textTextureShaderFragment =

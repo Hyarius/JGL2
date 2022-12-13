@@ -3,6 +3,7 @@
 #include "jgl2_includes.h"
 #include "jgl2_basic_types.h"
 #include "Structure/jgl2_vector.h"
+#include "Structure/jgl2_color.h"
 
 namespace jgl
 {
@@ -316,8 +317,8 @@ namespace jgl
 			if (_location == -1)
 				errorMessage = "Trying to use uniform [" + _name + "] who isn't parsed correctly (location = -1)";
 
-			if (errorMessage != "")
-				throw std::runtime_error(errorMessage.c_str());
+			//if (errorMessage != "")
+			//	throw std::runtime_error(errorMessage.c_str());
 
 			return (true);
 		}
@@ -404,6 +405,12 @@ namespace jgl
 		{
 			if (_uniformChecker(Mode::Element, Type::Float, Size::Four) == true)
 				glUniform4f(_location, data.x(), data.y(), data.z(), data.w());
+		}
+		template <typename T, typename std::enable_if < std::is_same <Color, T>::value == true > ::type* = nullptr >
+		void send(T data)
+		{
+			if (_uniformChecker(Mode::Element, Type::Float, Size::Four) == true)
+				glUniform4f(_location, data.r, data.g, data.b, data.a);
 		}
 		template <typename T, typename std::enable_if < std::is_same <Vector4Int, T>::value == true > ::type* = nullptr >
 		void send(T data)
@@ -492,6 +499,12 @@ namespace jgl
 				glUniform3uiv(_location, nb_element, data);
 		}
 		template <typename T, typename std::enable_if < std::is_same <Vector4, T>::value == true > ::type* = nullptr >
+		void send(T* data, Size_t nb_element)
+		{
+			if (_uniformChecker(Mode::Array, Type::Float, Size::Four) == true)
+				glUniform4fv(_location, nb_element, data);
+		}
+		template <typename T, typename std::enable_if < std::is_same <Color, T>::value == true > ::type* = nullptr >
 		void send(T* data, Size_t nb_element)
 		{
 			if (_uniformChecker(Mode::Array, Type::Float, Size::Four) == true)

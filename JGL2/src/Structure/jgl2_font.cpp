@@ -15,14 +15,14 @@ namespace jgl
 			_modelSpaceBuffer = _shader->buffer("model_space");
 		if (_modelUvBuffer == nullptr)
 			_modelUvBuffer = _shader->buffer("model_uvs");
-		if (_modelColorBuffer == nullptr)
-			_modelColorBuffer = _shader->buffer("model_color");
-		if (_modelOutlineColorBuffer == nullptr)
-			_modelOutlineColorBuffer = _shader->buffer("model_outline_color");
 		if (_indexesBuffer == nullptr)
 			_indexesBuffer = _shader->elementBuffer();
 		if (_textureUniform == nullptr)
 			_textureUniform = _shader->uniform("textureID");
+		if (_textColorUniform == nullptr)
+			_textColorUniform = _shader->uniform("textColor");
+		if (_outlineColorUniform == nullptr)
+			_outlineColorUniform = _shader->uniform("outlineColor");
 
 		if (_shader == nullptr)
 			throw std::runtime_error("Error : no shader TextTexture2D in application");
@@ -30,28 +30,28 @@ namespace jgl
 		if (_modelSpaceBuffer == nullptr)
 			throw std::runtime_error("Error : no model space buffer found in shader");
 		if (_modelUvBuffer == nullptr)
-			throw std::runtime_error("Error : no model uv buffer found in shader");
-		if (_modelColorBuffer == nullptr)
-			throw std::runtime_error("Error : no model color buffer found in shader");
-		if (_modelOutlineColorBuffer == nullptr)
-			throw std::runtime_error("Error : no model outline color buffer found in shader");
+			throw std::runtime_error("Error : no model uvs buffer found in shader");
 		if (_indexesBuffer == nullptr)
 			throw std::runtime_error("Error : no element buffer found in shader");
 		if (_textureUniform == nullptr)
 			throw std::runtime_error("Error : no texture ID uniform found in shader");
+		if (_textColorUniform == nullptr)
+			throw std::runtime_error("Error : no text color uniform found in shader");
+		if (_outlineColorUniform == nullptr)
+			throw std::runtime_error("Error : no outline color uniform found in shader");
 	}
 
-	Bool Font::_isPixelOnGlyphOutline(UChar* p_atlasData, Int p_width, Int p_height, Int p_x, Int p_y, jgl::Int p_outlineSize)
+	Bool Font::_isPixelOnGlyphOutline(UChar* p_atlasData, Int p_width, Int p_height, Int p_x, Int p_y, Int p_outlineSize)
 	{
 		Vector2Int origin = Vector2Int(p_x, p_y);
-		for (jgl::Int delta_y = -p_outlineSize; delta_y <= p_outlineSize; delta_y++)
-			for (jgl::Int delta_x = -p_outlineSize; delta_x <= p_outlineSize; delta_x++)
+		for (Int delta_y = -p_outlineSize; delta_y <= p_outlineSize; delta_y++)
+			for (Int delta_x = -p_outlineSize; delta_x <= p_outlineSize; delta_x++)
 			{
-				jgl::Int tmp_x = p_x + delta_x;
-				jgl::Int tmp_y = p_y + delta_y;
+				Int tmp_x = p_x + delta_x;
+				Int tmp_y = p_y + delta_y;
 				if (tmp_x >= 0 && tmp_x < p_width && tmp_y >= 0 && tmp_y < p_height)// && Vector2(tmp_x, tmp_y).distance(origin) <= p_outlineSize)
 				{
-					jgl::Int index = tmp_x + tmp_y * p_width;
+					Int index = tmp_x + tmp_y * p_width;
 
 					if (p_atlasData[index] == 0x00)
 					{
@@ -95,6 +95,29 @@ namespace jgl
 	Font::~Font()
 	{
 		//glDeleteTextures(1, &_id);
+	}
+
+	Size_t Font::computeTextSize(std::string p_string, Vector2Int p_textArea)
+	{
+		int delta[5] = { 100, 50, 20, 10, 1 };
+		Size_t result = 2;
+
+		if (p_string == "")
+			return (p_textArea.y());
+
+		for (int i = 0; i < 5; i++)
+		{
+			bool enough = false;
+			while (enough == false)
+			{
+				Vector2Int tmp_size = calcStringSize(p_string, result + delta[i]);
+				if (tmp_size.x() >= p_textArea.x() || tmp_size.y() >= p_textArea.y())
+					enough = true;
+				else
+					result += delta[i];
+			}
+		}
+		return (result);
 	}
 
 	GLuint Font::textureID(Size_t p_textSize, Size_t p_outlineSize)
@@ -170,11 +193,11 @@ namespace jgl
 			tmp_fontGlyphData.atlas[c] = data;
 		}
 
-		for (jgl::Int y = 0; y < height; y++)
+		for (Int y = 0; y < height; y++)
 		{
-			for (jgl::Int x = 0; x < width; x++)
+			for (Int x = 0; x < width; x++)
 			{
-				jgl::Size_t index = x + y * width;
+				Size_t index = x + y * width;
 				if (atlasData[index] != 0x00)
 				{
 					if (_isPixelOnGlyphOutline(atlasData, width, height, x, y, p_fontData.outlineSize) == true)
@@ -222,7 +245,7 @@ namespace jgl
 
 		if (tmp_fontGlyphData.atlas.size() < p_char)
 		{
-			std::string errorMessage = std::string("Trying to print an unexpected char [") + static_cast<jgl::Char>(p_char) + "](" + std::to_string(static_cast<long>(p_char)) + ")";
+			std::string errorMessage = std::string("Trying to print an unexpected char [") + static_cast<Char>(p_char) + "](" + std::to_string(static_cast<long>(p_char)) + ")";
 			throw std::runtime_error(errorMessage.c_str());
 		}
 		return (tmp_fontGlyphData.atlas[p_char]);
@@ -232,7 +255,7 @@ namespace jgl
 	{
 		if (p_fontGlyphData.atlas.size() < p_char)
 		{
-			std::string errorMessage = std::string("Trying to print an unexpected char [") + static_cast<jgl::Char>(p_char) + "](" + std::to_string(static_cast<long>(p_char)) + ")";
+			std::string errorMessage = std::string("Trying to print an unexpected char [") + static_cast<Char>(p_char) + "](" + std::to_string(static_cast<long>(p_char)) + ")";
 			throw std::runtime_error(errorMessage.c_str());
 		}
 		return (p_fontGlyphData.atlas[p_char]);
@@ -242,8 +265,6 @@ namespace jgl
 	{
 		_modelSpaceData.clear();
 		_modelUvData.clear();
-		_modelColorData.clear();
-		_modelOutlineColorData.clear();
 		_indexesData.clear();
 	}
 
@@ -263,21 +284,24 @@ namespace jgl
 
 	Vector2Int Font::calcStringSize(std::string p_string, UInt p_size)
 	{
-		Vector2Int result = Vector2Int(0, p_size);
+		Vector2Int result = Vector2Int(0, 0);
 
 		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, 0);
 
-		for (jgl::Size_t i = 0; i < p_string.size(); i++)
+		for (Size_t i = 0; i < p_string.size(); i++)
 		{
-			Font::GlyphData& glyphData = _getData(tmp_fontGlyphData, static_cast<jgl::UChar>(p_string[i]));
+			Font::GlyphData& glyphData = _getData(tmp_fontGlyphData, static_cast<UChar>(p_string[i]));
 
 			result.x() += glyphData.step.x();
+
+			if (result.y() < glyphData.step.y())
+				result.y() = glyphData.step.y();
 		}
 
 		return (result);
 	}
 
-	Vector2Int Font::_prepareCharRender(FontGlyphData& p_fontGlyphData, UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth)
+	Vector2Int Font::_prepareCharRender(FontGlyphData& p_fontGlyphData, UChar p_char, Vector2Int p_pos, UInt p_size, Size_t p_outlineSize, Float p_depth)
 	{
 		if (p_char < 32)
 			return (Vector2Int(0, 0));
@@ -289,21 +313,19 @@ namespace jgl
 			Vector2Int(0, 1),
 			Vector2Int(1, 1)
 		};
-		
-		Font::GlyphData& glyphData = _getData(p_fontGlyphData, static_cast<jgl::UChar>(p_char));
+
+		Font::GlyphData& glyphData = _getData(p_fontGlyphData, static_cast<UChar>(p_char));
 		Vector2 BaseGlyphSize = _calcCharSize(p_fontGlyphData, p_char);
 		Vector2Int glyphSize = BaseGlyphSize;
 		Vector2Int glyphOffset = glyphData.offset * Vector2(1, -1);
 
-		jgl::Size_t elementSize = static_cast<Size_t>(_modelSpaceData.size());
-		for (Size_t i = 0; i < 4; i++) 
+		Size_t elementSize = static_cast<Size_t>(_modelSpaceData.size());
+		for (Size_t i = 0; i < 4; i++)
 		{
 			Vector2Int tmp_pos = p_pos + glyphSize * delta_pos[i] + Vector2Int(0, -glyphSize.y()) + glyphOffset;
-			Vector3 tmp_vertex = Vector3(Application::instance()->convertScreenToOpenGL(tmp_pos), p_depth / jgl::Application::instance()->maxDepth());
+			Vector3 tmp_vertex = Vector3(Application::instance()->convertScreenToOpenGL(tmp_pos), p_depth / Application::instance()->maxDepth());
 			_modelSpaceData.push_back(tmp_vertex);
 			_modelUvData.push_back(glyphData.uvs[i]);
-			_modelColorData.push_back(p_color);
-			_modelOutlineColorData.push_back(p_outlineColor);
 		}
 
 		for (Size_t i = 0; i < 6; i++)
@@ -315,18 +337,19 @@ namespace jgl
 	}
 
 
-	void Font::exportShaderData(Buffer* p_modelSpaceBuffer, Buffer* p_modelColorBuffer, Buffer* p_modelOutlineColorBuffer, Buffer* p_modelUvBuffer, Buffer* p_indexesBuffer)
+	void Font::exportShaderData(Buffer* p_modelSpaceBuffer, Buffer* p_modelUvBuffer, Buffer* p_indexesBuffer)
 	{
-		p_modelSpaceBuffer->send(_modelSpaceData.data(), static_cast<Size_t>(_modelSpaceData.size()));
-		p_modelUvBuffer->send(_modelUvData.data(), static_cast<Size_t>(_modelUvData.size()));
-		p_modelColorBuffer->send(_modelColorData.data(), static_cast<Size_t>(_modelColorData.size()));
-		p_modelOutlineColorBuffer->send(_modelOutlineColorData.data(), static_cast<Size_t>(_modelOutlineColorData.size()));
-		p_indexesBuffer->send(_indexesData.data(), static_cast<Size_t>(_indexesData.size()));
+		if (p_modelSpaceBuffer != nullptr)
+			p_modelSpaceBuffer->send(_modelSpaceData.data(), static_cast<Size_t>(_modelSpaceData.size()));
+		if (p_modelUvBuffer != nullptr)
+			p_modelUvBuffer->send(_modelUvData.data(), static_cast<Size_t>(_modelUvData.size()));
+		if (p_indexesBuffer != nullptr)
+			p_indexesBuffer->send(_indexesData.data(), static_cast<Size_t>(_indexesData.size()));
 	}
 
-	void Font::_castCharRender(GLuint p_id)
+	void Font::_castCharRender(GLuint p_id, Color p_textColor, Color p_outlineColor)
 	{
-		exportShaderData(_modelSpaceBuffer, _modelUvBuffer, _modelColorBuffer, _modelOutlineColorBuffer, _indexesBuffer);
+		exportShaderData(_modelSpaceBuffer, _modelUvBuffer, _indexesBuffer);
 
 		_shader->activate();
 
@@ -334,51 +357,53 @@ namespace jgl
 		glBindTexture(GL_TEXTURE_2D, p_id);
 
 		_textureUniform->send(0);
+		_textColorUniform->send(p_textColor);
+		_outlineColorUniform->send(p_outlineColor);
 
-		_shader->launch(jgl::Shader::Mode::Triangle);
+		_shader->launch(Shader::Mode::Triangle);
 	}
-	Vector2Int Font::draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth)
+	Vector2Int Font::draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Float p_depth)
 	{
 		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, 0);
 
-		Vector2Int result = prepareDraw(p_char, p_pos, p_size, p_color, 0, p_color, p_depth);
+		Vector2Int result = prepareDraw(p_char, p_pos, p_size, 0, p_depth);
 
-		_castCharRender(tmp_fontGlyphData.id);
+		_castCharRender(tmp_fontGlyphData.id, p_color, p_color);
 
 		return (result);
 	}
-	Vector2Int Font::draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth)
+	Vector2Int Font::draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Float p_depth)
 	{
 		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, 0);
 
-		Vector2Int result = prepareDraw(p_string, p_pos, p_size, p_color, 0, p_color, p_depth);
+		Vector2Int result = prepareDraw(p_string, p_pos, p_size, 0, p_depth);
 
-		_castCharRender(tmp_fontGlyphData.id);
+		_castCharRender(tmp_fontGlyphData.id, p_color, p_color);
 
 		return (result);
 	}
-	Vector2Int Font::draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth)
+	Vector2Int Font::draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, Float p_depth)
 	{
 		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, p_outlineSize);
 
-		Vector2Int result = prepareDraw(p_char, p_pos, p_size, p_color, p_outlineSize, p_outlineColor, p_depth);
+		Vector2Int result = prepareDraw(p_char, p_pos, p_size, p_outlineSize, p_depth);
 
-		_castCharRender(tmp_fontGlyphData.id);
+		_castCharRender(tmp_fontGlyphData.id, p_color, p_outlineColor);
 
 		return (result);
 	}
-	Vector2Int Font::draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth)
+	Vector2Int Font::draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, Float p_depth)
 	{
 		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, p_outlineSize);
 
-		Vector2Int result = prepareDraw(p_string, p_pos, p_size, p_color, p_outlineSize, p_outlineColor, p_depth);
+		Vector2Int result = prepareDraw(p_string, p_pos, p_size, p_outlineSize, p_depth);
 
-		_castCharRender(tmp_fontGlyphData.id);
+		_castCharRender(tmp_fontGlyphData.id, p_color, p_outlineColor);
 
 		return (result);
 	}
 
-	Vector2Int Font::prepareDraw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth)
+	Vector2Int Font::prepareDraw(UChar p_char, Vector2Int p_pos, UInt p_size, Float p_depth)
 	{
 		_initCharRender();
 
@@ -386,14 +411,12 @@ namespace jgl
 
 		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, 0);
 
-		result = _prepareCharRender(tmp_fontGlyphData, p_char, p_pos, p_size, p_color, 0, p_color, p_depth);
-
-		_castCharRender(tmp_fontGlyphData.id);
+		result = _prepareCharRender(tmp_fontGlyphData, p_char, p_pos, p_size, 0, p_depth);
 
 		return (result);
 	}
-	
-	Vector2Int Font::prepareDraw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, jgl::Float p_depth)
+
+	Vector2Int Font::prepareDraw(std::string p_string, Vector2Int p_pos, UInt p_size, Float p_depth)
 	{
 		_initCharRender();
 
@@ -401,17 +424,17 @@ namespace jgl
 
 		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, 0);
 
-		for (jgl::Size_t i = 0; i < p_string.size(); i++)
+		for (Size_t i = 0; i < p_string.size(); i++)
 		{
-			Vector2Int tmp = _prepareCharRender(tmp_fontGlyphData, static_cast<jgl::UChar>(p_string[i]), p_pos + result, p_size, p_color, 0, p_color, p_depth);
+			Vector2Int tmp = _prepareCharRender(tmp_fontGlyphData, static_cast<UChar>(p_string[i]), p_pos + result, p_size, 0, p_depth);
 
 			result.x() += tmp.x();
 		}
 
 		return (result);
 	}
-	
-	Vector2Int Font::prepareDraw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth)
+
+	Vector2Int Font::prepareDraw(UChar p_char, Vector2Int p_pos, UInt p_size, Size_t p_outlineSize, Float p_depth)
 	{
 		_initCharRender();
 
@@ -419,14 +442,12 @@ namespace jgl
 
 		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, p_outlineSize);
 
-		result = _prepareCharRender(tmp_fontGlyphData, p_char, p_pos, p_size, p_color, p_outlineSize, p_outlineColor, p_depth);
-
-		_castCharRender(tmp_fontGlyphData.id);
+		result = _prepareCharRender(tmp_fontGlyphData, p_char, p_pos, p_size, p_outlineSize, p_depth);
 
 		return (result);
 	}
-	
-	Vector2Int Font::prepareDraw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, jgl::Float p_depth)
+
+	Vector2Int Font::prepareDraw(std::string p_string, Vector2Int p_pos, UInt p_size, Size_t p_outlineSize, Float p_depth)
 	{
 		_initCharRender();
 
@@ -434,15 +455,97 @@ namespace jgl
 
 		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, p_outlineSize);
 
-		for (jgl::Size_t i = 0; i < p_string.size(); i++)
+		for (Size_t i = 0; i < p_string.size(); i++)
 		{
-			Font::GlyphData& tmp_glyphData = _getData(tmp_fontGlyphData, static_cast<jgl::UChar>(p_string[i]));
+			Font::GlyphData& tmp_glyphData = _getData(tmp_fontGlyphData, static_cast<UChar>(p_string[i]));
 
-			Vector2Int tmp = _prepareCharRender(tmp_fontGlyphData, p_string[i], p_pos + result, p_size, p_color, p_outlineSize, p_outlineColor, p_depth);
+			Vector2Int tmp = _prepareCharRender(tmp_fontGlyphData, p_string[i], p_pos + result, p_size, p_outlineSize, p_depth);
 
 			result.x() += tmp.x();
 		}
 
 		return (result);
 	}
+
+	Vector3 Font::_calcCharSizeUnit(FontGlyphData& p_fontGlyphData, UChar p_char, jgl::Float p_ratio)
+	{
+		Font::GlyphData& glyphData = _getData(p_fontGlyphData, p_char);
+
+		return (Vector3(glyphData.step.x() * p_ratio, (glyphData.step.y() + (glyphData.positions[3].y() - glyphData.positions[0].y())) * p_ratio, 0));
+	}
+
+	Vector3 Font::_prepareCharRenderUnit(FontGlyphData& p_fontGlyphData, Vector3 p_position, UChar p_char, jgl::Float p_ratio)
+	{
+		static UInt element_index[6] = { 0, 3, 1, 2, 3, 0 };
+		static Vector3 deltaPosition[4] = {
+			Vector3(0, 1, 1),
+			Vector3(1, 1, 1),
+			Vector3(0, 0, 1),
+			Vector3(1, 0, 1)
+		};
+		static Vector2 deltaUvs[4] = {
+			Vector2(0, 0),
+			Vector2(1, 0),
+			Vector2(0, 1),
+			Vector2(1, 1)
+		};
+
+		Font::GlyphData& glyphData = _getData(p_fontGlyphData, p_char);
+		Vector2 BaseGlyphSize = _calcCharSize(p_fontGlyphData, p_char);
+		Vector3 glyphWorldSize = jgl::Vector3(BaseGlyphSize.x() * p_ratio, BaseGlyphSize.y() * p_ratio, 0.0f);
+		Vector3 glyphWorldOffset = jgl::Vector3(glyphData.offset.x() * p_ratio, glyphData.offset.y() * p_ratio, 0.0f);
+
+		Size_t elementSize = static_cast<Size_t>(_modelSpaceData.size());
+		for (Size_t i = 0; i < 4; i++)
+		{
+			_modelSpaceData.push_back(p_position + glyphWorldSize * deltaPosition[i] + glyphWorldOffset);
+			_modelUvData.push_back(glyphData.uvs[i]);
+		}
+
+		for (Size_t i = 0; i < 6; i++)
+		{
+			_indexesData.push_back(elementSize + element_index[i]);
+		}
+
+		return (Vector3(glyphData.step.x() * p_ratio, glyphData.step.y() * p_ratio, 0));
+	}
+
+	void Font::prepareDrawUnit(std::string p_string, jgl::Vector3 p_position, jgl::Float p_textSize, Size_t p_outlineSize)
+	{
+		jgl::Float ratio = p_textSize / 100;
+		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(100, p_outlineSize);
+
+		for (Size_t i = 0; i < p_string.size(); i++)
+		{
+			p_position.x() += _prepareCharRenderUnit(tmp_fontGlyphData, p_position, p_string[i], ratio).x();
+		}
+	}
+
+	Vector3 Font::calcCharSizeUnit(UChar p_char, jgl::Float p_textSize)
+	{
+		jgl::Float ratio = p_textSize / 100;
+		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(100, 0);
+
+		jgl::Vector3 result = _calcCharSizeUnit(tmp_fontGlyphData, p_char, ratio);
+		return (result);
+	}
+
+	Vector3 Font::calcStringSizeUnit(std::string p_string, jgl::Float p_textSize)
+	{
+		jgl::Float ratio = p_textSize / 100;
+		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(100, 0);
+
+		jgl::Vector3 result = jgl::Vector3(0, 0, 0);
+
+		for (jgl::Size_t i = 0; i < p_string.size(); i++)
+		{
+			jgl::Vector3 tmp = _calcCharSizeUnit(tmp_fontGlyphData, p_string[i], ratio);
+			result.x() += tmp.x();
+			if (result.y() < tmp.y())
+				result.y() = tmp.y();
+		}
+
+		return (result);
+	}
+
 }

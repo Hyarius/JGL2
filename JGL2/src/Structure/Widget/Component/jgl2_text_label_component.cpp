@@ -23,32 +23,7 @@ namespace jgl
 				return;
 			}
 
-			int delta[5] = { 100, 50, 20, 10, 1 };
-			_textSize = 2;
-
-			if (_text == "")
-			{
-				_textSize = _size.y();
-				if (oldTextSize != _textSize)
-					_selectedTextureID = 0;
-				return;
-			}
-
-			for (int i = 0; i < 5; i++)
-			{
-				bool enough = false;
-				while (enough == false)
-				{
-					if (p_font == nullptr)
-						throw std::runtime_error("No font give to label component");
-
-					jgl::Vector2Int tmp_size = p_font->calcStringSize(_text, _textSize + delta[i]);
-					if (tmp_size.x() >= _size.x() || tmp_size.y() >= _size.y())
-						enough = true;
-					else
-						_textSize += delta[i];
-				}
-			}
+			_textSize = _selectedFont->computeTextSize(_text, _size);
 
 			if (oldTextSize != _textSize)
 				_selectedTextureID = 0;
@@ -118,18 +93,18 @@ namespace jgl
 
 			if (_modelSpaceBuffer == nullptr)
 				_modelSpaceBuffer = _shader->buffer("model_space")->copy();
-			if (_modelUvBuffer == nullptr)
-				_modelUvBuffer = _shader->buffer("model_uv")->copy();
-			if (_modelColorBuffer == nullptr)
-				_modelColorBuffer = _shader->buffer("model_color")->copy();
-			if (_modelOutlineColorBuffer == nullptr)
-				_modelOutlineColorBuffer = _shader->buffer("model_outline_color")->copy();
+			if (_modelUvsBuffer == nullptr)
+				_modelUvsBuffer = _shader->buffer("model_uvs")->copy();
 			if (_indexesBuffer == nullptr)
 				_indexesBuffer = _shader->elementBuffer()->copy();
 			if (_textureUniform == nullptr)
 				_textureUniform = _shader->uniform("textureID")->copy();
+			if (_textColorUniform == nullptr)
+				_textColorUniform = _shader->uniform("textColor")->copy();
+			if (_outlineColorUniform == nullptr)
+				_outlineColorUniform = _shader->uniform("outlineColor")->copy();
 		}
-		
+
 		void TextLabel::_computeShaderBuffer(Float p_depth)
 		{
 			Font* tmp_font = _selectedFont;
@@ -155,9 +130,9 @@ namespace jgl
 				_computeTextOffset(_selectedFont);
 			}
 
-			_savedTextSize = _selectedFont->prepareDraw(_text, _anchor + _textAnchor, _textSize, _textColor, _textOutlineSize, _outlineColor, p_depth);
+			_savedTextSize = _selectedFont->prepareDraw(_text, _anchor + _textAnchor, _textSize, _textOutlineSize, p_depth);
 
-			_selectedFont->exportShaderData(_modelSpaceBuffer, _modelColorBuffer, _modelOutlineColorBuffer, _modelUvBuffer, _indexesBuffer);
+			_selectedFont->exportShaderData(_modelSpaceBuffer, _modelUvsBuffer, _indexesBuffer);
 
 			if (_selectedTextureID == 0)
 			{
@@ -173,12 +148,12 @@ namespace jgl
 			glBindTexture(GL_TEXTURE_2D, _selectedTextureID);
 
 			_modelSpaceBuffer->activate();
-			_modelColorBuffer->activate();
-			_modelOutlineColorBuffer->activate();
-			_modelUvBuffer->activate();
+			_modelUvsBuffer->activate();
 			_indexesBuffer->activate();
 
 			_textureUniform->send(0);
+			_textColorUniform->send(_textColor);
+			_outlineColorUniform->send(_outlineColor);
 
 			_shader->cast(jgl::Shader::Mode::Triangle, _indexesBuffer->size() / sizeof(jgl::UInt));
 		}

@@ -15,11 +15,11 @@ namespace jgl
 			Bool _initialized = false;
 			Shader* _shader = nullptr;
 			Buffer* _modelSpaceBuffer = nullptr;
-			Buffer* _modelColorBuffer = nullptr;
-			Buffer* _modelOutlineColorBuffer = nullptr;
-			Buffer* _modelUvBuffer = nullptr;
+			Buffer* _modelUvsBuffer = nullptr;
 			Buffer* _indexesBuffer = nullptr;
 			Uniform* _textureUniform = nullptr;
+			Uniform* _textColorUniform = nullptr;
+			Uniform* _outlineColorUniform = nullptr;
 			Bool _computed = false;
 
 			Font* _font;

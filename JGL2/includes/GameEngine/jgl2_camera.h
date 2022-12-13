@@ -90,6 +90,11 @@ public:
 		_computed = false;
 	}
 
+	void unbake()
+	{
+		_computed = false;
+	}
+
 	glm::mat4 mvp()
 	{
 		if (_computed == false)

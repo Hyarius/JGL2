@@ -13,6 +13,8 @@ void SpriteRenderer::_initializeStaticOpenGL()
 
 	if (_matrixUniform == nullptr)
 		_matrixUniform = _shader->uniform("MVP")->copy();
+	if (_anchorUniform == nullptr)
+		_anchorUniform = _shader->uniform("anchor")->copy();
 	if (_textureUniform == nullptr)
 		_textureUniform = _shader->uniform("textureID")->copy();
 
@@ -56,6 +58,7 @@ void SpriteRenderer::_onRender()
 	_mesh.texture->activate();
 
 	_matrixUniform->send(Scene::activeScene->mainCamera()->mvp());
+	_anchorUniform->send(_owner->core().position);
 	_textureUniform->send(0);
 	_modelVertexBuffer->activate();
 	_modelUVSBuffer->activate();
