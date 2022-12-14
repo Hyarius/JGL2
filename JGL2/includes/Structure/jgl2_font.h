@@ -77,11 +77,11 @@ namespace jgl
 		Font(std::string path);
 		~Font();
 
+		Size_t computeTextSize(std::string p_string, Vector2Int p_textArea);
+
 		GLuint textureID(Size_t p_textSize, Size_t p_outlineSize);
 
 		void exportShaderData(Buffer* p_modelSpaceBuffer, Buffer* p_modelUvBuffer, Buffer* p_indexesBuffer);
-
-		Size_t computeTextSize(std::string p_string, Vector2Int p_textArea);
 
 		Vector2Int calcCharSize(UChar p_char, UInt p_size, Size_t p_outlineSize = 0);
 		Vector2Int calcStringSize(std::string p_string, UInt p_size);
@@ -95,11 +95,5 @@ namespace jgl
 		Vector2Int prepareDraw(std::string p_string, Vector2Int p_pos, UInt p_size, Float p_depth);
 		Vector2Int prepareDraw(UChar p_char, Vector2Int p_pos, UInt p_size, Size_t p_outlineSize, Float p_depth);
 		Vector2Int prepareDraw(std::string p_string, Vector2Int p_pos, UInt p_size, Size_t p_outlineSize, Float p_depth);
-
-		Vector3 _calcCharSizeUnit(FontGlyphData& p_fontGlyphData, UChar p_char, jgl::Float p_ratio);
-		Vector3 _prepareCharRenderUnit(FontGlyphData& p_fontGlyphData, Vector3 p_position, UChar p_char, Float p_ratio);
-		void prepareDrawUnit(std::string p_string, jgl::Vector3 p_position, jgl::Float p_textSize, Size_t p_outlineSize);
-		Vector3 calcCharSizeUnit(UChar p_char, jgl::Float p_textSize);
-		Vector3 calcStringSizeUnit(std::string p_string, jgl::Float p_textSize);
 	};
 }

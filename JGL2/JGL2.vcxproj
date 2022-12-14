@@ -22,22 +22,12 @@
     <ClInclude Include="includes\ExternalLibraries\stb_image.h" />
     <ClInclude Include="includes\ExternalLibraries\stb_image_write.h" />
     <ClInclude Include="includes\ExternalLibraries\stb_truetype.h" />
-    <ClInclude Include="includes\GameEngine\Component\jgl2_sprite_renderer.h" />
-    <ClInclude Include="includes\GameEngine\Component\jgl2_text_renderer.h" />
-    <ClInclude Include="includes\GameEngine\jgl2_camera.h" />
-    <ClInclude Include="includes\GameEngine\Component\jgl2_component.h" />
-    <ClInclude Include="includes\GameEngine\jgl2_core.h" />
-    <ClInclude Include="includes\GameEngine\jgl2_game_object.h" />
-    <ClInclude Include="includes\GameEngine\jgl2_mesh.h" />
-    <ClInclude Include="includes\GameEngine\jgl2_scene.h" />
-    <ClInclude Include="includes\GameEngine\jgl2_text_mesh.h" />
     <ClInclude Include="includes\jgl2.h" />
     <ClInclude Include="includes\jgl2_basic_functions.h" />
     <ClInclude Include="includes\jgl2_basic_types.h" />
     <ClInclude Include="includes\jgl2_dirent.h" />
     <ClInclude Include="includes\jgl2_drawing_functions.h" />
     <ClInclude Include="includes\jgl2_enums.h" />
-    <ClInclude Include="includes\jgl2_game_engine.h" />
     <ClInclude Include="includes\jgl2_includes.h" />
     <ClInclude Include="includes\jgl2_structures.h" />
     <ClInclude Include="includes\Structure\jgl2_application.h" />
@@ -86,9 +76,6 @@
     <ClInclude Include="includes\Structure\Widget\jgl2_widget_components.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\GameEngine\Component\jgl2_sprite_renderer.cpp" />
-    <ClCompile Include="src\GameEngine\Component\jgl2_text_renderer.cpp" />
-    <ClCompile Include="src\GameEngine\jgl2_game_object.cpp" />
     <ClCompile Include="src\jgl2_basic_functions.cpp" />
     <ClCompile Include="src\jgl2_drawing_functions.cpp" />
     <ClCompile Include="src\Structure\jgl2_application.cpp" />
