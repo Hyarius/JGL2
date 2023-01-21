@@ -18,7 +18,7 @@ namespace jgl
 			Center = 2
 		};
 
-		friend class Application;
+		friend class GraphicalApplication;
 
 	private:
 		static const jgl::Size_t C_NB_BUTTON = 3;

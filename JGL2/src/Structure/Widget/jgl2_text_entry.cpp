@@ -1,5 +1,5 @@
 #include "Structure/Widget/jgl2_text_entry.h"
-#include "Structure/jgl2_application.h"
+#include "Structure/jgl2_graphical_application.h"
 #include "jgl2_drawing_functions.h"
 
 namespace jgl
@@ -7,7 +7,7 @@ namespace jgl
 
 	void TextEntry::_onRender()
 	{
-		if (_selected == true && (jgl::Application::instance()->time() % 1000) > 500)
+		if (_selected == true && (jgl::GraphicalApplication::instance()->time() % 1000) > 500)
 		{
 			jgl::drawRectangleColor(_cursorColor, _label.anchor() + jgl::Vector2Int(0, _box.borderSize().y()) + _cursorPosition, _cursorSize, depth());
 		}
@@ -28,7 +28,8 @@ namespace jgl
 		_label.setGeometry(_box.usableAnchor() + _label.labelOffset(), _box.usableSize() - _label.labelOffset() * jgl::Vector2Int(2, 2));
 		_label.setTextPredefinedSize(_label.size().y());
 
-		_cursorSize = jgl::Vector2Int(_label.size().y() / 7, _label.size().y() - _box.borderSize().y());
+		jgl::Float tmp = (_label.textPredefinedSize() != 0 ? _label.textPredefinedSize() : _label.size().y());
+		_cursorSize = jgl::Vector2Int(_label.size().y() / 7, tmp - _box.borderSize().y());
 	}
 
 	std::string TextEntry::_computeTextToRender()
@@ -58,7 +59,7 @@ namespace jgl
 	void TextEntry::_deleteCharInEntry(jgl::Int p_cursorPositionDelta)
 	{
 		if (_cursor == 0 && p_cursorPositionDelta < 0)
-			throw std::runtime_error("Error while deleting char in textEntry");
+			return ;
 
 		_moveCursor(p_cursorPositionDelta);
 		_entry.erase(_entry.begin() + _cursor);
@@ -157,7 +158,7 @@ namespace jgl
 
 	jgl::Bool TextEntry::_onUpdate()
 	{
-		if (jgl::Application::instance()->mouse().getButton(jgl::Mouse::Button::Left) == jgl::InputStatus::Released)
+		if (jgl::GraphicalApplication::instance()->mouse().getButton(jgl::Mouse::Button::Left) == jgl::InputStatus::Released)
 		{
 			if (isPointed() == true)
 			{
@@ -171,24 +172,24 @@ namespace jgl
 
 		if (_selected == true)
 		{
-			if (jgl::Application::instance()->keyboard().getEntry() >= ' ')
+			if (jgl::GraphicalApplication::instance()->keyboard().getEntry() >= ' ')
 			{
-				_addCharInEntry(jgl::Application::instance()->keyboard().getEntry());
+				_addCharInEntry(jgl::GraphicalApplication::instance()->keyboard().getEntry());
 			}
-			else if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Delete) == jgl::InputStatus::Released)
+			else if (jgl::GraphicalApplication::instance()->keyboard().getKey(jgl::Keyboard::Delete) == jgl::InputStatus::Released)
 			{
 				_deleteCharInEntry(0);
 			}
-			else if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::Backspace) == jgl::InputStatus::Released)
+			else if (jgl::GraphicalApplication::instance()->keyboard().getKey(jgl::Keyboard::Backspace) == jgl::InputStatus::Released)
 			{
 				_deleteCharInEntry(-1);
 			}
-			else if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::LeftArrow) == jgl::InputStatus::Released)
+			else if (jgl::GraphicalApplication::instance()->keyboard().getKey(jgl::Keyboard::LeftArrow) == jgl::InputStatus::Released)
 			{
 				_moveCursor(-1);
 				_label.setText(_computeTextToRender());
 			}
-			else if (jgl::Application::instance()->keyboard().getKey(jgl::Keyboard::RightArrow) == jgl::InputStatus::Released)
+			else if (jgl::GraphicalApplication::instance()->keyboard().getKey(jgl::Keyboard::RightArrow) == jgl::InputStatus::Released)
 			{
 				_moveCursor(1);
 				_label.setText(_computeTextToRender());

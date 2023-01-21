@@ -24,7 +24,7 @@ namespace jgl
 		void _init_shader_data();
 
 	public:
-		Image(GLuint p_id = -1);
+		Image(GLuint p_id);
 		Image(std::string path);
 
 		~Image();

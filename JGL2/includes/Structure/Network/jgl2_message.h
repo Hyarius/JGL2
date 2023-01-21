@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "jgl2_basic_types.h"
 #include "Structure/jgl2_iostream.h"
 #include "Structure/jgl2_thread.h"

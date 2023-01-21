@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Structure/jgl2_network.h"
-#include "Structure/Widget/jgl2_widget.h"
+#include "Structure/Widget/jgl2_console_widget.h"
 
 namespace jgl
 {
 	template <typename TServerMessageEnum>
-	class ServerManager : public jgl::Widget
+	class ServerManager : public jgl::ConsoleWidget
 	{
 	private:
 		jgl::Server< TServerMessageEnum>* _server = nullptr;
@@ -17,11 +17,9 @@ namespace jgl
 				_server->update();
 			return (false);
 		}
-		void _onRender() {}
-		void _onGeometryChange() {}
 
 	public:
-		ServerManager(jgl::Widget* p_parent) : jgl::Widget(p_parent)
+		ServerManager(jgl::Widget* p_parent) : jgl::ConsoleWidget(p_parent)
 		{
 
 		}
@@ -32,7 +30,7 @@ namespace jgl
 	};
 
 	template <typename TServerMessageEnum>
-	class ClientManager : public jgl::Widget
+	class ClientManager : public jgl::ConsoleWidget
 	{
 	private:
 		jgl::Client< TServerMessageEnum>* _client = nullptr;
@@ -43,11 +41,9 @@ namespace jgl
 				_client->update();
 			return (false);
 		}
-		void _onRender() {}
-		void _onGeometryChange() {}
 
 	public:
-		ClientManager(jgl::Widget* p_parent) : jgl::Widget(p_parent)
+		ClientManager(jgl::Widget* p_parent) : jgl::ConsoleWidget(p_parent)
 		{
 
 		}

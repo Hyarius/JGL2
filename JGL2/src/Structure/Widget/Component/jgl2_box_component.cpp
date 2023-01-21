@@ -1,6 +1,6 @@
 #include "Structure/Widget/Component/jgl2_box_component.h"
 #include "jgl2_drawing_functions.h"
-#include "Structure/jgl2_application.h"
+#include "Structure/jgl2_graphical_application.h"
 
 namespace jgl
 {
@@ -51,10 +51,10 @@ namespace jgl
 			const std::string shader_name = "Color2D";
 
 			if (_shader == nullptr)
-				_shader = jgl::Application::instance()->shader(shader_name);
+				_shader = jgl::GraphicalApplication::instance()->shader(shader_name);
 
 			if (_shader == nullptr)
-				throw std::runtime_error("Error : no shader Color2D in jgl::Application");
+				throw std::runtime_error("Error : no shader Color2D in jgl::GraphicalApplication");
 
 			if (_modelBuffer == nullptr)
 				_modelBuffer = _shader->buffer("model_space")->copy();
@@ -83,16 +83,16 @@ namespace jgl
 			for (size_t i = 0; i < 4; i++)
 			{
 				vertexContent[i] = Vector3(
-					jgl::Application::instance()->convertScreenToOpenGL(_anchor + _borderSize + (_size - _borderSize * jgl::Vector2(2, 2)) * delta_pos[i]),
-					static_cast<jgl::Float>(p_depth) / jgl::Application::instance()->maxDepth()
+					jgl::GraphicalApplication::instance()->convertScreenToOpenGL(_anchor + _borderSize + (_size - _borderSize * jgl::Vector2(2, 2)).floor() * delta_pos[i]),
+					jgl::GraphicalApplication::instance()->convertDepthToOpenGL(p_depth)
 				);
 				colorContent[i] = _frontgroundColor;
 			}
 			for (size_t i = 0; i < 4; i++)
 			{
 				vertexContent[i + 4] = Vector3(
-					jgl::Application::instance()->convertScreenToOpenGL(_anchor + _size * delta_pos[i]),
-					static_cast<jgl::Float>(p_depth) / jgl::Application::instance()->maxDepth()
+					jgl::GraphicalApplication::instance()->convertScreenToOpenGL(_anchor + _size.ceil() * delta_pos[i]),
+					jgl::GraphicalApplication::instance()->convertDepthToOpenGL(p_depth)
 				);
 				colorContent[i + 4] = _backgroundColor;
 			}
@@ -133,7 +133,7 @@ namespace jgl
 
 		Bool Box::isPointed() const
 		{
-			Vector2Int pos = jgl::Application::instance()->mouse().pos();
+			Vector2Int pos = jgl::GraphicalApplication::instance()->mouse().pos();
 
 			if (pos.x() < anchor().x() || pos.x() >= anchor().x() + size().x() ||
 				pos.y() < anchor().y() || pos.y() >= anchor().y() + size().y())

@@ -248,8 +248,8 @@ namespace jgl
 					auto msg = input.msg;
 					if (_activityMap.count(msg.type()) != 0)
 					{
-						if (jgl::Application::instance() == nullptr || _messageTimeoutDelay == 0 ||
-							input.time + _messageTimeoutDelay < jgl::Application::instance()->time())
+						if (jgl::GraphicalApplication::instance() == nullptr || _messageTimeoutDelay == 0 ||
+							input.time + _messageTimeoutDelay < jgl::GraphicalApplication::instance()->time())
 						{
 							_activityMap[msg.type()](msg);
 						}

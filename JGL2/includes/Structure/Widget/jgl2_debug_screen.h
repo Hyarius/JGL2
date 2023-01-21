@@ -56,6 +56,7 @@ namespace jgl
 				for (jgl::Size_t j = 0; j < C_NB_COLLUMNS; j++)
 				{
 					_lines[i][j] = new jgl::TextLabel("", this);
+					_lines[i][j]->label().setTextOutlineSize(0);
 					_lines[i][j]->box().setColor(jgl::Color(0, 0, 0, 0), jgl::Color(0, 0, 0, 0));
 					_lines[i][j]->label().setColor(jgl::Color(255, 255, 255), jgl::Color(0, 0, 0));
 					if (j == C_NB_COLLUMNS - 1)

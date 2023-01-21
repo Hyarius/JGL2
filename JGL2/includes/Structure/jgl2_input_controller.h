@@ -43,8 +43,8 @@ namespace jgl
 			if (_timer.isRunning() == true)
 				return;
 
-			if ((_type == Type::Keyboard && jgl::Application::instance()->keyboard().getKey(_data.key) == _expectedStatus) ||
-				(_type == Type::Mouse && jgl::Application::instance()->mouse().getButton(_data.button) == _expectedStatus))
+			if ((_type == Type::Keyboard && jgl::GraphicalApplication::instance()->keyboard().getKey(_data.key) == _expectedStatus) ||
+				(_type == Type::Mouse && jgl::GraphicalApplication::instance()->mouse().getButton(_data.button) == _expectedStatus))
 				needCast = true;
 
 			if (needCast == true)

@@ -148,7 +148,7 @@ namespace jgl
             Process = 229,
         };
 
-        friend class Application;
+        friend class GraphicalApplication;
     private:
         InputStatus _keys[C_NB_KEY];
         UChar _entry;

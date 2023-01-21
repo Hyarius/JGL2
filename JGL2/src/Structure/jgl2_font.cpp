@@ -2,14 +2,14 @@
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "ExternalLibraries/stb_truetype.h"
-#include "Structure/jgl2_application.h"
+#include "Structure/jgl2_graphical_application.h"
 
 namespace jgl
 {
 	void Font::_initShaderData()
 	{
 		if (_shader == nullptr)
-			_shader = Application::instance()->shader("TextTexture2D");
+			_shader = GraphicalApplication::instance()->shader("TextTexture2D");
 
 		if (_modelSpaceBuffer == nullptr)
 			_modelSpaceBuffer = _shader->buffer("model_space");
@@ -44,21 +44,20 @@ namespace jgl
 	Bool Font::_isPixelOnGlyphOutline(UChar* p_atlasData, Int p_width, Int p_height, Int p_x, Int p_y, Int p_outlineSize)
 	{
 		Vector2Int origin = Vector2Int(p_x, p_y);
-		for (Int delta_y = -p_outlineSize; delta_y <= p_outlineSize; delta_y++)
-			for (Int delta_x = -p_outlineSize; delta_x <= p_outlineSize; delta_x++)
-			{
-				Int tmp_x = p_x + delta_x;
-				Int tmp_y = p_y + delta_y;
-				if (tmp_x >= 0 && tmp_x < p_width && tmp_y >= 0 && tmp_y < p_height)// && Vector2(tmp_x, tmp_y).distance(origin) <= p_outlineSize)
-				{
-					Int index = tmp_x + tmp_y * p_width;
 
+		for (jgl::Int i = p_x - p_outlineSize; i <= p_x + p_outlineSize; i++)
+		{
+			for (jgl::Int j = p_y - p_outlineSize; j <= p_y + p_outlineSize; j++)
+			{
+				if (i >= 0 && j >= 0 &&
+					i < p_width && j < p_height)
+				{
+					Size_t index = i + j * p_width;
 					if (p_atlasData[index] == 0x00)
-					{
 						return (true);
-					}
 				}
 			}
+		}
 
 		return (false);
 	}
@@ -122,7 +121,7 @@ namespace jgl
 
 	GLuint Font::textureID(Size_t p_textSize, Size_t p_outlineSize)
 	{
-		auto tmp = _getFontGlyphData(p_textSize, p_outlineSize);
+		auto tmp = getFontGlyphData(p_textSize, p_outlineSize);
 		return (tmp.id);
 	}
 
@@ -160,6 +159,7 @@ namespace jgl
 
 		FontGlyphData tmp_fontGlyphData;
 
+		tmp_fontGlyphData.size = jgl::Vector2Int(width, height);
 		Float width_delta = 0.5f / width;
 		Float height_delta = 0.5f / height;
 		for (Size_t i = 32; i < nb_char; i++)
@@ -202,11 +202,11 @@ namespace jgl
 				{
 					if (_isPixelOnGlyphOutline(atlasData, width, height, x, y, p_fontData.outlineSize) == true)
 					{
-						atlasData[index + 0] = 0x7D;
+						atlasData[index] = 0x7D;
 					}
 					else
 					{
-						atlasData[index + 0] = 0xFF;
+						atlasData[index] = 0xFF;
 					}
 				}
 			}
@@ -218,8 +218,8 @@ namespace jgl
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RED, GL_UNSIGNED_BYTE, atlasData);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 
 		_fontGlyphDatas[p_fontData] = tmp_fontGlyphData;
@@ -227,7 +227,7 @@ namespace jgl
 		delete[] atlasData;
 	}
 
-	Font::FontGlyphData& Font::_getFontGlyphData(Size_t p_textSize, Size_t p_outlineSize)
+	Font::FontGlyphData& Font::getFontGlyphData(Size_t p_textSize, Size_t p_outlineSize)
 	{
 		Font::FontData tmp(p_textSize, p_outlineSize);
 
@@ -239,9 +239,9 @@ namespace jgl
 		return (_fontGlyphDatas[tmp]);
 	}
 
-	Font::GlyphData& Font::_getData(Size_t p_textSize, Size_t p_outlineSize, UChar p_char)
+	Font::GlyphData& Font::getData(Size_t p_textSize, Size_t p_outlineSize, UChar p_char)
 	{
-		FontGlyphData tmp_fontGlyphData = _getFontGlyphData(p_textSize, p_outlineSize);
+		FontGlyphData tmp_fontGlyphData = getFontGlyphData(p_textSize, p_outlineSize);
 
 		if (tmp_fontGlyphData.atlas.size() < p_char)
 		{
@@ -251,7 +251,7 @@ namespace jgl
 		return (tmp_fontGlyphData.atlas[p_char]);
 	}
 
-	Font::GlyphData& Font::_getData(FontGlyphData& p_fontGlyphData, UChar p_char)
+	Font::GlyphData& Font::getData(FontGlyphData& p_fontGlyphData, UChar p_char)
 	{
 		if (p_fontGlyphData.atlas.size() < p_char)
 		{
@@ -270,14 +270,14 @@ namespace jgl
 
 	Vector2 Font::_calcCharSize(FontGlyphData& p_fontGlyphData, UChar p_char)
 	{
-		GlyphData& data = _getData(p_fontGlyphData, p_char);
+		GlyphData& data = getData(p_fontGlyphData, p_char);
 		Vector2 tmp = (data.positions[3] - data.positions[0]);
 		return (tmp);
 	}
 
 	Vector2Int Font::calcCharSize(UChar p_char, UInt p_size, Size_t p_outlineSize)
 	{
-		GlyphData& data = _getData(p_char, p_size, p_outlineSize);
+		GlyphData& data = getData(p_char, p_size, p_outlineSize);
 		Vector2 tmp = (data.positions[3] - data.positions[0]);
 		return (tmp);
 	}
@@ -286,11 +286,11 @@ namespace jgl
 	{
 		Vector2Int result = Vector2Int(0, p_size);
 
-		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, 0);
+		FontGlyphData& tmp_fontGlyphData = getFontGlyphData(p_size, 0);
 
 		for (Size_t i = 0; i < p_string.size(); i++)
 		{
-			Font::GlyphData& glyphData = _getData(tmp_fontGlyphData, static_cast<UChar>(p_string[i]));
+			Font::GlyphData& glyphData = getData(tmp_fontGlyphData, static_cast<UChar>(p_string[i]));
 
 			result.x() += glyphData.step.x();
 		}
@@ -311,7 +311,7 @@ namespace jgl
 			Vector2Int(1, 1)
 		};
 
-		Font::GlyphData& glyphData = _getData(p_fontGlyphData, static_cast<UChar>(p_char));
+		Font::GlyphData& glyphData = getData(p_fontGlyphData, static_cast<UChar>(p_char));
 		Vector2 BaseGlyphSize = _calcCharSize(p_fontGlyphData, p_char);
 		Vector2Int glyphSize = BaseGlyphSize;
 		Vector2Int glyphOffset = glyphData.offset * Vector2(1, -1);
@@ -320,7 +320,7 @@ namespace jgl
 		for (Size_t i = 0; i < 4; i++)
 		{
 			Vector2Int tmp_pos = p_pos + glyphSize * delta_pos[i] + Vector2Int(0, -glyphSize.y()) + glyphOffset;
-			Vector3 tmp_vertex = Vector3(Application::instance()->convertScreenToOpenGL(tmp_pos), p_depth / Application::instance()->maxDepth());
+			Vector3 tmp_vertex = Vector3(GraphicalApplication::instance()->convertScreenToOpenGL(tmp_pos), jgl::GraphicalApplication::instance()->convertDepthToOpenGL(p_depth));
 			_modelSpaceData.push_back(tmp_vertex);
 			_modelUvData.push_back(glyphData.uvs[i]);
 		}
@@ -361,7 +361,7 @@ namespace jgl
 	}
 	Vector2Int Font::draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Float p_depth)
 	{
-		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, 0);
+		FontGlyphData& tmp_fontGlyphData = getFontGlyphData(p_size, 0);
 
 		Vector2Int result = prepareDraw(p_char, p_pos, p_size, 0, p_depth);
 
@@ -371,7 +371,7 @@ namespace jgl
 	}
 	Vector2Int Font::draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Float p_depth)
 	{
-		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, 0);
+		FontGlyphData& tmp_fontGlyphData = getFontGlyphData(p_size, 0);
 
 		Vector2Int result = prepareDraw(p_string, p_pos, p_size, 0, p_depth);
 
@@ -381,7 +381,7 @@ namespace jgl
 	}
 	Vector2Int Font::draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, Float p_depth)
 	{
-		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, p_outlineSize);
+		FontGlyphData& tmp_fontGlyphData = getFontGlyphData(p_size, p_outlineSize);
 
 		Vector2Int result = prepareDraw(p_char, p_pos, p_size, p_outlineSize, p_depth);
 
@@ -391,7 +391,7 @@ namespace jgl
 	}
 	Vector2Int Font::draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, Float p_depth)
 	{
-		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, p_outlineSize);
+		FontGlyphData& tmp_fontGlyphData = getFontGlyphData(p_size, p_outlineSize);
 
 		Vector2Int result = prepareDraw(p_string, p_pos, p_size, p_outlineSize, p_depth);
 
@@ -406,7 +406,7 @@ namespace jgl
 
 		Vector2Int result;
 
-		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, 0);
+		FontGlyphData& tmp_fontGlyphData = getFontGlyphData(p_size, 0);
 
 		result = _prepareCharRender(tmp_fontGlyphData, p_char, p_pos, p_size, 0, p_depth);
 
@@ -419,7 +419,7 @@ namespace jgl
 
 		Vector2Int result = Vector2Int(0, p_size);
 
-		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, 0);
+		FontGlyphData& tmp_fontGlyphData = getFontGlyphData(p_size, 0);
 
 		for (Size_t i = 0; i < p_string.size(); i++)
 		{
@@ -437,7 +437,7 @@ namespace jgl
 
 		Vector2Int result;
 
-		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, p_outlineSize);
+		FontGlyphData& tmp_fontGlyphData = getFontGlyphData(p_size, p_outlineSize);
 
 		result = _prepareCharRender(tmp_fontGlyphData, p_char, p_pos, p_size, p_outlineSize, p_depth);
 
@@ -450,11 +450,11 @@ namespace jgl
 
 		Vector2Int result = Vector2Int(0, p_size);
 
-		FontGlyphData& tmp_fontGlyphData = _getFontGlyphData(p_size, p_outlineSize);
+		FontGlyphData& tmp_fontGlyphData = getFontGlyphData(p_size, p_outlineSize);
 
 		for (Size_t i = 0; i < p_string.size(); i++)
 		{
-			Font::GlyphData& tmp_glyphData = _getData(tmp_fontGlyphData, static_cast<UChar>(p_string[i]));
+			Font::GlyphData& tmp_glyphData = getData(tmp_fontGlyphData, static_cast<UChar>(p_string[i]));
 
 			Vector2Int tmp = _prepareCharRender(tmp_fontGlyphData, p_string[i], p_pos + result, p_size, p_outlineSize, p_depth);
 

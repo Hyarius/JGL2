@@ -1,6 +1,6 @@
 #include "Structure/Widget/Component/jgl2_text_label_component.h"
 #include "jgl2_drawing_functions.h"
-#include "Structure/jgl2_application.h"
+#include "Structure/jgl2_graphical_application.h"
 
 namespace jgl
 {
@@ -89,7 +89,7 @@ namespace jgl
 		void TextLabel::_initiatizeOpenGL()
 		{
 			if (_shader == nullptr)
-				_shader = Application::instance()->shader("TextTexture2D");
+				_shader = GraphicalApplication::instance()->shader("TextTexture2D");
 
 			if (_modelSpaceBuffer == nullptr)
 				_modelSpaceBuffer = _shader->buffer("model_space")->copy();
@@ -112,10 +112,10 @@ namespace jgl
 			_selectedFont = _font;
 			if (_selectedFont == nullptr)
 			{
-				if (jgl::Application::instance()->defaultFont() == nullptr)
-					throw std::runtime_error("No default font found in jgl::Application");
+				if (jgl::GraphicalApplication::instance()->defaultFont() == nullptr)
+					throw std::runtime_error("No default font found in jgl::GraphicalApplication");
 
-				_selectedFont = jgl::Application::instance()->defaultFont();
+				_selectedFont = jgl::GraphicalApplication::instance()->defaultFont();
 			}
 			if (_selectedFont != tmp_font)
 				_selectedTextureID = 0;
@@ -163,7 +163,7 @@ namespace jgl
 			if (_initialized == false)
 				_initiatizeOpenGL();
 
-			if (_computed == false || (_font == nullptr && _selectedFont != jgl::Application::instance()->defaultFont()))
+			if (_computed == false || (_font == nullptr && _selectedFont != jgl::GraphicalApplication::instance()->defaultFont()))
 				_computeShaderBuffer(p_depth);
 
 			_castRender();
@@ -257,10 +257,10 @@ namespace jgl
 			jgl::Font* tmp_font = _font;
 			if (tmp_font == nullptr)
 			{
-				if (jgl::Application::instance()->defaultFont() == nullptr)
-					throw std::runtime_error("No default font found in jgl::Application");
+				if (jgl::GraphicalApplication::instance()->defaultFont() == nullptr)
+					throw std::runtime_error("No default font found in jgl::GraphicalApplication");
 
-				tmp_font = jgl::Application::instance()->defaultFont();
+				tmp_font = jgl::GraphicalApplication::instance()->defaultFont();
 			}
 			return (tmp_font);
 		}

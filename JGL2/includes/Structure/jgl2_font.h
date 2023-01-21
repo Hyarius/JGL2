@@ -9,7 +9,7 @@ namespace jgl
 {
 	class Font
 	{
-	private:
+	public:
 		struct GlyphData
 		{
 			Size_t height;
@@ -39,9 +39,12 @@ namespace jgl
 		};
 		struct FontGlyphData
 		{
+			jgl::Vector2Int size;
 			std::vector<GlyphData> atlas;
 			GLuint id;
 		};
+
+	private:
 
 		static inline Shader* _shader = nullptr;
 
@@ -61,9 +64,6 @@ namespace jgl
 		Bool _isPixelOnGlyphOutline(UChar* p_atlasData, Int p_width, Int p_height, Int p_x, Int p_y, Int p_outlineSize);
 
 		void _loadFontTexture(Font::FontData p_fontData);
-		FontGlyphData& _getFontGlyphData(Size_t p_textSize, Size_t p_outlineSize);
-		GlyphData& _getData(Size_t p_textSize, Size_t p_outlineSize, UChar p_char);
-		GlyphData& _getData(FontGlyphData& p_fontGlyphData, UChar p_char);
 
 		void _initCharRender();
 		Vector2Int _prepareCharRender(FontGlyphData& p_fontGlyphData, UChar p_char, Vector2Int p_pos, UInt p_size, Size_t p_outlineSize, Float p_depth);
@@ -76,6 +76,10 @@ namespace jgl
 	public:
 		Font(std::string path);
 		~Font();
+
+		FontGlyphData& getFontGlyphData(Size_t p_textSize, Size_t p_outlineSize);
+		GlyphData& getData(Size_t p_textSize, Size_t p_outlineSize, UChar p_char);
+		GlyphData& getData(FontGlyphData& p_fontGlyphData, UChar p_char);
 
 		Size_t computeTextSize(std::string p_string, Vector2Int p_textArea);
 

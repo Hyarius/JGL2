@@ -1,5 +1,5 @@
 #include "Structure/jgl2_viewport.h"
-#include "Structure/jgl2_application.h"
+#include "Structure/jgl2_graphical_application.h"
 #include "Structure/Widget/jgl2_widget.h"
 
 namespace jgl
@@ -7,7 +7,7 @@ namespace jgl
 	void Viewport::reset()
 	{
 		C_ORIGIN = Vector2Int(0, 0);
-		jgl::Application::instance()->_setViewport(Vector2Int(0, 0), jgl::Application::instance()->size());
+		jgl::GraphicalApplication::instance()->_setViewport(Vector2Int(0, 0), jgl::GraphicalApplication::instance()->size());
 	}
 
 	Viewport::Viewport(Widget* p_owner)
@@ -75,6 +75,6 @@ namespace jgl
 	void Viewport::use()
 	{
 		C_ORIGIN = _origin;
-		jgl::Application::instance()->_setViewport(_anchor, _size);
+		jgl::GraphicalApplication::instance()->_setViewport(_anchor, _size);
 	}
 }

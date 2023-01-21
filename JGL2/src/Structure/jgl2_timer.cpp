@@ -1,5 +1,5 @@
 #include "Structure/jgl2_timer.h"
-#include "Structure/jgl2_application.h"
+#include "Structure/jgl2_graphical_application.h"
 
 namespace jgl
 {
@@ -17,7 +17,7 @@ namespace jgl
 
 	void Timer::start()
 	{
-		_startingTime = jgl::Application::instance()->time();
+		_startingTime = jgl::GraphicalApplication::instance()->time();
 		_state = State::Running;
 	}
 
@@ -28,7 +28,7 @@ namespace jgl
 
 	Timer::State Timer::state()
 	{
-		if (_state == State::Running && _startingTime + _timerDuration <= jgl::Application::instance()->time())
+		if (_state == State::Running && _startingTime + _timerDuration <= jgl::GraphicalApplication::instance()->time())
 		{
 			_state = State::Timeout;
 		}
@@ -48,7 +48,7 @@ namespace jgl
 
 	jgl::ULong Timer::elapsedTime()
 	{
-		return (jgl::Application::instance()->time() - _startingTime);
+		return (jgl::GraphicalApplication::instance()->time() - _startingTime);
 	}
 
 	jgl::Float Timer::percent()

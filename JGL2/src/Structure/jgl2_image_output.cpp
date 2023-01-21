@@ -1,5 +1,5 @@
 #include "Structure/jgl2_image_output.h"
-#include "Structure/jgl2_application.h"
+#include "Structure/jgl2_graphical_application.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "ExternalLibraries/stb_image_write.h"

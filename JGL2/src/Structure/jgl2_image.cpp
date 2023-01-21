@@ -1,5 +1,5 @@
 #include "Structure/jgl2_image.h"
-#include "Structure/jgl2_application.h"
+#include "Structure/jgl2_graphical_application.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "ExternalLibraries/stb_image.h"
@@ -34,7 +34,7 @@ namespace jgl
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, _data);
 		else if (_nbChannels == 4)
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, _data);
-		if (Application::instance() == nullptr)
+		if (GraphicalApplication::instance() == nullptr)
 			throw std::runtime_error("No application started while loading an image");
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -84,7 +84,7 @@ namespace jgl
 	void Image::_init_shader_data()
 	{
 		if (_shader == nullptr)
-			_shader = Application::instance()->shader("Texture2D");
+			_shader = GraphicalApplication::instance()->shader("Texture2D");
 
 		if (_modelSpaceBuffer == nullptr)
 			_modelSpaceBuffer = _shader->buffer("model_space");
@@ -125,7 +125,7 @@ namespace jgl
 
 		for (size_t i = 0; i < 4; i++)
 		{
-			vertexContent[i] = Vector3(jgl::Application::instance()->convertScreenToOpenGL(pos + size * deltaPos[i]), p_depth / jgl::Application::instance()->maxDepth());
+			vertexContent[i] = Vector3(jgl::GraphicalApplication::instance()->convertScreenToOpenGL(pos + size * deltaPos[i]), jgl::GraphicalApplication::instance()->convertDepthToOpenGL(p_depth));
 			uvContent[i] = (uv_pos + uv_size * deltaPos[i]);
 		}
 		activate();

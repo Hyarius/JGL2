@@ -48,6 +48,13 @@ namespace jgl
 		IOStream& operator << (const jgl::Double p_value);
 		IOStream& operator << (const void* p_address);
 		IOStream& operator << (const std::string p_string);
+		template <const int TSize>
+		IOStream& operator << (const std::bitset<TSize> p_bitset)
+		{
+			(*this) << p_bitset.to_string();
+			return (*this);
+		}
+
 		template <typename TType>
 		IOStream& operator << (const std::vector<TType> p_vector)
 		{

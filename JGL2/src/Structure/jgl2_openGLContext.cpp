@@ -102,8 +102,8 @@ namespace jgl
 		glFrontFace(GL_CCW);
 
 		glEnable(GL_DEPTH_TEST);
-		glClearDepth(-1.0f);
-		glDepthFunc(GL_GREATER);
+		glClearDepth(1.0f);
+		glDepthFunc(GL_LESS);
 
 		glEnable(GL_STENCIL_TEST);
 		glStencilFunc(GL_ALWAYS, 0, 0xFF);

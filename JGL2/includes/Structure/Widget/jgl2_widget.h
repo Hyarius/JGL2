@@ -8,11 +8,11 @@
 
 namespace jgl
 {
-	class Application;
+	class GraphicalApplication;
 
 	class Widget
 	{
-		friend class Application;
+		friend class AbstractApplication;
 	private:
 		std::string _name = "Un-named";
 		Bool _activated = false;

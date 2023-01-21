@@ -1,10 +1,10 @@
-#include "Structure/jgl2_application.h"
+#include "Structure/jgl2_graphical_application.h"
 
 namespace jgl
 {
 
 
-	void Application::_create2DColorShader()
+	void GraphicalApplication::_create2DColorShader()
 	{
 		std::string colorShaderVertex =
 			R"( #version 330 core
@@ -35,7 +35,7 @@ namespace jgl
 
 		addShader("Color2D", new jgl::Shader(colorShaderVertex, colorShaderFragment));
 	}
-	void Application::_create2DTextureShader()
+	void GraphicalApplication::_create2DTextureShader()
 	{
 		std::string textureShaderVertex =
 			R"(	#version 330 core
@@ -68,7 +68,7 @@ namespace jgl
 
 		addShader("Texture2D", new jgl::Shader(textureShaderVertex, textureShaderFragment));
 	}
-	void Application::_create2DTextTextureShader()
+	void GraphicalApplication::_create2DTextTextureShader()
 	{
 		std::string textTextureShaderVertex =
 			R"(	#version 330 core

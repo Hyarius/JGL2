@@ -15,13 +15,14 @@
 #include "jgl2_basic_functions.h"
 #include "Structure/jgl2_locked_queue.h"
 
+#include "Structure/jgl2_abstract_application.h"
+
 namespace jgl
 {
-	class Application
+	class GraphicalApplication : public AbstractApplication
 	{
 	public:
 		friend class Viewport;
-		friend class Widget;
 		friend LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	private:
@@ -33,12 +34,10 @@ namespace jgl
 		jgl::LockedQueue< PolymorphicContainer*> _messagesToTreat;
 
 		Thread* _updateThread = nullptr;
-		Bool _running = false;
 		Bool _multithreaded = false;
 		Bool _isCursorVisible = true;
 		HCURSOR _defaultCursor;
-		ULong _time = 0;
-		std::vector<Widget*> _widgets;
+
 		jgl::Float _maxDepth = 1000000.0f;
 
 		jgl::ULong _nbUpdateFrame = 0;
@@ -53,7 +52,6 @@ namespace jgl
 
 		void _pullWinMessage();
 		void _handleWinMessage();
-		void _updateTime();
 
 		void _runUpdate();
 		void _runRender();
@@ -66,16 +64,13 @@ namespace jgl
 
 		void _setViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size);
 
-		static inline Application* _instance = nullptr;
-
 		PolymorphicContainer* _obtainWinMessage();
 		void _releaseWinMessage(PolymorphicContainer* p_msg);
 		void _insertWinMessageToTreat(PolymorphicContainer* p_msg);
 		PolymorphicContainer* _getWinMessageToTreat();
 
 	public:
-		Application(std::string p_title, Vector2Int p_size, jgl::Color p_backgroundColor);
-		void quit();
+		GraphicalApplication(std::string p_title, Vector2Int p_size, jgl::Color p_backgroundColor);
 		Int run();
 
 		jgl::ULong nbUpdateFrame() { return (_nbUpdateFrame); }
@@ -101,13 +96,13 @@ namespace jgl
 		void setMaxDepth(jgl::Float p_maxDepth);
 		void resize(jgl::Vector2Int p_size);
 
-		const ULong& time() const;
 		const Vector2Int& size() const;
 		const Float maxDepth() const;
 
 		Vector2 convertScreenToOpenGL(Vector2Int p_screenPos);
 		Vector2Int convertOpenGLToScreen(Vector2 p_openGLPos);
+		jgl::Float convertDepthToOpenGL(jgl::Float p_depth);
 
-		static Application* instance();
+		static GraphicalApplication* instance();
 	};
 }

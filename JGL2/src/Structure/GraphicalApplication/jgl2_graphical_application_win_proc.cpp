@@ -1,10 +1,10 @@
 #include "Structure/jgl2_openGLContext.h"
-#include "Structure/jgl2_application.h"
+#include "Structure/jgl2_graphical_application.h"
 #include "jgl2_includes.h"
 
 namespace jgl
 {
-	std::map<jgl::UInt, std::string> Application::WinMessageToString =
+	std::map<jgl::UInt, std::string> GraphicalApplication::WinMessageToString =
 	{
 	  { 0, "WM_NULL"},
 	  { 1, "WM_CREATE" },
@@ -301,7 +301,7 @@ namespace jgl
 	  { 1024, "WM_USER" }
 	};
 
-	void Application::_pullWinMessage()
+	void GraphicalApplication::_pullWinMessage()
 	{
 		MSG msg;
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) { // If we have a message to process, process it
@@ -310,7 +310,7 @@ namespace jgl
 		}
 	}
 
-	void Application::_handleWinMessage()
+	void GraphicalApplication::_handleWinMessage()
 	{
 		while (_messagesToTreat.empty() == false)
 		{
@@ -485,23 +485,23 @@ namespace jgl
 		}
 	}
 
-	jgl::PolymorphicContainer* Application::_obtainWinMessage()
+	jgl::PolymorphicContainer* GraphicalApplication::_obtainWinMessage()
 	{
 		jgl::PolymorphicContainer* result = _messagePool.obtain();
 
 		return (result);
 	}
-	void Application::_releaseWinMessage(jgl::PolymorphicContainer* p_msg)
+	void GraphicalApplication::_releaseWinMessage(jgl::PolymorphicContainer* p_msg)
 	{
 		_messagePool.release(p_msg);
 	}
 
-	void jgl::Application::_insertWinMessageToTreat(jgl::PolymorphicContainer* p_msg)
+	void jgl::GraphicalApplication::_insertWinMessageToTreat(jgl::PolymorphicContainer* p_msg)
 	{
 		_messagesToTreat.push_back(p_msg);
 	}
 
-	jgl::PolymorphicContainer* jgl::Application::_getWinMessageToTreat()
+	jgl::PolymorphicContainer* jgl::GraphicalApplication::_getWinMessageToTreat()
 	{
 		jgl::PolymorphicContainer* result = _messagesToTreat.front();
 		_messagesToTreat.pop_front();
@@ -510,7 +510,7 @@ namespace jgl
 
 	LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 
-		jgl::PolymorphicContainer* newMessage = jgl::Application::instance()->_obtainWinMessage();
+		jgl::PolymorphicContainer* newMessage = jgl::GraphicalApplication::instance()->_obtainWinMessage();
 
 		newMessage->clear();
 
@@ -523,10 +523,10 @@ namespace jgl
 
 			if (width != 0 && height != 0)
 			{
-				jgl::Application::instance()->resize(jgl::Vector2Int(width, height));
+				jgl::GraphicalApplication::instance()->resize(jgl::Vector2Int(width, height));
 			}
 
-			jgl::Application::instance()->_releaseWinMessage(newMessage);
+			jgl::GraphicalApplication::instance()->_releaseWinMessage(newMessage);
 			
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
@@ -566,7 +566,7 @@ namespace jgl
 		}
 		}
 
-		jgl::Application::instance()->_insertWinMessageToTreat(newMessage);
+		jgl::GraphicalApplication::instance()->_insertWinMessageToTreat(newMessage);
 
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}

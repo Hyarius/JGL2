@@ -1,49 +1,44 @@
-#include "Structure/jgl2_application.h"
+#include "Structure/jgl2_graphical_application.h"
 
 #include "Structure/jgl2_timer.h"
 
 namespace jgl
 {
-	Application* Application::instance()
+	GraphicalApplication* GraphicalApplication::instance()
 	{
-		return (_instance);
+		return (static_cast<GraphicalApplication*>(_instance));
 	}
 
-	const jgl::ULong& Application::time() const
-	{
-		return (_time);
-	}
-
-	const jgl::Vector2Int& Application::size() const
+	const jgl::Vector2Int& GraphicalApplication::size() const
 	{
 		return (_context.size());
 	}
 
-	const Float Application::maxDepth() const
+	const Float GraphicalApplication::maxDepth() const
 	{
 		return (_maxDepth);
 	}
 
-	void Application::setMaxDepth(jgl::Float p_maxDepth)
+	void GraphicalApplication::setMaxDepth(jgl::Float p_maxDepth)
 	{
 		_maxDepth = p_maxDepth;
 	}
 
-	void Application::_setViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
+	void GraphicalApplication::_setViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
 	{
 		_context.setViewport(p_anchor.x(), p_anchor.y(), p_size.x(), p_size.y());
 	}
 
 
-	void Application::hideCursor()
+	void GraphicalApplication::hideCursor()
 	{
 		setCursorVisibleStatus(FALSE);
 	}
-	void Application::revealCursor()
+	void GraphicalApplication::revealCursor()
 	{
 		setCursorVisibleStatus(TRUE);
 	}
-	void Application::setCursorVisibleStatus(jgl::Bool p_state)
+	void GraphicalApplication::setCursorVisibleStatus(jgl::Bool p_state)
 	{
 		if (_running == true)
 			throw std::runtime_error("Setting cursor isn't accessible during program execution");
@@ -54,19 +49,12 @@ namespace jgl
 		else 
 			while (ShowCursor(p_state) < 0);
 	}
-	jgl::Bool Application::isCursorVisible()
+	jgl::Bool GraphicalApplication::isCursorVisible()
 	{
 		return (_isCursorVisible);
 	}
 
-	void Application::_updateTime()
-	{
-		auto epoch = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()).time_since_epoch();
-
-		_time = std::chrono::duration_cast<std::chrono::milliseconds>(epoch).count();
-	}
-
-	void Application::_runUpdate()
+	void GraphicalApplication::_runUpdate()
 	{
 		_updateTime();
 
@@ -95,7 +83,7 @@ namespace jgl
 			_mouse._updateState();
 		}
 	}
-	void Application::_runRender()
+	void GraphicalApplication::_runRender()
 	{
 		jgl::ULong actualNbFrame = 0;
 		jgl::ULong nextTime = _time;
@@ -123,7 +111,7 @@ namespace jgl
 		}
 	}
 
-	void Application::_runMonoThread()
+	void GraphicalApplication::_runMonoThread()
 	{
 
 		jgl::ULong actualNbFrame = 0;
@@ -163,7 +151,7 @@ namespace jgl
 		}
 	}
 
-	void Application::_run()
+	void GraphicalApplication::_run()
 	{
 		jgl::cout.setPrefix("Renderer thread");
 		_updateThread = new jgl::Thread("Update thread", [&]() {
@@ -173,11 +161,8 @@ namespace jgl
 		_updateThread->join();
 	}
 
-	Application::Application(std::string p_title, jgl::Vector2Int p_size, jgl::Color p_backgroundColor)
+	GraphicalApplication::GraphicalApplication(std::string p_title, jgl::Vector2Int p_size, jgl::Color p_backgroundColor) : AbstractApplication()
 	{
-		if (_instance != nullptr)
-			throw std::runtime_error("Application already created");
-		_instance = this;
 
 		srand(::time(NULL));
 
@@ -190,13 +175,10 @@ namespace jgl
 		_create2DTextureShader();
 		_create2DTextTextureShader();
 
-		//resize(p_size);
 		_updateTime();
-
-		//_context.clear();
 	}
 
-	void Application::resize(jgl::Vector2Int p_size)
+	void GraphicalApplication::resize(jgl::Vector2Int p_size)
 	{
 		_context.resize(p_size.x(), p_size.y());
 		for (jgl::Size_t i = 0; i < _widgets.size(); i++)
@@ -205,33 +187,27 @@ namespace jgl
 		}
 	}
 
-	void Application::quit()
-	{
-		jgl::cout << "Quitting application !" << jgl::endl;
-		_running = false;
-	}
-
-	void Application::activateMultiThread()
+	void GraphicalApplication::activateMultiThread()
 	{
 		_multithreaded = true;
 	}
 
-	void Application::deactivateMultiThread()
+	void GraphicalApplication::deactivateMultiThread()
 	{
 		_multithreaded = false;
 	}
 
-	void Application::setDefaultFont(Font* p_defaultFont)
+	void GraphicalApplication::setDefaultFont(Font* p_defaultFont)
 	{
 		_defaultFont = p_defaultFont;
 	}
 	
-	Font* Application::defaultFont() const
+	Font* GraphicalApplication::defaultFont() const
 	{
 		return (_defaultFont);
 	}
 
-	int Application::run()
+	int GraphicalApplication::run()
 	{
 		try
 		{
@@ -251,14 +227,14 @@ namespace jgl
 		return (0);
 	}
 
-	void Application::addShader(std::string p_shaderName, Shader* p_shader)
+	void GraphicalApplication::addShader(std::string p_shaderName, Shader* p_shader)
 	{
 		if (_shaders.count(p_shaderName) != 0)
 			delete _shaders[p_shaderName];
 		_shaders[p_shaderName] = p_shader;
 	}
 	
-	Shader* Application::shader(std::string p_shaderName)
+	Shader* GraphicalApplication::shader(std::string p_shaderName)
 	{
 		if (_shaders.count(p_shaderName) == 0)
 			return (nullptr);

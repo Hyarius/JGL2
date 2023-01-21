@@ -547,6 +547,39 @@ namespace jgl
 			this->values[1] = p_other[1];
 			this->values[2] = p_other[2];
 		}
+		
+		BaseVector3 cross(const BaseVector3& other) const
+		{
+			BaseVector3	result = BaseVector3(
+				y() * other.z() - z() * other.y(),
+				z() * other.x() - x() * other.z(),
+				x() * other.y() - y() * other.x()
+			);
+
+			return (result);
+		}
+
+		jgl::Float dot(const BaseVector3& other, const BaseVector3& center = 0) const
+		{
+			float		result;
+
+			result = (x - center.x) * (other.x - center.x)
+				+ (y - center.y) * (other.y - center.y)
+				+ (z - center.z) * (other.z - center.z);
+
+			return (result);
+		}
+
+		jgl::Float angle(const BaseVector3& other, const BaseVector3 center = 0) const
+		{
+			jgl::Float rdot = dot(other, center);
+
+			rdot = (rdot < -1.0f ? -1.0f : (rdot > 1.0f ? 1.0f : rdot));
+
+			jgl::Float angle = std::acos(rdot);
+
+			return (jgl::radianToDegree(angle));
+		}
 
 		operator glm::vec2() {
 			return (glm::vec2(this->values[0], this->values[1]));

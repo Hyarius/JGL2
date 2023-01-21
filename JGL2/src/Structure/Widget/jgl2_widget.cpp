@@ -1,6 +1,6 @@
 #include "Structure/Widget/jgl2_widget.h"
 #include "Structure/jgl2_iostream.h"
-#include "Structure/jgl2_application.h"
+#include "Structure/jgl2_graphical_application.h"
 
 namespace jgl
 {
@@ -48,11 +48,11 @@ namespace jgl
 			_parent->_removeChildren(this);
 		else
 		{
-			auto tmp = std::find(jgl::Application::instance()->_widgets.begin(), jgl::Application::instance()->_widgets.end(), this);
+			auto tmp = std::find(jgl::AbstractApplication::_instance->_widgets.begin(), jgl::AbstractApplication::_instance->_widgets.end(), this);
 			
-			if (tmp != jgl::Application::instance()->_widgets.end())
+			if (tmp != jgl::AbstractApplication::_instance->_widgets.end())
 			{
-				jgl::Application::instance()->_widgets.erase(tmp);
+				jgl::AbstractApplication::_instance->_widgets.erase(tmp);
 			}
 		}
 
@@ -65,7 +65,7 @@ namespace jgl
 		}
 		else
 		{
-			jgl::Application::instance()->_widgets.push_back(this);
+			jgl::AbstractApplication::_instance->_widgets.push_back(this);
 			_viewport.setParentViewport(nullptr);
 		}
 	}
@@ -101,7 +101,7 @@ namespace jgl
 
 	Bool Widget::isPointed() const
 	{
-		Vector2Int pos = jgl::Application::instance()->mouse().pos();
+		Vector2Int pos = jgl::GraphicalApplication::instance()->mouse().pos();
 
 		return (pos.isBetween(_viewport.anchor(), _viewport.anchor() + _viewport.size()));
 	}
@@ -139,7 +139,7 @@ namespace jgl
 
 	void Widget::setDepth(jgl::Float p_depth)
 	{
-		if (p_depth > jgl::Application::instance()->maxDepth())
+		if (p_depth > jgl::GraphicalApplication::instance()->maxDepth())
 			throw std::out_of_range("Widget depth out of range");
 
 		jgl::Float delta = p_depth - _depth;
