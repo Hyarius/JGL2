@@ -325,4 +325,49 @@ namespace jgl
 		return (i % n + n) % n;
 	}
 
+	std::string normalizeString(std::string p_str, jgl::Size_t p_finalLength, char p_char)
+	{
+		if (p_str.size() >= p_finalLength)
+			return (p_str);
+		return (std::string(p_finalLength - p_str.size(), p_char) + p_str);
+	}
+
+	std::vector<std::string> decomposeIntoParagraph(std::string p_str, jgl::Size_t p_lineLength, std::string p_delim)
+	{
+		std::vector<std::string> tab = jgl::stringSplit(p_str, p_delim);
+		std::vector<std::string> result;
+	
+		std::string line = "";
+		for (jgl::Size_t i = 0; i < tab.size(); i++)
+		{
+			if (line.size() + tab[i].size() >= p_lineLength)
+			{
+				result.push_back(line);
+				line = "";
+			}
+			if (line.size() != 0)
+				line += p_delim;
+			line += tab[i];
+		}
+		result.push_back(line);
+
+		return (result);
+	}
+	
+	void editStringContent(std::string& p_str, jgl::Size_t p_position, jgl::Size_t p_length, char p_c)
+	{
+		for (int i = 0; i < p_length; i++) {
+			p_str[i + p_position] = p_c;
+		}
+	}
+
+	jgl::Size_t findCharFromEnd(std::string p_str, jgl::Size_t p_base, char p_c)
+	{
+		for (jgl::Size_t i = p_base; i > 0; i--) {
+			if (p_str[i] == p_c) {
+				return i;
+			}
+		}
+		return 0;
+	}
 }

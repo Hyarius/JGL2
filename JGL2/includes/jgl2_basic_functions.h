@@ -28,6 +28,10 @@ namespace jgl
 	std::string getStr(std::fstream& p_file);
 	std::vector<std::string> getStringSplit(std::fstream& p_file, const std::string& p_delim, const jgl::Int& p_expectedSize = -1);
 	jgl::Int positive_modulo(jgl::Int i, jgl::Int n);
+	std::string normalizeString(std::string p_str, jgl::Size_t p_finalLength, char p_char);
+	std::vector<std::string> decomposeIntoParagraph(std::string p_str, jgl::Size_t p_lineLength, std::string p_delim);
+	void editStringContent(std::string& p_str, jgl::Size_t p_position, jgl::Size_t p_length, char p_c);
+	jgl::Size_t findCharFromEnd(std::string p_str, jgl::Size_t p_base, char p_c);
 
 	template <typename T>
 	std::string to_string(const T a_value, const jgl::Int n = 6)

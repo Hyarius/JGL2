@@ -34,6 +34,18 @@ namespace jgl
 
 	}
 
+	void IOStream::clearConsole()
+	{
+		COORD tl = { 0,0 };
+		CONSOLE_SCREEN_BUFFER_INFO s;
+		HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+		GetConsoleScreenBufferInfo(console, &s);
+		DWORD written, cells = s.dwSize.X * s.dwSize.Y;
+		FillConsoleOutputCharacter(console, ' ', cells, tl, &written);
+		FillConsoleOutputAttribute(console, s.wAttributes, cells, tl, &written);
+		SetConsoleCursorPosition(console, tl);
+	}
+
 	void IOStream::setPrefix(std::string p_prefix)
 	{
 		_prefix = p_prefix;
@@ -48,17 +60,24 @@ namespace jgl
 	{
 		std::lock_guard<std::mutex> lock(_mutex);
 
-		if (_neededPrefix == true)
+		if (_bufferLength == 0)
 		{
-			int first = _write(1, "[", 1);
-			int second = _write(1, _prefix.c_str(), static_cast<jgl::UInt>(_prefix.size()));
-			int thrid = _write(1, "] - ", 4);
-			_neededPrefix = false;
+			int fifth = _write(1, "\n", 1);
 		}
-		int forth = _write(1, _buffer, _bufferLength);
-		int fifth = _write(1, "\n", 1);
-		_neededPrefix = true;
-		_bufferLength = 0;
+		else
+		{
+			if (_neededPrefix == true)
+			{
+				int first = _write(1, "[", 1);
+				int second = _write(1, _prefix.c_str(), static_cast<jgl::UInt>(_prefix.size()));
+				int thrid = _write(1, "] - ", 4);
+				_neededPrefix = false;
+			}
+			int forth = _write(1, _buffer, _bufferLength);
+			int fifth = _write(1, "\n", 1);
+			_neededPrefix = true;
+			_bufferLength = 0;
+		}
 	}
 
 	IOStream& IOStream::operator << (const FormatFunctionPointer& p_funct)

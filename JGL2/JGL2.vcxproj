@@ -39,6 +39,7 @@
     <ClInclude Include="includes\Structure\jgl2_image_output.h" />
     <ClInclude Include="includes\Structure\jgl2_input_controller.h" />
     <ClInclude Include="includes\Structure\jgl2_iostream.h" />
+    <ClInclude Include="includes\Structure\jgl2_json_parser.h" />
     <ClInclude Include="includes\Structure\jgl2_keyboard.h" />
     <ClInclude Include="includes\Structure\jgl2_locked_queue.h" />
     <ClInclude Include="includes\Structure\jgl2_perlin.h" />
@@ -87,6 +88,7 @@
     <ClCompile Include="src\Structure\jgl2_font.cpp" />
     <ClCompile Include="src\Structure\jgl2_image.cpp" />
     <ClCompile Include="src\Structure\jgl2_image_output.cpp" />
+    <ClCompile Include="src\Structure\jgl2_json_parser.cpp" />
     <ClCompile Include="src\Structure\jgl2_keyboard.cpp" />
     <ClCompile Include="src\Structure\jgl2_mouse.cpp" />
     <ClCompile Include="src\Structure\jgl2_openGLContext.cpp" />
@@ -186,6 +188,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -204,6 +207,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -222,6 +226,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -240,6 +245,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>

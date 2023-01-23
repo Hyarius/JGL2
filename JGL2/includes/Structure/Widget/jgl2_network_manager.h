@@ -27,6 +27,9 @@ namespace jgl
 		{
 			_server = p_server;
 		}
+		jgl::Server< TServerMessageEnum>* server() {
+			return (_server);
+		}
 	};
 
 	template <typename TServerMessageEnum>
@@ -50,6 +53,9 @@ namespace jgl
 		void setClient(jgl::Client< TServerMessageEnum>* p_client)
 		{
 			_client = p_client;
+		}
+		jgl::Client< TServerMessageEnum>* client() {
+			return (_client);
 		}
 	};
 }

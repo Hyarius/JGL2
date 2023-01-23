@@ -183,6 +183,9 @@
     <ClInclude Include="includes\Structure\Widget\jgl2_console_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_json_parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Structure\jgl2_iostream.cpp">
@@ -264,6 +267,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Structure\GraphicalApplication\jgl2_graphical_application_win_proc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Structure\jgl2_json_parser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

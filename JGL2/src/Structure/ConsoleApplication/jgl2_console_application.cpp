@@ -9,11 +9,7 @@ namespace jgl
 
 	Int ConsoleApplication::run()
 	{
-		_updateTime();
-
-		jgl::ULong actualNbFrame = 0;
-		jgl::ULong nextTime = _time;
-
+		_running = true;
 		while (_running == true)
 		{
 			_updateTime();

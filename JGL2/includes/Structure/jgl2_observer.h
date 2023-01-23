@@ -9,20 +9,20 @@ namespace jgl
 	class Observer
 	{
 	private:
-		static inline std::map < TEventType, std::vector < std::function< void() > > > _functs;
+		std::map < TEventType, std::vector < std::function< void() > > > _functs;
 
+	public:
 		Observer()
 		{
 
 		}
 
-	public:
-		static void subscribe(TEventType p_event, std::function<void()> p_funct)
+		void subscribe(TEventType p_event, std::function<void()> p_funct)
 		{
 			_functs[p_event].push_back(p_funct);
 		}
 
-		static void notify(TEventType p_event)
+		void notify(TEventType p_event)
 		{
 			std::vector<std::function<void()>>& tmp_array = _functs[p_event];
 			for (jgl::Size_t i = 0; i < tmp_array.size(); i++)

@@ -1,0 +1,39 @@
+{
+	"serverAddress"    :    "82.65.223.127",
+	"Cards": [
+		{
+			"name": "NomDeCarte0",
+			"description": "DescriptionDeCarte0",
+			"Cards": [
+				{
+					"name": "NomDeCarte0",
+					"description": "DescriptionDeCarte0"
+				},
+				{
+					"name": "NomDeCarte1",
+					"description": "DescriptionDeCarte1"
+				},
+				{
+					"name": "NomDeCarte2",
+					"description": "DescriptionDeCarte2"
+				},
+				{
+					"name": "NomDeCarte3",
+					"description": "DescriptionDeCarte3"
+				}
+			]
+		},
+		{
+			"name": "NomDeCarte1",
+			"description": "DescriptionDeCarte1"
+		},
+		{
+			"name": "NomDeCarte2",
+			"description": "DescriptionDeCarte2"
+		},
+		{
+			"name": "NomDeCarte3",
+			"description": "DescriptionDeCarte3"
+		}
+	]
+}

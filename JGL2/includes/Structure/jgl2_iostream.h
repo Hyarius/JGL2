@@ -26,13 +26,12 @@ namespace jgl
 
 	public:
 		IOStream(const std::string& p_prefix);
+		void clearConsole();
 		void setPrefix(std::string p_prefix);
 		void setEncoding(const char* locale, jgl::Int category = LC_CTYPE);
 		virtual void flush();
 		IOStream& operator << (const FormatFunctionPointer& p_funct);
-
 		IOStream& operator << (const long p_value);
-
 		IOStream& operator << (const jgl::Bool p_bool);
 		IOStream& operator << (const jgl::Char p_char);
 		IOStream& operator << (const jgl::UChar p_char);
@@ -62,7 +61,7 @@ namespace jgl
 			{
 				if (i != 0)
 					(*this) << " - ";
-				(*this) << "[" << p_vector[i] << "]";
+				(*this) << "[" << i << "]" << p_vector[i];
 			}
 			return (*this);
 		}

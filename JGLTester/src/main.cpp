@@ -2,8 +2,9 @@
 
 int main(int argc, char** argv)
 {
-	jgl::cout.setEncoding("fr-FR");
-	jgl::ConsoleApplication app = jgl::ConsoleApplication();
+	JSONData data;
 
-	return (app.run());
+	data.load("configuration.json");
+
+	return (0);
 }
