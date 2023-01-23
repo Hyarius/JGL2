@@ -1,6 +1,6 @@
 #include "Structure/jgl2_json_parser.h"
 
-std::string JSONData::_readFileContent(std::string p_path)
+std::string JSONFile::_readFileContent(std::string p_path)
 {
 	std::fstream file;
 	file.open(p_path, std::ios_base::in);
@@ -13,7 +13,7 @@ std::string JSONData::_readFileContent(std::string p_path)
 	return (buffer.str());
 }
 
-void JSONData::_extractElementName(std::string& p_str, jgl::Size_t& p_index, JSONData::Element& p_element)
+void JSONFile::_extractElementName(std::string& p_str, jgl::Size_t& p_index, JSONFile::Element& p_element)
 {
 	p_index++;
 	jgl::Size_t start = p_index;
@@ -23,7 +23,7 @@ void JSONData::_extractElementName(std::string& p_str, jgl::Size_t& p_index, JSO
 	p_index++;
 }
 
-void JSONData::_skipDelimiter(std::string& p_str, jgl::Size_t& p_index)
+void JSONFile::_skipDelimiter(std::string& p_str, jgl::Size_t& p_index)
 {
 	for (; p_index < p_str.size() && (p_str[p_index] == '\n' || p_str[p_index] == '\t' || p_str[p_index] == ' '); p_index++);
 	if (p_str[p_index] != ':')
@@ -32,7 +32,7 @@ void JSONData::_skipDelimiter(std::string& p_str, jgl::Size_t& p_index)
 	for (; p_index < p_str.size() && (p_str[p_index] == '\n' || p_str[p_index] == '\t' || p_str[p_index] == ' '); p_index++);
 }
 
-void JSONData::_extractElementDataArray(std::string& p_str, jgl::Size_t& p_index, JSONData::Element& p_element)
+void JSONFile::_extractElementDataArray(std::string& p_str, jgl::Size_t& p_index, JSONFile::Element& p_element)
 {
 	jgl::Size_t curlyBracketCount = 0;
 	jgl::Size_t bracketCount = 0;
@@ -63,7 +63,7 @@ void JSONData::_extractElementDataArray(std::string& p_str, jgl::Size_t& p_index
 	p_element.arrayContent = (p_str.substr(start, p_index - start));
 }
 
-void JSONData::_extractElementDataString(std::string& p_str, jgl::Size_t& p_index, JSONData::Element& p_element)
+void JSONFile::_extractElementDataString(std::string& p_str, jgl::Size_t& p_index, JSONFile::Element& p_element)
 {
 	p_index++;
 	jgl::Size_t start = p_index;
@@ -73,7 +73,7 @@ void JSONData::_extractElementDataString(std::string& p_str, jgl::Size_t& p_inde
 	p_element.data = (p_str.substr(start, p_index - start - 1));
 }
 
-void JSONData::_extractElementDataValue(std::string& p_str, jgl::Size_t& p_index, JSONData::Element& p_element)
+void JSONFile::_extractElementDataValue(std::string& p_str, jgl::Size_t& p_index, JSONFile::Element& p_element)
 {
 	jgl::Size_t start = p_index;
 	for (; p_index < p_str.size() && p_str[p_index] != ','; p_index++);
@@ -98,7 +98,7 @@ void JSONData::_extractElementDataValue(std::string& p_str, jgl::Size_t& p_index
 	}
 }
 
-void JSONData::_extractElementData(std::string& p_str, jgl::Size_t& p_index, JSONData::Element& p_element)
+void JSONFile::_extractElementData(std::string& p_str, jgl::Size_t& p_index, JSONFile::Element& p_element)
 {
 	if (p_str[p_index] == '[' || p_str[p_index] == '{')
 	{
@@ -114,9 +114,9 @@ void JSONData::_extractElementData(std::string& p_str, jgl::Size_t& p_index, JSO
 	}
 }
 
-JSONData::Element JSONData::_composeElement(std::string& p_str, jgl::Size_t& p_index)
+JSONFile::Element JSONFile::_composeElement(std::string& p_str, jgl::Size_t& p_index)
 {
-	JSONData::Element result;
+	JSONFile::Element result;
 
 	_extractElementName(p_str, p_index, result);
 	_skipDelimiter(p_str, p_index);
@@ -125,9 +125,9 @@ JSONData::Element JSONData::_composeElement(std::string& p_str, jgl::Size_t& p_i
 	return (result);
 }
 
-JSONData::Block JSONData::_parseBlock(std::string p_name, std::string& p_str, jgl::Size_t& p_index, JSONData::Block* p_owner)
+JSONFile::Block JSONFile::_parseBlock(std::string p_name, std::string& p_str, jgl::Size_t& p_index, JSONFile::Block* p_owner)
 {
-	JSONData::Block result;
+	JSONFile::Block result;
 
 	result.owner = p_owner;
 	result.name = p_name;
@@ -135,7 +135,7 @@ JSONData::Block JSONData::_parseBlock(std::string p_name, std::string& p_str, jg
 	{
 		if (p_str[p_index] == '\"')
 		{
-			JSONData::Element newElement = _composeElement(p_str, p_index);
+			JSONFile::Element newElement = _composeElement(p_str, p_index);
 
 			if (newElement.arrayContent == "")
 			{
@@ -160,20 +160,23 @@ JSONData::Block JSONData::_parseBlock(std::string p_name, std::string& p_str, jg
 	return (result);
 }
 
-void JSONData::_exportBlockComposition()
+void JSONFile::_exportBlockComposition()
 {
 	for (jgl::Size_t i = 0; i < blocks.size(); i++)
 	{
 		for (jgl::Size_t j = 0; j < blocks[i].elements.size(); j++)
 		{
+			std::string dataName = "";
 			if (blocks[i].name != "")
-				jgl::cout << blocks[i].name << ".";
-			jgl::cout << blocks[i].elements[j].name << jgl::endl;
+				dataName += blocks[i].name + ".";
+			dataName += blocks[i].elements[j].name;
+
+			datas[dataName] = blocks[i].elements[j].data;
 		}
 	}
 }
 
-void JSONData::load(std::string p_path)
+void JSONFile::load(std::string p_path)
 {
 	std::string fileContent = _readFileContent(p_path);
 
@@ -183,14 +186,31 @@ void JSONData::load(std::string p_path)
 	_exportBlockComposition();
 }
 
-std::string JSONData::get(std::string key)
+JSONFile::JSONData JSONFile::get(std::string key)
 {
-	if (data.find(key) != data.end())
+	if (datas.find(key) != datas.end())
 	{
-		return data[key];
+		return datas[key];
 	}
 	else
 	{
-		return defaultValue;
+		return (JSONFile::JSONData());
 	}
+}
+jgl::Bool JSONFile::getBool(std::string key)
+{
+	return (std::get<bool>(get(key)));
+}
+
+jgl::Int JSONFile::getInteger(std::string key)
+{
+	return (std::get<int>(get(key)));
+}
+std::string JSONFile::getString(std::string key)
+{
+	return (std::get<std::string>(get(key)));
+}
+jgl::Float JSONFile::getFloatingPoint(std::string key)
+{
+	return (std::get<double>(get(key)));
 }

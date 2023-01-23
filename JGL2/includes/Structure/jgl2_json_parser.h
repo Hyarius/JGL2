@@ -5,12 +5,13 @@
 
 #include "jgl2_iostream.h"
 
-class JSONData {
+class JSONFile {
 private:
+    using JSONData = std::variant<bool, int, std::string, double>;
     struct Element
     {
         std::string name;
-        std::variant<bool, int, std::string, double> data;
+        JSONData data;
         std::string arrayContent;
     };
 
@@ -23,8 +24,7 @@ private:
 
     std::vector<Block> blocks;
 
-    std::map<std::string, std::string> data;
-    std::string defaultValue = "NoKeyFound";
+    std::map<std::string, JSONData> datas;
 
     std::string _readFileContent(std::string p_path);
 
@@ -45,5 +45,9 @@ private:
 
 public:
     void load(std::string p_path);
-    std::string get(std::string key);
+    JSONFile::JSONData get(std::string key);
+    jgl::Bool getBool(std::string key);
+    jgl::Int getInteger(std::string key);
+    std::string getString(std::string key);
+    jgl::Float getFloatingPoint(std::string key);
 };
