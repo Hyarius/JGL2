@@ -153,6 +153,12 @@ JSONFile::Block JSONFile::_parseBlock(std::string p_name, std::string& p_str, jg
 						subBlockIndex++;
 					}
 				}
+
+				JSONFile::Element sizeElement = Element();
+
+				sizeElement.name = baseName + ".size";
+				sizeElement.data = static_cast<int>(subBlockIndex);
+				result.elements.push_back(sizeElement);
 			}
 		}
 	}
