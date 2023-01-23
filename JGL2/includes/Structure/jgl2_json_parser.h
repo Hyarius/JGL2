@@ -46,6 +46,15 @@ private:
 public:
     void load(std::string p_path);
     JSONFile::JSONData get(std::string key);
+
+    template<typename TType>
+    TType smartGet(std::string key)
+    {
+        JSONFile::JSONData baseValue = get(key);
+
+        return (std::get<TType>(baseValue));
+    }
+
     jgl::Bool getBool(std::string key);
     jgl::Int getInteger(std::string key);
     std::string getString(std::string key);

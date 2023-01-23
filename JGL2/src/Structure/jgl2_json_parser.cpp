@@ -184,6 +184,8 @@ void JSONFile::load(std::string p_path)
 	blocks.push_back(_parseBlock("", fileContent, index, nullptr));
 
 	_exportBlockComposition();
+
+	blocks.clear();
 }
 
 JSONFile::JSONData JSONFile::get(std::string key)
