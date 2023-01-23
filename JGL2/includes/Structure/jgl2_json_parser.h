@@ -8,16 +8,28 @@
 class JSONFile {
 private:
     using JSONData = std::variant<bool, int, std::string, double>;
-    struct Element
+    struct ParsingData
     {
         std::string name;
         JSONData data;
         std::string arrayContent;
     };
 
+    struct Element
+    {
+        std::string name;
+        JSONData data;
+
+        Element(std::string p_name = "Undefined", JSONData p_data = JSONData()) :
+            name(p_name),
+            data(p_data)
+        {
+
+        }
+    };
+
     struct Block
     {
-        Block* owner;
         std::string name;
         std::vector<Element> elements;
     };
@@ -28,18 +40,18 @@ private:
 
     std::string _readFileContent(std::string p_path);
 
-    void _extractElementName(std::string& p_str, jgl::Size_t& p_index, Element& p_element);
+    void _extractElementName(std::string& p_str, jgl::Size_t& p_index, ParsingData& p_element);
     void _skipDelimiter(std::string& p_str, jgl::Size_t& p_index);
 
-    void _extractElementDataArray(std::string& p_str, jgl::Size_t& p_index, Element& p_element);
-    void _extractElementDataString(std::string& p_str, jgl::Size_t& p_index, Element& p_element);
-    void _extractElementDataValue(std::string& p_str, jgl::Size_t& p_index, Element& p_element);
+    void _extractElementDataArray(std::string& p_str, jgl::Size_t& p_index, ParsingData& p_element);
+    void _extractElementDataString(std::string& p_str, jgl::Size_t& p_index, ParsingData& p_element);
+    void _extractElementDataValue(std::string& p_str, jgl::Size_t& p_index, ParsingData& p_element);
 
-    void _extractElementData(std::string& p_str, jgl::Size_t& p_index, Element& p_element);
+    void _extractElementData(std::string& p_str, jgl::Size_t& p_index, ParsingData& p_element);
 
-    Element _composeElement(std::string& p_str, jgl::Size_t& p_index);
+    ParsingData _composeElement(std::string& p_str, jgl::Size_t& p_index);
 
-    Block _parseBlock(std::string p_name, std::string& p_str, jgl::Size_t& p_index, Block* p_owner);
+    Block _parseBlock(std::string p_name, std::string& p_str, jgl::Size_t& p_index);
 
     void _exportBlockComposition();
 
