@@ -18,6 +18,6 @@ namespace jgl
 
 	jgl::Float GraphicalApplication::convertDepthToOpenGL(jgl::Float p_depth)
 	{
-		return (p_depth / jgl::GraphicalApplication::instance()->maxDepth());
+		return (1.0f - (p_depth / jgl::GraphicalApplication::instance()->maxDepth()));
 	}
 }

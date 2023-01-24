@@ -189,6 +189,7 @@ namespace jgl
 			_computedTextSize = false;
 			_computedTextOffset = false;
 			_computed = false;
+			recalc();
 		}
 
 		void TextLabel::setTextSize(const Size_t& p_textSize)

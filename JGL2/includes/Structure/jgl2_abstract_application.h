@@ -10,7 +10,7 @@ namespace jgl
 	{
 	protected:
 		friend class Widget;
-		static inline AbstractApplication* _instance = nullptr;
+		static inline AbstractApplication* _mainApplication = nullptr;
 
 		std::vector<Widget*> _widgets;
 
@@ -27,9 +27,9 @@ namespace jgl
 	public:
 		AbstractApplication()
 		{
-			if (_instance != nullptr)
-				throw std::runtime_error("GraphicalApplication already created");
-			_instance = this;
+			if (_mainApplication != nullptr)
+				throw std::runtime_error("AbstractApplication already created");
+			_mainApplication = this;
 		}
 
 		void quit()

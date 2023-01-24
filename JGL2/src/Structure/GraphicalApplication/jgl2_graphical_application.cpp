@@ -6,7 +6,7 @@ namespace jgl
 {
 	GraphicalApplication* GraphicalApplication::instance()
 	{
-		return (static_cast<GraphicalApplication*>(_instance));
+		return (_instance);
 	}
 
 	const jgl::Vector2Int& GraphicalApplication::size() const
@@ -163,6 +163,9 @@ namespace jgl
 
 	GraphicalApplication::GraphicalApplication(std::string p_title, jgl::Vector2Int p_size, jgl::Color p_backgroundColor) : AbstractApplication()
 	{
+		if (_instance != nullptr)
+			throw std::runtime_error("GraphicalApplication already created");
+		_instance = this;
 
 		srand(::time(NULL));
 

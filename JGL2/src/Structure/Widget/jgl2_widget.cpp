@@ -22,13 +22,17 @@ namespace jgl
 		_viewport(this)
 	{
 		setParent(p_parent);
-		if (p_parent == nullptr)
+
+		if (jgl::GraphicalApplication::instance() != nullptr)
 		{
-			setDepth(0);
-		}
-		else
-		{
-			setDepth(p_parent->depth() + 1);
+			if (p_parent == nullptr)
+			{
+				setDepth(0);
+			}
+			else
+			{
+				setDepth(p_parent->depth() + 1);
+			}
 		}
 	}
 
@@ -48,11 +52,11 @@ namespace jgl
 			_parent->_removeChildren(this);
 		else
 		{
-			auto tmp = std::find(jgl::AbstractApplication::_instance->_widgets.begin(), jgl::AbstractApplication::_instance->_widgets.end(), this);
+			auto tmp = std::find(jgl::AbstractApplication::_mainApplication->_widgets.begin(), jgl::AbstractApplication::_mainApplication->_widgets.end(), this);
 			
-			if (tmp != jgl::AbstractApplication::_instance->_widgets.end())
+			if (tmp != jgl::AbstractApplication::_mainApplication->_widgets.end())
 			{
-				jgl::AbstractApplication::_instance->_widgets.erase(tmp);
+				jgl::AbstractApplication::_mainApplication->_widgets.erase(tmp);
 			}
 		}
 
@@ -65,7 +69,7 @@ namespace jgl
 		}
 		else
 		{
-			jgl::AbstractApplication::_instance->_widgets.push_back(this);
+			jgl::AbstractApplication::_mainApplication->_widgets.push_back(this);
 			_viewport.setParentViewport(nullptr);
 		}
 	}

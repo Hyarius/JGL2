@@ -22,5 +22,9 @@ namespace jgl
 		{
 
 		}
+		ConsoleWidget(std::string p_name, jgl::Widget* p_parent) : jgl::Widget(p_name, p_parent)
+		{
+
+		}
 	};
 }

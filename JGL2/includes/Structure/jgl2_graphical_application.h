@@ -26,6 +26,7 @@ namespace jgl
 		friend LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 	private:
+		static inline GraphicalApplication* _instance = nullptr;
 		OpenGLContext _context;
 		
 		std::recursive_mutex _messageMutex;
