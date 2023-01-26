@@ -105,7 +105,7 @@
     <ClCompile Include="src\Structure\Widget\Component\jgl2_box_component.cpp" />
     <ClCompile Include="src\Structure\Widget\Component\jgl2_text_label_component.cpp" />
     <ClCompile Include="src\Structure\Widget\jgl2_frame.cpp" />
-    <ClCompile Include="src\Structure\Widget\jgl_button.cpp" />
+    <ClCompile Include="src\Structure\Widget\jgl2_button.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

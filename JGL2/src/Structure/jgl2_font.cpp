@@ -98,22 +98,22 @@ namespace jgl
 
 	Size_t Font::computeTextSize(std::string p_string, Vector2Int p_textArea)
 	{
-		int delta[5] = { 100, 50, 20, 10, 1 };
+		std::vector<int> deltas = { 100, 50, 20, 10, 1 };
 		Size_t result = 2;
 
 		if (p_string == "")
 			return (p_textArea.y());
 
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < deltas.size(); i++)
 		{
 			bool enough = false;
 			while (enough == false)
 			{
-				Vector2Int tmp_size = calcStringSize(p_string, result + delta[i]);
+				Vector2Int tmp_size = calcStringSize(p_string, result + deltas[i]);
 				if (tmp_size.x() >= p_textArea.x() || tmp_size.y() >= p_textArea.y())
 					enough = true;
 				else
-					result += delta[i];
+					result += deltas[i];
 			}
 		}
 		return (result);

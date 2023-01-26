@@ -242,7 +242,7 @@
     <ClCompile Include="src\Structure\Widget\jgl2_text_label.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Structure\Widget\jgl_button.cpp">
+    <ClCompile Include="src\Structure\Widget\jgl2_button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Structure\Widget\jgl2_text_entry.cpp">

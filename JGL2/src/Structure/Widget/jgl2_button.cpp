@@ -92,7 +92,7 @@ namespace jgl
 	{
 		_funct = p_funct;
 	}
-	
+
 	const std::function<void()>& Button::funct()
 	{
 		return (_funct);
@@ -128,7 +128,7 @@ namespace jgl
 	{
 		return (_labels[1]);
 	}
-	
+
 	jgl::WidgetComponent::TextLabel& Button::unselectedTextLabel()
 	{
 		return (_labels[0]);
