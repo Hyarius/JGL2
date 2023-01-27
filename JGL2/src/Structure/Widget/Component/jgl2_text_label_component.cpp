@@ -34,6 +34,10 @@ namespace jgl
 		{
 			jgl::Vector2Int textSize = p_font->calcStringSize(_text, _textSize);
 
+			_textRenderedSize = textSize;
+
+			jgl::cout << "Text size : " << _textRenderedSize << jgl::endl;
+
 			switch (_verticalAlignment)
 			{
 			case jgl::VerticalAlignment::Top:
@@ -82,6 +86,8 @@ namespace jgl
 				break;
 			}
 			}
+
+			jgl::cout << "Text [" << _text << "] size [" << _textRenderedSize << "] and anchor [" << _textAnchor << "]" << jgl::endl;
 
 			_computedTextOffset = true;
 		}
@@ -166,7 +172,7 @@ namespace jgl
 				_initiatizeOpenGL();
 
 			if (_computed == false || (_font == nullptr && _selectedFont != jgl::GraphicalApplication::instance()->defaultFont()))
-				_computeShaderBuffer(p_depth);
+				_computeShaderBuffer(p_depth + 0.01f);
 
 			_castRender();
 

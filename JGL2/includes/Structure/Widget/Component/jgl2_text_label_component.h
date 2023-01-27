@@ -40,6 +40,7 @@ namespace jgl
 			VerticalAlignment _verticalAlignment = VerticalAlignment::Top;
 			HorizontalAlignment _horizontalAlignment = HorizontalAlignment::Left;
 
+			Vector2Int _textRenderedSize = Vector2Int(0, 0);
 			Vector2Int _textAnchor = Vector2Int(0, 0);
 
 			Bool _computedTextSize;

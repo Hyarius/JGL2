@@ -72,6 +72,7 @@ namespace jgl
 		void _initShaderData();
 
 		Vector2 _calcCharSize(FontGlyphData& p_fontGlyphData, UChar p_char);
+		jgl::Vector2Int _calcLineOffset(FontGlyphData& p_fontGlyphData, std::string p_string);
 
 	public:
 		Font(std::string path);
@@ -90,14 +91,10 @@ namespace jgl
 		Vector2Int calcCharSize(UChar p_char, UInt p_size, Size_t p_outlineSize = 0);
 		Vector2Int calcStringSize(std::string p_string, UInt p_size);
 
-		Vector2Int draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Float p_depth);
 		Vector2Int draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Float p_depth);
-		Vector2Int draw(UChar p_char, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, Float p_depth);
 		Vector2Int draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, Float p_depth);
 
-		Vector2Int prepareDraw(UChar p_char, Vector2Int p_pos, UInt p_size, Float p_depth);
 		Vector2Int prepareDraw(std::string p_string, Vector2Int p_pos, UInt p_size, Float p_depth);
-		Vector2Int prepareDraw(UChar p_char, Vector2Int p_pos, UInt p_size, Size_t p_outlineSize, Float p_depth);
 		Vector2Int prepareDraw(std::string p_string, Vector2Int p_pos, UInt p_size, Size_t p_outlineSize, Float p_depth);
 	};
 }
