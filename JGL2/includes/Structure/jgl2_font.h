@@ -12,9 +12,9 @@ namespace jgl
 	public:
 		struct GlyphData
 		{
-			Size_t height;
 			Vector2 positions[4];
 			Vector2 uvs[4];
+			Vector2 size = Vector2(0, 0);
 			Vector2 step = Vector2(0, 0);
 			Vector2 offset = Vector2(0, 0);
 		};

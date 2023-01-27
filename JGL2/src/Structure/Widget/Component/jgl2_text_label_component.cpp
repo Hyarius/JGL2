@@ -138,6 +138,8 @@ namespace jgl
 			{
 				_selectedTextureID = _selectedFont->textureID(_textSize, _textOutlineSize);
 			}
+
+			_computed = true;
 		}
 		
 		void TextLabel::_castRender()

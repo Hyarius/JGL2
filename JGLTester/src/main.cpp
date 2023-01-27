@@ -7,7 +7,8 @@ int main(int argc, char** argv)
 	app.setDefaultFont(new jgl::Font("Sono-Regular.ttf"));
 	app.setMaxDepth(1000);
 
-	jgl::TextLabel* mainApp = new jgl::TextLabel("X", nullptr);
+	jgl::TextLabel* mainApp = new jgl::TextLabel("Cecyi est un te-st", nullptr);
+	mainApp->label().setVerticalAlignment(jgl::VerticalAlignment::Down);
 	mainApp->setGeometry(jgl::Vector2Int(100, 100), app.size() - jgl::Vector2Int(200, 200));
 	mainApp->activate();
 

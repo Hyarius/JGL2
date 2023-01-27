@@ -136,6 +136,7 @@ namespace jgl
 
 		stbtt_packedchar* char_info = new stbtt_packedchar[nb_char];
 
+
 		while (1) {
 			atlasData = new UChar[width * height];
 
@@ -162,6 +163,7 @@ namespace jgl
 		tmp_fontGlyphData.size = jgl::Vector2Int(width, height);
 		Float width_delta = 0.5f / width;
 		Float height_delta = 0.5f / height;
+
 		for (Size_t i = 32; i < nb_char; i++)
 		{
 			UChar c = i;
@@ -173,15 +175,15 @@ namespace jgl
 
 			const Float xmin = quad.x0;
 			const Float xmax = quad.x1;
-			const Float ymin = -quad.y1;
-			const Float ymax = -quad.y0;
+			const Float ymin = quad.y0;
+			const Float ymax = quad.y1;
 
-			data.height = p_fontData.textSize;
 			data.positions[0] = Vector2(xmin, ymin);
 			data.positions[1] = Vector2(xmax, ymin);
 			data.positions[2] = Vector2(xmin, ymax);
 			data.positions[3] = Vector2(xmax, ymax);
-			data.offset = Vector2(xmin, ymin);
+			data.size = Vector2Int(xmax - xmin, ymax - ymin);
+			data.offset = Vector2(xmin, -ymax);
 
 			data.uvs[0] = { quad.s0 - width_delta, quad.t0 - height_delta };
 			data.uvs[1] = { quad.s1 + width_delta, quad.t0 - height_delta };
@@ -270,32 +272,63 @@ namespace jgl
 
 	Vector2 Font::_calcCharSize(FontGlyphData& p_fontGlyphData, UChar p_char)
 	{
-		GlyphData& data = getData(p_fontGlyphData, p_char);
-		Vector2 tmp = (data.positions[3] - data.positions[0]);
-		return (tmp);
+		Vector2Int minValue = Vector2Int(0, 0);
+		Vector2Int maxValue = Vector2Int(0, 0);
+
+		Font::GlyphData& glyphData = getData(p_fontGlyphData, static_cast<UChar>(p_char));
+
+		maxValue.x() += glyphData.size.x();
+
+		if (minValue.y() > glyphData.offset.y())
+			minValue.y() = glyphData.offset.y();
+
+		if (maxValue.y() < glyphData.size.y())
+			maxValue.y() = glyphData.size.y();
+
+		return (maxValue - minValue);
 	}
 
 	Vector2Int Font::calcCharSize(UChar p_char, UInt p_size, Size_t p_outlineSize)
 	{
-		GlyphData& data = getData(p_char, p_size, p_outlineSize);
-		Vector2 tmp = (data.positions[3] - data.positions[0]);
-		return (tmp);
+		Vector2Int minValue = Vector2Int(0, 0);
+		Vector2Int maxValue = Vector2Int(0, 0);
+
+		FontGlyphData& tmp_fontGlyphData = getFontGlyphData(p_size, 0);
+
+		Font::GlyphData& glyphData = getData(tmp_fontGlyphData, static_cast<UChar>(p_char));
+
+		maxValue.x() += glyphData.size.x();
+
+		if (minValue.y() > glyphData.offset.y())
+			minValue.y() = glyphData.offset.y();
+
+		if (maxValue.y() < glyphData.size.y())
+			maxValue.y() = glyphData.size.y();
+
+		return (maxValue - minValue);
 	}
 
 	Vector2Int Font::calcStringSize(std::string p_string, UInt p_size)
 	{
-		Vector2Int result = Vector2Int(0, p_size);
+		Vector2Int minValue = Vector2Int(0, 0);
+		Vector2Int maxValue = Vector2Int(0, 0);
 
 		FontGlyphData& tmp_fontGlyphData = getFontGlyphData(p_size, 0);
 
 		for (Size_t i = 0; i < p_string.size(); i++)
 		{
 			Font::GlyphData& glyphData = getData(tmp_fontGlyphData, static_cast<UChar>(p_string[i]));
+			
+			maxValue.x() += glyphData.step.x();
 
-			result.x() += glyphData.step.x();
+			if (minValue.y() > glyphData.offset.y())
+				minValue.y() = glyphData.offset.y();
+
+			if (maxValue.y() < glyphData.size.y())
+				maxValue.y() = glyphData.size.y();
 		}
 
-		return (result);
+		return (maxValue - minValue);
 	}
 
 	Vector2Int Font::_prepareCharRender(FontGlyphData& p_fontGlyphData, UChar p_char, Vector2Int p_pos, UInt p_size, Size_t p_outlineSize, Float p_depth)
@@ -314,12 +347,11 @@ namespace jgl
 		Font::GlyphData& glyphData = getData(p_fontGlyphData, static_cast<UChar>(p_char));
 		Vector2 BaseGlyphSize = _calcCharSize(p_fontGlyphData, p_char);
 		Vector2Int glyphSize = BaseGlyphSize;
-		Vector2Int glyphOffset = glyphData.offset * Vector2(1, -1);
 
 		Size_t elementSize = static_cast<Size_t>(_modelSpaceData.size());
 		for (Size_t i = 0; i < 4; i++)
 		{
-			Vector2Int tmp_pos = p_pos + glyphSize * delta_pos[i] + Vector2Int(0, -glyphSize.y()) + glyphOffset;
+			Vector2Int tmp_pos = p_pos + glyphSize * delta_pos[i];
 			Vector3 tmp_vertex = Vector3(GraphicalApplication::instance()->convertScreenToOpenGL(tmp_pos), jgl::GraphicalApplication::instance()->convertDepthToOpenGL(p_depth));
 			_modelSpaceData.push_back(tmp_vertex);
 			_modelUvData.push_back(glyphData.uvs[i]);
@@ -330,7 +362,7 @@ namespace jgl
 			_indexesData.push_back(elementSize + element_index[i]);
 		}
 
-		return (Vector2Int(glyphData.step.x(), glyphData.step.y()));
+		return (glyphData.step);
 	}
 
 
@@ -448,7 +480,8 @@ namespace jgl
 	{
 		_initCharRender();
 
-		Vector2Int result = Vector2Int(0, p_size);
+		Vector2Int result = Vector2Int(0, 0);
+		Vector2Int textOffset = calcStringSize(p_string, p_size) * jgl::Vector2Int(0, 1);
 
 		FontGlyphData& tmp_fontGlyphData = getFontGlyphData(p_size, p_outlineSize);
 
@@ -456,7 +489,9 @@ namespace jgl
 		{
 			Font::GlyphData& tmp_glyphData = getData(tmp_fontGlyphData, static_cast<UChar>(p_string[i]));
 
-			Vector2Int tmp = _prepareCharRender(tmp_fontGlyphData, p_string[i], p_pos + result, p_size, p_outlineSize, p_depth);
+			jgl::Vector2Int charOffset = jgl::Vector2Int(tmp_glyphData.offset.x(), textOffset.y() - tmp_glyphData.size.y() - tmp_glyphData.offset.y());
+
+			Vector2Int tmp = _prepareCharRender(tmp_fontGlyphData, p_string[i], p_pos + charOffset + result, p_size, p_outlineSize, p_depth);
 
 			result.x() += tmp.x();
 		}
