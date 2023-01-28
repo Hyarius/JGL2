@@ -7,10 +7,12 @@ int main(int argc, char** argv)
 	app.setDefaultFont(new jgl::Font("Sono-Regular.ttf"));
 	app.setMaxDepth(1000);
 
-	jgl::TextLabel* mainApp = new jgl::TextLabel("Jeremyg le-surderien mais je veux verifier", nullptr);
-	mainApp->label().setVerticalAlignment(jgl::VerticalAlignment::Down);
+	jgl::TextLabel* mainApp = new jgl::TextLabel("peut-etre", nullptr);
+	mainApp->label().setVerticalAlignment(jgl::VerticalAlignment::Centred);
+	mainApp->label().setHorizontalAlignment(jgl::HorizontalAlignment::Centred);
+	//mainApp->setDefinedTextSize(30);
 	mainApp->setDepth(100);
-	mainApp->setGeometry(jgl::Vector2Int(100, 100), app.size() - jgl::Vector2Int(200, 200));
+	mainApp->setGeometry(jgl::Vector2Int(300, 200), app.size() - jgl::Vector2Int(600, 400));
 	mainApp->activate();
 
 	return (app.run());

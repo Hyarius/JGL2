@@ -183,7 +183,7 @@ namespace jgl
 			data.positions[2] = Vector2(xmin, ymax);
 			data.positions[3] = Vector2(xmax, ymax);
 			data.size = Vector2Int(xmax - xmin, ymax - ymin);
-			data.offset = Vector2(xmin, -ymax);
+			data.offset = Vector2(-xmin, -ymax);
 
 			data.uvs[0] = { quad.s0 - width_delta, quad.t0 - height_delta };
 			data.uvs[1] = { quad.s1 + width_delta, quad.t0 - height_delta };
@@ -430,11 +430,13 @@ namespace jgl
 			Font::GlyphData& glyphData = getData(fontGlyphData, static_cast<UChar>(p_string[i]));
 
 			jgl::Vector2Int charOffset = jgl::Vector2Int(0, -lineOffset.y() - glyphData.size.y());
-
+			
+			jgl::Vector2Int charPosition = p_pos + result + charOffset - glyphData.offset;
+			
 			Vector2Int tmp = _prepareCharRender(
 				fontGlyphData,
 				p_string[i],
-				p_pos + result + charOffset - glyphData.offset,
+				charPosition,
 				p_size,
 				p_outlineSize,
 				p_depth

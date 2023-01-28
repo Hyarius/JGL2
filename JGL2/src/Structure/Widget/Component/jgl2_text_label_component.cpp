@@ -32,11 +32,7 @@ namespace jgl
 
 		void TextLabel::_computeTextOffset(jgl::Font* p_font)
 		{
-			jgl::Vector2Int textSize = p_font->calcStringSize(_text, _textSize);
-
-			_textRenderedSize = textSize;
-
-			jgl::cout << "Text size : " << _textRenderedSize << jgl::endl;
+			_textRenderedSize = p_font->calcStringSize(_text, _textSize);
 
 			switch (_verticalAlignment)
 			{
@@ -47,12 +43,12 @@ namespace jgl
 			}
 			case jgl::VerticalAlignment::Centred:
 			{
-				_textAnchor.y() = (_size.y() - textSize.y()) / 2;
+				_textAnchor.y() = (_size.y() - _textRenderedSize.y()) / 2;
 				break;
 			}
 			case jgl::VerticalAlignment::Down:
 			{
-				_textAnchor.y() = _size.y() - textSize.y();
+				_textAnchor.y() = _size.y() - _textRenderedSize.y();
 				break;
 			}
 			default:
@@ -72,12 +68,12 @@ namespace jgl
 			}
 			case jgl::HorizontalAlignment::Centred:
 			{
-				_textAnchor.x() = (_size.x() - textSize.x()) / 2;
+				_textAnchor.x() = (_size.x() - _textRenderedSize.x()) / 2;
 				break;
 			}
 			case jgl::HorizontalAlignment::Right:
 			{
-				_textAnchor.x() = _size.x() - textSize.x();
+				_textAnchor.x() = _size.x() - _textRenderedSize.x();
 				break;
 			}
 			default:
@@ -86,8 +82,6 @@ namespace jgl
 				break;
 			}
 			}
-
-			jgl::cout << "Text [" << _text << "] size [" << _textRenderedSize << "] and anchor [" << _textAnchor << "]" << jgl::endl;
 
 			_computedTextOffset = true;
 		}
