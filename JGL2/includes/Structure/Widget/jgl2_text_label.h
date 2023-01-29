@@ -8,7 +8,7 @@ namespace jgl
 {
 	class TextLabel : public jgl::Widget
 	{
-	private:
+	protected:
 		jgl::Size_t _definedTextSize = 0;
 		jgl::WidgetComponent::Box _box;
 		jgl::WidgetComponent::TextLabel _label;

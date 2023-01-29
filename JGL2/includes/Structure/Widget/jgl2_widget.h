@@ -50,6 +50,7 @@ namespace jgl
 		Widget(std::string p_name, Widget* p_parent);
 		Widget(Widget* p_parent);
 
+		Widget* parent() const;
 		void setParent(Widget* p_parent);
 		std::string name(){return (_name); }
 		void setName(std::string p_name);

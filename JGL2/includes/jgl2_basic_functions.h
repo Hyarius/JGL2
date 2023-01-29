@@ -32,6 +32,7 @@ namespace jgl
 	std::vector<std::string> decomposeIntoParagraph(std::string p_str, jgl::Size_t p_lineLength, std::string p_delim);
 	void editStringContent(std::string& p_str, jgl::Size_t p_position, jgl::Size_t p_length, char p_c);
 	jgl::Size_t findCharFromEnd(std::string p_str, jgl::Size_t p_base, char p_c);
+	std::vector<std::string> listFile(std::string p_path, std::string p_extension);
 
 	template <typename T>
 	std::string to_string(const T a_value, const jgl::Int n = 6)

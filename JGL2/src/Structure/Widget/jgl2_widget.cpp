@@ -46,6 +46,11 @@ namespace jgl
 		_name = p_name;
 	}
 
+	Widget* Widget::parent() const
+	{
+		return (_parent);
+	}
+
 	void Widget::setParent(Widget* p_parent)
 	{
 		if (_parent != nullptr)

@@ -133,7 +133,7 @@ namespace jgl
 		JSONFile::Block result;
 
 		result.name = p_name;
-		for (; p_str[p_index] != '}'; p_index++)
+		for (; p_index < p_str.size() && p_str[p_index] != '}'; p_index++)
 		{
 			if (p_str[p_index] == '\"')
 			{

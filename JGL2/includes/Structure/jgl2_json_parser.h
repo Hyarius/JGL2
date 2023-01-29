@@ -58,6 +58,15 @@ namespace jgl
 		void _exportBlockComposition();
 
 	public:
+		JSONFile()
+		{
+
+		}
+
+		JSONFile(std::string p_filePath)
+		{
+			load(p_filePath);
+		}
 		void load(std::string p_path);
 		JSONFile::JSONData get(std::string key);
 

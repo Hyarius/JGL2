@@ -7,7 +7,7 @@ namespace jgl
 {
 	class TextEntry : public jgl::Widget
 	{
-	private:
+	protected:
 		jgl::WidgetComponent::Box _box;
 		jgl::WidgetComponent::TextLabel _label;
 

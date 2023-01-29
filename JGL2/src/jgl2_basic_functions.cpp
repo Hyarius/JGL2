@@ -370,4 +370,17 @@ namespace jgl
 		}
 		return 0;
 	}
+
+	std::vector<std::string> listFile(std::string p_path, std::string p_extension)
+	{
+		std::vector<std::string > result;
+		for (const auto& entry : std::filesystem::directory_iterator(p_path))
+		{
+			if (std::filesystem::is_regular_file(entry) && (p_extension == "*" || entry.path().extension() == p_extension))
+			{
+				result.push_back(entry.path().string());
+			}
+		}
+		return result;
+	}
 }

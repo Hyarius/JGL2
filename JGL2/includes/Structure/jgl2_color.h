@@ -20,6 +20,10 @@ namespace jgl
 		{
 
 		}
+		Color(jgl::Int p_value) : Color(p_value, p_value, p_value)
+		{
+
+		}
 
 		Color(jgl::Int p_r, jgl::Int p_g, jgl::Int p_b, jgl::Int p_a = 255) :
 			r(static_cast<jgl::Float>(p_r) / 255.0f),
@@ -36,6 +40,28 @@ namespace jgl
 			a(p_a)
 		{
 
+		}
+
+		Color operator + (const Color& p_color) const
+		{
+			Color result;
+
+			result.r = std::clamp(r + p_color.r, 0.0f, 1.0f);
+			result.g = std::clamp(g + p_color.g, 0.0f, 1.0f);
+			result.b = std::clamp(b + p_color.b, 0.0f, 1.0f);
+
+			return (result);
+		}
+
+		Color operator - (const Color& p_color) const
+		{
+			Color result;
+
+			result.r = std::clamp(r - p_color.r, 0.0f, 1.0f);
+			result.g = std::clamp(g - p_color.g, 0.0f, 1.0f);
+			result.b = std::clamp(b - p_color.b, 0.0f, 1.0f);
+
+			return (result);
 		}
 
 		friend jgl::IOStream& operator << (jgl::IOStream& p_os, const Color& p_values)

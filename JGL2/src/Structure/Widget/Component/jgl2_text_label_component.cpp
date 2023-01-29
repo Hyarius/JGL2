@@ -206,6 +206,7 @@ namespace jgl
 		void TextLabel::setTextPredefinedSize(const Size_t& p_textPredefinedSize)
 		{
 			_textPredefinedSize = p_textPredefinedSize;
+			_textSize = _textPredefinedSize;
 			_computed = false;
 			_selectedTextureID = 0;
 		}
@@ -306,6 +307,11 @@ namespace jgl
 		const jgl::Vector2Int& TextLabel::labelOffset()
 		{
 			return (_labelOffset);
+		}
+
+		const Vector2Int& TextLabel::currentTextSize() const
+		{
+			return (font()->calcStringSize(_text, _textSize));
 		}
 	}
 }

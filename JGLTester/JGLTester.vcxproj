@@ -159,6 +159,11 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\notvalid.cppfail" />
+    <None Include="resources\notvalid.nocpp" />
+    <None Include="resources\test3.cpp.save" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

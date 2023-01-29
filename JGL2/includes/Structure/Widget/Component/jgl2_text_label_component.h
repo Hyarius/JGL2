@@ -79,6 +79,8 @@ namespace jgl
 			const Vector2Int& anchor() const;
 			const Vector2Int& size() const;
 			const Vector2Int& labelOffset();
+
+			const Vector2Int& currentTextSize() const;
 		};
 	}
 }
