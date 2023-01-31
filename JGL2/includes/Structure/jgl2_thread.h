@@ -18,7 +18,6 @@ namespace jgl
 		template< class Function, class... Args>
 		Thread(std::string p_name, Function&& p_funct, Args&&... p_argv)
 		{
-			jgl::cout << "Creating new thread with name [" << p_name << "]" << jgl::endl;
 			_thread = new std::thread(
 				[&](std::string p_name, Function&& p_funct, Args&&... p_argv)
 				{

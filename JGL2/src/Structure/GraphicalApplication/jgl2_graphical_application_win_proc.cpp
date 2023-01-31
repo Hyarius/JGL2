@@ -466,6 +466,11 @@ namespace jgl
 			case WM_NCDESTROY:
 			case WM_QUERYOPEN:
 			case WM_SIZE:
+			case WM_SYNCPAINT:
+			case 799:
+			case 49395:
+			case 49367:
+			case 144:
 			{
 				//Ignored message
 				break;

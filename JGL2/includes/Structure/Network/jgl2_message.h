@@ -148,9 +148,11 @@ namespace jgl
 
 		Message<TServerMessageEnum>& operator << (const std::string& p_text)
 		{
-			*this << p_text.size();
+			*this << jgl::Size_t(p_text.size());
 			for (jgl::Size_t i = 0; i < p_text.size(); i++)
-				*this << p_text[i];
+			{
+				*this << jgl::Char(p_text[i]);
+			}
 			return *this;
 		}
 

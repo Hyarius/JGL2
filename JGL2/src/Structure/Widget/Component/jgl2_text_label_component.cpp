@@ -23,7 +23,7 @@ namespace jgl
 				return;
 			}
 
-			_textSize = _selectedFont->computeTextSize(_text, _size);
+			_textSize = p_font->computeTextSize(_text, _size);
 
 			if (oldTextSize != _textSize)
 				_selectedTextureID = 0;
@@ -309,7 +309,7 @@ namespace jgl
 			return (_labelOffset);
 		}
 
-		const Vector2Int& TextLabel::currentTextSize() const
+		Vector2Int TextLabel::currentTextSize() const
 		{
 			return (font()->calcStringSize(_text, _textSize));
 		}

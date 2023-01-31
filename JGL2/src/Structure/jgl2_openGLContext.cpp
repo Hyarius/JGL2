@@ -95,8 +95,6 @@ namespace jgl
 		glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]);
 		glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]);
 
-		jgl::cout << "Creating a windows with OpenGL version " << glVersion[0] << "." << glVersion[1] << jgl::endl;
-
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		glFrontFace(GL_CCW);

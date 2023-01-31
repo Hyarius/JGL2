@@ -22,8 +22,8 @@ namespace jgl
 			Uniform* _outlineColorUniform = nullptr;
 			Bool _computed = false;
 
-			Font* _font;
-			Font* _selectedFont;
+			Font* _font = nullptr;
+			Font* _selectedFont = nullptr;
 			ULong _selectedTextureID;
 			Vector2Int _savedTextSize;
 			std::string _text;
@@ -80,7 +80,7 @@ namespace jgl
 			const Vector2Int& size() const;
 			const Vector2Int& labelOffset();
 
-			const Vector2Int& currentTextSize() const;
+			Vector2Int currentTextSize() const;
 		};
 	}
 }
