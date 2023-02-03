@@ -41,6 +41,14 @@ namespace jgl
 
 	}
 
+	Widget::~Widget()
+	{
+		for (jgl::Size_t i = 0; i < _childrens.size(); i++)
+		{
+			delete _childrens[i];
+		}
+	}
+
 	void Widget::setName(std::string p_name)
 	{
 		_name = p_name;

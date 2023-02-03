@@ -26,7 +26,8 @@ namespace jgl
 
 	jgl::Bool Button::_onUpdate()
 	{
-		_pressed = false;
+		if (_pressed == true && isPointed() == false)
+			_pressed = false;
 		if (jgl::GraphicalApplication::instance()->mouse().getButton(jgl::Mouse::Button::Left) == jgl::InputStatus::Down &&
 			isPointed() == true)
 		{
@@ -36,6 +37,7 @@ namespace jgl
 		if (jgl::GraphicalApplication::instance()->mouse().getButton(jgl::Mouse::Button::Left) == jgl::InputStatus::Released &&
 			isPointed() == true)
 		{
+			_pressed = false;
 			_funct();
 			return (true);
 		}

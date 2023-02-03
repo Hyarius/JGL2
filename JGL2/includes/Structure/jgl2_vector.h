@@ -25,6 +25,15 @@ namespace jgl
 			}
 		}
 
+		template <typename TOtherType>
+		Vector(const TOtherType& p_value)
+		{
+			for (jgl::Size_t i = 0; i < C_NB_DIM; i++)
+			{
+				this->values[i] = p_value;
+			}
+		}
+
 		TType& operator [] (jgl::Size_t p_index)
 		{
 			if (p_index >= C_NB_DIM)
@@ -389,6 +398,12 @@ namespace jgl
 		BaseVector2() : Vector<TType, 2>()
 		{
 
+		}
+
+		BaseVector2(TType p_value)
+		{
+			this->values[0] = p_value;
+			this->values[1] = p_value;
 		}
 
 		BaseVector2(TType p_x, TType p_y)

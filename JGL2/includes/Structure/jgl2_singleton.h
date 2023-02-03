@@ -26,7 +26,11 @@ namespace jgl
 		}
 		static void release()
 		{
-			delete _instance;
+			if (_instance != nullptr)
+			{
+				delete _instance;
+				_instance = nullptr;
+			}
 		}
 	};
 }
