@@ -1,5 +1,5 @@
 #include "jgl2_drawing_functions.h"
-#include "Structure/jgl2_graphical_application.h"
+#include "Structure/jgl2_shader.h"
 
 namespace jgl
 {
@@ -13,7 +13,8 @@ namespace jgl
 
 	void drawRectangleColor(jgl::Color p_color, jgl::Vector2Int p_pos, jgl::Vector2Int p_size, jgl::Float p_depth)
 	{
-		const std::string shader_name = "Color2D";
+#pragma message ("Old GraphicalApplication code")
+		/*const std::string shader_name = "Color2D";
 		static jgl::Shader* tmp_shader = nullptr;
 
 		if (tmp_shader == nullptr)
@@ -48,6 +49,6 @@ namespace jgl
 		color_buffer->send(color_content, 4);
 		tmp_shader->elementBuffer()->send(element_index, 6);
 
-		tmp_shader->launch(jgl::Shader::Mode::Triangle);
+		tmp_shader->launch(jgl::Shader::Mode::Triangle);*/
 	}
 }

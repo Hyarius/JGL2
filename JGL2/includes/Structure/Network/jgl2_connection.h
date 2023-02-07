@@ -2,7 +2,6 @@
 
 #include "Structure/Network/jgl2_message.h"
 #include "Structure/jgl2_locked_queue.h"
-#include "Structure/jgl2_graphical_application.h"
 
 namespace jgl
 {
@@ -122,11 +121,12 @@ namespace jgl
 
 		void _addMessageToQueue()
 		{
-			if (_owner == Owner::Server)
+#pragma message ("Old GraphicalApplication code")
+			/*if (_owner == Owner::Server)
 				_input->push_back({ this, _tmp_message, (jgl::GraphicalApplication::instance() != nullptr ? jgl::GraphicalApplication::instance()->time() : 0) });
 			else
 				_input->push_back({ nullptr, _tmp_message, (jgl::GraphicalApplication::instance() != nullptr ? jgl::GraphicalApplication::instance()->time() : 0) });
-			_readHeader();
+			_readHeader();*/
 		}
 
 	public:

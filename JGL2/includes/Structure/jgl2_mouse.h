@@ -3,7 +3,7 @@
 #include "jgl2_includes.h"
 #include "jgl2_basic_types.h"
 #include "jgl2_enums.h"
-#include "Structure/jgl2_vector.h"
+#include "Structure/jgl2_vector2.h"
 
 namespace jgl
 {

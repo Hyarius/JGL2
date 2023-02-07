@@ -35,7 +35,7 @@ namespace jgl
 		const Int height() { return (_height); }
 
 		UInt pixel(UInt p_x, UInt p_y);
-		UInt pixel(Vector2UInt p_pos) { return (pixel(p_pos.x(), p_pos.y())); }
+		UInt pixel(Vector2UInt p_pos) { return (pixel(p_pos.x, p_pos.y)); }
 
 		void activate(GLenum texture = GL_TEXTURE0);
 		void desactivate(GLenum texture = GL_TEXTURE0);

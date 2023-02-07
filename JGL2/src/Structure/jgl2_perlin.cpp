@@ -1,5 +1,5 @@
 #include "Structure/jgl2_perlin.h"
-#include "Structure/jgl2_vector.h"
+#include "Structure/jgl2_vector2.h"
 #include "jgl2_basic_functions.h"
 
 namespace jgl
@@ -28,8 +28,8 @@ namespace jgl
 		jgl::Vector2 pointD = jgl::Vector2((int)(p_x + 1), (int)(p_y + 1));
 		jgl::Vector2 targetDelta = targetPoint - pointA;
 
-		jgl::Int ii = static_cast<jgl::Int>(pointA.x()) & 255;
-		jgl::Int jj = static_cast<jgl::Int>(pointA.y()) & 255;
+		jgl::Int ii = static_cast<jgl::Int>(pointA.x) & 255;
+		jgl::Int jj = static_cast<jgl::Int>(pointA.y) & 255;
 
 		jgl::Int directionIndexA = jgl::generateNumberFromSeed(_seed, (ii + jgl::generateNumberFromSeed(_seed, jj))) % 8;
 		jgl::Int directionIndexB = jgl::generateNumberFromSeed(_seed, (ii + 1 + jgl::generateNumberFromSeed(_seed, jj))) % 8;
@@ -41,8 +41,8 @@ namespace jgl
 		jgl::Float dotC = directions[directionIndexC].dot(targetPoint - pointC);
 		jgl::Float dotD = directions[directionIndexD].dot(targetPoint - pointD);
 
-		jgl::Float smoothX = 3 * targetDelta.x() * targetDelta.x() - 2 * targetDelta.x() * targetDelta.x() * targetDelta.x();
-		jgl::Float smoothY = 3 * targetDelta.y() * targetDelta.y() - 2 * targetDelta.y() * targetDelta.y() * targetDelta.y();
+		jgl::Float smoothX = 3 * targetDelta.x * targetDelta.x - 2 * targetDelta.x * targetDelta.x * targetDelta.x;
+		jgl::Float smoothY = 3 * targetDelta.y * targetDelta.y - 2 * targetDelta.y * targetDelta.y * targetDelta.y;
 
 		jgl::Float dotInterpolate1 = dotA + smoothX * (dotB - dotA);
 		jgl::Float dotInterpolate2 = dotC + smoothX * (dotD - dotC);

@@ -38,7 +38,8 @@ namespace jgl
 		}
 		void update()
 		{
-			jgl::Bool needCast = false;
+#pragma message ("Old GraphicalApplication code")
+			/*jgl::Bool needCast = false;
 
 			if (_timer.isRunning() == true)
 				return;
@@ -51,7 +52,7 @@ namespace jgl
 			{
 				_timer.start();
 				_funct();
-			}
+			}*/
 		}
 	};
 }

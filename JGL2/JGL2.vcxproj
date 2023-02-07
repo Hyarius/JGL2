@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -30,10 +30,7 @@
     <ClInclude Include="includes\jgl2_enums.h" />
     <ClInclude Include="includes\jgl2_includes.h" />
     <ClInclude Include="includes\jgl2_structures.h" />
-    <ClInclude Include="includes\Structure\jgl2_abstract_application.h" />
-    <ClInclude Include="includes\Structure\jgl2_graphical_application.h" />
     <ClInclude Include="includes\Structure\jgl2_color.h" />
-    <ClInclude Include="includes\Structure\jgl2_console_application.h" />
     <ClInclude Include="includes\Structure\jgl2_font.h" />
     <ClInclude Include="includes\Structure\jgl2_image.h" />
     <ClInclude Include="includes\Structure\jgl2_image_output.h" />
@@ -45,13 +42,16 @@
     <ClInclude Include="includes\Structure\jgl2_perlin.h" />
     <ClInclude Include="includes\Structure\jgl2_texture_atlas.h" />
     <ClInclude Include="includes\Structure\jgl2_translation_atlas.h" />
+    <ClInclude Include="includes\Structure\jgl2_vector2.h" />
+    <ClInclude Include="includes\Structure\jgl2_vector3.h" />
+    <ClInclude Include="includes\Structure\jgl2_vector4.h" />
+    <ClInclude Include="includes\Structure\jgl2_worker_pool.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_client.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_connection.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_message.h" />
     <ClInclude Include="includes\Structure\jgl2_mouse.h" />
     <ClInclude Include="includes\Structure\jgl2_network.h" />
     <ClInclude Include="includes\Structure\jgl2_observer.h" />
-    <ClInclude Include="includes\Structure\jgl2_openGLContext.h" />
     <ClInclude Include="includes\Structure\jgl2_polymorphic_container.h" />
     <ClInclude Include="includes\Structure\jgl2_pool.h" />
     <ClInclude Include="includes\Structure\jgl2_shader.h" />
@@ -61,51 +61,22 @@
     <ClInclude Include="includes\Structure\jgl2_thread.h" />
     <ClInclude Include="includes\Structure\jgl2_timer.h" />
     <ClInclude Include="includes\Structure\jgl2_vector.h" />
-    <ClInclude Include="includes\Structure\jgl2_viewport.h" />
-    <ClInclude Include="includes\Structure\jgl2_widgets.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_server.h" />
-    <ClInclude Include="includes\Structure\Widget\Component\jgl2_box_component.h" />
-    <ClInclude Include="includes\Structure\Widget\Component\jgl2_text_label_component.h" />
-    <ClInclude Include="includes\Structure\Widget\jgl2_button.h" />
-    <ClInclude Include="includes\Structure\Widget\jgl2_console_widget.h" />
-    <ClInclude Include="includes\Structure\Widget\jgl2_debug_screen.h" />
-    <ClInclude Include="includes\Structure\Widget\jgl2_network_manager.h" />
-    <ClInclude Include="includes\Structure\Widget\jgl2_singleton_widget.h" />
-    <ClInclude Include="includes\Structure\Widget\jgl2_text_entry.h" />
-    <ClInclude Include="includes\Structure\Widget\jgl2_text_label.h" />
-    <ClInclude Include="includes\Structure\Widget\jgl2_widget.h" />
-    <ClInclude Include="includes\Structure\Widget\jgl2_frame.h" />
-    <ClInclude Include="includes\Structure\Widget\jgl2_widget_components.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\jgl2_basic_functions.cpp" />
     <ClCompile Include="src\jgl2_drawing_functions.cpp" />
-    <ClCompile Include="src\Structure\ConsoleApplication\jgl2_console_application.cpp" />
-    <ClCompile Include="src\Structure\GraphicalApplication\jgl2_graphical_application.cpp" />
-    <ClCompile Include="src\Structure\GraphicalApplication\jgl2_graphical_application_opengl_function.cpp" />
-    <ClCompile Include="src\Structure\GraphicalApplication\jgl2_graphical_application_shader.cpp" />
-    <ClCompile Include="src\Structure\GraphicalApplication\jgl2_graphical_application_win_proc.cpp" />
     <ClCompile Include="src\Structure\jgl2_font.cpp" />
     <ClCompile Include="src\Structure\jgl2_image.cpp" />
     <ClCompile Include="src\Structure\jgl2_image_output.cpp" />
     <ClCompile Include="src\Structure\jgl2_json_parser.cpp" />
     <ClCompile Include="src\Structure\jgl2_keyboard.cpp" />
     <ClCompile Include="src\Structure\jgl2_mouse.cpp" />
-    <ClCompile Include="src\Structure\jgl2_openGLContext.cpp" />
     <ClCompile Include="src\Structure\jgl2_iostream.cpp" />
     <ClCompile Include="src\Structure\jgl2_perlin.cpp" />
     <ClCompile Include="src\Structure\jgl2_shader.cpp" />
     <ClCompile Include="src\Structure\jgl2_sprite_sheet.cpp" />
-    <ClCompile Include="src\Structure\jgl2_thread.cpp" />
     <ClCompile Include="src\Structure\jgl2_timer.cpp" />
-    <ClCompile Include="src\Structure\jgl2_viewport.cpp" />
-    <ClCompile Include="src\Structure\Widget\jgl2_text_entry.cpp" />
-    <ClCompile Include="src\Structure\Widget\jgl2_text_label.cpp" />
-    <ClCompile Include="src\Structure\Widget\jgl2_widget.cpp" />
-    <ClCompile Include="src\Structure\Widget\Component\jgl2_box_component.cpp" />
-    <ClCompile Include="src\Structure\Widget\Component\jgl2_text_label_component.cpp" />
-    <ClCompile Include="src\Structure\Widget\jgl2_frame.cpp" />
-    <ClCompile Include="src\Structure\Widget\jgl2_button.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

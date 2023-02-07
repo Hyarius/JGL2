@@ -11,9 +11,9 @@ namespace jgl
 			_sprites.push_back(Vector2(0, 0));
 		else
 		{
-			for (Size_t j = 0; j < _size.y(); j++)
+			for (Size_t j = 0; j < _size.y; j++)
 			{
-				for (Size_t i = 0; i < _size.x(); i++)
+				for (Size_t i = 0; i < _size.x; i++)
 				{
 					_sprites.push_back(Vector2(i, j) * _unit);
 				}
@@ -45,13 +45,13 @@ namespace jgl
 
 	const Vector2& SpriteSheet::sprite(Vector2UInt sprite_value) const
 	{
-		UInt sprite_id = (_size.x() * sprite_value.y()) + sprite_value.x();
+		UInt sprite_id = (_size.x * sprite_value.y) + sprite_value.x;
 		return (sprite(sprite_id));
 	}
 
 	const Vector2& SpriteSheet::sprite(Vector2Int sprite_value) const
 	{
-		UInt sprite_id = (_size.x() * sprite_value.y()) + sprite_value.x();
+		UInt sprite_id = (_size.x * sprite_value.y) + sprite_value.x;
 		return (sprite(sprite_id));
 	}
 
@@ -62,7 +62,7 @@ namespace jgl
 
 	void SpriteSheet::draw(Vector2Int sprite, Vector2Int pos, Vector2UInt size, jgl::Float p_depth)
 	{
-		UInt sprite_id = (_size.x() * sprite.y()) + sprite.x();
+		UInt sprite_id = (_size.x * sprite.y) + sprite.x;
 		this->draw(sprite_id, pos, size, p_depth);
 	}
 }

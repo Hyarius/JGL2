@@ -221,15 +221,14 @@ namespace jgl
 					auto msg = input.msg;
 					if (_activityMap.count(msg.type()) != 0)
 					{
-						if (jgl::GraphicalApplication::instance() == nullptr || _messageTimeoutDelay == 0 ||
-							input.time + _messageTimeoutDelay < jgl::GraphicalApplication::instance()->time())
+						if (jgl::GraphicalApplication::instance())
 						{
 							_activityMap[msg.type()](msg);
 						}
 					}
 					else
 					{
-						jgl::cout << "[CLIENT] - Message_received of unknow id (" << static_cast<jgl::Int>(msg.type()) << ")" << jgl::endl;;
+						jgl::cout << "[CLIENT] - Message_received of unknow id (" << static_cast<jgl::Int>(msg.type()) << ")" << std::endl;;
 					}
 				}
 			}

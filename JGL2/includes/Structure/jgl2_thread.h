@@ -4,30 +4,54 @@
 
 namespace jgl
 {
-	class Thread
-	{
-	private:
-		std::thread* _thread;
+    class Thread {
+    public:
+        enum class LaunchMethod { Delayed, Immediate };
 
-		~Thread()
-		{
+    private:
+        std::string _message;
+        std::function<void()> _funct;
+        std::thread _thread;
+        std::promise<bool> _starterSignal;
 
-		}
+        ~Thread() {
+            join();
+        }
+    public:
+        template <typename Func, typename... Args>
+        Thread(std::string p_message, Func&& p_func, Args&&... p_args)
+            : _message(std::move(p_message)),
+            _funct(std::bind(std::forward<Func>(p_func), std::forward<Args>(p_args)...)),
+            _starterSignal() {
+            auto wrapper = [this]() {
+                jgl::cout.setPrefix(_message);
+                _starterSignal.get_future().wait();
+                _funct();
+            };
+            _thread = std::thread(wrapper);
+        }
 
-	public:
-		template< class Function, class... Args>
-		Thread(std::string p_name, Function&& p_funct, Args&&... p_argv)
-		{
-			_thread = new std::thread(
-				[&](std::string p_name, Function&& p_funct, Args&&... p_argv)
-				{
-					cout = jgl::IOStream(p_name);
-					p_funct(p_argv...);
-				},
-				p_name, p_funct, std::forward<Args>(p_argv)...);
-		}
+        template <typename Func, typename... Args>
+        Thread(LaunchMethod p_launchMethod, std::string p_message, Func&& p_func, Args&&... p_args)
+            : Thread(p_message, p_func, p_args...) {
+            if (p_launchMethod == LaunchMethod::Immediate) {
+                start();
+            }
+        }
 
-		std::thread::id getId() const;
-		void join();
+        std::thread::id getId() const
+        {
+            return (_thread.get_id());
+        }
+
+        void join()
+        {
+            if (_thread.joinable())
+                _thread.join();
+        }
+
+        void start() {
+            _starterSignal.set_value(true);
+        }
 	};
 }

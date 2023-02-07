@@ -36,15 +36,6 @@
     <ClInclude Include="includes\Structure\jgl2_vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\Structure\jgl2_graphical_application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\jgl2_widget.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\jgl2_openGLContext.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="includes\Structure\jgl2_color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -93,40 +84,10 @@
     <ClInclude Include="includes\Structure\jgl2_font.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\Structure\jgl2_viewport.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\jgl2_frame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\jgl2_widgets.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\Component\jgl2_box_component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\Component\jgl2_text_label_component.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\jgl2_widget_components.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\jgl2_text_label.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\jgl2_button.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\jgl2_text_entry.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="includes\Structure\jgl2_observer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\Structure\jgl2_singleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\jgl2_singleton_widget.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\Structure\jgl2_state_machine.h">
@@ -168,36 +129,24 @@
     <ClInclude Include="includes\Structure\jgl2_translation_atlas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\jgl2_debug_screen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\jgl2_network_manager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\jgl2_console_application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\jgl2_abstract_application.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\jgl2_console_widget.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="includes\Structure\jgl2_json_parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_worker_pool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_vector2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_vector3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\jgl2_vector4.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Structure\jgl2_iostream.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\Widget\jgl2_widget.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\jgl2_thread.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\jgl2_openGLContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Structure\jgl2_keyboard.cpp">
@@ -227,46 +176,10 @@
     <ClCompile Include="src\Structure\jgl2_font.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Structure\jgl2_viewport.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\Widget\jgl2_frame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\Widget\Component\jgl2_box_component.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\Widget\Component\jgl2_text_label_component.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\Widget\jgl2_text_label.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\Widget\jgl2_button.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\Widget\jgl2_text_entry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Structure\jgl2_timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Structure\jgl2_perlin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\ConsoleApplication\jgl2_console_application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\GraphicalApplication\jgl2_graphical_application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\GraphicalApplication\jgl2_graphical_application_opengl_function.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\GraphicalApplication\jgl2_graphical_application_shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\GraphicalApplication\jgl2_graphical_application_win_proc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Structure\jgl2_json_parser.cpp">

@@ -2,13 +2,13 @@
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "ExternalLibraries/stb_truetype.h"
-#include "Structure/jgl2_graphical_application.h"
 
 namespace jgl
 {
 	void Font::_initShaderData()
 	{
-		if (_shader == nullptr)
+#pragma message ("Old GraphicalApplication code")
+		/*if (_shader == nullptr)
 			_shader = GraphicalApplication::instance()->shader("TextTexture2D");
 
 		if (_modelSpaceBuffer == nullptr)
@@ -38,7 +38,7 @@ namespace jgl
 		if (_textColorUniform == nullptr)
 			throw std::runtime_error("Error : no text color uniform found in shader");
 		if (_outlineColorUniform == nullptr)
-			throw std::runtime_error("Error : no outline color uniform found in shader");
+			throw std::runtime_error("Error : no outline color uniform found in shader");*/
 	}
 
 	Bool Font::_isPixelOnGlyphOutline(UChar* p_atlasData, Int p_width, Int p_height, Int p_x, Int p_y, Int p_outlineSize)
@@ -102,7 +102,7 @@ namespace jgl
 		Size_t result = 2;
 
 		if (p_string == "")
-			return (p_textArea.y());
+			return (p_textArea.y);
 
 		for (int i = 0; i < deltas.size(); i++)
 		{
@@ -110,7 +110,7 @@ namespace jgl
 			while (enough == false)
 			{
 				Vector2Int tmp_size = calcStringSize(p_string, result + deltas[i]);
-				if (tmp_size.x() >= p_textArea.x() || tmp_size.y() >= p_textArea.y())
+				if (tmp_size.x >= p_textArea.x || tmp_size.y >= p_textArea.y)
 					enough = true;
 				else
 					result += deltas[i];
@@ -171,7 +171,7 @@ namespace jgl
 
 			stbtt_aligned_quad quad;
 
-			stbtt_GetPackedQuad(char_info, width, height, c, &data.step.x(), &data.step.y(), &quad, 1);
+			stbtt_GetPackedQuad(char_info, width, height, c, &data.step.x, &data.step.y, &quad, 1);
 
 			const Float xmin = quad.x0;
 			const Float xmax = quad.x1;
@@ -277,13 +277,13 @@ namespace jgl
 
 		Font::GlyphData& glyphData = getData(p_fontGlyphData, static_cast<UChar>(p_char));
 
-		maxValue.x() += glyphData.size.x();
+		maxValue.x += glyphData.size.x;
 
-		if (minValue.y() > glyphData.positions[0].y())
-			minValue.y() = glyphData.positions[0].y();
+		if (minValue.y > glyphData.positions[0].y)
+			minValue.y = glyphData.positions[0].y;
 
-		if (maxValue.y() < glyphData.positions[3].y())
-			maxValue.y() = glyphData.positions[3].y();
+		if (maxValue.y < glyphData.positions[3].y)
+			maxValue.y = glyphData.positions[3].y;
 
 		return (maxValue - minValue);
 	}
@@ -306,13 +306,13 @@ namespace jgl
 		{
 			Font::GlyphData& glyphData = getData(fontGlyphData, static_cast<UChar>(p_string[i]));
 			
-			maxValue.x() += glyphData.step.x();
+			maxValue.x += glyphData.step.x;
 
-			if (minValue.y() > glyphData.positions[0].y())
-				minValue.y() = glyphData.positions[0].y();
+			if (minValue.y > glyphData.positions[0].y)
+				minValue.y = glyphData.positions[0].y;
 
-			if (maxValue.y() < glyphData.positions[3].y())
-				maxValue.y() = glyphData.positions[3].y();
+			if (maxValue.y < glyphData.positions[3].y)
+				maxValue.y = glyphData.positions[3].y;
 		}
 
 		return (maxValue - minValue);
@@ -320,7 +320,8 @@ namespace jgl
 
 	Vector2Int Font::_prepareCharRender(FontGlyphData& p_fontGlyphData, UChar p_char, Vector2Int p_pos, UInt p_size, Size_t p_outlineSize, Float p_depth)
 	{
-		if (p_char < 32)
+#pragma message ("Old GraphicalApplication code")
+		/*if (p_char < 32)
 			return (Vector2Int(0, 0));
 
 		static UInt element_index[6] = { 0, 3, 1, 2, 3, 0 };
@@ -349,7 +350,8 @@ namespace jgl
 			_indexesData.push_back(elementSize + element_index[i]);
 		}
 
-		return (glyphData.step);
+		return (glyphData.step);*/
+		return (0);
 	}
 
 
@@ -408,9 +410,9 @@ namespace jgl
 		{
 			Font::GlyphData& glyphData = getData(p_fontGlyphData, static_cast<UChar>(p_string[i]));
 
-			if (result.y() > glyphData.positions[0].y())
+			if (result.y > glyphData.positions[0].y)
 			{
-				result.y() = glyphData.positions[0].y();
+				result.y = glyphData.positions[0].y;
 			}
 		}
 
@@ -429,7 +431,7 @@ namespace jgl
 		{
 			Font::GlyphData& glyphData = getData(fontGlyphData, static_cast<UChar>(p_string[i]));
 
-			jgl::Vector2Int charOffset = jgl::Vector2Int(0, -lineOffset.y() - glyphData.size.y());
+			jgl::Vector2Int charOffset = jgl::Vector2Int(0, -lineOffset.y - glyphData.size.y);
 			
 			jgl::Vector2Int charPosition = p_pos + result + charOffset - glyphData.offset;
 			
@@ -442,7 +444,7 @@ namespace jgl
 				p_depth
 			);
 
-			result.x() += tmp.x();
+			result.x += tmp.x;
 		}
 
 		return (result);

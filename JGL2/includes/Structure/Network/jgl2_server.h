@@ -97,7 +97,7 @@ namespace jgl
 				}
 				else
 				{
-					jgl::cout << "[SERVER] - Message_received of unknow id(" << static_cast<jgl::Int>(p_msg.type()) << ")" << jgl::endl;
+					jgl::cout << "[SERVER] - Message_received of unknow id(" << static_cast<jgl::Int>(p_msg.type()) << ")" << std::endl;
 				}
 			}
 			else if (p_client->state() == ServerConnection::State::Unknown)

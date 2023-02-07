@@ -307,7 +307,6 @@ namespace jgl
 			glGetShaderiv(p_shaderIndex, GL_INFO_LOG_LENGTH, &len);
 			Char* errorMsg = new Char[len + 1];
 			glGetShaderInfoLog(p_shaderIndex, len, NULL, errorMsg);
-			cout << errorMsg << endl;
 			throw std::exception(errorMsg);
 		}
 	}

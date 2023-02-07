@@ -113,7 +113,7 @@ namespace jgl
 					jgl::cout << "[" << content[i] << "]";
 				}
 			}
-			jgl::cout << jgl::endl;
+			jgl::cout << std::endl;
 		}
 
 		template<typename TDataType>
@@ -245,6 +245,5 @@ namespace jgl
 	{
 		Connection<TServerMessageEnum>* remote = nullptr;
 		Message<TServerMessageEnum> msg;
-		jgl::ULong time;
 	};
 }

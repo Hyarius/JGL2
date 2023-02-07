@@ -1,7 +1,7 @@
 #pragma once
 
 #include "jgl2_includes.h"
-#include "Structure/jgl2_vector.h"
+#include "Structure/jgl2_vector2.h"
 #include "Structure/jgl2_shader.h"
 #include "Structure/jgl2_color.h"
 

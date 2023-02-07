@@ -4,7 +4,6 @@
 
 namespace jgl
 {
-
 	std::vector<std::string> splitString(std::string p_text, jgl::Char p_delim)
 	{
 		std::vector<std::string> result;
@@ -159,7 +158,7 @@ namespace jgl
 		if (err != GL_NO_ERROR)
 		{
 			std::string error = msg + " : type [" + glGetTypeString(err) + "]";
-			jgl::cout << "Error opengl : " << error << jgl::endl;
+			jgl::cout << "Error opengl : " << error << std::endl;
 			throw std::runtime_error(error.c_str());
 		}
 	}
@@ -356,7 +355,7 @@ namespace jgl
 	
 	void editStringContent(std::string& p_str, jgl::Size_t p_position, jgl::Size_t p_length, char p_c)
 	{
-		for (int i = 0; i < p_length; i++) {
+		for (size_t i = 0; i < p_length; i++) {
 			p_str[i + p_position] = p_c;
 		}
 	}

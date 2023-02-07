@@ -1,5 +1,4 @@
 #include "Structure/jgl2_image_output.h"
-#include "Structure/jgl2_graphical_application.h"
 
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "ExternalLibraries/stb_image_write.h"
@@ -17,7 +16,7 @@ namespace jgl
 		glGenTextures(1, &_id);
 		glBindTexture(GL_TEXTURE_2D, _id);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _size.x(), _size.y(), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _size.x, _size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -27,7 +26,7 @@ namespace jgl
 		glGenTextures(1, &_depthBuffer);
 		glBindTexture(GL_TEXTURE_2D, _depthBuffer);
 		glBindRenderbuffer(GL_RENDERBUFFER, _depthBuffer);
-		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, _size.x(), _size.y());
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, _size.x, _size.y);
 		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _depthBuffer);
 
 		desassociate();
@@ -46,7 +45,7 @@ namespace jgl
 
 	void ImageOutput::clear()
 	{
-		glViewport(0, 0, _size.x(), _size.y());
+		glViewport(0, 0, _size.x, _size.y);
 		glColorMask(TRUE, TRUE, TRUE, TRUE);
 		glClearColor(0, 0, 0, 0);
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -59,7 +58,7 @@ namespace jgl
 
 	void ImageOutput::check_framebuffer_status(std::string msg)
 	{
-		cout << msg << " - Framebuffer status : ";
+		jgl::cout << msg << " - Framebuffer status : ";
 
 		switch (glCheckFramebufferStatus(GL_FRAMEBUFFER))
 		{
@@ -82,7 +81,7 @@ namespace jgl
 		case (GL_FRAMEBUFFER_COMPLETE): {
 			cout << "GL_FRAMEBUFFER_COMPLETE"; break; }
 		}
-		cout << endl;
+		jgl::cout << std::endl;
 	}
 
 	Image* ImageOutput::save()
@@ -93,7 +92,7 @@ namespace jgl
 		glGenTextures(1, &output_texture);
 		glBindTexture(GL_TEXTURE_2D, output_texture);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _size.x(), _size.y(), 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _size.x, _size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -111,8 +110,8 @@ namespace jgl
 	void ImageOutput::saveToFile(std::string p_path)
 	{
 		GLsizei nrChannels = 4;
-		GLsizei stride = nrChannels * _size.x();
-		GLsizei bufferSize = stride * _size.y();
+		GLsizei stride = nrChannels * _size.x;
+		GLsizei bufferSize = stride * _size.y;
 		std::vector<char> buffer(bufferSize);
 
 		glActiveTexture(GL_TEXTURE0);
@@ -121,6 +120,6 @@ namespace jgl
 		glPixelStorei(GL_PACK_ALIGNMENT, 4);
 		glGetTextureImage(_id, 0, GL_RGBA, GL_UNSIGNED_BYTE, bufferSize, buffer.data());
 
-		stbi_write_png(p_path.c_str(), _size.x(), _size.y(), 4, buffer.data(), 100);
+		stbi_write_png(p_path.c_str(), _size.x, _size.y, 4, buffer.data(), 100);
 	}
 }
