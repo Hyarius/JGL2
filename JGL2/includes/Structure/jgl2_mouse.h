@@ -9,16 +9,15 @@ namespace jgl
 {
 	class Mouse
 	{
-	public:
+		friend class MouseManager;
 
+	public:
 		enum class Button
 		{
 			Right = 0,
 			Left = 1,
 			Center = 2
 		};
-
-		friend class GraphicalApplication;
 
 	private:
 		static const jgl::Size_t C_NB_BUTTON = 3;
@@ -27,10 +26,10 @@ namespace jgl
 		jgl::Vector2Int _pos;
 		jgl::Float _wheel;
 
-		Mouse();
 		void _updateState();
 
 	public:
+		Mouse();
 		jgl::Float wheel() const;
 		jgl::Vector2Int pos() const;
 		jgl::InputStatus getButton(Button p_button) const;

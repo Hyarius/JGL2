@@ -13,6 +13,9 @@
 #include "Structure/jgl2_singleton.h"
 #include "Structure/jgl2_timer.h"
 #include "Structure/jgl2_input_controller.h"
+#include "Structure/jgl2_polymorphic_container.h"
+
+#include "Structure/jgl2_pool.h"
 
 #include "Structure/jgl2_network.h"
 
@@ -22,3 +25,6 @@
 #include "Structure/jgl2_translation_atlas.h"
 
 #include "Structure/jgl2_json_parser.h"
+
+#include "Structure/Application/Core/jgl2_application_core.h"
+#include "Structure/Application/Graphical/jgl2_application.h"

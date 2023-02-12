@@ -121,12 +121,11 @@ namespace jgl
 
 		void _addMessageToQueue()
 		{
-#pragma message ("Old GraphicalApplication code")
-			/*if (_owner == Owner::Server)
-				_input->push_back({ this, _tmp_message, (jgl::GraphicalApplication::instance() != nullptr ? jgl::GraphicalApplication::instance()->time() : 0) });
+			if (_owner == Owner::Server)
+				_input->push_back({ this, _tmp_message, (jgl::ApplicationCore::instance() != nullptr ? jgl::ApplicationCore::instance()->time() : 0) });
 			else
-				_input->push_back({ nullptr, _tmp_message, (jgl::GraphicalApplication::instance() != nullptr ? jgl::GraphicalApplication::instance()->time() : 0) });
-			_readHeader();*/
+				_input->push_back({ nullptr, _tmp_message, (jgl::ApplicationCore::instance() != nullptr ? jgl::ApplicationCore::instance()->time() : 0) });
+			_readHeader();
 		}
 
 	public:

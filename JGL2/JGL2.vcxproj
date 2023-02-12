@@ -30,6 +30,17 @@
     <ClInclude Include="includes\jgl2_enums.h" />
     <ClInclude Include="includes\jgl2_includes.h" />
     <ClInclude Include="includes\jgl2_structures.h" />
+    <ClInclude Include="includes\Structure\Application\Graphical\jgl2_application.h" />
+    <ClInclude Include="includes\Structure\Application\Core\jgl2_application_core.h" />
+    <ClInclude Include="includes\Structure\Application\Core\jgl2_job_manager.h" />
+    <ClInclude Include="includes\Structure\Application\Graphical\jgl2_keyboard_manager.h" />
+    <ClInclude Include="includes\Structure\Application\Core\jgl2_message_consumer.h" />
+    <ClInclude Include="includes\Structure\Application\Graphical\jgl2_mouse_manager.h" />
+    <ClInclude Include="includes\Structure\Application\Graphical\jgl2_shader_atlas.h" />
+    <ClInclude Include="includes\Structure\Application\Graphical\jgl2_system_manager.h" />
+    <ClInclude Include="includes\Structure\Application\Core\jgl2_widget_manager.h" />
+    <ClInclude Include="includes\Structure\Application\Graphical\jgl2_windows_api_manager.h" />
+    <ClInclude Include="includes\Structure\Application\Graphical\jgl2_window_manager.h" />
     <ClInclude Include="includes\Structure\jgl2_color.h" />
     <ClInclude Include="includes\Structure\jgl2_font.h" />
     <ClInclude Include="includes\Structure\jgl2_image.h" />
@@ -45,6 +56,7 @@
     <ClInclude Include="includes\Structure\jgl2_vector2.h" />
     <ClInclude Include="includes\Structure\jgl2_vector3.h" />
     <ClInclude Include="includes\Structure\jgl2_vector4.h" />
+    <ClInclude Include="includes\Structure\jgl2_viewport.h" />
     <ClInclude Include="includes\Structure\jgl2_worker_pool.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_client.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_connection.h" />
@@ -62,10 +74,22 @@
     <ClInclude Include="includes\Structure\jgl2_timer.h" />
     <ClInclude Include="includes\Structure\jgl2_vector.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_server.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_widget_core.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_widget_parenting_manager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Structure\Application\Graphical\jgl2_application.cpp" />
+    <ClCompile Include="src\Structure\Application\Graphical\jgl2_application_convert_functions.cpp" />
+    <ClCompile Include="src\Structure\Application\Core\jgl2_application_core.cpp" />
+    <ClCompile Include="src\Structure\Application\Graphical\jgl2_application_shader_code.cpp" />
+    <ClCompile Include="src\Structure\Application\Core\jgl2_job_manager.cpp" />
+    <ClCompile Include="src\Structure\Application\Graphical\jgl2_keyboard_manager.cpp" />
+    <ClCompile Include="src\Structure\Application\Graphical\jgl2_mouse_manager.cpp" />
+    <ClCompile Include="src\Structure\Application\Graphical\jgl2_window_manager.cpp" />
+    <ClCompile Include="src\Structure\Application\Graphical\jgl2_system_manager.cpp" />
     <ClCompile Include="src\jgl2_basic_functions.cpp" />
     <ClCompile Include="src\jgl2_drawing_functions.cpp" />
+    <ClCompile Include="src\Structure\jgl2_color.cpp" />
     <ClCompile Include="src\Structure\jgl2_font.cpp" />
     <ClCompile Include="src\Structure\jgl2_image.cpp" />
     <ClCompile Include="src\Structure\jgl2_image_output.cpp" />
@@ -77,6 +101,9 @@
     <ClCompile Include="src\Structure\jgl2_shader.cpp" />
     <ClCompile Include="src\Structure\jgl2_sprite_sheet.cpp" />
     <ClCompile Include="src\Structure\jgl2_timer.cpp" />
+    <ClCompile Include="src\Structure\jgl2_viewport.cpp" />
+    <ClCompile Include="src\Structure\Widget\jgl2_widget_core.cpp" />
+    <ClCompile Include="src\Structure\Widget\jgl2_widget_parenting_manager.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

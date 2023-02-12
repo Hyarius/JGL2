@@ -130,6 +130,42 @@ namespace jgl
 				return (true);
 			return (false);
 		}
+
+		static IVector4 max(const IVector4& p_lhd, const IVector4& p_rhd)
+		{
+			IVector4 result;
+
+			result.x = std::max(p_lhd.x, p_rhd.x);
+			result.y = std::max(p_lhd.y, p_rhd.y);
+			result.z = std::max(p_lhd.z, p_rhd.z);
+			result.w = std::max(p_lhd.w, p_rhd.w);
+
+			return (result);
+		}
+
+		static IVector4 min(const IVector4& p_lhd, const IVector4& p_rhd)
+		{
+			IVector4 result;
+
+			result.x = std::min(p_lhd.x, p_rhd.x);
+			result.y = std::min(p_lhd.y, p_rhd.y);
+			result.z = std::min(p_lhd.z, p_rhd.z);
+			result.w = std::min(p_lhd.w, p_rhd.w);
+
+			return (result);
+		}
+
+		static IVector4 clamp(const IVector4& p_min, const IVector4& p_value, const IVector4& p_max)
+		{
+			IVector4 result;
+
+			result.x = std::max(p_min.x, std::min(p_max.x, p_value.x));
+			result.y = std::max(p_min.y, std::min(p_max.y, p_value.y));
+			result.z = std::max(p_min.z, std::min(p_max.z, p_value.z));
+			result.w = std::max(p_min.w, std::min(p_max.w, p_value.w));
+
+			return (result);
+		}
 	};
 
 	template<typename TType, typename TValueType, typename = std::enable_if_t<std::is_arithmetic<TValueType>::value>>

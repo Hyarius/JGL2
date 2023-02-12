@@ -9,6 +9,7 @@ namespace jgl
 
     class Keyboard
     {
+        friend class KeyboardManager;
     public:
         static const Size_t C_NB_KEY = 255;
 
@@ -147,17 +148,15 @@ namespace jgl
             AngleBracket = 226,
             Process = 229,
         };
-
-        friend class GraphicalApplication;
     private:
         InputStatus _keys[C_NB_KEY];
         UChar _entry;
 
-        Keyboard();
         void _updateState();
         void _updateEntry(UChar p_entry);
 
     public:
+        Keyboard();
         const InputStatus& getKey(Keyboard::Key p_key) const;
         const UChar& getEntry() const;
     };

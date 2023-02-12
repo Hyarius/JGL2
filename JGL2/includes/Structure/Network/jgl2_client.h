@@ -221,10 +221,7 @@ namespace jgl
 					auto msg = input.msg;
 					if (_activityMap.count(msg.type()) != 0)
 					{
-						if (jgl::GraphicalApplication::instance())
-						{
-							_activityMap[msg.type()](msg);
-						}
+						_activityMap[msg.type()](msg);
 					}
 					else
 					{

@@ -3,6 +3,7 @@
 #include "jgl2_timer.h"
 #include "jgl2_keyboard.h"
 #include "jgl2_mouse.h"
+#include "Structure/Application/Graphical/jgl2_application.h"
 
 namespace jgl
 {
@@ -38,21 +39,15 @@ namespace jgl
 		}
 		void update()
 		{
-#pragma message ("Old GraphicalApplication code")
-			/*jgl::Bool needCast = false;
-
 			if (_timer.isRunning() == true)
 				return;
 
-			if ((_type == Type::Keyboard && jgl::GraphicalApplication::instance()->keyboard().getKey(_data.key) == _expectedStatus) ||
-				(_type == Type::Mouse && jgl::GraphicalApplication::instance()->mouse().getButton(_data.button) == _expectedStatus))
-				needCast = true;
-
-			if (needCast == true)
+			if ((_type == Type::Keyboard && jgl::Application::instance()->keyboard()->getKey(_data.key) == _expectedStatus) ||
+				(_type == Type::Mouse && jgl::Application::instance()->mouse()->getButton(_data.button) == _expectedStatus))
 			{
 				_timer.start();
 				_funct();
-			}*/
+			}
 		}
 	};
 }

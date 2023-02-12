@@ -1,4 +1,5 @@
 #include "Structure/jgl2_font.h"
+#include "Structure/Application/Graphical/jgl2_application.h"
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "ExternalLibraries/stb_truetype.h"
@@ -7,9 +8,8 @@ namespace jgl
 {
 	void Font::_initShaderData()
 	{
-#pragma message ("Old GraphicalApplication code")
-		/*if (_shader == nullptr)
-			_shader = GraphicalApplication::instance()->shader("TextTexture2D");
+		if (_shader == nullptr)
+			_shader = jgl::Application::instance()->shaders().get("TextTexture2D");
 
 		if (_modelSpaceBuffer == nullptr)
 			_modelSpaceBuffer = _shader->buffer("model_space");
@@ -38,7 +38,7 @@ namespace jgl
 		if (_textColorUniform == nullptr)
 			throw std::runtime_error("Error : no text color uniform found in shader");
 		if (_outlineColorUniform == nullptr)
-			throw std::runtime_error("Error : no outline color uniform found in shader");*/
+			throw std::runtime_error("Error : no outline color uniform found in shader");
 	}
 
 	Bool Font::_isPixelOnGlyphOutline(UChar* p_atlasData, Int p_width, Int p_height, Int p_x, Int p_y, Int p_outlineSize)
@@ -320,8 +320,7 @@ namespace jgl
 
 	Vector2Int Font::_prepareCharRender(FontGlyphData& p_fontGlyphData, UChar p_char, Vector2Int p_pos, UInt p_size, Size_t p_outlineSize, Float p_depth)
 	{
-#pragma message ("Old GraphicalApplication code")
-		/*if (p_char < 32)
+		if (p_char < 32)
 			return (Vector2Int(0, 0));
 
 		static UInt element_index[6] = { 0, 3, 1, 2, 3, 0 };
@@ -340,7 +339,10 @@ namespace jgl
 		for (Size_t i = 0; i < 4; i++)
 		{
 			Vector2Int tmp_pos = p_pos + glyphSize * delta_pos[i];
-			Vector3 tmp_vertex = Vector3(GraphicalApplication::instance()->convertScreenToOpenGL(tmp_pos), jgl::GraphicalApplication::instance()->convertDepthToOpenGL(p_depth));
+			Vector3 tmp_vertex = Vector3(
+				Application::instance()->convertScreenToOpenGL(tmp_pos),
+				jgl::Application::instance()->convertDepthToOpenGL(p_depth)
+			);
 			_modelSpaceData.push_back(tmp_vertex);
 			_modelUvData.push_back(glyphData.uvs[i]);
 		}
@@ -350,8 +352,7 @@ namespace jgl
 			_indexesData.push_back(elementSize + element_index[i]);
 		}
 
-		return (glyphData.step);*/
-		return (0);
+		return (glyphData.step);
 	}
 
 

@@ -19,9 +19,4 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="resources\notvalid.nocpp" />
-    <None Include="resources\notvalid.cppfail" />
-    <None Include="resources\test3.cpp.save" />
-  </ItemGroup>
 </Project>

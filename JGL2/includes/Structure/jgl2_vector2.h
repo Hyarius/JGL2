@@ -193,6 +193,36 @@ namespace jgl
 				return (true);
 			return (false);
 		}
+
+		static IVector2 max(const IVector2& p_lhd, const IVector2& p_rhd)
+		{
+			IVector2 result;
+
+			result.x = std::max(p_lhd.x, p_rhd.x);
+			result.y = std::max(p_lhd.y, p_rhd.y);
+
+			return (result);
+		}
+
+		static IVector2 min(const IVector2& p_lhd, const IVector2& p_rhd)
+		{
+			IVector2 result;
+
+			result.x = std::min(p_lhd.x, p_rhd.x);
+			result.y = std::min(p_lhd.y, p_rhd.y);
+
+			return (result);
+		}
+
+		static IVector2 clamp(const IVector2& p_min, const IVector2& p_value, const IVector2& p_max)
+		{
+			IVector2 result;
+
+			result.x = std::max(p_min.x, std::min(p_max.x, p_value.x));
+			result.y = std::max(p_min.y, std::min(p_max.y, p_value.y));
+
+			return (result);
+		}
 	};
 
 	template<typename TType, typename TValueType, typename = std::enable_if_t<std::is_arithmetic<TValueType>::value>>

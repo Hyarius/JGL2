@@ -1,4 +1,5 @@
 #include "Structure/jgl2_image.h"
+#include "Structure/Application/Graphical/jgl2_application.h"
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "ExternalLibraries/stb_image.h"
@@ -33,9 +34,8 @@ namespace jgl
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _width, _height, 0, GL_RGB, GL_UNSIGNED_BYTE, _data);
 		else if (_nbChannels == 4)
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _width, _height, 0, GL_RGBA, GL_UNSIGNED_BYTE, _data);
-#pragma message ("Old GraphicalApplication code")
-		/*if (GraphicalApplication::instance() == nullptr)
-			throw std::runtime_error("No application started while loading an image");*/
+		if (Application::instance() == nullptr)
+			throw std::runtime_error("No application started while loading an image");
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -83,9 +83,8 @@ namespace jgl
 
 	void Image::_init_shader_data()
 	{
-#pragma message ("Old GraphicalApplication code")
-		/*if (_shader == nullptr)
-			_shader = GraphicalApplication::instance()->shader("Texture2D");
+		if (_shader == nullptr)
+			_shader = Application::instance()->shaders().get("Texture2D");
 
 		if (_modelSpaceBuffer == nullptr)
 			_modelSpaceBuffer = _shader->buffer("model_space");
@@ -106,13 +105,12 @@ namespace jgl
 		if (_indexesBuffer == nullptr)
 			throw std::runtime_error("Error : no element buffer found in shader");
 		if (_textureUniform == nullptr)
-			throw std::runtime_error("Error : no texture ID uniform found in shader");*/
+			throw std::runtime_error("Error : no texture ID uniform found in shader");
 	}
 
 	void Image::draw(Vector2Int pos, Vector2Int size, Vector2 uv_pos, Vector2 uv_size, jgl::Float p_depth)
 	{
-#pragma message ("Old GraphicalApplication code")
-		/*static UInt elementIndex[6] = { 0, 3, 1, 2, 3, 0 };
+		static UInt elementIndex[6] = { 0, 3, 1, 2, 3, 0 };
 		static Vector2Int deltaPos[4] = {
 			Vector2Int(0, 0),
 			Vector2Int(1, 0),
@@ -127,7 +125,10 @@ namespace jgl
 
 		for (size_t i = 0; i < 4; i++)
 		{
-			vertexContent[i] = Vector3(jgl::GraphicalApplication::instance()->convertScreenToOpenGL(pos + size * deltaPos[i]), jgl::GraphicalApplication::instance()->convertDepthToOpenGL(p_depth));
+			vertexContent[i] = Vector3(
+				jgl::Application::instance()->convertScreenToOpenGL(pos + size * deltaPos[i]),
+				jgl::Application::instance()->convertDepthToOpenGL(p_depth)
+			);
 			uvContent[i] = (uv_pos + uv_size * deltaPos[i]);
 		}
 		activate();
@@ -137,6 +138,6 @@ namespace jgl
 		_indexesBuffer->send(elementIndex, 6);
 		_textureUniform->send(0);
 
-		_shader->launch(jgl::Shader::Mode::Triangle);*/
+		_shader->launch(jgl::Shader::Mode::Triangle);
 	}
 }
