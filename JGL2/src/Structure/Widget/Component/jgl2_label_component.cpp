@@ -1,0 +1,1 @@
+#include "Structure/Widget/Component/jgl2_label_component.h"

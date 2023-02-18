@@ -1,5 +1,5 @@
 #include "Structure/Application/Graphical/jgl2_keyboard_manager.h"
-
+#include "jgl2_basic_functions.h"
 namespace jgl
 {
 	void KeyboardManager::_treatMessage(jgl::PolymorphicContainer* p_message)
@@ -25,8 +25,8 @@ namespace jgl
 
 			*p_message >> value;
 
-			if (_keyboard->_keys[value] == jgl::InputStatus::Up)
-				_keyboard->_keys[value] = jgl::InputStatus::Pressed;
+			_keyboard->_keys[value] = jgl::InputStatus::Pressed;
+
 			break;
 		}
 		case WM_SYSKEYUP:
@@ -47,5 +47,10 @@ namespace jgl
 		_keyboard(new Keyboard())
 	{
 
+	}
+
+	void KeyboardManager::_onUpdate()
+	{
+		_keyboard->_updateState();
 	}
 }

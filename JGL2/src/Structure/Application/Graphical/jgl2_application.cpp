@@ -11,11 +11,11 @@ namespace jgl
 		_addJob([&]() { _renderWidget(); return (0); });
 		_addJob([&]() { _windowManager.render(); return (0); });
 
-		_addJob("UpdateThread", [&]() { _updateWidget(); return (0); });
 		_addJob("UpdateThread", [&]() { _windowManager.update(); return (0); });
 		_addJob("UpdateThread", [&]() { _systemManager.update(); return (0); });
 		_addJob("UpdateThread", [&]() { _mouseManager.update(); return (0); });
 		_addJob("UpdateThread", [&]() { _keyboardManager.update(); return (0); });
+		_addJob("UpdateThread", [&]() { _updateWidget(); return (0); });
 	}
 
 	Application::Application(std::string p_title, jgl::Vector2Int p_size, jgl::Color p_backgroundColor) : jgl::ApplicationCore(),

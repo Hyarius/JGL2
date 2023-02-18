@@ -6,12 +6,6 @@
 
 namespace jgl
 {
-	Shader* Image::_shader = nullptr;
-
-	Buffer* Image::_modelSpaceBuffer = nullptr;
-	Buffer* Image::_modelUvBuffer = nullptr;
-	Buffer* Image::_indexesBuffer = nullptr;
-	Uniform* Image::_textureUniform = nullptr;
 
 	Image::Image(GLuint p_id) : _data(nullptr)
 	{
@@ -88,6 +82,8 @@ namespace jgl
 
 		if (_modelSpaceBuffer == nullptr)
 			_modelSpaceBuffer = _shader->buffer("model_space");
+		if (_modelDepthBuffer == nullptr)
+			_modelDepthBuffer = _shader->buffer("model_depth");
 		if (_modelUvBuffer == nullptr)
 			_modelUvBuffer = _shader->buffer("model_uvs");
 		if (_indexesBuffer == nullptr)
@@ -100,6 +96,8 @@ namespace jgl
 
 		if (_modelSpaceBuffer == nullptr)
 			throw std::runtime_error("Error : no model space buffer found in shader");
+		if (_modelDepthBuffer == nullptr)
+			throw std::runtime_error("Error : no model depth buffer found in shader");
 		if (_modelUvBuffer == nullptr)
 			throw std::runtime_error("Error : no model uv buffer found in shader");
 		if (_indexesBuffer == nullptr)
@@ -120,20 +118,20 @@ namespace jgl
 
 		_init_shader_data();
 
-		Vector3 vertexContent[4];
+		Vector2 vertexContent[4];
+		Float depthContent[4];
 		Vector2 uvContent[4];
 
 		for (size_t i = 0; i < 4; i++)
 		{
-			vertexContent[i] = Vector3(
-				jgl::Application::instance()->convertScreenToOpenGL(pos + size * deltaPos[i]),
-				jgl::Application::instance()->convertDepthToOpenGL(p_depth)
-			);
+			vertexContent[i] = jgl::Application::instance()->convertScreenToOpenGL(pos + size * deltaPos[i]);
+			depthContent[i] = jgl::Application::instance()->convertDepthToOpenGL(p_depth);
 			uvContent[i] = (uv_pos + uv_size * deltaPos[i]);
 		}
 		activate();
 
 		_modelSpaceBuffer->send(vertexContent, 4);
+		_modelDepthBuffer->send(depthContent, 4);
 		_modelUvBuffer->send(uvContent, 4);
 		_indexesBuffer->send(elementIndex, 6);
 		_textureUniform->send(0);

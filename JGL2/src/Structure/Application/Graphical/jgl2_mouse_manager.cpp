@@ -1,4 +1,5 @@
 #include "Structure/Application/Graphical/jgl2_mouse_manager.h"
+#include "jgl2_basic_functions.h"
 
 namespace jgl
 {
@@ -67,5 +68,10 @@ namespace jgl
 		_mouse(new Mouse())
 	{
 
+	}
+
+	void MouseManager::_onUpdate()
+	{
+		_mouse->_updateState();
 	}
 }

@@ -13,6 +13,8 @@ namespace jgl
 
 		if (_modelSpaceBuffer == nullptr)
 			_modelSpaceBuffer = _shader->buffer("model_space");
+		if (_modelDepthBuffer == nullptr)
+			_modelDepthBuffer = _shader->buffer("model_depth");
 		if (_modelUvBuffer == nullptr)
 			_modelUvBuffer = _shader->buffer("model_uvs");
 		if (_indexesBuffer == nullptr)
@@ -29,6 +31,8 @@ namespace jgl
 
 		if (_modelSpaceBuffer == nullptr)
 			throw std::runtime_error("Error : no model space buffer found in shader");
+		if (_modelDepthBuffer == nullptr)
+			throw std::runtime_error("Error : no model uvs buffer found in shader");
 		if (_modelUvBuffer == nullptr)
 			throw std::runtime_error("Error : no model uvs buffer found in shader");
 		if (_indexesBuffer == nullptr)
@@ -339,11 +343,8 @@ namespace jgl
 		for (Size_t i = 0; i < 4; i++)
 		{
 			Vector2Int tmp_pos = p_pos + glyphSize * delta_pos[i];
-			Vector3 tmp_vertex = Vector3(
-				Application::instance()->convertScreenToOpenGL(tmp_pos),
-				jgl::Application::instance()->convertDepthToOpenGL(p_depth)
-			);
-			_modelSpaceData.push_back(tmp_vertex);
+			_modelSpaceData.push_back(Application::instance()->convertScreenToOpenGL(tmp_pos));
+			_modelDepthData.push_back(jgl::Application::instance()->convertDepthToOpenGL(p_depth));
 			_modelUvData.push_back(glyphData.uvs[i]);
 		}
 
@@ -356,10 +357,12 @@ namespace jgl
 	}
 
 
-	void Font::exportShaderData(Buffer* p_modelSpaceBuffer, Buffer* p_modelUvBuffer, Buffer* p_indexesBuffer)
+	void Font::exportShaderData(Buffer* p_modelSpaceBuffer, Buffer* p_modelDepthBuffer, Buffer* p_modelUvBuffer, Buffer* p_indexesBuffer)
 	{
 		if (p_modelSpaceBuffer != nullptr)
 			p_modelSpaceBuffer->send(_modelSpaceData.data(), static_cast<Size_t>(_modelSpaceData.size()));
+		if (p_modelDepthBuffer != nullptr)
+			p_modelDepthBuffer->send(_modelDepthData.data(), static_cast<Size_t>(_modelDepthData.size()));
 		if (p_modelUvBuffer != nullptr)
 			p_modelUvBuffer->send(_modelUvData.data(), static_cast<Size_t>(_modelUvData.size()));
 		if (p_indexesBuffer != nullptr)
@@ -368,7 +371,7 @@ namespace jgl
 
 	void Font::_castCharRender(GLuint p_id, Color p_textColor, Color p_outlineColor)
 	{
-		exportShaderData(_modelSpaceBuffer, _modelUvBuffer, _indexesBuffer);
+		exportShaderData(_modelSpaceBuffer, _modelDepthBuffer, _modelUvBuffer, _indexesBuffer);
 
 		_shader->activate();
 

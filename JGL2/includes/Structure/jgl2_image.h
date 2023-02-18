@@ -14,12 +14,12 @@ namespace jgl
 		Int _height = 0;
 		Int _nbChannels = 0;
 
-		static Shader* _shader;
-
-		static Buffer* _modelSpaceBuffer;
-		static Buffer* _modelUvBuffer;
-		static Buffer* _indexesBuffer;
-		static Uniform* _textureUniform;
+		static inline Shader* _shader = nullptr;
+		static inline Buffer* _modelSpaceBuffer = nullptr;
+		static inline Buffer* _modelDepthBuffer = nullptr;
+		static inline Buffer* _modelUvBuffer = nullptr;
+		static inline Buffer* _indexesBuffer = nullptr;
+		static inline Uniform* _textureUniform = nullptr;
 
 		void _init_shader_data();
 

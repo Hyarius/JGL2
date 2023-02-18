@@ -11,6 +11,7 @@ namespace jgl
 		Mouse* _mouse;
 
 		void _treatMessage(jgl::PolymorphicContainer* p_message);
+		void _onUpdate();
 
 	public:
 		MouseManager(jgl::LockedQueue<jgl::PolymorphicContainer*>& p_messageToTreat);

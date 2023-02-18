@@ -50,6 +50,7 @@
     <ClInclude Include="includes\Structure\jgl2_json_parser.h" />
     <ClInclude Include="includes\Structure\jgl2_keyboard.h" />
     <ClInclude Include="includes\Structure\jgl2_locked_queue.h" />
+    <ClInclude Include="includes\Structure\jgl2_monitored_value.h" />
     <ClInclude Include="includes\Structure\jgl2_perlin.h" />
     <ClInclude Include="includes\Structure\jgl2_texture_atlas.h" />
     <ClInclude Include="includes\Structure\jgl2_translation_atlas.h" />
@@ -57,6 +58,7 @@
     <ClInclude Include="includes\Structure\jgl2_vector3.h" />
     <ClInclude Include="includes\Structure\jgl2_vector4.h" />
     <ClInclude Include="includes\Structure\jgl2_viewport.h" />
+    <ClInclude Include="includes\Structure\jgl2_widgets.h" />
     <ClInclude Include="includes\Structure\jgl2_worker_pool.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_client.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_connection.h" />
@@ -74,6 +76,9 @@
     <ClInclude Include="includes\Structure\jgl2_timer.h" />
     <ClInclude Include="includes\Structure\jgl2_vector.h" />
     <ClInclude Include="includes\Structure\Network\jgl2_server.h" />
+    <ClInclude Include="includes\Structure\Widget\Component\jgl2_box_component.h" />
+    <ClInclude Include="includes\Structure\Widget\Component\jgl2_label_component.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_frame.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_widget_core.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_widget_parenting_manager.h" />
   </ItemGroup>
@@ -102,6 +107,9 @@
     <ClCompile Include="src\Structure\jgl2_sprite_sheet.cpp" />
     <ClCompile Include="src\Structure\jgl2_timer.cpp" />
     <ClCompile Include="src\Structure\jgl2_viewport.cpp" />
+    <ClCompile Include="src\Structure\Widget\Component\jgl2_box_component.cpp" />
+    <ClCompile Include="src\Structure\Widget\Component\jgl2_label_component.cpp" />
+    <ClCompile Include="src\Structure\Widget\jgl2_frame.cpp" />
     <ClCompile Include="src\Structure\Widget\jgl2_widget_core.cpp" />
     <ClCompile Include="src\Structure\Widget\jgl2_widget_parenting_manager.cpp" />
   </ItemGroup>

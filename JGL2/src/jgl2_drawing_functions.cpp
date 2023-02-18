@@ -23,26 +23,29 @@ namespace jgl
 			throw std::runtime_error("Error : no shader Color2D in application");
 
 		static jgl::Buffer* model_buffer = nullptr;
+		static jgl::Buffer* depth_buffer = nullptr;
 		static jgl::Buffer* color_buffer = nullptr;
 
 		if (model_buffer == nullptr)
 			model_buffer = tmp_shader->buffer("model_space");
+		if (depth_buffer == nullptr)
+			depth_buffer = tmp_shader->buffer("model_depth");
 		if (color_buffer == nullptr)
 			color_buffer = tmp_shader->buffer("model_color");
 
-		Vector3 vertex_content[4];
+		Vector2 vertex_content[4];
+		Float depth_content[4];
 		Color color_content[4];
 
 		for (size_t i = 0; i < 4; i++)
 		{
-			vertex_content[i] = Vector3(
-				jgl::Application::instance()->convertScreenToOpenGL(p_pos + p_size * delta_pos[i]),
-				jgl::Application::instance()->convertDepthToOpenGL(p_depth)
-			);
+			vertex_content[i] = jgl::Application::instance()->convertScreenToOpenGL(p_pos + p_size * delta_pos[i]);
+			depth_content[i] = jgl::Application::instance()->convertDepthToOpenGL(p_depth);
 			color_content[i] = p_color;
 		}
 
 		model_buffer->send(vertex_content, 4);
+		depth_buffer->send(depth_content, 4);
 		color_buffer->send(color_content, 4);
 		tmp_shader->elementBuffer()->send(element_index, 6);
 

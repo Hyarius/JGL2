@@ -16,7 +16,10 @@ namespace jgl
 		jgl::LockedQueue<jgl::PolymorphicContainer*>& _messageToTreat;
 
 		virtual void _treatMessage(jgl::PolymorphicContainer* p_message) = 0;
+		virtual void _onUpdate()
+		{
 
+		}
 	public:
 		MessageConsumer(jgl::LockedQueue<jgl::PolymorphicContainer*>& p_messageToTreat) :
 			_messageToTreat(p_messageToTreat)
@@ -26,6 +29,7 @@ namespace jgl
 
 		void update()
 		{
+			_onUpdate();
 			while (_messageToTreat.empty() == false)
 			{
 				jgl::PolymorphicContainer* message = _messageToTreat.pop_front();

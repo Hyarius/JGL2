@@ -11,10 +11,10 @@ namespace jgl
 		Keyboard* _keyboard;
 
 		void _treatMessage(jgl::PolymorphicContainer* p_message);
+		void _onUpdate();
 
 	public:
 		KeyboardManager(jgl::LockedQueue<jgl::PolymorphicContainer*>& p_messageToTreat);
-
 		const Keyboard* keyboard() const { return (_keyboard); }
 	};
 }

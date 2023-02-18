@@ -49,9 +49,11 @@ namespace jgl
 		static inline Shader* _shader = nullptr;
 
 		static inline Buffer* _modelSpaceBuffer = nullptr;
+		static inline Buffer* _modelDepthBuffer = nullptr;
 		static inline Buffer* _modelUvBuffer = nullptr;
 		static inline Buffer* _indexesBuffer = nullptr;
-		static inline std::vector<Vector3> _modelSpaceData = std::vector<Vector3>();
+		static inline std::vector<Vector2> _modelSpaceData = std::vector<Vector2>();
+		static inline std::vector<Float> _modelDepthData = std::vector<Float>();
 		static inline std::vector<Vector2> _modelUvData = std::vector<Vector2>();
 		static inline std::vector<UInt> _indexesData = std::vector<UInt>();
 		static inline Uniform* _textureUniform = nullptr;
@@ -86,7 +88,7 @@ namespace jgl
 
 		GLuint textureID(Size_t p_textSize, Size_t p_outlineSize);
 
-		void exportShaderData(Buffer* p_modelSpaceBuffer, Buffer* p_modelUvBuffer, Buffer* p_indexesBuffer);
+		void exportShaderData(Buffer* p_modelSpaceBuffer, Buffer* p_modelDepthBuffer, Buffer* p_modelUvBuffer, Buffer* p_indexesBuffer);
 
 		Vector2Int calcCharSize(UChar p_char, UInt p_size, Size_t p_outlineSize = 0);
 		Vector2Int calcStringSize(std::string p_string, UInt p_size);

@@ -6,30 +6,31 @@ namespace jgl
 	{
 		std::string colorShaderVertex =
 			R"( #version 330 core
-			layout(location = 0) in vec3 model_space;
-			layout(location = 1) in vec4 model_color;
+				layout(location = 0) in vec2 model_space;
+				layout(location = 1) in vec4 model_color;
+				layout(location = 2) in float model_depth;
 
-			out vec4 fragmentColor;
+				out vec4 fragmentColor;
 
-			void main()
-			{
-				gl_Position = vec4(model_space, 1.0f);
-				fragmentColor = model_color;
-			})";
+				void main()
+				{
+					gl_Position = vec4(model_space, model_depth, 1.0f);
+					fragmentColor = model_color;
+				})";
 
 		std::string colorShaderFragment =
 			R"( #version 330 core
 
-			in vec4 fragmentColor;
+				in vec4 fragmentColor;
 
-			layout(location = 0) out vec4 color;
+				layout(location = 0) out vec4 color;
 
-			void main()
-			{
-				color = fragmentColor;
-				if (color.a == 0)
-					discard;
-			})";
+				void main()
+				{
+					color = fragmentColor;
+					if (color.a == 0)
+						discard;
+				})";
 
 		_shaderAtlas.add("Color2D", new jgl::Shader(colorShaderVertex, colorShaderFragment));
 	}
@@ -37,13 +38,14 @@ namespace jgl
 	{
 		std::string textureShaderVertex =
 			R"(	#version 330 core
-				layout(location = 0) in vec3 model_space;
+				layout(location = 0) in vec2 model_space;
 				layout(location = 1) in vec2 model_uvs;
+				layout(location = 2) in float model_depth;
 
 				out vec2 UV;
 				void main()
 				{
-					gl_Position = vec4(model_space, 1.0f);
+					gl_Position = vec4(model_space, model_depth, 1.0f);
 					UV = model_uvs;
 				})";
 
@@ -70,8 +72,9 @@ namespace jgl
 	{
 		std::string textTextureShaderVertex =
 			R"(	#version 330 core
-				layout(location = 0) in vec3 model_space;
+				layout(location = 0) in vec2 model_space;
 				layout(location = 1) in vec2 model_uvs;
+				layout(location = 2) in float model_depth;
 
 				uniform vec4 textColor;
 				uniform vec4 outlineColor;
@@ -82,7 +85,7 @@ namespace jgl
 
 				void main()
 				{
-					gl_Position = vec4(model_space, 1.0f);
+					gl_Position = vec4(model_space, model_depth, 1.0f);
 					fragmentUV = model_uvs;
 					fragmentColor = textColor;
 					fragmentOutlineColor = outlineColor;

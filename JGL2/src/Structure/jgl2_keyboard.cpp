@@ -1,4 +1,5 @@
 #include "Structure/jgl2_keyboard.h"
+#include "Structure/jgl2_iostream.h"
 
 namespace jgl
 {

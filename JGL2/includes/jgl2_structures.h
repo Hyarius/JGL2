@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Structure/jgl2_monitored_value.h"
 #include "Structure/jgl2_iostream.h"
 #include "Structure/jgl2_thread.h"
 #include "Structure/jgl2_vector2.h"
@@ -25,6 +26,8 @@
 #include "Structure/jgl2_translation_atlas.h"
 
 #include "Structure/jgl2_json_parser.h"
+
+#include "Structure/jgl2_widgets.h"
 
 #include "Structure/Application/Core/jgl2_application_core.h"
 #include "Structure/Application/Graphical/jgl2_application.h"
