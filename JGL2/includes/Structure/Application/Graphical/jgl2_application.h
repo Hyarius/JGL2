@@ -2,6 +2,7 @@
 
 #include "structure/jgl2_color.h"
 #include "structure/jgl2_vector2.h"
+#include "Structure/jgl2_font.h"
 #include "structure/Application/Core/jgl2_application_core.h"
 #include "structure/Application/Graphical/jgl2_window_manager.h"
 #include "structure/Application/Graphical/jgl2_windows_api_manager.h"
@@ -28,6 +29,8 @@ namespace jgl
 		MouseManager _mouseManager;
 		SystemManager _systemManager;
 
+		jgl::Font* _defaultFont;
+
 		void _setupJobs();
 		
 		void _create2DColorShader();
@@ -40,6 +43,8 @@ namespace jgl
 		const jgl::Vector2Int& size() const { return (_windowManager.size()); }
 		ShaderAtlas& shaders() { return (_shaderAtlas); }
 
+		void setDefaultFont(jgl::Font* p_defaultFont) { _defaultFont = p_defaultFont; }
+		jgl::Font* const & defaultFont() const { return (_defaultFont); }
 		const jgl::Keyboard* keyboard() const { return (_keyboardManager.keyboard()); }
 		const jgl::Mouse* mouse() const { return (_mouseManager.mouse()); }
 

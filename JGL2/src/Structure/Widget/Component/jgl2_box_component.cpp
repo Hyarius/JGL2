@@ -2,6 +2,10 @@
 
 namespace jgl
 {
+	jgl::Color BoxDefaultValues::borderColor = jgl::Color(120, 120, 120);
+	jgl::Color BoxDefaultValues::color = jgl::Color(150, 150, 150);
+	jgl::Vector2Int BoxDefaultValues::borderSize = jgl::Vector2Int(5, 5);
+
 	void Box::_initializeShaderDatas()
 	{
 		_shader = jgl::Application::instance()->shaders().get("Color2D");
@@ -66,10 +70,6 @@ namespace jgl
 		_borderColor(BoxDefaultValues::borderColor),
 		_borderSize(BoxDefaultValues::borderSize)
 	{
-		_borderSize = 15;
-		_color = jgl::Color(255, 0, 0);
-		_borderColor = jgl::Color(255, 255, 0);
-
 		_borderSize.onEditValue([&]() {_verticesBaked = false; });
 		_color.onEditValue([&]() {_colorBaked = false; });
 		_borderColor.onEditValue([&]() {_colorBaked = false; });
@@ -106,7 +106,7 @@ namespace jgl
 		_depth = p_depth;
 		_depthBaked = false;
 	}
-	void Box::render(jgl::Float p_depth)
+	void Box::render()
 	{
 		if (_shaderInitialized == false)
 			_initializeShaderDatas();

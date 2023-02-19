@@ -3,61 +3,70 @@
 #include "jgl2_includes.h"
 #include "jgl2_basic_types.h"
 
-template <typename TType>
-class MonitoredValue
+namespace jgl
 {
-private:
-	const TType& _defaultValue;
-	TType _value;
-	const TType* _actualValue;
-	std::vector<std::function<void()>> _onEditValue;
-
-	void _notify()
+	template <typename TType>
+	class MonitoredValue
 	{
-		for (auto funct : _onEditValue)
+	private:
+		const TType& _defaultValue;
+		TType _value;
+		const TType* _actualValue;
+		std::vector<std::function<void()>> _onEditValue;
+
+		void _notify()
 		{
-			funct();
+			for (auto funct : _onEditValue)
+			{
+				funct();
+			}
 		}
-	}
 
-public:
-	MonitoredValue(const TType& p_defaultValue) :
-		_defaultValue(p_defaultValue),
-		_actualValue(&_defaultValue),
-		_value()
-	{
-		_value = {};
-	}
+	public:
+		MonitoredValue(const TType& p_defaultValue) :
+			_defaultValue(p_defaultValue),
+			_actualValue(&_defaultValue),
+			_value()
+		{
+			_value = {};
+		}
 
-	template <typename Func, typename... Args>
-	void onEditValue(Func&& p_funct, Args&&... p_args)
-	{
-		_onEditValue.push_back(std::bind(std::forward<Func>(p_funct), std::forward<Args>(p_args)...));
-	}
+		template <typename Func, typename... Args>
+		void onEditValue(Func&& p_funct, Args&&... p_args)
+		{
+			_onEditValue.push_back(std::bind(std::forward<Func>(p_funct), std::forward<Args>(p_args)...));
+		}
 
-	operator const TType& () const
-	{
-		return (*_actualValue);
-	}
+		void setDefaultValue(const TType& p_defaultValue)
+		{
+			_defaultValue = p_defaultValue;
+		}
 
-	const TType& value() const
-	{
-		return (*_actualValue);
-	}
+		operator const TType& () const
+		{
+			return (*_actualValue);
+		}
 
-	void operator = (TType p_newValue)
-	{
-		_value = p_newValue;
-		useValue();
-	}
-	void reset()
-	{
-		_actualValue = &_defaultValue;
-		_notify();
-	}
-	void useValue()
-	{
-		_actualValue = &_value;
-		_notify();
-	}
-};
+		const TType& value() const
+		{
+			return (*_actualValue);
+		}
+
+		void operator = (TType p_newValue)
+		{
+			_value = p_newValue;
+			useValue();
+		}
+		void reset()
+		{
+			_actualValue = &_defaultValue;
+			_notify();
+		}
+		void useValue()
+		{
+			_actualValue = &_value;
+			_notify();
+		}
+	};
+
+}

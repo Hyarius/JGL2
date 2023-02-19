@@ -8,7 +8,7 @@ namespace jgl
 	}
 	void Frame::_onRender()
 	{
-		_box.render(depth());
+		_box.render();
 	}
 	void Frame::_onGeometryChange()
 	{

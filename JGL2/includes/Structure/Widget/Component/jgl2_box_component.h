@@ -12,9 +12,9 @@ namespace jgl
 {
 	struct BoxDefaultValues
 	{
-		static inline jgl::Color borderColor = jgl::Color(150, 150, 150);
-		static inline jgl::Color color = jgl::Color(120, 120, 120);
-		static inline jgl::Vector2Int borderSize = jgl::Vector2Int(5, 5);
+		static jgl::Color borderColor;
+		static jgl::Color color;
+		static jgl::Vector2Int borderSize;
 	};
 
 	class Box
@@ -57,6 +57,14 @@ namespace jgl
 		void setColors(jgl::Color p_color, jgl::Color p_borderColor);
 		void setGeometry(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size);
 		void setDepth(jgl::Float p_depth);
-		void render(jgl::Float p_depth);
+		void render();
+
+		const jgl::Color& color() const { return(_color.value()); }
+		const jgl::Color& borderColor() const { return(_borderColor.value()); }
+		const jgl::Vector2Int& borderSize() const { return(_borderSize.value()); }
+		const jgl::Vector2Int& anchor() const { return (_anchor); }
+		const jgl::Vector2Int& size() const { return (_size); }
+		const jgl::Vector2Int& usableAnchor() const { return (_anchor + borderSize()); }
+		const jgl::Vector2Int& usableSize() const { return (_size - borderSize() * 2); }
 	};
 }

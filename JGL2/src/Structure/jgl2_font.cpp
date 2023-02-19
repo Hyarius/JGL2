@@ -57,7 +57,7 @@ namespace jgl
 					i < p_width && j < p_height)
 				{
 					Size_t index = i + j * p_width;
-					if (p_atlasData[index] == 0x00)
+					if (p_atlasData[index] == 0xFF)
 						return (true);
 				}
 			}
@@ -145,10 +145,10 @@ namespace jgl
 			atlasData = new UChar[width * height];
 
 			stbtt_pack_context context;
-			if (!stbtt_PackBegin(&context, atlasData, width, height, 0, 1, nullptr))
+			if (!stbtt_PackBegin(&context, atlasData, width, height, 0, p_fontData.outlineSize, nullptr))
 				throw std::runtime_error("Failed to initialize font");
 
-			stbtt_PackSetOversampling(&context, 1, 1);
+			stbtt_PackSetOversampling(&context, 2, 2);
 			if (!stbtt_PackFontRange(&context, _fontBuffer, 0, p_fontData.textSize, 0, nb_char, char_info)) {
 				// too small
 				delete[] atlasData;
@@ -177,10 +177,10 @@ namespace jgl
 
 			stbtt_GetPackedQuad(char_info, width, height, c, &data.step.x, &data.step.y, &quad, 1);
 
-			const Float xmin = quad.x0;
-			const Float xmax = quad.x1;
-			const Float ymin = quad.y0;
-			const Float ymax = quad.y1;
+			const Float xmin = quad.x0 - p_fontData.outlineSize;
+			const Float xmax = quad.x1 + p_fontData.outlineSize;
+			const Float ymin = quad.y0 - p_fontData.outlineSize;
+			const Float ymax = quad.y1 + p_fontData.outlineSize;
 
 			data.positions[0] = Vector2(xmin, ymin);
 			data.positions[1] = Vector2(xmax, ymin);
@@ -204,7 +204,7 @@ namespace jgl
 			for (Int x = 0; x < width; x++)
 			{
 				Size_t index = x + y * width;
-				if (atlasData[index] != 0x00)
+				if (atlasData[index] != 0xFF)
 				{
 					if (_isPixelOnGlyphOutline(atlasData, width, height, x, y, p_fontData.outlineSize) == true)
 					{
@@ -212,7 +212,7 @@ namespace jgl
 					}
 					else
 					{
-						atlasData[index] = 0xFF;
+						atlasData[index] = 0x00;
 					}
 				}
 			}

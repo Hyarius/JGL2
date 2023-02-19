@@ -23,7 +23,8 @@ namespace jgl
 		_windowManager(_APIManager.windowMessagesToTreat()),
 		_mouseManager(_APIManager.mouseMessagesToTreat()),
 		_keyboardManager(_APIManager.keyboardMessagesToTreat()),
-		_systemManager(_APIManager.systemMessagesToTreat())
+		_systemManager(_APIManager.systemMessagesToTreat()),
+		_defaultFont(nullptr)
 	{
 		_windowManager.connectToAPI(&_APIManager);
 		_windowManager.createWindow(p_title, p_size, p_backgroundColor);
