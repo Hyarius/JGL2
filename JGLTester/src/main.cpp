@@ -81,6 +81,7 @@ private:
 
 		output.associate();
 
+		jgl::drawRectangleColor(jgl::Color::red, 190, 100, 10);
 		jgl::drawRectangleColor(jgl::Color::green, 100, 100, 20);
 		jgl::drawRectangleColor(jgl::Color::red, 10, 100, 10);
 

@@ -11,6 +11,7 @@ namespace jgl
 		Vector2Int _size;
 		GLuint _frameBufferObject;
 		GLuint _outputTexture;
+		GLuint _depthBuffer;
 
 	public:
 		ImageOutput(Vector2Int p_size);

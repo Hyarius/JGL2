@@ -14,16 +14,22 @@ namespace jgl
 
 		glGenTextures(1, &_outputTexture);
 		glBindTexture(GL_TEXTURE_2D, _outputTexture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _size.x, _size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _size.x, _size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+		glGenRenderbuffers(1, &_depthBuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, _depthBuffer);
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT32, _size.x, _size.y);
+		glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
 		glGenFramebuffers(1, &_frameBufferObject);
 		glBindFramebuffer(GL_FRAMEBUFFER, _frameBufferObject);
+
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _outputTexture, 0);
-		glEnable(GL_DEPTH_TEST);
-		glClearDepth(1.0f);
-		glDepthFunc(GL_LESS);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthBuffer);
+
+		desassociate();
 	}
 
 	ImageOutput::ImageOutput(UInt p_width, UInt p_heigth) : ImageOutput(Vector2UInt(p_width, p_heigth))
