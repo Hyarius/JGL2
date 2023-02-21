@@ -77,34 +77,16 @@ private:
 
 	void initShaderData()
 	{
-		const int WIDTH = 640;
-		const int HEIGHT = 480;
+		jgl::ImageOutput output = jgl::ImageOutput(jgl::Vector2Int(300, 300));
 
-		GLuint texture;
-		glGenTextures(1, &texture);
-		glBindTexture(GL_TEXTURE_2D, texture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		output.associate();
 
-		// Création d'un framebuffer
-		GLuint framebuffer;
-		glGenFramebuffers(1, &framebuffer);
-		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+		jgl::drawRectangleColor(jgl::Color::green, 100, 100, 20);
+		jgl::drawRectangleColor(jgl::Color::red, 10, 100, 10);
 
-		// Dessin sur la texture
-		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-		glViewport(0, 0, WIDTH, HEIGHT);
-		glScissor(0, 0, WIDTH, HEIGHT);
-		glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		jgl::Application::instance()->_windowManager.setViewport(jgl::Vector2Int(WIDTH, HEIGHT));
+		_image[1] = output.save();
 
-		jgl::drawRectangleColor(jgl::Color::blue, 10, jgl::Vector2Int(WIDTH - 20, HEIGHT - 20), 10);
-
-		jgl::Application::instance()->_windowManager.reset();
-		_image[1] = new jgl::Image(texture);
+		output.desassociate();
 	}
 
 public:

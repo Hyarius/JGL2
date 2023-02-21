@@ -16,6 +16,7 @@ namespace jgl
 	class Application : public jgl::ApplicationCore
 	{
 		friend class Viewport;
+		friend class ImageOutput;
 	public:
 		static Application* instance() { return (static_cast<Application*>(_instance)); }
 
@@ -24,7 +25,6 @@ namespace jgl
 
 		ShaderAtlas _shaderAtlas;
 
-	public:
 		WindowManager _windowManager;
 		KeyboardManager _keyboardManager;
 		MouseManager _mouseManager;

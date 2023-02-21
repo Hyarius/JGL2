@@ -3,6 +3,8 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "ExternalLibraries/stb_image_write.h"
 
+#include "Structure/Application/Graphical/jgl2_application.h"
+
 namespace jgl
 {
 	void checkOpengl(std::string);
@@ -12,13 +14,16 @@ namespace jgl
 
 		glGenTextures(1, &_outputTexture);
 		glBindTexture(GL_TEXTURE_2D, _outputTexture);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _size.x, _size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _size.x, _size.y, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 		glGenFramebuffers(1, &_frameBufferObject);
 		glBindFramebuffer(GL_FRAMEBUFFER, _frameBufferObject);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _outputTexture, 0);
+		glEnable(GL_DEPTH_TEST);
+		glClearDepth(1.0f);
+		glDepthFunc(GL_LESS);
 	}
 
 	ImageOutput::ImageOutput(UInt p_width, UInt p_heigth) : ImageOutput(Vector2UInt(p_width, p_heigth))
@@ -33,20 +38,22 @@ namespace jgl
 
 	void ImageOutput::associate()
 	{
+		jgl::Application::instance()->_windowManager.setViewport(jgl::Vector2Int(_size.x, _size.y));
 		glBindFramebuffer(GL_FRAMEBUFFER, _frameBufferObject);
-		glEnable(GL_DEPTH_TEST);
+		clear();
 	}
 
 	void ImageOutput::clear()
 	{
 		glViewport(0, 0, _size.x, _size.y);
-		glColorMask(TRUE, TRUE, TRUE, TRUE);
-		glClearColor(1, 0, 0, 0);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glScissor(0, 0, _size.x, _size.y);
+		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	void ImageOutput::desassociate()
 	{
+		jgl::Application::instance()->_windowManager.reset();
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 
