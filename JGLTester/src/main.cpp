@@ -1,81 +1,9 @@
 #include "jgl2.h"
-
-struct LabelDefaultValues
-{
-public:
-	static jgl::Color textColor;
-	static jgl::Color outlineColor;
-};
-
-class Label
-{
-private:
-	std::string _text;
-
-	jgl::MonitoredValue<jgl::Font*> _font;
-	jgl::MonitoredValue<jgl::Color> _textColor;
-	jgl::MonitoredValue<jgl::Color> _outlineColor;
-
-	jgl::Vector2Int _anchor;
-	jgl::Vector2Int _size;
-	jgl::Float _depth;
-
-public:
-	Label();
-	void reset();
-	void useValue();
-	void setGeometry(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size);
-	void setDepth(jgl::Float p_depth);
-	void render();
-};
-
-jgl::Color LabelDefaultValues::textColor = jgl::Color(255, 255, 255);
-jgl::Color LabelDefaultValues::outlineColor = jgl::Color(0, 0, 0);
-
-Label::Label() :
-	_textColor(LabelDefaultValues::textColor),
-	_outlineColor(LabelDefaultValues::outlineColor),
-	_font(jgl::Application::instance()->defaultFont()),
-	_text("Ceci est un test")
-{
-
-}
-
-void Label::reset()
-{
-	_textColor.reset();
-	_outlineColor.reset();
-	_font.reset();
-}
-
-void Label::useValue()
-{
-	_textColor.useValue();
-	_outlineColor.useValue();
-	_font.useValue();
-}
-
-void Label::setGeometry(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
-{
-	_anchor = p_anchor;
-	_size = p_size;
-}
-
-void Label::setDepth(jgl::Float p_depth)
-{
-	_depth = p_depth;
-}
-
-void Label::render()
-{
-	_font.value()->draw(_text, _anchor, 100, _textColor, 2, _outlineColor, _depth);
-}
-
-class Test : public jgl::WidgetCore
+class Test2 : public jgl::WidgetCore
 {
 private:
 	jgl::Box _box;
-	Label _label;
+	jgl::Label _label;
 
 	jgl::Bool _onUpdate()
 	{
@@ -83,22 +11,117 @@ private:
 	}
 	void _onRender()
 	{
-		_box.render();
 		_label.render();
+		_box.render();
 	}
 	void _onGeometryChange()
 	{
 		_box.setGeometry(anchor(), size());
 		_box.setDepth(depth());
 
-		_label.setGeometry(_box.usableAnchor() + 5, _box.usableSize() - 10);
+		_label.setGeometry(_box.usableAnchor(), _box.usableSize());
 		_label.setDepth(depth() + 0.5f);
+		_label.setTextSize(_label.size().y);
 	}
 
 public:
-	Test(std::string p_name) : jgl::WidgetCore(p_name)
+	Test2(std::string p_name) : jgl::WidgetCore(p_name)
+	{
+		_label.setText("Ceci est un test");
+		_label.setOutlineSize(100);
+	}
+};
+
+
+class Test : public jgl::WidgetCore
+{
+private:
+	std::vector<jgl::InputController> movementController;
+	jgl::Size_t _imageIndex = 1;
+	jgl::Image* _image[2] = {nullptr, nullptr};
+	jgl::Vector2 _position = 0;
+	jgl::Float _zoom = 1;
+
+	jgl::Bool _onUpdate()
+	{
+		for (jgl::Size_t i = 0; i < movementController.size(); i++)
+		{
+			movementController[i].update();
+		}
+		if (jgl::Application::instance()->keyboard()->getKey(jgl::Keyboard::F) == jgl::InputStatus::Released)
+		{
+			_imageIndex = (_imageIndex == 0 ? 1 : 0);
+		}
+		return (false);
+	}
+	void _onRender()
+	{
+		if (_image[_imageIndex] != nullptr)
+		{
+			_image[_imageIndex]->draw(_position, jgl::Vector2(size().x, size().y) * _zoom, 0, 1, 2);
+		}
+	}
+	void _onGeometryChange()
 	{
 
+	}
+
+	jgl::Shader* shader;
+
+	jgl::Uniform* textureUniform;
+	jgl::Uniform* coefFlouUniform;
+	jgl::Uniform* coefOriginalUniform;
+	jgl::Buffer* verticesBuffer;
+	jgl::Buffer* uvsBuffer;
+	jgl::Buffer* elementBuffer;
+
+	void initShaderData()
+	{
+		const int WIDTH = 640;
+		const int HEIGHT = 480;
+
+		GLuint texture;
+		glGenTextures(1, &texture);
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, WIDTH, HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		// Création d'un framebuffer
+		GLuint framebuffer;
+		glGenFramebuffers(1, &framebuffer);
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+
+		// Dessin sur la texture
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+		glViewport(0, 0, WIDTH, HEIGHT);
+		glScissor(0, 0, WIDTH, HEIGHT);
+		glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		jgl::Application::instance()->_windowManager.setViewport(jgl::Vector2Int(WIDTH, HEIGHT));
+
+		jgl::drawRectangleColor(jgl::Color::blue, 10, jgl::Vector2Int(WIDTH - 20, HEIGHT - 20), 10);
+
+		jgl::Application::instance()->_windowManager.reset();
+		_image[1] = new jgl::Image(texture);
+	}
+
+public:
+	Test(std::string p_name) : jgl::WidgetCore(p_name),
+		movementController({
+				jgl::InputController(jgl::Keyboard::A, jgl::InputStatus::Down, [&]() {if (_zoom > 0.5f) _zoom *= 0.9f; if (_zoom < 0.5f) _zoom = 0.5f; }, 50),
+				jgl::InputController(jgl::Keyboard::E, jgl::InputStatus::Down, [&]() {_zoom *= 1.1f; }, 50),
+
+				jgl::InputController(jgl::Keyboard::Z, jgl::InputStatus::Down, [&]() {_position.y += _zoom; }, 5),
+				jgl::InputController(jgl::Keyboard::Q, jgl::InputStatus::Down, [&]() {_position.x += _zoom; }, 5),
+				jgl::InputController(jgl::Keyboard::S, jgl::InputStatus::Down, [&]() {_position.y -= _zoom; }, 5),
+				jgl::InputController(jgl::Keyboard::D, jgl::InputStatus::Down, [&]() {_position.x -= _zoom; }, 5)
+			})
+	{
+		_image[0] = new jgl::Image(jgl::Application::instance()->defaultFont()->textureID(100, 10));
+
+		initShaderData();
 	}
 };
 
@@ -107,8 +130,72 @@ int main(int argc, char** argv)
 	jgl::Application app = jgl::Application("Erelia", jgl::Vector2Int(840, 680), jgl::Color(50, 50, 50));
 	app.setDefaultFont(new jgl::Font("Sono-Regular.ttf"));
 
+	try
+	{
+	app.shaders().add("GaussShader", new jgl::Shader(R"(
+			#version 330 core
+
+			layout(location = 0) in vec3 vertexPosition;
+			layout(location = 1) in vec2 vertexUV;
+
+			out vec2 uv;
+
+			void main()
+			{
+				gl_Position = vec4(vertexPosition, 1.0);
+				uv = vertexUV;
+			})", R"(
+			#version 330 core
+
+in vec2 uv;
+out vec4 fragColor;
+
+uniform sampler2D texture;
+uniform float coef_flou;
+uniform float coef_original;
+
+const int kernelSize = 7;
+const float kernel[49] = float[](0.000308f, 0.004362f, 0.026369f, 0.081358f, 0.135859f, 0.081358f, 0.026369f,
+                                0.004362f, 0.061356f, 0.370549f, 1.138394f, 1.906854f, 1.138394f, 0.370549f,
+                                0.026369f, 0.370549f, 2.240843f, 6.889984f, 11.571054f, 6.889984f, 2.240843f,
+                                0.081358f, 1.138394f, 6.889984f, 21.163803f, 35.538743f, 21.163803f, 6.889984f,
+                                0.135859f, 1.906854f, 11.571054f, 35.538743f, 59.517268f, 35.538743f, 11.571054f,
+                                0.081358f, 1.138394f, 6.889984f, 21.163803f, 35.538743f, 21.163803f, 6.889984f,
+                                0.026369f, 0.370549f, 2.240843f, 6.889984f, 11.571054f, 6.889984f, 2.240843f);
+
+void main()
+{
+    // Pass 1 : flou gaussien
+    vec4 sum = vec4(0.0);
+    vec2 texelSize = vec2(1.0) / textureSize(texture, 0);
+    
+    for(int x = -3; x <= 3; x++) {
+        for(int y = -3; y <= 3; y++) {
+            vec2 offset = vec2(float(x), float(y)) * texelSize;
+            sum += texture2D(texture, uv + offset) * kernel[(x+3)*kernelSize + (y+3)];
+        }
+    }
+    
+    // Pass 2 : combinaison de l'image originale avec l'image floutée
+    vec4 originalColor = texture2D(texture, uv);
+    vec4 finalColor = originalColor * coef_original + sum * coef_flou;
+    
+    fragColor = finalColor;
+}
+
+			)"));
+
+	}
+	catch (std::exception& e)
+	{
+		jgl::cout << e.what() << std::endl;
+		return (0);
+	}
+
+
 	Test* tmp = app.addRootWidget<Test>("Frame");
 	tmp->setGeometry(0, app.size());
+	//tmp->setGeometry(100, jgl::Vector2Int(300, 100));
 	tmp->activate();
 
 	return (app.run());

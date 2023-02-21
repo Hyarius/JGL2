@@ -8,18 +8,17 @@ namespace jgl
 	class ImageOutput
 	{
 	private:
-		Vector2UInt _size;
-		GLuint _frameBuffer;
-		GLuint _id;
-		GLuint _depthBuffer;
-		GLenum _drawBuffers[1];
+		Vector2Int _size;
+		GLuint _frameBufferObject;
+		GLuint _outputTexture;
+		GLuint _depthStencilBuffer;
 
 	public:
-		ImageOutput(Vector2UInt p_size);
+		ImageOutput(Vector2Int p_size);
 
 		ImageOutput(UInt p_width, UInt p_heigth);
 
-		GLuint id() const { return (_id); }
+		~ImageOutput();
 
 		void associate();
 
@@ -30,7 +29,5 @@ namespace jgl
 		Image* save();
 
 		void saveToFile(std::string p_path);
-
-		static void check_framebuffer_status(std::string msg);
 	};
 }

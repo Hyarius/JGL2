@@ -24,6 +24,7 @@ namespace jgl
 
 		ShaderAtlas _shaderAtlas;
 
+	public:
 		WindowManager _windowManager;
 		KeyboardManager _keyboardManager;
 		MouseManager _mouseManager;

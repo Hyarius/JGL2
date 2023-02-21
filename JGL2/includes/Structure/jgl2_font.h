@@ -63,8 +63,6 @@ namespace jgl
 		UChar* _fontBuffer;
 		std::map<FontData, FontGlyphData> _fontGlyphDatas;
 
-		Bool _isPixelOnGlyphOutline(UChar* p_atlasData, Int p_width, Int p_height, Int p_x, Int p_y, Int p_outlineSize);
-
 		void _loadFontTexture(Font::FontData p_fontData);
 
 		void _initCharRender();

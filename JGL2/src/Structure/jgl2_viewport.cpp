@@ -43,6 +43,6 @@ namespace jgl
 	void Viewport::use() const
 	{
 		jgl::Application::instance()->_windowManager.setOrigin(_origin);
-		jgl::Application::instance()->_windowManager.setViewport(_cumulatedAnchor, _cumulatedSize);
+		jgl::Application::instance()->_windowManager.setScissorViewport(_cumulatedAnchor, _cumulatedSize);
 	}
 }

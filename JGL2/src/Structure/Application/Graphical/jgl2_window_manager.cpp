@@ -127,6 +127,8 @@ namespace jgl
 				*p_message >> height;
 
 				resize(width, height);
+				jgl::Vector2 ratio = jgl::Vector2(static_cast<jgl::Float>(width) / static_cast<jgl::Float>(_size.x), static_cast<jgl::Float>(height) / static_cast<jgl::Float>(_size.y));
+				ApplicationCore::instance()->_widgetManager.scaleWidgets(ratio);
 			break;
 		}
 	}
@@ -159,17 +161,17 @@ namespace jgl
 
 	void WindowManager::reset()
 	{
+		setViewport(_size);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClearColor(_backgroundColor.r, _backgroundColor.g, _backgroundColor.b, _backgroundColor.a);
 		clear();
 	}
 
 	void WindowManager::resize(int w, int h)
 	{
-		jgl::Vector2 ratio = jgl::Vector2(static_cast<jgl::Float>(w) / static_cast<jgl::Float>(_size.x), static_cast<jgl::Float>(h) / static_cast<jgl::Float>(_size.y));
 		_size.x = w;
 		_size.y = h;
 		clear();
-		ApplicationCore::instance()->_widgetManager.scaleWidgets(ratio);
 	}
 
 	void WindowManager::clear()
@@ -189,7 +191,11 @@ namespace jgl
 	{
 		_origin = p_origin;
 	}
-	void WindowManager::setViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
+	void WindowManager::setViewport(jgl::Vector2Int p_viewportSize)
+	{
+		_viewportSize = p_viewportSize;
+	}
+	void WindowManager::setScissorViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
 	{
 		glScissor(p_anchor.x, _size.y - p_anchor.y - p_size.y, p_size.x, p_size.y);
 	}

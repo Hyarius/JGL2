@@ -6,7 +6,7 @@ namespace jgl
 {
 	void Application::_setupJobs()
 	{
-		_addJob([&]() { _windowManager.clear(); return (0); });
+		_addJob([&]() { _windowManager.reset(); return (0); });
 		_addJob([&]() { _APIManager.pullWinMessage(); return (0); });
 		_addJob([&]() { _renderWidget(); return (0); });
 		_addJob([&]() { _windowManager.render(); return (0); });

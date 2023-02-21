@@ -64,7 +64,7 @@ namespace jgl
 		const jgl::Vector2Int& borderSize() const { return(_borderSize.value()); }
 		const jgl::Vector2Int& anchor() const { return (_anchor); }
 		const jgl::Vector2Int& size() const { return (_size); }
-		const jgl::Vector2Int& usableAnchor() const { return (_anchor + borderSize()); }
-		const jgl::Vector2Int& usableSize() const { return (_size - borderSize() * 2); }
+		jgl::Vector2Int usableAnchor() const { return (_anchor + borderSize()); }
+		jgl::Vector2Int usableSize() const { return (_size - borderSize() * 2); }
 	};
 }

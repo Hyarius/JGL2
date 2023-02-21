@@ -45,27 +45,6 @@ namespace jgl
 			throw std::runtime_error("Error : no outline color uniform found in shader");
 	}
 
-	Bool Font::_isPixelOnGlyphOutline(UChar* p_atlasData, Int p_width, Int p_height, Int p_x, Int p_y, Int p_outlineSize)
-	{
-		Vector2Int origin = Vector2Int(p_x, p_y);
-
-		for (jgl::Int i = p_x - p_outlineSize; i <= p_x + p_outlineSize; i++)
-		{
-			for (jgl::Int j = p_y - p_outlineSize; j <= p_y + p_outlineSize; j++)
-			{
-				if (i >= 0 && j >= 0 &&
-					i < p_width && j < p_height)
-				{
-					Size_t index = i + j * p_width;
-					if (p_atlasData[index] == 0xFF)
-						return (true);
-				}
-			}
-		}
-
-		return (false);
-	}
-
 	Font::Font(std::string p_path)
 	{
 		Long size;
@@ -135,16 +114,16 @@ namespace jgl
 
 		UChar* atlasData = nullptr;
 
-		Int width = 32;
-		Int height = 32;
+		Int width = 32 + p_fontData.outlineSize;
+		Int height = 32 + p_fontData.outlineSize;
 
 		stbtt_packedchar* char_info = new stbtt_packedchar[nb_char];
-
 
 		while (1) {
 			atlasData = new UChar[width * height];
 
 			stbtt_pack_context context;
+
 			if (!stbtt_PackBegin(&context, atlasData, width, height, 0, p_fontData.outlineSize, nullptr))
 				throw std::runtime_error("Failed to initialize font");
 
@@ -177,10 +156,10 @@ namespace jgl
 
 			stbtt_GetPackedQuad(char_info, width, height, c, &data.step.x, &data.step.y, &quad, 1);
 
-			const Float xmin = quad.x0 - p_fontData.outlineSize;
-			const Float xmax = quad.x1 + p_fontData.outlineSize;
-			const Float ymin = quad.y0 - p_fontData.outlineSize;
-			const Float ymax = quad.y1 + p_fontData.outlineSize;
+			const Float xmin = quad.x0;
+			const Float xmax = quad.x1;
+			const Float ymin = quad.y0;
+			const Float ymax = quad.y1;
 
 			data.positions[0] = Vector2(xmin, ymin);
 			data.positions[1] = Vector2(xmax, ymin);
@@ -189,34 +168,15 @@ namespace jgl
 			data.size = Vector2Int(xmax - xmin, ymax - ymin);
 			data.offset = Vector2(-xmin, -ymax);
 
-			data.uvs[0] = { quad.s0 - width_delta, quad.t0 - height_delta };
-			data.uvs[1] = { quad.s1 + width_delta, quad.t0 - height_delta };
-			data.uvs[2] = { quad.s0 - width_delta, quad.t1 + height_delta };
-			data.uvs[3] = { quad.s1 + width_delta, quad.t1 + height_delta };
+			data.uvs[0] = { quad.s0, quad.t0 };
+			data.uvs[1] = { quad.s1, quad.t0 };
+			data.uvs[2] = { quad.s0, quad.t1 };
+			data.uvs[3] = { quad.s1, quad.t1 };
 
 			if (fontGlyphData.atlas.size() <= c)
 				fontGlyphData.atlas.resize(c + 1);
 			fontGlyphData.atlas[c] = data;
-		}
-
-		for (Int y = 0; y < height; y++)
-		{
-			for (Int x = 0; x < width; x++)
-			{
-				Size_t index = x + y * width;
-				if (atlasData[index] != 0xFF)
-				{
-					if (_isPixelOnGlyphOutline(atlasData, width, height, x, y, p_fontData.outlineSize) == true)
-					{
-						atlasData[index] = 0x7D;
-					}
-					else
-					{
-						atlasData[index] = 0x00;
-					}
-				}
-			}
-		}
+		}		
 
 		glGenTextures(1, &fontGlyphData.id);
 		glBindTexture(GL_TEXTURE_2D, fontGlyphData.id);

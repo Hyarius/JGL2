@@ -30,6 +30,7 @@ namespace jgl
 
 		jgl::Color _backgroundColor;
 		Vector2Int _size;
+		Vector2Int _viewportSize;
 		jgl::Vector2Int _origin = 0;
 
 		void _convertTitle(std::string p_title);
@@ -48,12 +49,13 @@ namespace jgl
 		void createWindow(std::string p_title, jgl::Vector2Int p_size, jgl::Color p_backgroundColor);
 
 		const jgl::Vector2Int& origin() const { return (_origin); }
-		const jgl::Vector2Int& size() const { return (_size); }
+		const jgl::Vector2Int& size() const { return (_viewportSize); }
 		void reset();
 		void resize(int w, int h);
 		void clear();
 		void render();
 		void setOrigin(jgl::Vector2Int p_origin);
-		void setViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size);
+		void setViewport(jgl::Vector2Int p_size);
+		void setScissorViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size);
 	};
 }
