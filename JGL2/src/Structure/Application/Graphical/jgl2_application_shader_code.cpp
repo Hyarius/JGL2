@@ -100,19 +100,41 @@ namespace jgl
 				layout(location = 0) out vec4 color;
 
 				uniform sampler2D textureID;
+				uniform uint outlineSize;
 
 				void main()
 				{
+int outlineConvertedSize = int(outlineSize);
 					if (fragmentUV.x < 0 || fragmentUV.x > 1 || fragmentUV.y < 0 || fragmentUV.y > 1)
 						discard;
 					vec4 tmp_color = texture(textureID, fragmentUV).rgba;
 					if (tmp_color.r == 0.0f)
-						discard;
+					{
+						if (outlineSize == 0u)
+							discard;
+						else 
+						{
+							vec2 unit = 1.0f / textureSize(textureID, 0);
+							bool isBorder = false;
+							for (int i = -outlineConvertedSize; isBorder == false && i < outlineConvertedSize; i++)
+							{
+								for (int j = -outlineConvertedSize; isBorder == false && j < outlineConvertedSize; j++)
+								{
+									if (distance(vec2(i, j), vec2(0, 0)) < outlineConvertedSize)
+									{
+										vec2 newUv = fragmentUV + vec2(i, j) * unit;
+										vec4 tmpColor = texture(textureID, newUv).rgba;
+										if (tmpColor.r == 1)
+											isBorder = true;
+									}
+								}
+							}
+							if (isBorder == true)
+								color = fragmentOutlineColor;
+						}
+					}
 					else
-						if (tmp_color.r == 1.0f)
-							color = fragmentColor;
-						else
-							color = fragmentOutlineColor;
+						color = fragmentColor;
 					if (color.a == 0)
 						discard;
 				})";

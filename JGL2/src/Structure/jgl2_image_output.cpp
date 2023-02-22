@@ -40,6 +40,8 @@ namespace jgl
 	ImageOutput::~ImageOutput()
 	{
 		glDeleteFramebuffers(1, &_frameBufferObject);
+		glDeleteTextures(1, &_outputTexture);
+		glDeleteRenderbuffers(1, &_depthBuffer);
 	}
 
 	void ImageOutput::associate()
@@ -53,7 +55,7 @@ namespace jgl
 	{
 		glViewport(0, 0, _size.x, _size.y);
 		glScissor(0, 0, _size.x, _size.y);
-		glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
+		glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
@@ -65,7 +67,24 @@ namespace jgl
 
 	Image* ImageOutput::save()
 	{
-		return (new jgl::Image(_outputTexture));
+		return (new jgl::Image(saveToOpenGLTexture()));
+	}
+
+	GLuint ImageOutput::saveToOpenGLTexture()
+	{
+		GLuint result;
+
+		glGenTextures(1, &result);
+		glBindTexture(GL_TEXTURE_2D, result);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, _size.x, _size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+		glCopyImageSubData(_outputTexture, GL_TEXTURE_2D, 0, 0, 0, 0,
+			result, GL_TEXTURE_2D, 0, 0, 0, 0,
+			_size.x, _size.y, 1);
+
+		return (result);
 	}
 
 	void ImageOutput::saveToFile(std::string p_path)

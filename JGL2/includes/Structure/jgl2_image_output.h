@@ -27,7 +27,10 @@ namespace jgl
 		void desassociate();
 
 		Image* save();
+		GLuint saveToOpenGLTexture();
 
 		void saveToFile(std::string p_path);
+
+		const jgl::Vector2Int& size() const { return (_size); }
 	};
 }

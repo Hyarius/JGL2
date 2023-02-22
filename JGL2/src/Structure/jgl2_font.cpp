@@ -25,24 +25,8 @@ namespace jgl
 			_textColorUniform = _shader->uniform("textColor");
 		if (_outlineColorUniform == nullptr)
 			_outlineColorUniform = _shader->uniform("outlineColor");
-
-		if (_shader == nullptr)
-			throw std::runtime_error("Error : no shader TextTexture2D in application");
-
-		if (_modelSpaceBuffer == nullptr)
-			throw std::runtime_error("Error : no model space buffer found in shader");
-		if (_modelDepthBuffer == nullptr)
-			throw std::runtime_error("Error : no model uvs buffer found in shader");
-		if (_modelUvBuffer == nullptr)
-			throw std::runtime_error("Error : no model uvs buffer found in shader");
-		if (_indexesBuffer == nullptr)
-			throw std::runtime_error("Error : no element buffer found in shader");
-		if (_textureUniform == nullptr)
-			throw std::runtime_error("Error : no texture ID uniform found in shader");
-		if (_textColorUniform == nullptr)
-			throw std::runtime_error("Error : no text color uniform found in shader");
-		if (_outlineColorUniform == nullptr)
-			throw std::runtime_error("Error : no outline color uniform found in shader");
+		if (_outlineSizeUniform == nullptr)
+			_outlineSizeUniform = _shader->uniform("outlineSize");
 	}
 
 	Font::Font(std::string p_path)
@@ -114,8 +98,8 @@ namespace jgl
 
 		UChar* atlasData = nullptr;
 
-		Int width = 32 + p_fontData.outlineSize;
-		Int height = 32 + p_fontData.outlineSize;
+		Int width = 32 + p_fontData.outlineSize * 2;
+		Int height = 32 + p_fontData.outlineSize * 2;
 
 		stbtt_packedchar* char_info = new stbtt_packedchar[nb_char];
 
@@ -124,7 +108,7 @@ namespace jgl
 
 			stbtt_pack_context context;
 
-			if (!stbtt_PackBegin(&context, atlasData, width, height, 0, p_fontData.outlineSize, nullptr))
+			if (!stbtt_PackBegin(&context, atlasData, width, height, 0, p_fontData.outlineSize * 2, nullptr))
 				throw std::runtime_error("Failed to initialize font");
 
 			stbtt_PackSetOversampling(&context, 2, 2);
@@ -146,7 +130,10 @@ namespace jgl
 		fontGlyphData.size = jgl::Vector2Int(width, height);
 		Float width_delta = 0.5f / width;
 		Float height_delta = 0.5f / height;
+		Float offsetUvsX = (1.0f / width) * p_fontData.outlineSize;
+		Float offsetUvsY = (1.0f / height) * p_fontData.outlineSize;
 
+		fontGlyphData.atlas.resize(nb_char + 1);
 		for (Size_t i = 32; i < nb_char; i++)
 		{
 			UChar c = i;
@@ -156,10 +143,12 @@ namespace jgl
 
 			stbtt_GetPackedQuad(char_info, width, height, c, &data.step.x, &data.step.y, &quad, 1);
 
+			data.step.x += p_fontData.outlineSize * 2;
+
 			const Float xmin = quad.x0;
-			const Float xmax = quad.x1;
+			const Float xmax = quad.x1 + p_fontData.outlineSize * 2;
 			const Float ymin = quad.y0;
-			const Float ymax = quad.y1;
+			const Float ymax = quad.y1 + p_fontData.outlineSize * 2;
 
 			data.positions[0] = Vector2(xmin, ymin);
 			data.positions[1] = Vector2(xmax, ymin);
@@ -168,15 +157,25 @@ namespace jgl
 			data.size = Vector2Int(xmax - xmin, ymax - ymin);
 			data.offset = Vector2(-xmin, -ymax);
 
-			data.uvs[0] = { quad.s0, quad.t0 };
-			data.uvs[1] = { quad.s1, quad.t0 };
-			data.uvs[2] = { quad.s0, quad.t1 };
-			data.uvs[3] = { quad.s1, quad.t1 };
+			data.uvs[0] = { quad.s0 - offsetUvsX, quad.t0 - offsetUvsY };
+			data.uvs[1] = { quad.s1 + offsetUvsX, quad.t0 - offsetUvsY };
+			data.uvs[2] = { quad.s0 - offsetUvsX, quad.t1 + offsetUvsY };
+			data.uvs[3] = { quad.s1 + offsetUvsX, quad.t1 + offsetUvsY };
 
-			if (fontGlyphData.atlas.size() <= c)
-				fontGlyphData.atlas.resize(c + 1);
 			fontGlyphData.atlas[c] = data;
-		}		
+		}	
+
+		for (Int y = 0; y < height; y++)
+		{
+			for (Int x = 0; x < width; x++)
+			{
+				Size_t index = x + y * width;
+				if (atlasData[index] != 0x00)
+				{
+					atlasData[index] = 0xFF;
+				}
+			}
+		}
 
 		glGenTextures(1, &fontGlyphData.id);
 		glBindTexture(GL_TEXTURE_2D, fontGlyphData.id);
@@ -187,10 +186,10 @@ namespace jgl
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
-
 		_fontGlyphDatas[p_fontData] = fontGlyphData;
 
 		delete[] atlasData;
+		delete[] char_info;
 	}
 
 	Font::FontGlyphData& Font::getFontGlyphData(Size_t p_textSize, Size_t p_outlineSize)
@@ -329,7 +328,7 @@ namespace jgl
 			p_indexesBuffer->send(_indexesData.data(), static_cast<Size_t>(_indexesData.size()));
 	}
 
-	void Font::_castCharRender(GLuint p_id, Color p_textColor, Color p_outlineColor)
+	void Font::_castCharRender(GLuint p_id, Color p_textColor, UInt p_outlineSize, Color p_outlineColor)
 	{
 		exportShaderData(_modelSpaceBuffer, _modelDepthBuffer, _modelUvBuffer, _indexesBuffer);
 
@@ -341,6 +340,7 @@ namespace jgl
 		_textureUniform->send(0);
 		_textColorUniform->send(p_textColor);
 		_outlineColorUniform->send(p_outlineColor);
+		_outlineSizeUniform->send(p_outlineSize);
 
 		_shader->launch(Shader::Mode::Triangle);
 	}
@@ -356,7 +356,7 @@ namespace jgl
 
 		Vector2Int result = prepareDraw(p_string, p_pos, p_size, p_outlineSize, p_depth);
 
-		_castCharRender(fontGlyphData.id, p_color, p_outlineColor);
+		_castCharRender(fontGlyphData.id, p_color, p_outlineSize, p_outlineColor);
 
 		return (result);
 	}

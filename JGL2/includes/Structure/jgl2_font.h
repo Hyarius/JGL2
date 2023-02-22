@@ -4,6 +4,7 @@
 #include "Structure/jgl2_vector2.h"
 #include "Structure/jgl2_shader.h"
 #include "Structure/jgl2_color.h"
+#include "Structure/jgl2_image_output.h"
 
 namespace jgl
 {
@@ -45,7 +46,6 @@ namespace jgl
 		};
 
 	private:
-
 		static inline Shader* _shader = nullptr;
 
 		static inline Buffer* _modelSpaceBuffer = nullptr;
@@ -59,6 +59,7 @@ namespace jgl
 		static inline Uniform* _textureUniform = nullptr;
 		static inline Uniform* _textColorUniform = nullptr;
 		static inline Uniform* _outlineColorUniform = nullptr;
+		static inline Uniform* _outlineSizeUniform = nullptr;
 		
 		UChar* _fontBuffer;
 		std::map<FontData, FontGlyphData> _fontGlyphDatas;
@@ -67,7 +68,7 @@ namespace jgl
 
 		void _initCharRender();
 		Vector2Int _prepareCharRender(FontGlyphData& p_fontGlyphData, UChar p_char, Vector2Int p_pos, UInt p_size, Size_t p_outlineSize, Float p_depth);
-		void _castCharRender(GLuint p_id, Color p_textColor, Color p_outlineColor);
+		void _castCharRender(GLuint p_id, Color p_textColor, UInt p_outlineSize, Color p_outlineColor);
 
 		void _initShaderData();
 

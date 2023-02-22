@@ -319,8 +319,11 @@ namespace jgl
 			if (_location == -1)
 				errorMessage = "Trying to use uniform [" + _name + "] who isn't parsed correctly (location = -1)";
 
-			//if (errorMessage != "")
-			//	throw std::runtime_error(errorMessage.c_str());
+			if (errorMessage != "")
+			{
+				jgl::cout << errorMessage << std::endl;
+				throw std::runtime_error(errorMessage.c_str());
+			}
 
 			return (true);
 		}
@@ -357,8 +360,6 @@ namespace jgl
 		{
 			if (_uniformChecker(Mode::Element, Type::Int, Size::One) == true)
 				glUniform1i(_location, data);
-			else
-				throw std::runtime_error("Unexpected type send to a One Int element");
 		}
 		template <typename T, typename std::enable_if < std::is_same <UInt, T>::value == true > ::type* = nullptr >
 		void send(T data)
