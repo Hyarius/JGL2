@@ -104,7 +104,7 @@ namespace jgl
 
 				void main()
 				{
-int outlineConvertedSize = int(outlineSize);
+					int outlineConvertedSize = int(outlineSize);
 					if (fragmentUV.x < 0 || fragmentUV.x > 1 || fragmentUV.y < 0 || fragmentUV.y > 1)
 						discard;
 					vec4 tmp_color = texture(textureID, fragmentUV).rgba;

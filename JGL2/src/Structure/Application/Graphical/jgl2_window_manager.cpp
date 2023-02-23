@@ -126,9 +126,12 @@ namespace jgl
 				*p_message >> width;
 				*p_message >> height;
 
+				jgl::Vector2 ratio = jgl::Vector2(
+					jgl::Float(width) / jgl::Float(size().x),
+					jgl::Float(height) / jgl::Float(size().y)
+				);
 				resize(width, height);
-				jgl::Vector2 ratio = jgl::Vector2(static_cast<jgl::Float>(width) / static_cast<jgl::Float>(_size.x), static_cast<jgl::Float>(height) / static_cast<jgl::Float>(_size.y));
-				ApplicationCore::instance()->_widgetManager.scaleWidgets(ratio);
+				ApplicationCore::instance()->_widgetManager.setRootWidgetGeometry(ratio);
 			break;
 		}
 	}
@@ -171,7 +174,7 @@ namespace jgl
 	{
 		_size.x = w;
 		_size.y = h;
-		clear();
+		reset();
 	}
 
 	void WindowManager::clear()

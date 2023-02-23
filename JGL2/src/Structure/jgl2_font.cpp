@@ -63,7 +63,7 @@ namespace jgl
 		//glDeleteTextures(1, &_id);
 	}
 
-	Size_t Font::computeTextSize(std::string p_string, Vector2Int p_textArea)
+	Size_t Font::computeTextSize(std::string p_string, jgl::Size_t p_outlineSize, Vector2Int p_textArea)
 	{
 		std::vector<int> deltas = { 100, 50, 20, 10, 1 };
 		Size_t result = 2;
@@ -76,7 +76,7 @@ namespace jgl
 			bool enough = false;
 			while (enough == false)
 			{
-				Vector2Int tmp_size = calcStringSize(p_string, result + deltas[i]);
+				Vector2Int tmp_size = calcStringSize(p_string, result + deltas[i], p_outlineSize);
 				if (tmp_size.x >= p_textArea.x || tmp_size.y >= p_textArea.y)
 					enough = true;
 				else
@@ -230,6 +230,7 @@ namespace jgl
 	{
 		_modelSpaceData.clear();
 		_modelUvData.clear();
+		_modelDepthData.clear();
 		_indexesData.clear();
 	}
 
@@ -258,12 +259,12 @@ namespace jgl
 		return (_calcCharSize(fontGlyphData, p_char));
 	}
 
-	Vector2Int Font::calcStringSize(std::string p_string, UInt p_size)
+	Vector2Int Font::calcStringSize(std::string p_string, UInt p_size, Size_t p_outlineSize)
 	{
 		Vector2Int minValue = Vector2Int(0, 0);
 		Vector2Int maxValue = Vector2Int(0, 0);
 
-		FontGlyphData& fontGlyphData = getFontGlyphData(p_size, 0);
+		FontGlyphData& fontGlyphData = getFontGlyphData(p_size, p_outlineSize);
 
 		for (Size_t i = 0; i < p_string.size(); i++)
 		{

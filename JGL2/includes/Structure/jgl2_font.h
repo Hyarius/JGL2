@@ -83,14 +83,14 @@ namespace jgl
 		GlyphData& getData(Size_t p_textSize, Size_t p_outlineSize, UChar p_char);
 		GlyphData& getData(FontGlyphData& p_fontGlyphData, UChar p_char);
 
-		Size_t computeTextSize(std::string p_string, Vector2Int p_textArea);
+		Size_t computeTextSize(std::string p_string, jgl::Size_t p_outlineSize, Vector2Int p_textArea);
 
 		GLuint textureID(Size_t p_textSize, Size_t p_outlineSize);
 
 		void exportShaderData(Buffer* p_modelSpaceBuffer, Buffer* p_modelDepthBuffer, Buffer* p_modelUvBuffer, Buffer* p_indexesBuffer);
 
-		Vector2Int calcCharSize(UChar p_char, UInt p_size, Size_t p_outlineSize = 0);
-		Vector2Int calcStringSize(std::string p_string, UInt p_size);
+		Vector2Int calcCharSize(UChar p_char, UInt p_size, Size_t p_outlineSize);
+		Vector2Int calcStringSize(std::string p_string, UInt p_size, Size_t p_outlineSize);
 
 		Vector2Int draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Float p_depth);
 		Vector2Int draw(std::string p_string, Vector2Int p_pos, UInt p_size, Color p_color, Size_t p_outlineSize, Color p_outlineColor, Float p_depth);

@@ -9,25 +9,9 @@ namespace jgl
 	private:
 		std::vector<WidgetCore*> _rootWidgets;
 
-		void _applyRatioOnWidget(WidgetCore* p_widget, jgl::Vector2 p_ratio)
+		void _setRootWidgetGeometry(WidgetCore* p_widget, jgl::Vector2 p_ratio)
 		{
-			for (auto children : p_widget->_parentingManager.childrens())
-			{
-				_applyRatioOnWidget(children, p_ratio);
-			}
-			p_widget->setGeometry(
-				jgl::Vector2(p_widget->anchor().x, p_widget->anchor().y) * p_ratio,
-				jgl::Vector2(p_widget->size().x, p_widget->size().y) * p_ratio
-			);
-		}
-
-		void _recalcViewportWidget(WidgetCore* p_widget, jgl::Vector2 p_ratio)
-		{
-			p_widget->_viewport.configure(p_widget->anchor(), p_widget->size());
-			for (auto children : p_widget->_parentingManager.childrens())
-			{
-				_recalcViewportWidget(children, p_ratio);
-			}
+			
 		}
 
 	public:
@@ -36,15 +20,14 @@ namespace jgl
 
 		}
 
-		void scaleWidgets(jgl::Vector2 p_ratio)
+		void setRootWidgetGeometry(jgl::Vector2 p_ratio)
 		{
 			for (auto rootWidget : _rootWidgets)
 			{
-				_applyRatioOnWidget(rootWidget, p_ratio);
-			}
-			for (auto rootWidget : _rootWidgets)
-			{
-				_recalcViewportWidget(rootWidget, p_ratio);
+				rootWidget->setGeometry(
+					jgl::Vector2(rootWidget->anchor().x, rootWidget->anchor().y) * p_ratio,
+					jgl::Vector2(rootWidget->size().x, rootWidget->size().y) * p_ratio
+				);
 			}
 		}
 
