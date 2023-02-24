@@ -2,131 +2,139 @@
 
 namespace jgl
 {
-	jgl::Color BoxDefaultValues::borderColor = jgl::Color(120, 120, 120);
-	jgl::Color BoxDefaultValues::color = jgl::Color(150, 150, 150);
-	jgl::Vector2Int BoxDefaultValues::borderSize = jgl::Vector2Int(5, 5);
-
-	void Box::_initializeShaderDatas()
+	namespace WidgetComponent
 	{
-		_shader = jgl::Application::instance()->shaders().get("Color2D");
-		_modelSpace = _shader->buffer("model_space")->copy();
-		_modelDepth = _shader->buffer("model_depth")->copy();
-		_modelColor = _shader->buffer("model_color")->copy();
-		_elementBuffer = _shader->elementBuffer()->copy();
-
-		_shaderInitialized = true;
-	}
-
-	void Box::_bakeColors()
-	{
-		for (jgl::Size_t i = 0; i < 8; i++)
+		void Box::_initializeShaderDatas()
 		{
-			_modelColorBufferData[i] = (i < 4 ? _color : _borderColor);
+			_shader = jgl::Application::instance()->shaders().get("Color2D");
+			_modelSpace = _shader->buffer("model_space")->copy();
+			_modelDepth = _shader->buffer("model_depth")->copy();
+			_modelColor = _shader->buffer("model_color")->copy();
+			_elementBuffer = _shader->elementBuffer()->copy();
+
+			_shaderInitialized = true;
 		}
 
-		_modelColor->send(_modelColorBufferData, 8);
-
-		_colorBaked = true;
-	}
-
-	void Box::_bakeVertices()
-	{
-		for (jgl::Size_t nbSquare = 0; nbSquare < 2; nbSquare++)
+		void Box::_bakeColors()
 		{
-			jgl::Vector2Int anchor = _anchor;
-			jgl::Vector2 squareSize = _size;
-			if (nbSquare == 0)
+			for (jgl::Size_t i = 0; i < 8; i++)
 			{
-				anchor += _borderSize.value();
-				squareSize = (_size - _borderSize.value() * 2);
+				_modelColorBufferData[i] = (i < 4 ? _color : _borderColor);
 			}
 
-			for (jgl::Int i = 0; i < 4; i++)
-			{
-				_modelSpaceBufferData[nbSquare * 4 + i] = jgl::Application::instance()->convertScreenToOpenGL(anchor + squareSize * jgl::Vector2Int(i % 2, i / 2));
-			}
+			_modelColor->send(_modelColorBufferData, 8);
+
+			_colorBaked = true;
 		}
 
-		_modelSpace->send(_modelSpaceBufferData, 8);
-		_elementBuffer->send(_elementBufferData, 12);
-
-		_verticesBaked = true;
-	}
-
-	void Box::_bakeDepth()
-	{
-		for (size_t i = 0; i < 8; i++)
+		void Box::_bakeVertices()
 		{
-			_modelDepthBufferData[i] = jgl::Application::instance()->convertDepthToOpenGL(_depth);
+			for (jgl::Size_t nbSquare = 0; nbSquare < 2; nbSquare++)
+			{
+				jgl::Vector2Int anchor = _anchor;
+				jgl::Vector2 squareSize = _size;
+				if (nbSquare == 0)
+				{
+					anchor += _borderSize.value();
+					squareSize = (_size - _borderSize.value() * 2);
+				}
+
+				for (jgl::Int i = 0; i < 4; i++)
+				{
+					_modelSpaceBufferData[nbSquare * 4 + i] = jgl::Application::instance()->convertScreenToOpenGL(anchor + squareSize * jgl::Vector2Int(i % 2, i / 2));
+				}
+			}
+
+			_modelSpace->send(_modelSpaceBufferData, 8);
+			_elementBuffer->send(_elementBufferData, 12);
+
+			_verticesBaked = true;
 		}
 
-		_modelDepth->send(_modelDepthBufferData, 8);
+		void Box::_bakeDepth()
+		{
+			for (size_t i = 0; i < 8; i++)
+			{
+				_modelDepthBufferData[i] = jgl::Application::instance()->convertDepthToOpenGL(_depth);
+			}
 
-		_depthBaked = true;
-	}
+			_modelDepth->send(_modelDepthBufferData, 8);
 
-	Box::Box() :
-		_color(BoxDefaultValues::color),
-		_borderColor(BoxDefaultValues::borderColor),
-		_borderSize(BoxDefaultValues::borderSize)
-	{
-		_borderSize.onEditValue([&]() {_verticesBaked = false; });
-		_color.onEditValue([&]() {_colorBaked = false; });
-		_borderColor.onEditValue([&]() {_colorBaked = false; });
-	}
-	void Box::reset()
-	{
-		_color.reset();
-		_borderColor.reset();
-		_borderSize.reset();
-	}
-	void Box::useValue()
-	{
-		_color.useValue();
-		_borderColor.useValue();
-		_borderSize.useValue();
-	}
-	void Box::setBorderSize(jgl::Vector2Int p_borderSize)
-	{
-		_borderSize = p_borderSize;
-	}
-	void Box::setColors(jgl::Color p_color, jgl::Color p_borderColor)
-	{
-		_color = p_color;
-		_borderColor = p_borderColor;
-	}
-	void Box::setGeometry(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
-	{
-		_anchor = p_anchor;
-		_size = p_size;
-		_verticesBaked = false;
-	}
-	void Box::setDepth(jgl::Float p_depth)
-	{
-		_depth = p_depth;
-		_depthBaked = false;
-	}
-	void Box::render()
-	{
-		if (_shaderInitialized == false)
-			_initializeShaderDatas();
+			_depthBaked = true;
+		}
 
-		if (_colorBaked == false)
-			_bakeColors();
+		Box::Box() :
+			_color(defaultValues.color),
+			_borderColor(defaultValues.borderColor),
+			_borderSize(defaultValues.borderSize)
+		{
+			_borderSize.onEditValue([&]() {_verticesBaked = false; });
+			_color.onEditValue([&]() {_colorBaked = false; });
+			_borderColor.onEditValue([&]() {_colorBaked = false; });
+		}
 
-		if (_verticesBaked == false)
-			_bakeVertices();
+		void Box::setDefaultValues(DefaultValues& p_defaultValue)
+		{
+			_color.setDefaultValue(p_defaultValue.color);
+			_borderSize.setDefaultValue(p_defaultValue.borderSize);
+			_borderColor.setDefaultValue(p_defaultValue.borderColor);
+		}
 
-		if (_depthBaked == false)
-			_bakeDepth();
+		void Box::reset()
+		{
+			_color.reset();
+			_borderColor.reset();
+			_borderSize.reset();
+		}
+		void Box::useValue()
+		{
+			_color.useValue();
+			_borderColor.useValue();
+			_borderSize.useValue();
+		}
+		void Box::setBorderSize(jgl::Vector2Int p_borderSize)
+		{
+			_borderSize = p_borderSize;
+		}
+		void Box::setColors(jgl::Color p_color, jgl::Color p_borderColor)
+		{
+			_color = p_color;
+			_borderColor = p_borderColor;
+		}
+		void Box::setGeometry(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
+		{
+			_anchor = p_anchor;
+			_size = p_size;
+			_verticesBaked = false;
+		}
+		void Box::setDepth(jgl::Float p_depth)
+		{
+			_depth = p_depth;
+			_depthBaked = false;
+		}
+		void Box::render()
+		{
+			if (_shaderInitialized == false)
+				_initializeShaderDatas();
 
-		_shader->activate();
+			if (_colorBaked == false)
+				_bakeColors();
 
-		_modelSpace->activate();
-		_modelDepth->activate();
-		_modelColor->activate();
-		_elementBuffer->activate();
+			if (_verticesBaked == false)
+				_bakeVertices();
 
-		_shader->cast(jgl::Shader::Mode::Triangle, _elementBuffer->size() / sizeof(jgl::UInt));
+			if (_depthBaked == false)
+				_bakeDepth();
+
+			_shader->activate();
+
+			_modelSpace->activate();
+			_modelDepth->activate();
+			_modelColor->activate();
+			_elementBuffer->activate();
+
+			_shader->cast(jgl::Shader::Mode::Triangle, _elementBuffer->size() / sizeof(jgl::UInt));
+		}
+
 	}
 }

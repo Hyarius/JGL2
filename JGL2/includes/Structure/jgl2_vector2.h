@@ -223,6 +223,34 @@ namespace jgl
 
 			return (result);
 		}
+
+		IVector2 floor()
+		{
+			IVector2 result;
+
+			result.x = std::floorf(x);
+			result.y = std::floorf(y);
+
+			return (result);
+		}
+		IVector2 ceiling()
+		{
+			IVector2 result;
+
+			result.x = std::ceilf(x);
+			result.y = std::ceilf(y);
+
+			return (result);
+		}
+		IVector2 round()
+		{
+			IVector2 result;
+
+			result.x = std::roundf(x);
+			result.y = std::roundf(y);
+
+			return (result);
+		}
 	};
 
 	template<typename TType, typename TValueType, typename = std::enable_if_t<std::is_arithmetic<TValueType>::value>>

@@ -111,7 +111,7 @@ namespace jgl
 			if (!stbtt_PackBegin(&context, atlasData, width, height, 0, p_fontData.outlineSize * 2, nullptr))
 				throw std::runtime_error("Failed to initialize font");
 
-			stbtt_PackSetOversampling(&context, 2, 2);
+			stbtt_PackSetOversampling(&context, 1, 1);
 			if (!stbtt_PackFontRange(&context, _fontBuffer, 0, p_fontData.textSize, 0, nb_char, char_info)) {
 				// too small
 				delete[] atlasData;

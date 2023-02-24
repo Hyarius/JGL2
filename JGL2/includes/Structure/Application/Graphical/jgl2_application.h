@@ -45,6 +45,7 @@ namespace jgl
 		ShaderAtlas& shaders() { return (_shaderAtlas); }
 
 		void setDefaultFont(jgl::Font* p_defaultFont) { _defaultFont = p_defaultFont; }
+		jgl::Font*& defaultFont() { return (_defaultFont); }
 		jgl::Font* const & defaultFont() const { return (_defaultFont); }
 		const jgl::Keyboard* keyboard() const { return (_keyboardManager.keyboard()); }
 		const jgl::Mouse* mouse() const { return (_mouseManager.mouse()); }

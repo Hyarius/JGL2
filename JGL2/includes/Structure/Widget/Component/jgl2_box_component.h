@@ -10,15 +10,20 @@
 
 namespace jgl
 {
-	struct BoxDefaultValues
+	namespace WidgetComponent
 	{
-		static jgl::Color borderColor;
-		static jgl::Color color;
-		static jgl::Vector2Int borderSize;
-	};
 
 	class Box
 	{
+	public:
+		struct DefaultValues
+		{
+			jgl::Color borderColor = jgl::Color(120, 120, 120);
+			jgl::Color color = jgl::Color(150, 150, 150);
+			jgl::Vector2Int borderSize = jgl::Vector2Int(5, 5);
+		};
+		static inline DefaultValues defaultValues;
+
 	private:
 		jgl::Bool _shaderInitialized = false;
 		jgl::Shader* _shader = nullptr;
@@ -51,8 +56,12 @@ namespace jgl
 
 	public:
 		Box();
+
+		void setDefaultValues(DefaultValues& p_defaultValue);
+
 		void reset();
 		void useValue();
+		
 		void setBorderSize(jgl::Vector2Int p_borderSize);
 		void setColors(jgl::Color p_color, jgl::Color p_borderColor);
 		void setGeometry(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size);
@@ -67,4 +76,6 @@ namespace jgl
 		jgl::Vector2Int usableAnchor() const { return (_anchor + borderSize()); }
 		jgl::Vector2Int usableSize() const { return (_size - borderSize() * 2); }
 	};
+
+	}
 }

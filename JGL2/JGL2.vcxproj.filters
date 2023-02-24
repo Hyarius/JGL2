@@ -201,6 +201,9 @@
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_label_component.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\Structure\Widget\jgl2_text_label.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Structure\jgl2_iostream.cpp">
@@ -279,9 +282,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Structure\Application\Graphical\jgl2_application_convert_functions.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Structure\Widget\jgl2_frame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Structure\Widget\Component\jgl2_label_component.cpp">

@@ -79,6 +79,7 @@
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_box_component.h" />
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_label_component.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_frame.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_text_label.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_widget_core.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_widget_parenting_manager.h" />
   </ItemGroup>
@@ -109,7 +110,6 @@
     <ClCompile Include="src\Structure\jgl2_viewport.cpp" />
     <ClCompile Include="src\Structure\Widget\Component\jgl2_box_component.cpp" />
     <ClCompile Include="src\Structure\Widget\Component\jgl2_label_component.cpp" />
-    <ClCompile Include="src\Structure\Widget\jgl2_frame.cpp" />
     <ClCompile Include="src\Structure\Widget\jgl2_widget_core.cpp" />
     <ClCompile Include="src\Structure\Widget\jgl2_widget_parenting_manager.cpp" />
   </ItemGroup>

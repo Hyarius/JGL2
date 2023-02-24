@@ -9,11 +9,6 @@ namespace jgl
 	private:
 		std::vector<WidgetCore*> _rootWidgets;
 
-		void _setRootWidgetGeometry(WidgetCore* p_widget, jgl::Vector2 p_ratio)
-		{
-			
-		}
-
 	public:
 		WidgetManager()
 		{
@@ -24,10 +19,10 @@ namespace jgl
 		{
 			for (auto rootWidget : _rootWidgets)
 			{
-				rootWidget->setGeometry(
-					jgl::Vector2(rootWidget->anchor().x, rootWidget->anchor().y) * p_ratio,
-					jgl::Vector2(rootWidget->size().x, rootWidget->size().y) * p_ratio
-				);
+				jgl::Vector2 newAnchor = jgl::Vector2(rootWidget->anchor().x, rootWidget->anchor().y) * p_ratio;
+				jgl::Vector2 newSize = jgl::Vector2(rootWidget->size().x, rootWidget->size().y) * p_ratio;
+
+				rootWidget->setGeometry(newAnchor.round(), newSize.round());
 			}
 		}
 

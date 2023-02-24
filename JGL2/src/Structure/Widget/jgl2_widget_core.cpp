@@ -67,7 +67,7 @@ namespace jgl
 		_anchor = p_anchor;
 		_size = p_size;
 		_viewport.configure(p_anchor, p_size);
-		_geometryEdited = true;
 		_parentingManager.editChildrensGeometry();
+		_geometryEdited = true;
 	}
 }

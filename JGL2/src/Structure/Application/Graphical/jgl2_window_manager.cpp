@@ -130,6 +130,7 @@ namespace jgl
 					jgl::Float(width) / jgl::Float(size().x),
 					jgl::Float(height) / jgl::Float(size().y)
 				);
+
 				resize(width, height);
 				ApplicationCore::instance()->_widgetManager.setRootWidgetGeometry(ratio);
 			break;
