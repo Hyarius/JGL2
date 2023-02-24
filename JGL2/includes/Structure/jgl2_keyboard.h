@@ -6,10 +6,18 @@
 
 namespace jgl
 {
+    namespace Application
+    {
+        namespace Module
+        {
+            class Keyboard;
+        }
+    }
 
     class Keyboard
     {
-        friend class KeyboardManager;
+        friend class jgl::Application::Module::Keyboard;
+
     public:
         static const Size_t C_NB_KEY = 255;
 

@@ -1,8 +1,9 @@
-#include "Structure/Application/Graphical/jgl2_keyboard_manager.h"
+#include "Structure/Application/Graphical/jgl2_keyboard_module.h"
 #include "jgl2_basic_functions.h"
-namespace jgl
+
+namespace jgl::Application::Module
 {
-	void KeyboardManager::_treatMessage(jgl::PolymorphicContainer* p_message)
+	void Keyboard::_treatMessage(jgl::PolymorphicContainer* p_message)
 	{
 		jgl::UInt messageId;
 		*p_message >> messageId;
@@ -42,14 +43,14 @@ namespace jgl
 		}
 	}
 
-	KeyboardManager::KeyboardManager(jgl::LockedQueue<jgl::PolymorphicContainer*>& p_messageToTreat) :
+	Keyboard::Keyboard(jgl::LockedQueue<jgl::PolymorphicContainer*>& p_messageToTreat) :
 		MessageConsumer(p_messageToTreat),
-		_keyboard(new Keyboard())
+		_keyboard(new jgl::Keyboard())
 	{
 
 	}
 
-	void KeyboardManager::_onUpdate()
+	void Keyboard::_onUpdate()
 	{
 		_keyboard->_updateState();
 	}

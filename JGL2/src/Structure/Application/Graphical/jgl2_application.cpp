@@ -2,32 +2,32 @@
 #include "jgl2_basic_functions.h"
 #include "structure/jgl2_vector2.h"
 
-namespace jgl
+namespace jgl::Application
 {
-	void Application::_setupJobs()
+	void Graphical::_setupJobs()
 	{
-		_addJob([&]() { _windowManager.reset(); return (0); });
-		_addJob([&]() { _APIManager.pullWinMessage(); return (0); });
+		_addJob([&]() { _window.reset(); return (0); });
+		_addJob([&]() { _API.pullWinMessage(); return (0); });
 		_addJob([&]() { _renderWidget(); return (0); });
-		_addJob([&]() { _windowManager.render(); return (0); });
+		_addJob([&]() { _window.render(); return (0); });
 
-		_addJob("UpdateThread", [&]() { _windowManager.update(); return (0); });
-		_addJob("UpdateThread", [&]() { _systemManager.update(); return (0); });
-		_addJob("UpdateThread", [&]() { _mouseManager.update(); return (0); });
-		_addJob("UpdateThread", [&]() { _keyboardManager.update(); return (0); });
+		_addJob("UpdateThread", [&]() { _window.update(); return (0); });
+		_addJob("UpdateThread", [&]() { _system.update(); return (0); });
+		_addJob("UpdateThread", [&]() { _mouse.update(); return (0); });
+		_addJob("UpdateThread", [&]() { _keyboard.update(); return (0); });
 		_addJob("UpdateThread", [&]() { _updateWidget(); return (0); });
 	}
 
-	Application::Application(std::string p_title, jgl::Vector2Int p_size, jgl::Color p_backgroundColor) : jgl::ApplicationCore(),
-		_APIManager(),
-		_windowManager(_APIManager.windowMessagesToTreat()),
-		_mouseManager(_APIManager.mouseMessagesToTreat()),
-		_keyboardManager(_APIManager.keyboardMessagesToTreat()),
-		_systemManager(_APIManager.systemMessagesToTreat()),
+	Graphical::Graphical(std::string p_title, jgl::Vector2Int p_size, jgl::Color p_backgroundColor) : jgl::Abstract::Application::Core(),
+		_API(),
+		_window(_API.windowMessagesToTreat()),
+		_mouse(_API.mouseMessagesToTreat()),
+		_keyboard(_API.keyboardMessagesToTreat()),
+		_system(_API.systemMessagesToTreat()),
 		_defaultFont(nullptr)
 	{
-		_windowManager.connectToAPI(&_APIManager);
-		_windowManager.createWindow(p_title, p_size, p_backgroundColor);
+		_window.connectToAPI(&_API);
+		_window.createWindow(p_title, p_size, p_backgroundColor);
 
 		_create2DColorShader();
 		_create2DTextureShader();

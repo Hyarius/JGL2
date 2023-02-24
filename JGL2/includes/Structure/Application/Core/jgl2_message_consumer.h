@@ -7,37 +7,47 @@
 
 namespace jgl
 {
-	class MessageConsumer
+	namespace Abstract
 	{
-	public:
-		using MessagePool = jgl::Singleton<jgl::Pool<jgl::PolymorphicContainer>>;
-
-	private:
-		jgl::LockedQueue<jgl::PolymorphicContainer*>& _messageToTreat;
-
-		virtual void _treatMessage(jgl::PolymorphicContainer* p_message) = 0;
-		virtual void _onUpdate()
+		namespace Application
 		{
-
-		}
-	public:
-		MessageConsumer(jgl::LockedQueue<jgl::PolymorphicContainer*>& p_messageToTreat) :
-			_messageToTreat(p_messageToTreat)
-		{
-
-		}
-
-		void update()
-		{
-			_onUpdate();
-			while (_messageToTreat.empty() == false)
+			namespace Utils
 			{
-				jgl::PolymorphicContainer* message = _messageToTreat.pop_front();
+				class MessageConsumer
+				{
+				public:
+					using MessagePool = Singleton<Pool<PolymorphicContainer>>;
 
-				_treatMessage(message);
+				private:
+					LockedQueue<PolymorphicContainer*>& _messageToTreat;
 
-				MessagePool::instance()->release(message);
+					virtual void _treatMessage(PolymorphicContainer* p_message) = 0;
+					virtual void _onUpdate()
+					{
+
+					}
+				public:
+					MessageConsumer(LockedQueue<PolymorphicContainer*>& p_messageToTreat) :
+						_messageToTreat(p_messageToTreat)
+					{
+
+					}
+
+					void update()
+					{
+						_onUpdate();
+						while (_messageToTreat.empty() == false)
+						{
+							PolymorphicContainer* message = _messageToTreat.pop_front();
+
+							_treatMessage(message);
+
+							MessagePool::instance()->release(message);
+						}
+					}
+				};
+
 			}
 		}
-	};
+	}
 }

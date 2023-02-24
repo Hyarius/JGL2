@@ -4,12 +4,18 @@
 
 namespace jgl
 {
-	class WidgetCore;
+	namespace Abstract
+	{
+		namespace Widget
+		{
+			class Core;
+		}
+	}
 
 	class Viewport
 	{
 	private:
-		WidgetCore* _owner;
+		Abstract::Widget::Core* _owner;
 		const Viewport* _parent;
 
 		Vector2Int _origin = Vector2Int(0, 0);
@@ -21,7 +27,7 @@ namespace jgl
 		Vector2Int _sizeOffset = Vector2Int(0, 0);
 
 	public:
-		Viewport(WidgetCore* p_owner);
+		Viewport(Abstract::Widget::Core* p_owner);
 
 		const Vector2Int& anchor() const { return (_anchor); }
 		const Vector2Int& size() const { return (_size); }

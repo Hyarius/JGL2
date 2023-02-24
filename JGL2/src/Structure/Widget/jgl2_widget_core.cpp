@@ -2,72 +2,72 @@
 #include "jgl2_basic_functions.h"
 #include "Structure/jgl2_iostream.h"
 
-namespace jgl
+namespace jgl::Abstract::Widget
 {
-	void WidgetCore::_render()
+	void Core::_render()
 	{
 		if (_geometryEdited == true)
 		{
 			_onGeometryChange();
 			_geometryEdited = false;
 		}
-		if (_parentingManager.parent() != nullptr)
-			_parentingManager.parent()->viewport()->use();
+		if (_parentingModule.parent() != nullptr)
+			_parentingModule.parent()->viewport()->use();
 		_onRender();
-		_parentingManager.callChildrenRender();
+		_parentingModule.callChildrenRender();
 	}
 
-	bool WidgetCore::_update()
+	bool Core::_update()
 	{
-		if (_parentingManager.callChildrenUpdate() == true)
+		if (_parentingModule.callChildrenUpdate() == true)
 			return (true);
 		return _onUpdate();
 	}
 
-	WidgetCore::WidgetCore(std::string p_name) :
+	Core::Core(std::string p_name) :
 		_name(p_name),
 		_viewport(this)
 	{
 
 	}
-	WidgetCore::~WidgetCore()
+	Core::~Core()
 	{
 
 	}
 
-	void WidgetCore::setDepth(jgl::Float p_depth)
+	void Core::setDepth(jgl::Float p_depth)
 	{
 		jgl::Float delta = p_depth - _depth;
 		_depth = p_depth;
 		_geometryEdited = true;
-		for (jgl::Size_t i = 0; i < _parentingManager.childrens().size(); i++)
+		for (jgl::Size_t i = 0; i < _parentingModule.childrens().size(); i++)
 		{
-			_parentingManager.childrens()[i]->setDepth(_parentingManager.childrens()[i]->depth() + delta);
+			_parentingModule.childrens()[i]->setDepth(_parentingModule.childrens()[i]->depth() + delta);
 		}
-		_parentingManager.sortChildren();
+		_parentingModule.sortChildren();
 	}
 
-	void WidgetCore::activate()
+	void Core::activate()
 	{
 		setActivationStatus(true);
 	}
 	
-	void WidgetCore::deactivate()
+	void Core::deactivate()
 	{
 		setActivationStatus(false);
 	}
 	
-	void WidgetCore::setActivationStatus(jgl::Bool p_state)
+	void Core::setActivationStatus(jgl::Bool p_state)
 	{
 		_isActive = p_state;
 	}
 
-	void WidgetCore::setGeometry(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
+	void Core::setGeometry(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
 	{
 		_anchor = p_anchor;
 		_size = p_size;
 		_viewport.configure(p_anchor, p_size);
-		_parentingManager.editChildrensGeometry();
+		_parentingModule.editChildrensGeometry();
 		_geometryEdited = true;
 	}
 }

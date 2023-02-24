@@ -17,7 +17,7 @@ namespace jgl
 
 	void Timer::start()
 	{
-		_startingTime = jgl::Application::instance()->time();
+		_startingTime = jgl::Abstract::Application::Core::instance()->time();
 		_state = State::Running;
 	}
 
@@ -28,7 +28,7 @@ namespace jgl
 
 	Timer::State Timer::state()
 	{
-		if (_state == State::Running && _startingTime + _timerDuration <= jgl::Application::instance()->time())
+		if (_state == State::Running && _startingTime + _timerDuration <= jgl::Abstract::Application::Core::instance()->time())
 		{
 			_state = State::Timeout;
 		}
@@ -48,7 +48,7 @@ namespace jgl
 
 	jgl::ULong Timer::elapsedTime()
 	{
-		return (jgl::Application::instance()->time() - _startingTime);
+		return (jgl::Abstract::Application::Core::instance()->time() - _startingTime);
 	}
 
 	jgl::Float Timer::percent()

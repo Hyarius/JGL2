@@ -9,7 +9,7 @@ namespace jgl
 	void Font::_initShaderData()
 	{
 		if (_shader == nullptr)
-			_shader = jgl::Application::instance()->shaders().get("TextTexture2D");
+			_shader = jgl::Application::Graphical::instance()->shaders().get("TextTexture2D");
 
 		if (_modelSpaceBuffer == nullptr)
 			_modelSpaceBuffer = _shader->buffer("model_space");
@@ -143,7 +143,7 @@ namespace jgl
 
 			stbtt_GetPackedQuad(char_info, width, height, c, &data.step.x, &data.step.y, &quad, 1);
 
-			data.step.x += p_fontData.outlineSize * 2;
+			data.step.x += p_fontData.outlineSize;
 
 			const Float xmin = quad.x0;
 			const Float xmax = quad.x1 + p_fontData.outlineSize * 2;
@@ -303,8 +303,8 @@ namespace jgl
 		for (Size_t i = 0; i < 4; i++)
 		{
 			Vector2Int tmp_pos = p_pos + glyphSize * delta_pos[i];
-			_modelSpaceData.push_back(Application::instance()->convertScreenToOpenGL(tmp_pos));
-			_modelDepthData.push_back(jgl::Application::instance()->convertDepthToOpenGL(p_depth));
+			_modelSpaceData.push_back(jgl::Application::Graphical::instance()->convertScreenToOpenGL(tmp_pos));
+			_modelDepthData.push_back(jgl::Application::Graphical::instance()->convertDepthToOpenGL(p_depth));
 			_modelUvData.push_back(glyphData.uvs[i]);
 		}
 

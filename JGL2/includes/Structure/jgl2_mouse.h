@@ -7,9 +7,16 @@
 
 namespace jgl
 {
+	namespace Application
+	{
+		namespace Module
+		{
+			class Mouse;
+		}
+	}
 	class Mouse
 	{
-		friend class MouseManager;
+		friend class jgl::Application::Module::Mouse;
 
 	public:
 		enum class Button

@@ -46,7 +46,7 @@ namespace jgl
 
 	void ImageOutput::associate()
 	{
-		jgl::Application::instance()->_windowManager.setViewport(jgl::Vector2Int(_size.x, _size.y));
+		jgl::Application::Graphical::instance()->_window.setViewport(jgl::Vector2Int(_size.x, _size.y));
 		glBindFramebuffer(GL_FRAMEBUFFER, _frameBufferObject);
 		clear();
 	}
@@ -61,7 +61,7 @@ namespace jgl
 
 	void ImageOutput::desassociate()
 	{
-		jgl::Application::instance()->_windowManager.reset();
+		jgl::Application::Graphical::instance()->_window.reset();
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 

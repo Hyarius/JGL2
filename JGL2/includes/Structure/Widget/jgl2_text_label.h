@@ -6,43 +6,46 @@
 
 namespace jgl
 {
-	class Label : public jgl::WidgetCore
+	namespace Widget
 	{
-	private:
-		jgl::WidgetComponent::Box _box;
-		jgl::WidgetComponent::Label _label;
-
-		jgl::Bool _needLabelTextSizeCalculation = false;
-
-		jgl::Bool _onUpdate()
+		class Label : public Abstract::Widget::Core
 		{
-			return (false);
-		}
-		void _onRender()
-		{
-			_label.render();
-			_box.render();
-		}
-		void _onGeometryChange()
-		{
-			_box.setGeometry(anchor(), size());
-			_box.setDepth(depth());
+		private:
+			jgl::Widget::Component::Box _box;
+			jgl::Widget::Component::Label _label;
 
-			_label.setGeometry(_box.usableAnchor(), _box.usableSize());
-			_label.setDepth(depth() + 0.5f);
-		}
+			jgl::Bool _needLabelTextSizeCalculation = false;
 
-	public:
-		Label(std::string p_name) : jgl::WidgetCore(p_name),
-			_needLabelTextSizeCalculation(false)
-		{
-			_label.setText("");
-		}
+			jgl::Bool _onUpdate()
+			{
+				return (false);
+			}
+			void _onRender()
+			{
+				_label.render();
+				_box.render();
+			}
+			void _onGeometryChange()
+			{
+				_box.setGeometry(anchor(), size());
+				_box.setDepth(depth());
 
-		jgl::WidgetComponent::Box& box() { return (_box); }
-		jgl::WidgetComponent::Label& label() { return (_label); }
+				_label.setGeometry(_box.usableAnchor(), _box.usableSize());
+				_label.setDepth(depth() + 0.5f);
+			}
 
-		const jgl::WidgetComponent::Box& box() const { return (_box); }
-		const jgl::WidgetComponent::Label& label() const { return (_label); }
-	};
+		public:
+			Label(std::string p_name) : Abstract::Widget::Core(p_name),
+				_needLabelTextSizeCalculation(false)
+			{
+				_label.setText("");
+			}
+
+			jgl::Widget::Component::Box& box() { return (_box); }
+			jgl::Widget::Component::Label& label() { return (_label); }
+
+			const jgl::Widget::Component::Box& box() const { return (_box); }
+			const jgl::Widget::Component::Label& label() const { return (_label); }
+		};
+	}
 }

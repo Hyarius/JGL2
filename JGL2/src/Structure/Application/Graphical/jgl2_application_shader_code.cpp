@@ -1,8 +1,8 @@
 #include "Structure/Application/Graphical/jgl2_application.h"
 
-namespace jgl
+namespace jgl::Application
 {
-	void Application::_create2DColorShader()
+	void Graphical::_create2DColorShader()
 	{
 		std::string colorShaderVertex =
 			R"( #version 330 core
@@ -32,9 +32,9 @@ namespace jgl
 						discard;
 				})";
 
-		_shaderAtlas.add("Color2D", new jgl::Shader(colorShaderVertex, colorShaderFragment));
+		_shader.add("Color2D", new jgl::Shader(colorShaderVertex, colorShaderFragment));
 	}
-	void Application::_create2DTextureShader()
+	void Graphical::_create2DTextureShader()
 	{
 		std::string textureShaderVertex =
 			R"(	#version 330 core
@@ -66,9 +66,9 @@ namespace jgl
 						discard;
 				})";
 
-		_shaderAtlas.add("Texture2D", new jgl::Shader(textureShaderVertex, textureShaderFragment));
+		_shader.add("Texture2D", new jgl::Shader(textureShaderVertex, textureShaderFragment));
 	}
-	void Application::_create2DTextTextureShader()
+	void Graphical::_create2DTextTextureShader()
 	{
 		std::string textTextureShaderVertex =
 			R"(	#version 330 core
@@ -139,6 +139,6 @@ namespace jgl
 						discard;
 				})";
 
-		_shaderAtlas.add("TextTexture2D", new jgl::Shader(textTextureShaderVertex, textTextureShaderFragment));
+		_shader.add("TextTexture2D", new jgl::Shader(textTextureShaderVertex, textTextureShaderFragment));
 	}
 }

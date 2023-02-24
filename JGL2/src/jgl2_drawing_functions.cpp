@@ -17,7 +17,7 @@ namespace jgl
 		static jgl::Shader* tmp_shader = nullptr;
 
 		if (tmp_shader == nullptr)
-			tmp_shader = jgl::Application::instance()->shaders().get(shader_name);
+			tmp_shader = jgl::Application::Graphical::instance()->shaders().get(shader_name);
 
 		if (tmp_shader == nullptr)
 			throw std::runtime_error("Error : no shader Color2D in application");
@@ -39,8 +39,8 @@ namespace jgl
 
 		for (size_t i = 0; i < 4; i++)
 		{
-			vertex_content[i] = jgl::Application::instance()->convertScreenToOpenGL(p_pos + p_size * delta_pos[i]);
-			depth_content[i] = jgl::Application::instance()->convertDepthToOpenGL(p_depth);
+			vertex_content[i] = jgl::Application::Graphical::instance()->convertScreenToOpenGL(p_pos + p_size * delta_pos[i]);
+			depth_content[i] = jgl::Application::Graphical::instance()->convertDepthToOpenGL(p_depth);
 			color_content[i] = p_color;
 		}
 

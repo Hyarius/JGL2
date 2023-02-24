@@ -1,60 +1,60 @@
-#include "Structure/Application/Core/jgl2_job_manager.h"
+#include "Structure/Application/Core/jgl2_job_module.h"
 #include "Structure/Application/Core/jgl2_application_core.h"
 
-namespace jgl
+namespace jgl::Application::Module
 {
-	void JobManager::_executeFuncts(const std::vector<Job>& p_jobs)
+	void Job::_executeFuncts(const std::vector<JobFunct>& p_jobs)
 	{
 		for (size_t i = 0; i < p_jobs.size(); i++)
 		{
 			int errorCode = p_jobs[i]();
 			if (errorCode != 0)
-				ApplicationCore::instance()->quit(errorCode);
+				jgl::Abstract::Application::Core::instance()->quit(errorCode);
 		}
 	}
 
-	JobManager::Data::Data() :
+	Job::Data::Data() :
 		thread(nullptr),
 		jobs()
 	{
 
 	}
 
-	JobManager::Data::Data(std::string p_name)
+	Job::Data::Data(std::string p_name)
 	{
 		thread = new jgl::Thread(jgl::Thread::LaunchMethod::Delayed, p_name,
 			[&]() {
-				while (ApplicationCore::instance()->_running == true)
+				while (jgl::Abstract::Application::Core::instance()->_running == true)
 				{
-					JobManager::_executeFuncts(jobs);
+					Job::_executeFuncts(jobs);
 				}
 			});
 	}
 
-	void JobManager::Data::addJob(Job p_job)
+	void Job::Data::addJob(JobFunct p_job)
 	{
 		jobs.push_back(p_job);
 	}
 
-	void JobManager::Data::start()
+	void Job::Data::start()
 	{
 		if (thread == nullptr)
 			throw std::runtime_error("No thread created in the jobManager");
 		thread->start();
 	}
-	void JobManager::Data::stop()
+	void Job::Data::stop()
 	{
 		if (thread == nullptr)
 			throw std::runtime_error("No thread created in the jobManager");
 		thread->join();
 	}
 
-	JobManager::Data* JobManager::createThread(std::string p_threadName)
+	Job::Data* Job::createThread(std::string p_threadName)
 	{
 		_datas[p_threadName] = new Data(p_threadName);
 		return (_datas.at(p_threadName));
 	}
-	void JobManager::addJob(std::string p_threadName, Job p_job)
+	void Job::addJob(std::string p_threadName, JobFunct p_job)
 	{
 		if (_datas.count(p_threadName) == 0)
 		{
@@ -62,15 +62,15 @@ namespace jgl
 		}
 		addJob(_datas[p_threadName], p_job);
 	}
-	void JobManager::addJob(Data* p_thread, Job p_job)
+	void Job::addJob(Data* p_thread, JobFunct p_job)
 	{
 		p_thread->addJob(p_job);
 	}
-	void JobManager::addJob(Job p_job)
+	void Job::addJob(JobFunct p_job)
 	{
 		_jobs.push_back(p_job);
 	}
-	void JobManager::_start()
+	void Job::_start()
 	{
 		for (auto it : _datas)
 		{
@@ -78,19 +78,19 @@ namespace jgl
 		}
 		if (_datas.size() != 0)
 			jgl::cout.setPrefix("MainThread");
-		while (ApplicationCore::instance()->_running == true)
+		while (jgl::Abstract::Application::Core::instance()->_running == true)
 		{
-			JobManager::_executeFuncts(_jobs);
+			Job::_executeFuncts(_jobs);
 		}
 	}
-	void JobManager::_stop()
+	void Job::_stop()
 	{
 		for (auto& it : _datas)
 		{
 			it.second->stop();
 		}
 	}
-	void JobManager::run()
+	void Job::run()
 	{
 		_start();
 		_stop();

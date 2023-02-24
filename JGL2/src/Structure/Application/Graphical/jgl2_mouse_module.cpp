@@ -1,9 +1,9 @@
-#include "Structure/Application/Graphical/jgl2_mouse_manager.h"
+#include "Structure/Application/Graphical/jgl2_mouse_module.h"
 #include "jgl2_basic_functions.h"
 
-namespace jgl
+namespace jgl::Application::Module
 {
-	void MouseManager::_treatMessage(jgl::PolymorphicContainer* p_message)
+	void Mouse::_treatMessage(jgl::PolymorphicContainer* p_message)
 	{
 		jgl::UInt messageId;
 		*p_message >> messageId;
@@ -63,14 +63,14 @@ namespace jgl
 		}
 	}
 
-	MouseManager::MouseManager(jgl::LockedQueue<jgl::PolymorphicContainer*>& p_messageToTreat) :
+	Mouse::Mouse(jgl::LockedQueue<jgl::PolymorphicContainer*>& p_messageToTreat) :
 		MessageConsumer(p_messageToTreat),
-		_mouse(new Mouse())
+		_mouse(new jgl::Mouse())
 	{
 
 	}
 
-	void MouseManager::_onUpdate()
+	void Mouse::_onUpdate()
 	{
 		_mouse->_updateState();
 	}

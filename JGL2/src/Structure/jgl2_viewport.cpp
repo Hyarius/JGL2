@@ -4,7 +4,7 @@
 
 namespace jgl
 {
-	Viewport::Viewport(WidgetCore* p_owner)
+	Viewport::Viewport(jgl::Abstract::Widget::Core* p_owner)
 	{
 		_owner = p_owner;
 	}
@@ -42,7 +42,7 @@ namespace jgl
 
 	void Viewport::use() const
 	{
-		jgl::Application::instance()->_windowManager.setOrigin(_origin);
-		jgl::Application::instance()->_windowManager.setScissorViewport(_cumulatedAnchor, _cumulatedSize);
+		jgl::Application::Graphical::instance()->_window.setOrigin(_origin);
+		jgl::Application::Graphical::instance()->_window.setScissorViewport(_cumulatedAnchor, _cumulatedSize);
 	}
 }

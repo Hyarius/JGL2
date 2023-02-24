@@ -5,32 +5,35 @@
 
 namespace jgl
 {
-	class Frame : public jgl::WidgetCore
+	namespace Widget
 	{
-	private:
-		jgl::WidgetComponent::Box _box;
+		class Frame : public Abstract::Widget::Core
+		{
+		private:
+			jgl::Widget::Component::Box _box;
 
-		jgl::Bool _onUpdate()
-		{
-			return (false);
-		}
-		void _onRender()
-		{
-			_box.render();
-		}
-		void _onGeometryChange()
-		{
-			_box.setGeometry(anchor(), size());
-			_box.setDepth(depth());
-		}
+			jgl::Bool _onUpdate()
+			{
+				return (false);
+			}
+			void _onRender()
+			{
+				_box.render();
+			}
+			void _onGeometryChange()
+			{
+				_box.setGeometry(anchor(), size());
+				_box.setDepth(depth());
+			}
 
-	public:
-		Frame(std::string p_name) : jgl::WidgetCore(p_name)
-		{
-			viewport()->setOffset(5, 10);
-		}
+		public:
+			Frame(std::string p_name) : Abstract::Widget::Core(p_name)
+			{
+				viewport()->setOffset(5, 10);
+			}
 
-		jgl::WidgetComponent::Box& box() { return (_box); }
-		const jgl::WidgetComponent::Box& box() const { return (_box); }
-	};
+			jgl::Widget::Component::Box& box() { return (_box); }
+			const jgl::Widget::Component::Box& box() const { return (_box); }
+		};
+	}
 }

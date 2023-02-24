@@ -1,24 +1,24 @@
-#include "Structure/Application/Graphical/jgl2_window_manager.h"
-#include "Structure/Application/Graphical/jgl2_windows_api_manager.h"
+#include "Structure/Application/Graphical/jgl2_window_module.h"
+#include "Structure/Application/Graphical/jgl2_windows_api_module.h"
 
-namespace jgl
+namespace jgl::Application::Module
 {
-	void WindowManager::_convertTitle(std::string p_title)
+	void Window::_convertTitle(std::string p_title)
 	{
 		_convertedTitle = new wchar_t[p_title.size() + 1];
 		size_t convertedChars = 0;
 		mbstowcs_s(&convertedChars, _convertedTitle, p_title.size() + 1, p_title.c_str(), _TRUNCATE);
 	}
 
-	void WindowManager::_createGhostInstance()
+	void Window::_createGhostInstance()
 	{
 		_hInstance = GetModuleHandle(NULL);
 	}
 
-	void WindowManager::_registerWindowClass()
+	void Window::_registerWindowClass()
 	{
 		_windowClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-		_windowClass.lpfnWndProc = (WNDPROC)WindowsAPIManager::WindowProc;
+		_windowClass.lpfnWndProc = (WNDPROC)jgl::Application::Module::WindowsAPI::WindowProc;
 		_windowClass.cbClsExtra = 0;
 		_windowClass.cbWndExtra = 0;
 		_windowClass.hInstance = _hInstance;
@@ -31,7 +31,7 @@ namespace jgl
 		RegisterClass(&_windowClass);
 	}
 
-	void WindowManager::_createWindowFrame(jgl::Vector2Int p_size)
+	void Window::_createWindowFrame(jgl::Vector2Int p_size)
 	{
 		_windowSize.left = (long)0;
 		_windowSize.right = (long)p_size.x;
@@ -44,10 +44,10 @@ namespace jgl
 		AdjustWindowRectEx(&_windowSize, _windowStyle, FALSE, _windowExStyle);
 
 		_windowFrame = CreateWindowEx(_windowExStyle, (LPCTSTR)(_convertedTitle), (LPCTSTR)(_convertedTitle), WS_OVERLAPPEDWINDOW,
-			CW_USEDEFAULT, 0, _windowSize.right - _windowSize.left, _windowSize.bottom - _windowSize.top, NULL, NULL, _hInstance, _api_manager);
+			CW_USEDEFAULT, 0, _windowSize.right - _windowSize.left, _windowSize.bottom - _windowSize.top, NULL, NULL, _hInstance, _api_module);
 	}
 
-	void WindowManager::_composeOpenGLContext()
+	void Window::_composeOpenGLContext()
 	{
 		_hdc = GetDC(_windowFrame);
 
@@ -104,14 +104,14 @@ namespace jgl
 		glEnable(GL_SCISSOR_TEST);
 	}
 
-	void WindowManager::_activateWindow()
+	void Window::_activateWindow()
 	{
 		ShowWindow(_windowFrame, SW_SHOW);
 		UpdateWindow(_windowFrame);
 		wglSwapIntervalEXT(0);
 	}
 
-	void WindowManager::_treatMessage(jgl::PolymorphicContainer* p_message)
+	void Window::_treatMessage(jgl::PolymorphicContainer* p_message)
 	{
 		jgl::UInt messageId;
 		*p_message >> messageId;
@@ -132,18 +132,18 @@ namespace jgl
 				);
 
 				resize(width, height);
-				ApplicationCore::instance()->_widgetManager.setRootWidgetGeometry(ratio);
+				jgl::Abstract::Application::Core::instance()->_widgets.setRootWidgetGeometry(ratio);
 			break;
 		}
 	}
 
-	WindowManager::WindowManager(jgl::LockedQueue<jgl::PolymorphicContainer*>& p_messageToTreat) :
+	Window::Window(jgl::LockedQueue<jgl::PolymorphicContainer*>& p_messageToTreat) :
 		MessageConsumer(p_messageToTreat)
 	{
 
 	}
 
-	void WindowManager::createWindow(std::string p_title, jgl::Vector2Int p_size, jgl::Color p_backgroundColor)
+	void Window::createWindow(std::string p_title, jgl::Vector2Int p_size, jgl::Color p_backgroundColor)
 	{
 		_backgroundColor = p_backgroundColor;
 
@@ -163,7 +163,7 @@ namespace jgl
 		_activateWindow();
 	}
 
-	void WindowManager::reset()
+	void Window::reset()
 	{
 		setViewport(_size);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -171,14 +171,14 @@ namespace jgl
 		clear();
 	}
 
-	void WindowManager::resize(int w, int h)
+	void Window::resize(int w, int h)
 	{
 		_size.x = w;
 		_size.y = h;
 		reset();
 	}
 
-	void WindowManager::clear()
+	void Window::clear()
 	{
 		_origin = 0;
 		glViewport(0, 0, _size.x, _size.y);
@@ -186,20 +186,20 @@ namespace jgl
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 
-	void WindowManager::render()
+	void Window::render()
 	{
 		SwapBuffers(_hdc);
 	}
 
-	void WindowManager::setOrigin(jgl::Vector2Int p_origin)
+	void Window::setOrigin(jgl::Vector2Int p_origin)
 	{
 		_origin = p_origin;
 	}
-	void WindowManager::setViewport(jgl::Vector2Int p_viewportSize)
+	void Window::setViewport(jgl::Vector2Int p_viewportSize)
 	{
 		_viewportSize = p_viewportSize;
 	}
-	void WindowManager::setScissorViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
+	void Window::setScissorViewport(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
 	{
 		glScissor(p_anchor.x, _size.y - p_anchor.y - p_size.y, p_size.x, p_size.y);
 	}
