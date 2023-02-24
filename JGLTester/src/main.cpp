@@ -5,8 +5,9 @@ int main(int argc, char** argv)
 	jgl::Application::Graphical app = jgl::Application::Graphical("Erelia", jgl::Vector2Int(840, 680), jgl::Color(50, 50, 50));
 	app.setDefaultFont(new jgl::Font("Sono-Regular.ttf"));
 
-	jgl::Widget::Label* tmp = app.addRootWidget<jgl::Widget::Label>("Frame");
-	tmp->label().setText("Coucou, ceci est un test");
+	jgl::Widget::Button* tmp = app.addRootWidget<jgl::Widget::Button>("Frame", [&]() {jgl::cout << "Coucou !" << std::endl; });
+	tmp->unselectedLabel().setText("Unselected");
+	tmp->selectedLabel().setText("Selected");
 	tmp->setGeometry(0, app.size());
 	tmp->activate();
 

@@ -10,11 +10,13 @@ namespace jgl
 	{
 		class Label : public Abstract::Widget::Core
 		{
+		public:
+			static inline jgl::Widget::Component::Box::DefaultValues boxDefaultValue;
+			static inline jgl::Widget::Component::Label::DefaultValues labelDefaultValue;
+
 		private:
 			jgl::Widget::Component::Box _box;
 			jgl::Widget::Component::Label _label;
-
-			jgl::Bool _needLabelTextSizeCalculation = false;
 
 			jgl::Bool _onUpdate()
 			{
@@ -35,10 +37,17 @@ namespace jgl
 			}
 
 		public:
-			Label(std::string p_name) : Abstract::Widget::Core(p_name),
-				_needLabelTextSizeCalculation(false)
+			Label(std::string p_name) : Abstract::Widget::Core(p_name)
 			{
-				_label.setText("");
+				_box.setDefaultValues(boxDefaultValue);
+				_label.setDefaultValues(labelDefaultValue);
+
+				setText("");
+			}
+
+			void setText(std::string p_text)
+			{
+				_label.setText(p_text);
 			}
 
 			jgl::Widget::Component::Box& box() { return (_box); }

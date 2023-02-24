@@ -251,6 +251,16 @@ namespace jgl
 
 			return (result);
 		}
+
+		jgl::Bool isBetween(IVector2 p_min, IVector2 p_max) const
+		{
+			if (x < p_min.x ||
+				y < p_min.y ||
+				x > p_max.x ||
+				y > p_max.y)
+				return (false);
+			return (true);
+		}
 	};
 
 	template<typename TType, typename TValueType, typename = std::enable_if_t<std::is_arithmetic<TValueType>::value>>

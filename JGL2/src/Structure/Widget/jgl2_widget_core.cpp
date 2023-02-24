@@ -1,6 +1,7 @@
 #include "Structure/Widget/jgl2_widget_core.h"
 #include "jgl2_basic_functions.h"
 #include "Structure/jgl2_iostream.h"
+#include "Structure/Application/graphical/jgl2_application.h"
 
 namespace jgl::Abstract::Widget
 {
@@ -69,5 +70,12 @@ namespace jgl::Abstract::Widget
 		_viewport.configure(p_anchor, p_size);
 		_parentingModule.editChildrensGeometry();
 		_geometryEdited = true;
+	}
+
+	jgl::Bool Core::isPointed()
+	{
+		Vector2Int pos = jgl::Application::Graphical::instance()->mouse()->pos();
+
+		return (pos.isBetween(_viewport.anchor(), _viewport.anchor() + _viewport.size()));
 	}
 }

@@ -62,9 +62,9 @@ namespace jgl::Widget::Component
 	}
 
 	Box::Box() :
-		_color(defaultValues.color),
-		_borderColor(defaultValues.borderColor),
-		_borderSize(defaultValues.borderSize)
+		_color(&(defaultValues.color)),
+		_borderColor(&(defaultValues.borderColor)),
+		_borderSize(&(defaultValues.borderSize))
 	{
 		_borderSize.onEditValue([&]() {_verticesBaked = false; });
 		_color.onEditValue([&]() {_colorBaked = false; });
@@ -73,9 +73,9 @@ namespace jgl::Widget::Component
 
 	void Box::setDefaultValues(DefaultValues& p_defaultValue)
 	{
-		_color.setDefaultValue(p_defaultValue.color);
-		_borderSize.setDefaultValue(p_defaultValue.borderSize);
-		_borderColor.setDefaultValue(p_defaultValue.borderColor);
+		_color.setDefaultValue(&(p_defaultValue.color));
+		_borderSize.setDefaultValue(&(p_defaultValue.borderSize));
+		_borderColor.setDefaultValue(&(p_defaultValue.borderColor));
 	}
 
 	void Box::reset()

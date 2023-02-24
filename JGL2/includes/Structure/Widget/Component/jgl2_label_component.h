@@ -94,6 +94,8 @@ namespace jgl
 				void setText(std::string p_text);
 				void setTextSize(jgl::Size_t p_textSize);
 				void setOutlineSize(jgl::Size_t p_outlineSize);
+				void setTextColor(jgl::Color p_textColor);
+				void setOutlineColor(jgl::Color p_outlineColor);
 				void setHorizontalAlignment(jgl::HorizontalAlignment p_alignment);
 				void setVerticalAlignment(jgl::VerticalAlignment p_alignment);
 

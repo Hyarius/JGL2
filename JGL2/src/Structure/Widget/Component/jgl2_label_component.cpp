@@ -4,13 +4,13 @@
 namespace jgl::Widget::Component
 {
 	Label::Label() :
-		_textSize(defaultValues.textSize),
-		_outlineSize(defaultValues.outlineSize),
-		_textColor(defaultValues.textColor),
-		_outlineColor(defaultValues.outlineColor),
-		_font(jgl::Application::Graphical::instance()->defaultFont()),
-		_horizontalAlignment(defaultValues.horizontalAlignment),
-		_verticalAlignment(defaultValues.verticalAlignment),
+		_textSize(&(defaultValues.textSize)),
+		_outlineSize(&(defaultValues.outlineSize)),
+		_textColor(&(defaultValues.textColor)),
+		_outlineColor(&(defaultValues.outlineColor)),
+		_font(&(jgl::Application::Graphical::instance()->defaultFont())),
+		_horizontalAlignment(&(defaultValues.horizontalAlignment)),
+		_verticalAlignment(&(defaultValues.verticalAlignment)),
 		_text(""),
 		_verticesBaked(false),
 		_depthBaked(false)
@@ -24,12 +24,12 @@ namespace jgl::Widget::Component
 
 	void Label::setDefaultValues(DefaultValues& p_defaultValues)
 	{
-		_textSize.setDefaultValue(p_defaultValues.textSize);
-		_outlineSize.setDefaultValue(p_defaultValues.outlineSize);
-		_textColor.setDefaultValue(p_defaultValues.textColor);
-		_outlineColor.setDefaultValue(p_defaultValues.outlineColor);
-		_horizontalAlignment.setDefaultValue(p_defaultValues.horizontalAlignment);
-		_verticalAlignment.setDefaultValue(p_defaultValues.verticalAlignment);
+		_textSize.setDefaultValue(&(p_defaultValues.textSize));
+		_outlineSize.setDefaultValue(&(p_defaultValues.outlineSize));
+		_textColor.setDefaultValue(&(p_defaultValues.textColor));
+		_outlineColor.setDefaultValue(&(p_defaultValues.outlineColor));
+		_horizontalAlignment.setDefaultValue(&(p_defaultValues.horizontalAlignment));
+		_verticalAlignment.setDefaultValue(&(p_defaultValues.verticalAlignment));
 	}
 
 	void Label::reset()
@@ -76,6 +76,16 @@ namespace jgl::Widget::Component
 	void Label::setOutlineSize(jgl::Size_t p_outlineSize)
 	{
 		_outlineSize = p_outlineSize;
+	}
+
+	void Label::setTextColor(jgl::Color p_textColor)
+	{
+		_textColor = p_textColor;
+	}
+	
+	void Label::setOutlineColor(jgl::Color p_outlineColor)
+	{
+		_outlineColor = p_outlineColor;
 	}
 
 	void Label::setHorizontalAlignment(jgl::HorizontalAlignment p_alignment)

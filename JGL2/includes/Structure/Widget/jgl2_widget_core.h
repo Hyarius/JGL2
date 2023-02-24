@@ -106,6 +106,8 @@ namespace jgl
 
 				void setGeometry(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size);
 
+				jgl::Bool isPointed();
+
 				const std::string& name() const { return (_name); }
 			};
 		}

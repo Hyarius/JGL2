@@ -9,9 +9,9 @@ namespace jgl
 	class MonitoredValue
 	{
 	private:
-		TType& _defaultValue;
+		const TType* _defaultValue;
 		TType _value;
-		TType* _actualValue;
+		const TType* _actualValue;
 		std::vector<std::function<void()>> _onEditValue;
 
 		void _notify()
@@ -23,9 +23,9 @@ namespace jgl
 		}
 
 	public:
-		MonitoredValue(TType& p_defaultValue) :
+		MonitoredValue(const TType* p_defaultValue) :
 			_defaultValue(p_defaultValue),
-			_actualValue(&_defaultValue),
+			_actualValue(_defaultValue),
 			_value()
 		{
 			_value = {};
@@ -37,7 +37,7 @@ namespace jgl
 			_onEditValue.push_back(std::bind(std::forward<Func>(p_funct), std::forward<Args>(p_args)...));
 		}
 
-		void setDefaultValue(TType& p_defaultValue)
+		void setDefaultValue(const TType* p_defaultValue)
 		{
 			_defaultValue = p_defaultValue;
 			reset();
@@ -60,7 +60,7 @@ namespace jgl
 		}
 		void reset()
 		{
-			_actualValue = &_defaultValue;
+			_actualValue = _defaultValue;
 			_notify();
 		}
 		void useValue()
