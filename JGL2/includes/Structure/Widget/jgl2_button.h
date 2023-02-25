@@ -95,11 +95,6 @@ namespace jgl
 
 				_boxes[1].setDefaultValues(selectedBoxDefaultValue);
 				_labels[1].setDefaultValues(selectedLabelDefaultValue);
-
-				jgl::cout << "Color unselected -> " << unselectedBoxDefaultValue.borderColor << " / " << unselectedBoxDefaultValue.color << std::endl;
-				jgl::cout << "Color selected -> " << selectedBoxDefaultValue.borderColor << " / " << selectedBoxDefaultValue.color << std::endl;
-				for (jgl::Size_t i = 0; i < 2; i++)
-					jgl::cout << "Color [" << i << "] -> " << _boxes[i].borderColor() << " / " << _boxes[i].color() << std::endl;
 			}
 
 			template <typename Func, typename... Args>

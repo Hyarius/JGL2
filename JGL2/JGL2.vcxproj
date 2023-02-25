@@ -79,7 +79,10 @@
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_box_component.h" />
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_label_component.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_button.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_console_widget.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_debug_screen.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_frame.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_network_manager.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_text_label.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_widget_core.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_widget_parenting_module.h" />

@@ -8,7 +8,7 @@ int main(int argc, char** argv)
 	jgl::Widget::Button* tmp = app.addRootWidget<jgl::Widget::Button>("Frame", [&]() {jgl::cout << "Coucou !" << std::endl; });
 	tmp->unselectedLabel().setText("Unselected");
 	tmp->selectedLabel().setText("Selected");
-	tmp->setGeometry(0, app.size());
+	tmp->setGeometry(app.size() / 4, app.size() / 2);
 	tmp->activate();
 
 	return (app.run());

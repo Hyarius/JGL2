@@ -9,6 +9,12 @@ namespace jgl
 	{
 		class Frame : public Abstract::Widget::Core
 		{
+		public:
+			static inline jgl::Widget::Component::Box::DefaultValues boxDefaultValue = {
+				jgl::Color(120, 120, 120),
+				jgl::Color(150, 150, 150),
+				jgl::Vector2Int(5, 5)
+			};
 		private:
 			jgl::Widget::Component::Box _box;
 
@@ -29,6 +35,7 @@ namespace jgl
 		public:
 			Frame(std::string p_name) : Abstract::Widget::Core(p_name)
 			{
+				_box.setDefaultValues(boxDefaultValue);
 				viewport()->setOffset(5, 10);
 			}
 
