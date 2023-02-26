@@ -1,12 +1,12 @@
 #pragma once
 
 #include "Structure/jgl2_network.h"
-#include "Structure/Widget/jgl2_console_widget.h"
+#include "Structure/Widget/jgl2_no_graphics.h"
 
 namespace jgl
 {
 	template <typename TServerMessageEnum>
-	class ServerManager : public jgl::ConsoleWidget
+	class ServerManager : public jgl::Abstract::Widget::NoGraphics
 	{
 	private:
 		jgl::Network::Server< TServerMessageEnum>* _server = nullptr;
@@ -19,7 +19,7 @@ namespace jgl
 		}
 
 	public:
-		ServerManager(std::string p_name) : jgl::ConsoleWidget(p_name)
+		ServerManager(std::string p_name) : jgl::Abstract::Widget::NoGraphics(p_name)
 		{
 
 		}
@@ -33,7 +33,7 @@ namespace jgl
 	};
 
 	template <typename TServerMessageEnum>
-	class ClientManager : public jgl::ConsoleWidget
+	class ClientManager : public jgl::Abstract::Widget::NoGraphics
 	{
 	private:
 		jgl::Network::Client< TServerMessageEnum>* _client = nullptr;
@@ -46,7 +46,7 @@ namespace jgl
 		}
 
 	public:
-		ClientManager(std::string p_name) : jgl::ConsoleWidget(p_name)
+		ClientManager(std::string p_name) : jgl::Abstract::Widget::NoGraphics(p_name)
 		{
 
 		}

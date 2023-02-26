@@ -62,6 +62,14 @@ namespace jgl::Widget::Component
 			setTextSize(_font.value()->computeTextSize(_text, _outlineSize.value(), _size));
 	}
 
+	jgl::Size_t Label::calculateTextSize()
+	{
+		if (_text == "")
+			return (UINT32_MAX);
+		else
+			return (_font.value()->computeTextSize(_text, _outlineSize.value(), _size));
+	}
+
 	void Label::setText(std::string p_text)
 	{
 		_text = p_text;

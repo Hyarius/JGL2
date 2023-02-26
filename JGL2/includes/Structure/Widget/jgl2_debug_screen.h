@@ -1,83 +1,87 @@
 #pragma once
 
-#include "jgl2_includes.h"
-#include "Structure/jgl2_vector2.h"
-#include "Structure/jgl2_timer.h"
-#include "Structure/Widget/jgl2_text_label.h"
+#include "Structure/Widget/jgl2_widget_core.h"
+#include "Structure/Widget/Component/jgl2_label_component.h"
 
 namespace jgl
 {
-	template <const jgl::Size_t NumberCollumn, const jgl::Size_t NumberLine>
-	class DebugScreen : public jgl::Widget
+	namespace Widget
 	{
-	public:
-		static const jgl::Size_t C_NB_LINES = NumberLine;
-		static const jgl::Size_t C_NB_COLLUMNS = NumberCollumn;
-
-	private:
-
-		jgl::TextLabel* _lines[C_NB_LINES][C_NB_COLLUMNS];
-
-		void _onRender()
+		template <const jgl::Size_t C_NB_COLLUMNS, const jgl::Size_t C_NB_ROWS>
+		class DebugScreen : public jgl::Abstract::Widget::Core
 		{
+		private:
+			jgl::Widget::Component::Label::DefaultValues _labelsDefaultValues;
+			jgl::Widget::Component::Label _labels[C_NB_COLLUMNS][C_NB_ROWS];
 
-		}
-		void _onGeometryChange()
-		{
-			jgl::Float unitValue = size().y() / static_cast<jgl::Float>(C_NB_LINES);
-			jgl::Vector2 unit = jgl::Vector2Int(unitValue, unitValue);
-
-			jgl::Vector2 labelSize = jgl::Vector2((size().x()) / static_cast<jgl::Float>(C_NB_COLLUMNS), unit.y());
-
-			for (jgl::Size_t i = 0; i < C_NB_LINES; i++)
+			jgl::Bool _onUpdate()
 			{
-				for (jgl::Size_t j = 0; j < C_NB_COLLUMNS; j++)
+				return (false);
+			}
+
+			void _computeLabelsTextSize()
+			{
+				jgl::Size_t newTextSize = UINT32_MAX;
+
+				for (jgl::Size_t i = 0; i < C_NB_COLLUMNS; i++)
 				{
-					_lines[i][j]->setGeometry(labelSize * jgl::Vector2(j, i), labelSize);
+					for (jgl::Size_t j = 0; j < C_NB_ROWS; j++)
+					{
+						jgl::Size_t tmpTextSize = _labels[i][j].calculateTextSize();
+						if (tmpTextSize < newTextSize)
+						{
+							newTextSize = tmpTextSize;
+						}
+					}
+				}
+				_labelsDefaultValues.textSize = newTextSize;
+			}
+
+			void _onGeometryChange()
+			{
+				jgl::Vector2Int labelSize = (size() - 20) / jgl::Vector2Int(C_NB_COLLUMNS, C_NB_ROWS);
+				for (jgl::Size_t i = 0; i < C_NB_COLLUMNS; i++)
+				{
+					for (jgl::Size_t j = 0; j < C_NB_ROWS; j++)
+					{
+						_labels[i][j].setGeometry(jgl::Vector2Int(i, j) * labelSize + 10, labelSize);
+					}
+				}
+				_computeLabelsTextSize();
+			}
+
+			void _onRender()
+			{
+				for (jgl::Size_t i = 0; i < C_NB_COLLUMNS; i++)
+				{
+					for (jgl::Size_t j = 0; j < C_NB_ROWS; j++)
+					{
+						_labels[i][j].render();
+					}
 				}
 			}
-		}
 
-		jgl::Bool _onUpdate()
-		{
-			return (false);
-		}
-
-		void _onPositionChange()
-		{
-
-		}
-
-	public:
-		DebugScreen(jgl::Widget* p_parent) : jgl::Widget(p_parent)
-		{
-			for (jgl::Size_t i = 0; i < C_NB_LINES; i++)
+		public:
+			DebugScreen(std::string p_name) : jgl::Abstract::Widget::Core(p_name)
 			{
-				for (jgl::Size_t j = 0; j < C_NB_COLLUMNS; j++)
+				_labelsDefaultValues = jgl::Widget::Component::Label::defaultValues;
+				for (jgl::Size_t i = 0; i < C_NB_COLLUMNS; i++)
 				{
-					_lines[i][j] = new jgl::TextLabel("", this);
-					_lines[i][j]->label().setTextOutlineSize(0);
-					_lines[i][j]->box().setColor(jgl::Color(0, 0, 0, 0), jgl::Color(0, 0, 0, 0));
-					_lines[i][j]->label().setColor(jgl::Color(255, 255, 255), jgl::Color(0, 0, 0));
-					if (j == C_NB_COLLUMNS - 1)
-						_lines[i][j]->label().setHorizontalAlignment(jgl::HorizontalAlignment::Right);
-					else if (j == 0)
-						_lines[i][j]->label().setHorizontalAlignment(jgl::HorizontalAlignment::Left);
-					else
-						_lines[i][j]->label().setHorizontalAlignment(jgl::HorizontalAlignment::Centred);
-
-					_lines[i][j]->label().setVerticalAlignment(jgl::VerticalAlignment::Centred);
-
-					_lines[i][j]->activate();
+					for (jgl::Size_t j = 0; j < C_NB_ROWS; j++)
+					{
+						_labels[i][j].setDefaultValues(_labelsDefaultValues);
+						if (i == 0)
+							_labels[i][j].setHorizontalAlignment(jgl::HorizontalAlignment::Left);
+						else if (i == C_NB_COLLUMNS - 1)
+							_labels[i][j].setHorizontalAlignment(jgl::HorizontalAlignment::Right);
+					}
 				}
 			}
-		}
 
-		void setText(std::string p_text, jgl::Size_t p_collumns, jgl::Size_t p_line)
-		{
-			if (p_line >= C_NB_LINES || p_collumns >= C_NB_COLLUMNS)
-				throw std::runtime_error("Debug_line out of range");
-			_lines[p_line][p_collumns]->label().setText(p_text);
-		}
-	};
+			void setText(std::string p_text, jgl::Size_t p_positionX, jgl::Size_t p_positionY)
+			{
+				_labels[p_positionX][p_positionY].setText(p_text);
+			}
+		};
+	}
 }

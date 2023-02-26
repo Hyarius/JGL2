@@ -83,6 +83,7 @@ namespace jgl
 				void useValue();
 
 				void computeTextSize();
+				jgl::Size_t calculateTextSize();
 
 				void setGeometry(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size);
 				void setDepth(jgl::Float p_depth);
