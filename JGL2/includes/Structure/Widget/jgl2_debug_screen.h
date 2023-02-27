@@ -7,54 +7,56 @@ namespace jgl
 {
 	namespace Widget
 	{
-		template <const jgl::Size_t C_NB_COLLUMNS, const jgl::Size_t C_NB_ROWS>
+		template <jgl::Size_t C_NB_COLLUMN, jgl::Size_t C_NB_ROW>
 		class DebugScreen : public jgl::Abstract::Widget::Core
 		{
 		private:
-			jgl::Widget::Component::Label::DefaultValues _labelsDefaultValues;
-			jgl::Widget::Component::Label _labels[C_NB_COLLUMNS][C_NB_ROWS];
+			jgl::Widget::Component::Label::DefaultValues _defaultLabelValues;
+			jgl::Widget::Component::Label _labels[C_NB_COLLUMN][C_NB_ROW];
 
 			jgl::Bool _onUpdate()
 			{
 				return (false);
 			}
 
-			void _computeLabelsTextSize()
+			void _computeTextSize()
 			{
-				jgl::Size_t newTextSize = UINT32_MAX;
+				jgl::Size_t newSize = UINT32_MAX;
 
-				for (jgl::Size_t i = 0; i < C_NB_COLLUMNS; i++)
+				for (jgl::Size_t i = 0; i < C_NB_COLLUMN; i++)
 				{
-					for (jgl::Size_t j = 0; j < C_NB_ROWS; j++)
+					for (jgl::Size_t j = 0; j < C_NB_ROW; j++)
 					{
 						jgl::Size_t tmpTextSize = _labels[i][j].calculateTextSize();
-						if (tmpTextSize < newTextSize)
-						{
-							newTextSize = tmpTextSize;
-						}
+
+						if (tmpTextSize < newSize)
+							newSize = tmpTextSize;
 					}
 				}
-				_labelsDefaultValues.textSize = newTextSize;
+				if (newSize != UINT32_MAX)
+				{
+					_defaultLabelValues.textSize = newSize;
+				}
 			}
 
 			void _onGeometryChange()
 			{
-				jgl::Vector2Int labelSize = (size() - 20) / jgl::Vector2Int(C_NB_COLLUMNS, C_NB_ROWS);
-				for (jgl::Size_t i = 0; i < C_NB_COLLUMNS; i++)
+				jgl::Vector2Int labelSize = size() / jgl::Vector2Int(C_NB_COLLUMN, C_NB_ROW);
+				for (jgl::Size_t i = 0; i < C_NB_COLLUMN; i++)
 				{
-					for (jgl::Size_t j = 0; j < C_NB_ROWS; j++)
+					for (jgl::Size_t j = 0; j < C_NB_ROW; j++)
 					{
-						_labels[i][j].setGeometry(jgl::Vector2Int(i, j) * labelSize + 10, labelSize);
+						_labels[i][j].setGeometry(jgl::Vector2Int(i, j) * labelSize, labelSize);
 					}
 				}
-				_computeLabelsTextSize();
+				_computeTextSize();
 			}
 
 			void _onRender()
 			{
-				for (jgl::Size_t i = 0; i < C_NB_COLLUMNS; i++)
+				for (jgl::Size_t i = 0; i < C_NB_COLLUMN; i++)
 				{
-					for (jgl::Size_t j = 0; j < C_NB_ROWS; j++)
+					for (jgl::Size_t j = 0; j < C_NB_ROW; j++)
 					{
 						_labels[i][j].render();
 					}
@@ -64,23 +66,28 @@ namespace jgl
 		public:
 			DebugScreen(std::string p_name) : jgl::Abstract::Widget::Core(p_name)
 			{
-				_labelsDefaultValues = jgl::Widget::Component::Label::defaultValues;
-				for (jgl::Size_t i = 0; i < C_NB_COLLUMNS; i++)
+				for (jgl::Size_t i = 0; i < C_NB_COLLUMN; i++)
 				{
-					for (jgl::Size_t j = 0; j < C_NB_ROWS; j++)
+					for (jgl::Size_t j = 0; j < C_NB_ROW; j++)
 					{
-						_labels[i][j].setDefaultValues(_labelsDefaultValues);
+						_labels[i][j].setDefaultValues(_defaultLabelValues);
+					
 						if (i == 0)
+						{
 							_labels[i][j].setHorizontalAlignment(jgl::HorizontalAlignment::Left);
-						else if (i == C_NB_COLLUMNS - 1)
+						}
+						else if (i == C_NB_COLLUMN - 1)
+						{
 							_labels[i][j].setHorizontalAlignment(jgl::HorizontalAlignment::Right);
+						}
 					}
 				}
 			}
 
-			void setText(std::string p_text, jgl::Size_t p_positionX, jgl::Size_t p_positionY)
+			void setText(std::string p_text, jgl::Size_t p_collumn, jgl::Size_t p_row)
 			{
-				_labels[p_positionX][p_positionY].setText(p_text);
+				_labels[p_collumn][p_row].setText(p_text);
+				_computeTextSize();
 			}
 		};
 	}

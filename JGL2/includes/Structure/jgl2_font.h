@@ -61,6 +61,7 @@ namespace jgl
 		static inline Uniform* _outlineColorUniform = nullptr;
 		static inline Uniform* _outlineSizeUniform = nullptr;
 		
+		std::recursive_mutex _mutex;
 		UChar* _fontBuffer;
 		std::map<FontData, FontGlyphData> _fontGlyphDatas;
 

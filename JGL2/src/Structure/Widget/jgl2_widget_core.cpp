@@ -51,11 +51,21 @@ namespace jgl::Abstract::Widget
 	void Core::activate()
 	{
 		setActivationStatus(true);
+
+		for (jgl::Size_t i = 0; i < _onActivationCallbacks.size(); i++)
+		{
+			_onActivationCallbacks[i]();
+		}
 	}
 	
 	void Core::deactivate()
 	{
 		setActivationStatus(false);
+
+		for (jgl::Size_t i = 0; i < _onDeactivationCallbacks.size(); i++)
+		{
+			_onDeactivationCallbacks[i]();
+		}
 	}
 	
 	void Core::setActivationStatus(jgl::Bool p_state)

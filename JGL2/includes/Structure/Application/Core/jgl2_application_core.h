@@ -62,7 +62,7 @@ namespace jgl
 				int run();
 
 				template<typename TWidgetType, typename... Args>
-				TWidgetType* addRootWidget(std::string p_name, Args&&... p_args) { return (_widgets.addRootWidget<TWidgetType, Args...>(p_name, std::forward<Args>(p_args)...)); }
+				TWidgetType* addRootWidget(Args&&... p_args) { return (_widgets.addRootWidget<TWidgetType, Args...>(std::forward<Args>(p_args)...)); }
 
 				template<typename TWidgetType>
 				TWidgetType* getRootWidget(std::string p_name) { return (_widgets.getRootWidget<TWidgetType>(p_name)); }

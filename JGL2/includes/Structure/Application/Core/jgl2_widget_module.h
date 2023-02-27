@@ -49,9 +49,9 @@ namespace jgl
 				}
 
 				template<typename TWidgetType, typename... Args>
-				TWidgetType* addRootWidget(std::string p_name, Args&&... p_args)
+				TWidgetType* addRootWidget(Args&&... p_args)
 				{
-					TWidgetType* result = new TWidgetType(p_name, std::forward<Args>(p_args)...);
+					TWidgetType* result = new TWidgetType(std::forward<Args>(p_args)...);
 					result->_parentingModule.setParent(result, nullptr);
 					_rootWidgets.push_back(result);
 					return (result);

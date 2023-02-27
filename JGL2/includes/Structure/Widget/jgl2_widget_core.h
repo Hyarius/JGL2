@@ -47,6 +47,23 @@ namespace jgl
 
 				jgl::Bool _update();
 
+				std::vector<std::function<void()>> _onActivationCallbacks;
+
+				std::vector<std::function<void()>> _onDeactivationCallbacks;
+
+			protected:
+				template <typename Func, typename... Args>
+				void _addOnDeactivationCallback(Func&& p_func, Args&&... p_args)
+				{
+					_onDeactivationCallbacks.push_back(std::bind(std::forward<Func>(p_func), std::forward<Args>(p_args)...));
+				}
+
+				template <typename Func, typename... Args>
+				void _addOnActivationCallback(Func&& p_func, Args&&... p_args)
+				{
+					_onActivationCallbacks.push_back(std::bind(std::forward<Func>(p_func), std::forward<Args>(p_args)...));
+				}
+
 			public:
 				Core(std::string p_name);
 				~Core();

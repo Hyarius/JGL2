@@ -6,11 +6,32 @@ namespace jgl::Application
 {
 	void Graphical::_setupJobs()
 	{
+		_addJob([&]() {
+				_nbRender++;
+				jgl::Size_t actualSecond = (time() / 1000);
+				if (actualSecond != _lastSecond)
+				{
+					_updatePerSecond = _nbUpdate;
+					_renderPerSecond = _nbRender;
+					_nbUpdate = 0;
+					_nbRender = 0;
+					for (jgl::Size_t i = 0; i < _functToInvoke.size(); i++)
+					{
+						_functToInvoke[i]();
+					}
+					_lastSecond = actualSecond;
+				}
+				return (0);
+			});
 		_addJob([&]() { _window.reset(); return (0); });
 		_addJob([&]() { _API.pullWinMessage(); return (0); });
 		_addJob([&]() { _renderWidget(); return (0); });
 		_addJob([&]() { _window.render(); return (0); });
 
+		_addJob("UpdateThread", [&]() { 
+				_nbUpdate++;
+				return (0);
+			});
 		_addJob("UpdateThread", [&]() { _window.update(); return (0); });
 		_addJob("UpdateThread", [&]() { _system.update(); return (0); });
 		_addJob("UpdateThread", [&]() { _mouse.update(); return (0); });

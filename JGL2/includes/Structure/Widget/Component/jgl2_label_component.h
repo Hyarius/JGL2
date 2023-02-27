@@ -21,7 +21,7 @@ namespace jgl
 				struct DefaultValues
 				{
 					jgl::Size_t textSize = 40;
-					jgl::Size_t outlineSize = 5;
+					jgl::Size_t outlineSize = 3;
 					jgl::Color textColor = jgl::Color(255, 255, 255);
 					jgl::Color outlineColor = jgl::Color(0, 0, 0);
 					jgl::HorizontalAlignment horizontalAlignment = jgl::HorizontalAlignment::Centred;
@@ -71,6 +71,8 @@ namespace jgl
 
 				void _computeVerticesData();
 				void _computeDepthData();
+
+				void _castRender();
 
 			public:
 				Label();

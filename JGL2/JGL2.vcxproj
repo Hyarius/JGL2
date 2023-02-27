@@ -80,6 +80,7 @@
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_label_component.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_button.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_debug_screen.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_menu_widget.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_no_graphics.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_frame.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_network_manager.h" />

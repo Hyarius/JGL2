@@ -40,8 +40,27 @@ namespace jgl
 			void _create2DTextureShader();
 			void _create2DTextTextureShader();
 
+			jgl::Size_t _lastSecond = 0;
+			std::vector<std::function<void()>> _functToInvoke;
+
+			jgl::Size_t _nbRender = 0;
+			jgl::Size_t _renderPerSecond = 0;
+
+			jgl::Size_t _nbUpdate = 0;
+			jgl::Size_t _updatePerSecond = 0;
+
 		public:
 			Graphical(std::string p_title, jgl::Vector2Int p_size, jgl::Color p_backgroundColor);
+
+			template <typename Func, typename... Args>
+			void addFunctToInvokePerSecond(Func&& p_func, Args&&... p_args)
+			{
+				std::function<void()> funct = std::bind(std::forward<Func>(p_func), std::forward<Args>(p_args)...);
+				_functToInvoke.push_back(funct);
+			}
+
+			const jgl::Size_t& nbRenderPerSecond() const { return (_renderPerSecond); }
+			const jgl::Size_t& nbUpdatePerSecond() const { return (_updatePerSecond); }
 
 			const jgl::Vector2Int& size() const { return (_window.size()); }
 			jgl::Application::Utils::ShaderAtlas& shaders() { return (_shader); }

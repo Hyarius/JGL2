@@ -24,6 +24,7 @@ namespace jgl::Widget::Component
 
 	void Label::setDefaultValues(DefaultValues& p_defaultValues)
 	{
+
 		_textSize.setDefaultValue(&(p_defaultValues.textSize));
 		_outlineSize.setDefaultValue(&(p_defaultValues.outlineSize));
 		_textColor.setDefaultValue(&(p_defaultValues.textColor));
@@ -72,6 +73,8 @@ namespace jgl::Widget::Component
 
 	void Label::setText(std::string p_text)
 	{
+		if (_text == p_text)
+			return;
 		_text = p_text;
 		_verticesBaked = false;
 	}
@@ -108,15 +111,15 @@ namespace jgl::Widget::Component
 
 	void Label::setGeometry(jgl::Vector2Int p_anchor, jgl::Vector2Int p_size)
 	{
-		_verticesBaked = false;
 		_anchor = p_anchor;
 		_size = p_size;
+		_verticesBaked = false;
 	}
 
 	void Label::setDepth(jgl::Float p_depth)
 	{
-		_depthBaked = false;
 		_depth = p_depth;
+		_depthBaked = false;
 	}
 
 	void Label::_computeTextAnchor()
@@ -184,17 +187,8 @@ namespace jgl::Widget::Component
 		_depthBaked = true;
 	}
 
-	void Label::render()
+	void Label::_castRender()
 	{
-		if (_shaderInitialized == false)
-			_initializeShaderDatas();
-
-		if (_verticesBaked == false)
-			_computeVerticesData();
-
-		if (_depthBaked == false)
-			_computeDepthData();
-
 		_shader->activate();
 
 		glActiveTexture(GL_TEXTURE0);
@@ -211,5 +205,22 @@ namespace jgl::Widget::Component
 		_outlineSizeUniform->send(_outlineSize.value());
 
 		_shader->cast(Shader::Mode::Triangle, _elementBuffer->size() / sizeof(jgl::UInt));
+	}
+
+	void Label::render()
+	{
+		if (_text == "")
+			return;
+
+		if (_shaderInitialized == false)
+			_initializeShaderDatas();
+
+		if (_verticesBaked == false)
+			_computeVerticesData();
+
+		if (_depthBaked == false)
+			_computeDepthData();
+
+		_castRender();
 	}
 }

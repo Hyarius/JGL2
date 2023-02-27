@@ -1,18 +1,45 @@
 #include "jgl2.h"
 
+class Test : public jgl::Abstract::Widget::Core
+{
+private:
+	jgl::Widget::DebugScreen<4, 20>* _debugScreen;
+
+	jgl::Bool _onUpdate()
+	{
+		
+		return (false);
+	}
+
+	void _onGeometryChange()
+	{
+		_debugScreen->setGeometry(0, size());
+	}
+
+	void _onRender()
+	{
+
+	}
+
+public:
+	Test() : jgl::Abstract::Widget::Core("Test")
+	{
+		_debugScreen = addChildren<jgl::Widget::DebugScreen<4, 20>>("DebugScreen");
+		_debugScreen->activate();
+
+		jgl::Application::Graphical::instance()->addFunctToInvokePerSecond([&]() {
+				_debugScreen->setText("Render FPS : " + std::to_string(jgl::Application::Graphical::instance()->nbRenderPerSecond()), 0, 0);
+				_debugScreen->setText("Update FPS : " + std::to_string(jgl::Application::Graphical::instance()->nbUpdatePerSecond()), 0, 1);
+			});
+	}
+};
+
 int main(int argc, char** argv)
 {
 	jgl::Application::Graphical app = jgl::Application::Graphical("Erelia", jgl::Vector2Int(840, 680), jgl::Color(50, 50, 50));
 	app.setDefaultFont(new jgl::Font("Sono-Regular.ttf"));
 
-	jgl::Widget::DebugScreen<4, 20>* tmp = app.addRootWidget<jgl::Widget::DebugScreen<4, 20>>("Frame");
-	for (jgl::Size_t i = 0; i < 4; i++)
-	{
-		for (jgl::Size_t j = 0; j < 20; j++)
-		{
-			tmp->setText(std::string(jgl::generateNumber(1, 15), 'c'), i, j);
-		}
-	}
+	Test* tmp = app.addRootWidget<Test>();
 	tmp->setGeometry(0, app.size());
 	tmp->activate();
 

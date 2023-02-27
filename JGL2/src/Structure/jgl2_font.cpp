@@ -200,8 +200,8 @@ namespace jgl
 		{
 			_loadFontTexture(tmp);
 		}
-
-		return (_fontGlyphDatas[tmp]);
+		auto& result = _fontGlyphDatas[tmp];
+		return (result);
 	}
 
 	Font::GlyphData& Font::getData(Size_t p_textSize, Size_t p_outlineSize, UChar p_char)
