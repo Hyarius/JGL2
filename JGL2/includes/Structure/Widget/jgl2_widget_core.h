@@ -48,7 +48,6 @@ namespace jgl
 				jgl::Bool _update();
 
 				std::vector<std::function<void()>> _onActivationCallbacks;
-
 				std::vector<std::function<void()>> _onDeactivationCallbacks;
 
 			protected:

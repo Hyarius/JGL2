@@ -3,6 +3,7 @@
 #include "structure/jgl2_color.h"
 #include "structure/jgl2_vector2.h"
 #include "Structure/jgl2_font.h"
+#include "Structure/jgl2_timer.h"
 #include "structure/Application/Core/jgl2_application_core.h"
 #include "structure/Application/Graphical/jgl2_window_module.h"
 #include "structure/Application/Graphical/jgl2_windows_api_module.h"
@@ -10,6 +11,7 @@
 #include "structure/Application/Graphical/jgl2_keyboard_module.h"
 #include "structure/Application/Graphical/jgl2_mouse_module.h"
 #include "structure/Application/Graphical/jgl2_system_module.h"
+#include "structure/Application/Graphical/jgl2_application_event.h"
 
 namespace jgl
 {
@@ -21,6 +23,8 @@ namespace jgl
 			friend class ImageOutput;
 		public:
 			static Graphical* instance() { return (static_cast<Graphical*>(_instance)); }
+
+			using EventManager = jgl::Singleton<jgl::Observer<Event>>;
 
 		private:
 			jgl::Application::Module::WindowsAPI _API;
@@ -40,7 +44,7 @@ namespace jgl
 			void _create2DTextureShader();
 			void _create2DTextTextureShader();
 
-			jgl::Size_t _lastSecond = 0;
+			jgl::Timer _fpsTimer = jgl::Timer(1000);
 			std::vector<std::function<void()>> _functToInvoke;
 
 			jgl::Size_t _nbRender = 0;

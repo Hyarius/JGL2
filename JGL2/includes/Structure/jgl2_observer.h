@@ -17,9 +17,10 @@ namespace jgl
 
 		}
 
-		void subscribe(TEventType p_event, std::function<void()> p_funct)
+		template <typename Func, typename... Args>
+		void subscribe(TEventType p_event, Func&& p_func, Args&&... p_args)
 		{
-			_functs[p_event].push_back(p_funct);
+			_functs[p_event].push_back(std::bind(std::forward<Func>(p_func), std::forward<Args>(p_args)...));
 		}
 
 		void notify(TEventType p_event)

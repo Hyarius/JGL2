@@ -8,18 +8,10 @@ namespace jgl::Application
 	{
 		_addJob([&]() {
 				_nbRender++;
-				jgl::Size_t actualSecond = (time() / 1000);
-				if (actualSecond != _lastSecond)
+				if (_fpsTimer.isRunning() == false)
 				{
-					_updatePerSecond = _nbUpdate;
-					_renderPerSecond = _nbRender;
-					_nbUpdate = 0;
-					_nbRender = 0;
-					for (jgl::Size_t i = 0; i < _functToInvoke.size(); i++)
-					{
-						_functToInvoke[i]();
-					}
-					_lastSecond = actualSecond;
+					EventManager::instance()->notify(Event::OnSecondSwap);
+					_fpsTimer.start();
 				}
 				return (0);
 			});
@@ -47,6 +39,15 @@ namespace jgl::Application
 		_system(_API.systemMessagesToTreat()),
 		_defaultFont(nullptr)
 	{
+		EventManager::instanciate();
+
+		EventManager::instance()->subscribe(Event::OnSecondSwap, [&]() {
+				_updatePerSecond = _nbUpdate;
+				_renderPerSecond = _nbRender;
+				_nbUpdate = 0;
+				_nbRender = 0;
+			});
+
 		_window.connectToAPI(&_API);
 		_window.createWindow(p_title, p_size, p_backgroundColor);
 

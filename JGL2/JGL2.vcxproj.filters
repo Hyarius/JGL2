@@ -216,7 +216,10 @@
     <ClInclude Include="includes\Structure\Widget\jgl2_debug_screen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\jgl2_menu_widget.h">
+    <ClInclude Include="includes\Structure\Widget\jgl2_panel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\Application\Graphical\jgl2_application_event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

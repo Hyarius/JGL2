@@ -17,6 +17,7 @@ namespace jgl
 	private:
 		State _state;
 		jgl::ULong _startingTime;
+		jgl::ULong _endingTime;
 		jgl::ULong _timerDuration;
 
 	public:

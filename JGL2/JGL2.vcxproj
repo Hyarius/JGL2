@@ -33,6 +33,7 @@
     <ClInclude Include="includes\Structure\Application\Graphical\jgl2_application.h" />
     <ClInclude Include="includes\Structure\Application\Core\jgl2_application_core.h" />
     <ClInclude Include="includes\Structure\Application\Core\jgl2_job_module.h" />
+    <ClInclude Include="includes\Structure\Application\Graphical\jgl2_application_event.h" />
     <ClInclude Include="includes\Structure\Application\Graphical\jgl2_keyboard_module.h" />
     <ClInclude Include="includes\Structure\Application\Core\jgl2_message_consumer.h" />
     <ClInclude Include="includes\Structure\Application\Graphical\jgl2_mouse_module.h" />
@@ -80,7 +81,7 @@
     <ClInclude Include="includes\Structure\Widget\Component\jgl2_label_component.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_button.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_debug_screen.h" />
-    <ClInclude Include="includes\Structure\Widget\jgl2_menu_widget.h" />
+    <ClInclude Include="includes\Structure\Widget\jgl2_panel.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_no_graphics.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_frame.h" />
     <ClInclude Include="includes\Structure\Widget\jgl2_network_manager.h" />

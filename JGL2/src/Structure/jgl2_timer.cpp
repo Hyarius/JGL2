@@ -18,6 +18,7 @@ namespace jgl
 	void Timer::start()
 	{
 		_startingTime = jgl::Abstract::Application::Core::instance()->time();
+		_endingTime = _startingTime + _timerDuration;
 		_state = State::Running;
 	}
 
@@ -28,7 +29,7 @@ namespace jgl
 
 	Timer::State Timer::state()
 	{
-		if (_state == State::Running && _startingTime + _timerDuration <= jgl::Abstract::Application::Core::instance()->time())
+		if (_state == State::Running && _endingTime <= jgl::Abstract::Application::Core::instance()->time())
 		{
 			_state = State::Timeout;
 		}

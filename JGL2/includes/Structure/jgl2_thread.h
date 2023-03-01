@@ -5,6 +5,8 @@
 namespace jgl
 {
     class Thread {
+        friend class WorkerPool;
+
     public:
         enum class LaunchMethod { Delayed, Immediate };
 
