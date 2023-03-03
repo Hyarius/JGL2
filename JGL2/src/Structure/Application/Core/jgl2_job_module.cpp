@@ -77,7 +77,10 @@ namespace jgl::Application::Module
 			it.second->start();
 		}
 		if (_datas.size() != 0)
-			jgl::cout.setPrefix("MainThread");
+		{
+			jgl::cout.setPrefix("\033[0;37mMainThread");
+			jgl::cerr.setPrefix("\033[1;31mMainThread");
+		}
 		while (jgl::Abstract::Application::Core::instance()->_running == true)
 		{
 			Job::_executeFuncts(_jobs);

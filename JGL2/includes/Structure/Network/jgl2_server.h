@@ -20,7 +20,7 @@ namespace jgl
 		public:
 			using LoginFunct = std::function< void(ServerConnection*) >;
 			using LogoutFunct = std::function< void(ServerConnection*) >;
-			using ActivityFunct = std::function< void(ServerConnection*, ServerMessage&) >;
+			using ActivityFunction = std::function< void(ServerConnection*, ServerMessage&) >;
 
 		protected:
 			asio::io_context _asioContext;
@@ -33,7 +33,8 @@ namespace jgl
 
 			LoginFunct _loginFunct = nullptr;
 			LogoutFunct _logoutFunct = nullptr;
-			std::map<TServerMessageEnum, ActivityFunct> _activityMap;
+			ActivityFunction _unknowMessageActivity = nullptr;
+			std::map<TServerMessageEnum, ActivityFunction> _activityMap;
 
 			jgl::Long _validationKey = 0;
 			jgl::Long _majorKeysNumber = 0;
@@ -98,6 +99,10 @@ namespace jgl
 					{
 						_activityMap[p_msg.type()](p_client, p_msg);
 					}
+					else if (_unknowMessageActivity != nullptr)
+					{
+						_unknowMessageActivity(p_client, p_msg);
+					}
 					else
 					{
 						jgl::cout << "[SERVER] - Message_received of unknow id(" << static_cast<jgl::Int>(p_msg.type()) << ")" << std::endl;
@@ -141,6 +146,7 @@ namespace jgl
 					{
 						_loginFunct(p_client);
 					}
+					_acceptedConnection.push_back(p_client);
 					return (true);
 				}
 				else
@@ -190,9 +196,14 @@ namespace jgl
 				return (nullptr);
 			}
 
-			void addActivity(TServerMessageEnum p_msg_type, ActivityFunct p_funct)
+			void addActivity(TServerMessageEnum p_msg_type, ActivityFunction p_funct)
 			{
 				_activityMap[p_msg_type] = p_funct;
+			}
+
+			void setUnknowMessageActivityFunction(ActivityFunction p_unknowMessageActivity)
+			{
+				_unknowMessageActivity = p_unknowMessageActivity;
 			}
 
 			void setLoginFunction(LoginFunct p_loginFunct)

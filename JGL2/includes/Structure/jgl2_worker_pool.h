@@ -24,14 +24,14 @@ namespace jgl
         jgl::LockedQueue<std::function<void()>> _jobQueue;
 
     public:
-        WorkerPool(size_t p_nbWorker = 0)
+        WorkerPool(std::string p_poolName, size_t p_nbWorker = 0)
         {
             if (p_nbWorker == 0)
                 p_nbWorker = std::thread::hardware_concurrency() - 1;
 
             for (size_t i = 0; i < p_nbWorker; i++)
             {
-                jgl::Thread* newThread = new jgl::Thread(jgl::Thread::LaunchMethod::Delayed, "PooledThread " + std::to_string(i), _threadExecutiveFunct);
+                jgl::Thread* newThread = new jgl::Thread(jgl::Thread::LaunchMethod::Delayed, p_poolName + " " + std::to_string(i), _threadExecutiveFunct);
                 _threads.push_back(newThread);
             }
         }

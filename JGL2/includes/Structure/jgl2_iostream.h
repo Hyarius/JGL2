@@ -14,9 +14,10 @@ namespace jgl
             static inline std::recursive_mutex _mutex;
             static inline jgl::Size_t _maximumPrefixSize = 0;
             std::string _prefix;
+            std::ostream& _outputStream;
 
         public:
-            IOBuffer(const std::string& p_prefix);
+            IOBuffer(std::ostream& p_outputStream, const std::string& p_prefix);
             ~IOBuffer();
 
             virtual int sync();
@@ -27,9 +28,10 @@ namespace jgl
     public:
         IOBuffer buffer;
     public:
-        IOStream(std::string p_prefix = "");
+        IOStream(std::ostream& p_outputStream, std::string p_prefix = "");
         void setPrefix(const std::string& p_prefix);
     };
 
     extern thread_local jgl::IOStream cout;
+    extern thread_local jgl::IOStream cerr;
 }

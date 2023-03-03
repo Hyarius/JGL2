@@ -26,7 +26,8 @@ namespace jgl
             _funct(std::bind(std::forward<Func>(p_func), std::forward<Args>(p_args)...)),
             _starterSignal() {
             auto wrapper = [this]() {
-                jgl::cout.setPrefix(_message);
+                jgl::cout.setPrefix("\033[0;37m" + _message);
+                jgl::cerr.setPrefix("\033[1;31m" + _message);
                 _starterSignal.get_future().wait();
                 _funct();
             };

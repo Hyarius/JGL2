@@ -5,57 +5,62 @@
 
 namespace jgl
 {
-	template <typename TServerMessageEnum>
-	class ServerManager : public jgl::Abstract::Widget::NoGraphics
+	namespace Widget
 	{
-	private:
-		jgl::Network::Server< TServerMessageEnum>* _server = nullptr;
-
-		jgl::Bool _onUpdate()
+		template <typename TServerMessageEnum>
+		class ServerManager : public jgl::Abstract::Widget::NoGraphics
 		{
-			if (_server != nullptr)
-				_server->update();
-			return (false);
-		}
+		private:
+			jgl::Network::Server< TServerMessageEnum>* _server = nullptr;
 
-	public:
-		ServerManager(std::string p_name) : jgl::Abstract::Widget::NoGraphics(p_name)
+			jgl::Bool _onUpdate()
+			{
+				if (_server != nullptr)
+					_server->update();
+				return (false);
+			}
+
+		public:
+			ServerManager(std::string p_name) : jgl::Abstract::Widget::NoGraphics(p_name)
+			{
+
+			}
+			void setServer(jgl::Network::Server< TServerMessageEnum>* p_server)
+			{
+				_server = p_server;
+			}
+			jgl::Network::Server< TServerMessageEnum>* server() {
+				return (_server);
+			}
+		};
+
+		template <typename TServerMessageEnum>
+		class ClientManager : public jgl::Abstract::Widget::NoGraphics
 		{
+		private:
+			jgl::Network::Client< TServerMessageEnum>* _client = nullptr;
 
-		}
-		void setServer(jgl::Network::Server< TServerMessageEnum>* p_server)
-		{
-			_server = p_server;
-		}
-		jgl::Network::Server< TServerMessageEnum>* server() {
-			return (_server);
-		}
-	};
+			jgl::Bool _onUpdate()
+			{
+				if (_client != nullptr)
+				{
+					_client->update();
+				}
+				return (false);
+			}
 
-	template <typename TServerMessageEnum>
-	class ClientManager : public jgl::Abstract::Widget::NoGraphics
-	{
-	private:
-		jgl::Network::Client< TServerMessageEnum>* _client = nullptr;
+		public:
+			ClientManager(std::string p_name) : jgl::Abstract::Widget::NoGraphics(p_name)
+			{
 
-		jgl::Bool _onUpdate()
-		{
-			if (_client != nullptr)
-				_client->update();
-			return (false);
-		}
-
-	public:
-		ClientManager(std::string p_name) : jgl::Abstract::Widget::NoGraphics(p_name)
-		{
-
-		}
-		void setClient(jgl::Network::Client< TServerMessageEnum>* p_client)
-		{
-			_client = p_client;
-		}
-		jgl::Network::Client< TServerMessageEnum>* client() {
-			return (_client);
-		}
-	};
+			}
+			void setClient(jgl::Network::Client< TServerMessageEnum>* p_client)
+			{
+				_client = p_client;
+			}
+			jgl::Network::Client< TServerMessageEnum>* client() {
+				return (_client);
+			}
+		};
+	}
 }

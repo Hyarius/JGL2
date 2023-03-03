@@ -21,9 +21,6 @@ namespace jgl
 
 		public:
 			using ActivityFunction = std::function< void(ClientMessage&) >;
-			using LoginSucessfulActivity = std::function< void() >;
-			using LoginFailedActivity = std::function< void() >;
-			using DisconnectionActivity = std::function< void() >;
 		protected:
 			asio::io_context _asioContext;
 			jgl::Thread* _threadContext;
@@ -36,10 +33,11 @@ namespace jgl
 			jgl::Long _minorKeysNumber = 0;
 			jgl::Long _abstractKeysNumber = 0;
 
-			LoginSucessfulActivity _onSuccessfulLogin = nullptr;
-			LoginFailedActivity _onFailedLogin = nullptr;
-			DisconnectionActivity _onDisconnection = nullptr;
+			std::function<void()> _onSuccessfulLogin = nullptr;
+			std::function<void()> _onFailedLogin = nullptr;
+			std::function<void()> _onDisconnection = nullptr;
 
+			ActivityFunction _unknowMessageActivity = nullptr;
 			std::map<TServerMessageEnum, ActivityFunction> _activityMap;
 
 			jgl::LockedQueue<jgl::Network::InputMessage<TServerMessageEnum>> _input;
@@ -65,24 +63,32 @@ namespace jgl
 
 			}
 
-			void setSuccessfulLoginActivity(LoginSucessfulActivity p_funct)
+			template <typename Func, typename... Args>
+			void setSuccessfulLoginActivity(Func&& p_func, Args&&... p_args)
 			{
-				_onSuccessfulLogin = p_funct;
+				_onSuccessfulLogin = std::bind(std::forward<Func>(p_func), std::forward<Args>(p_args)...);
 			}
 
-			void setFailedLoginActivity(LoginFailedActivity p_funct)
+			template <typename Func, typename... Args>
+			void setFailedLoginActivity(Func&& p_func, Args&&... p_args)
 			{
-				_onFailedLogin = p_funct;
+				_onFailedLogin = std::bind(std::forward<Func>(p_func), std::forward<Args>(p_args)...);
 			}
 
-			void setDisconnectionActivity(DisconnectionActivity p_funct)
+			template <typename Func, typename... Args>
+			void setDisconnectionActivity(Func&& p_func, Args&&... p_args)
 			{
-				_onDisconnection = p_funct;
+				_onDisconnection = std::bind(std::forward<Func>(p_func), std::forward<Args>(p_args)...);
 			}
 
 			void addActivity(TServerMessageEnum p_msg_type, ActivityFunction p_funct)
 			{
 				_activityMap[p_msg_type] = p_funct;
+			}
+
+			void setUnknowMessageActivityFunction(ActivityFunction p_unknowMessageActivity)
+			{
+				_unknowMessageActivity = p_unknowMessageActivity;
 			}
 
 			void setKeys(jgl::Int p_major_keys, jgl::Int p_medium_keys, jgl::Int p_minor_keys, jgl::Int p_abstract_keys)
@@ -115,6 +121,7 @@ namespace jgl
 						{
 							_asioContext.run();
 						});
+					_threadContext->start();
 				}
 				catch (const std::exception& e)
 				{
@@ -183,6 +190,7 @@ namespace jgl
 			{
 				if (_connection == nullptr)
 					return;
+
 				if (_input.empty() == false)
 				{
 					if (_connection->state() == ClientConnection::State::Unknown)
@@ -229,9 +237,13 @@ namespace jgl
 						{
 							_activityMap[msg.type()](msg);
 						}
+						else if (_unknowMessageActivity != nullptr)
+						{
+							_unknowMessageActivity(msg);
+						}
 						else
 						{
-							jgl::cout << "[CLIENT] - Message_received of unknow id (" << static_cast<jgl::Int>(msg.type()) << ")" << std::endl;;
+							jgl::cout << "[CLIENT] - Message_received of unknow id (" << static_cast<jgl::Int>(msg.type()) << ")" << std::endl;
 						}
 					}
 				}

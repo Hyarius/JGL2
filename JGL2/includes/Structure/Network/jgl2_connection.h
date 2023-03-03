@@ -33,24 +33,27 @@ namespace jgl
 			asio::io_context& _context;
 			jgl::LockedQueue<ConnectionMessage> _output;
 			jgl::LockedQueue<jgl::Network::InputMessage<TServerMessageEnum>>* _input;
-			ConnectionMessage _tmp_message;
+			ConnectionMessage _tmp_reading_message;
+			ConnectionMessage _tmp_writing_message;
 			Connection::Owner _owner = Owner::Error;
-			jgl::UInt _id;
+			jgl::Long _id;
 
 		private:
 			void _writeHeader()
 			{
-				asio::async_write(_socket, asio::buffer(&_output.front().header, sizeof(MessageHeader<TServerMessageEnum>)),
+				_tmp_writing_message = _output.pop_front();
+
+				asio::async_write(_socket, asio::buffer(&_tmp_writing_message.header, sizeof(ConnectionMessage::Header)),
 					[this](std::error_code ec, size_t length)
 					{
 						if (!ec)
 						{
-							if (_output.front().content.size() > 0)
+							if (_tmp_writing_message.content.size() > 0)
+							{
 								_writeContent();
+							}
 							else
 							{
-								_output.pop_front();
-
 								if (!_output.empty())
 									_writeHeader();
 							}
@@ -64,13 +67,11 @@ namespace jgl
 
 			void _writeContent()
 			{
-				asio::async_write(_socket, asio::buffer(_output.front().content.data(), _output.front().content.size()),
+				asio::async_write(_socket, asio::buffer(_tmp_writing_message.content.data(), _tmp_writing_message.content.size()),
 					[this](std::error_code ec, size_t length)
 					{
 						if (!ec)
 						{
-							_output.pop_front();
-
 							if (!_output.empty())
 								_writeHeader();
 						}
@@ -83,14 +84,16 @@ namespace jgl
 
 			void _readHeader()
 			{
-				asio::async_read(_socket, asio::buffer(&_tmp_message.header, sizeof(MessageHeader<TServerMessageEnum>)),
+				_tmp_reading_message.clear();
+
+				asio::async_read(_socket, asio::buffer(&_tmp_reading_message.header, sizeof(ConnectionMessage::Header)),
 					[this](std::error_code ec, size_t length)
 					{
 						if (!ec)
 						{
-							if (_tmp_message.header.size > 0)
+							if (_tmp_reading_message.header.size > 0)
 							{
-								_tmp_message.content.resize(_tmp_message.header.size);
+								_tmp_reading_message.content.resize(_tmp_reading_message.header.size);
 								_readContent();
 							}
 							else
@@ -108,7 +111,7 @@ namespace jgl
 
 			void _readContent()
 			{
-				asio::async_read(_socket, asio::buffer(_tmp_message.content.data(), _tmp_message.content.size()),
+				asio::async_read(_socket, asio::buffer(_tmp_reading_message.content.data(), _tmp_reading_message.content.size()),
 					[this](std::error_code ec, size_t length)
 					{
 						if (!ec)
@@ -126,15 +129,16 @@ namespace jgl
 			void _addMessageToQueue()
 			{
 				if (_owner == Owner::Server)
-					_input->push_back({ this, _tmp_message, (jgl::Abstract::Application::Core::instance() != nullptr ? jgl::Abstract::Application::Core::instance()->time() : 0) });
+					_input->push_back({ this, _tmp_reading_message });
 				else
-					_input->push_back({ nullptr, _tmp_message, (jgl::Abstract::Application::Core::instance() != nullptr ? jgl::Abstract::Application::Core::instance()->time() : 0) });
+					_input->push_back({ nullptr, _tmp_reading_message });
+				_tmp_reading_message.header.sparedSpace[3] = 42;
 				_readHeader();
 			}
 
 		public:
 			Connection(Connection::Owner p_parent, asio::io_context& p_context, asio::ip::tcp::socket p_socket, jgl::LockedQueue<jgl::Network::InputMessage<TServerMessageEnum>>* p_input)
-				: _context(p_context), _socket(std::move(p_socket)), _input(p_input), _tmp_message({})
+				: _context(p_context), _socket(std::move(p_socket)), _input(p_input), _tmp_reading_message({})
 			{
 				_state = Connection::State::Unknown;
 				_id = 0;
@@ -166,7 +170,7 @@ namespace jgl
 				return (_id);
 			}
 
-			void connectToClient(jgl::UInt u_id = 0)
+			void connectToClient(jgl::Long u_id = 0)
 			{
 				if (_owner == Connection::Owner::Server)
 				{
@@ -186,10 +190,10 @@ namespace jgl
 						[this](std::error_code ec, asio::ip::tcp::endpoint p_endpoint)
 						{
 							asio::ip::tcp::no_delay no_delay(true);
-					_socket.set_option(no_delay);
+							_socket.set_option(no_delay);
 
-					if (!ec)
-						_readHeader();
+							if (!ec)
+								_readHeader();
 						});
 				}
 			}
@@ -212,13 +216,16 @@ namespace jgl
 				if (isConnected() == false)
 					return;
 
+				if (p_msg.header.emiterID == 0)
+					p_msg.header.emiterID = _id;
+
 				asio::post(_context,
 					[this, p_msg]()
 					{
 						bool state = _output.empty();
-				_output.push_back(p_msg);
-				if (state == true)
-					_writeHeader();
+						_output.push_back(p_msg);
+						if (state == true)
+							_writeHeader();
 					});
 			}
 		};

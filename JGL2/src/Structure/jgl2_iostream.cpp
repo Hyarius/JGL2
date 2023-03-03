@@ -2,7 +2,8 @@
 
 namespace jgl
 {
-	IOStream::IOBuffer::IOBuffer(const std::string& p_prefix)
+	IOStream::IOBuffer::IOBuffer(std::ostream& p_outputStream, const std::string& p_prefix) : 
+		_outputStream(p_outputStream)
 	{
 		setPrefix(p_prefix);
 	}
@@ -21,10 +22,10 @@ namespace jgl
 	void IOStream::IOBuffer::flush() {
 		_mutex.lock();
 		if (_prefix.size() != 0)
-			std::cout << "[" << std::string(_maximumPrefixSize - _prefix.size(), ' ') << _prefix << "] - ";
-		std::cout << str();
+			_outputStream << "[" << std::string(_maximumPrefixSize - _prefix.size(), ' ') << _prefix << "] - ";
+		_outputStream << str();
 		str("");
-		std::cout.flush();
+		_outputStream.flush();
 		_mutex.unlock();
 	}
 
@@ -37,9 +38,9 @@ namespace jgl
 		_mutex.unlock();
 	}
 
-	IOStream::IOStream(std::string p_prefix) :
+	IOStream::IOStream(std::ostream& p_outputStream, std::string p_prefix) :
 		std::ostream(&buffer),
-		buffer(p_prefix)
+		buffer(p_outputStream, p_prefix)
 	{
 
 	}
@@ -49,5 +50,6 @@ namespace jgl
 		buffer.setPrefix(p_prefix);
 	}
 
-	thread_local jgl::IOStream cout;
+	thread_local jgl::IOStream cout = jgl::IOStream(std::cout);
+	thread_local jgl::IOStream cerr = jgl::IOStream(std::cerr);
 }

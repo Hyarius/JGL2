@@ -1,5 +1,5 @@
 #include "Structure/jgl2_font.h"
-#include "Structure/Application/Graphical/jgl2_application.h"
+#include "Structure/Application/Graphical/jgl2_graphical_application.h"
 
 #define STB_TRUETYPE_IMPLEMENTATION
 #include "ExternalLibraries/stb_truetype.h"
@@ -71,7 +71,7 @@ namespace jgl
 		if (p_string == "")
 			return (p_textArea.y);
 
-		for (int i = 0; i < deltas.size(); i++)
+		for (jgl::Size_t i = 0; i < deltas.size(); i++)
 		{
 			bool enough = false;
 			while (enough == false)

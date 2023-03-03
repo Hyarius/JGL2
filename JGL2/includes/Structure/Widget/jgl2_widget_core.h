@@ -82,9 +82,9 @@ namespace jgl
 				Viewport* viewport() { return (&_viewport); }
 
 				template<typename TWidgetType, typename... Args>
-				TWidgetType* addChildren(std::string p_name, Args&&... p_args)
+				TWidgetType* addChildren(Args&&... p_args)
 				{
-					TWidgetType* result = new TWidgetType(p_name, std::forward<Args>(p_args)...);
+					TWidgetType* result = new TWidgetType(std::forward<Args>(p_args)...);
 					result->_parentingModule.setParent(result, this);
 					result->_depth = this->depth() + 1;
 					return (result);

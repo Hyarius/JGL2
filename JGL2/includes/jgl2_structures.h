@@ -28,7 +28,10 @@
 
 #include "Structure/jgl2_json_parser.h"
 
+#include "Structure/jgl2_worker_pool.h"
+
 #include "Structure/jgl2_widgets.h"
 
 #include "Structure/Application/Core/jgl2_application_core.h"
-#include "Structure/Application/Graphical/jgl2_application.h"
+#include "Structure/Application/Graphical/jgl2_graphical_application.h"
+#include "Structure/Application/Console/jgl2_console_application.h"

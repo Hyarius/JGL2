@@ -4,6 +4,8 @@
 
 #include "structure/jgl2_thread.h"
 #include "structure/jgl2_singleton.h"
+#include "structure/jgl2_timer.h"
+#include "structure/jgl2_observer.h"
 #include "structure/Application/Core/jgl2_job_module.h"
 #include "structure/Application/Core/jgl2_widget_module.h"
 
@@ -25,6 +27,12 @@ namespace jgl
 			class Core : public Singleton<Core>
 			{
 			public:
+				enum class Event
+				{
+					OnSecondSwap
+				};
+
+				using EventManager = jgl::Singleton<jgl::Observer<Event>>;
 				using Job = std::function<int()>;
 
 				friend class Singleton<Core>;
@@ -41,6 +49,7 @@ namespace jgl
 				int _errorValue = 0;
 
 				unsigned long _time;
+				jgl::Timer _fpsTimer = jgl::Timer(1000);
 
 				jgl::Application::Module::Job _jobs;
 				jgl::Application::Module::Widget _widgets;

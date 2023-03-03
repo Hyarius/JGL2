@@ -1,4 +1,4 @@
-#include "Structure/Application/Graphical/jgl2_application.h"
+#include "Structure/Application/Graphical/jgl2_graphical_application.h"
 #include "jgl2_basic_functions.h"
 #include "structure/jgl2_vector2.h"
 
@@ -8,11 +8,6 @@ namespace jgl::Application
 	{
 		_addJob([&]() {
 				_nbRender++;
-				if (_fpsTimer.isRunning() == false)
-				{
-					EventManager::instance()->notify(Event::OnSecondSwap);
-					_fpsTimer.start();
-				}
 				return (0);
 			});
 		_addJob([&]() { _window.reset(); return (0); });
@@ -39,8 +34,6 @@ namespace jgl::Application
 		_system(_API.systemMessagesToTreat()),
 		_defaultFont(nullptr)
 	{
-		EventManager::instanciate();
-
 		EventManager::instance()->subscribe(Event::OnSecondSwap, [&]() {
 				_updatePerSecond = _nbUpdate;
 				_renderPerSecond = _nbRender;

@@ -3,7 +3,7 @@
 #include "jgl2_timer.h"
 #include "jgl2_keyboard.h"
 #include "jgl2_mouse.h"
-#include "Structure/Application/Graphical/jgl2_application.h"
+#include "Structure/Application/Graphical/jgl2_graphical_application.h"
 
 namespace jgl
 {

@@ -5,7 +5,19 @@ namespace jgl::Abstract::Application
 	Core::Core()
 	{
 		_instance = this;
-		_addJob([&]() {_updateTime(); return (0); });
+		_addJob([&]() {
+				_updateTime();
+				return (0);
+			});
+		_addJob([&]() {
+				if (_fpsTimer.isRunning() == false)
+				{
+					jgl::Abstract::Application::Core::EventManager::instance()->notify(Event::OnSecondSwap);
+					_fpsTimer.start();
+				}
+				return (0);
+			});
+		EventManager::instanciate();
 	}
 	
 	void Core::_updateTime()

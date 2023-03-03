@@ -4,34 +4,53 @@
 #include "Structure/jgl2_iostream.h"
 #include "Structure/jgl2_thread.h"
 
+#define MESSAGE_FREE_SPACE 4
 namespace jgl
 {
 	namespace Network
 	{
-
 		template <typename TServerMessageEnum >
 		struct MessageHeader
 		{
 			TServerMessageEnum id{};
 			jgl::Size_t size = 0;
 			jgl::Size_t readed = 0;
+			mutable jgl::Long emiterID = 0;
+			jgl::Long sparedSpace[MESSAGE_FREE_SPACE];
 
 			MessageHeader()
 			{
-
+				clear();
 			}
 			MessageHeader(TServerMessageEnum p_value)
 			{
+				clear();
 				id = p_value;
+			}
+
+			void copyData(MessageHeader& p_other)
+			{
+				emiterID = p_other.emiterID;
+				for (jgl::Size_t i = 0; i < MESSAGE_FREE_SPACE; i++)
+					sparedSpace[i] = p_other.sparedSpace[i];
+			}
+
+			void clear()
+			{
+				id = {};
+				emiterID = 0;
 				size = 0;
 				readed = 0;
+				for (jgl::Size_t i = 0; i < MESSAGE_FREE_SPACE; i++)
+					sparedSpace[i] = 0;
 			}
 		};
 
 		template <typename TServerMessageEnum >
 		struct Message
 		{
-			MessageHeader<TServerMessageEnum> header{};
+			using Header = MessageHeader<TServerMessageEnum>;
+			Header header;
 			std::vector<jgl::UChar> content;
 
 			TServerMessageEnum type() const
@@ -51,15 +70,19 @@ namespace jgl
 
 			Message(TServerMessageEnum p_type = {})
 			{
-				header = MessageHeader<TServerMessageEnum>(p_type);
+				header = Header(p_type);
 				content.clear();
 			}
 
 			void clear()
 			{
-				header.size = 0;
-				header.readed = 0;
+				header.clear();
 				content.clear();
+			}
+
+			void copyHeaderData(Message& p_other)
+			{
+				header.copyData(p_other.header);
 			}
 
 			void skip(jgl::Size_t p_nb_to_skip)
@@ -69,7 +92,14 @@ namespace jgl
 
 			friend std::ostream& operator << (std::ostream& p_os, const Message<TServerMessageEnum>& p_msg)
 			{
-				p_os << "ID:" << int(p_msg.header.id) << " Size:" << p_msg.header.size;
+				p_os << "ID :" << static_cast<jgl::Int>(p_msg.header.id) << " / Size : " << p_msg.header.size << " / Readed : " << p_msg.header.readed << " / Emiter : " << p_msg.header.emiterID << " - [";
+				for (jgl::Size_t i = 0; i < MESSAGE_FREE_SPACE; i++)
+				{
+					if (i != 0)
+						p_os << " / ";
+					p_os << p_msg.header.sparedSpace[i];
+				}
+				p_os << "]";
 				return p_os;
 			}
 

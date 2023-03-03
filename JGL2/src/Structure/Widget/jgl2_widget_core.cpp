@@ -1,7 +1,7 @@
 #include "Structure/Widget/jgl2_widget_core.h"
 #include "jgl2_basic_functions.h"
 #include "Structure/jgl2_iostream.h"
-#include "Structure/Application/graphical/jgl2_application.h"
+#include "Structure/Application/graphical/jgl2_graphical_application.h"
 
 namespace jgl::Abstract::Widget
 {

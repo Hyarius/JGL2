@@ -1,5 +1,5 @@
 #include "Structure/jgl2_viewport.h"
-#include "Structure/Application/Graphical/jgl2_application.h"
+#include "Structure/Application/Graphical/jgl2_graphical_application.h"
 #include "Structure/Widget/jgl2_widget_core.h"
 
 namespace jgl
