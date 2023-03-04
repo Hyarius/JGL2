@@ -131,6 +131,8 @@ namespace jgl
 		public:
 			using Client = jgl::Network::Client<TServerMessageEnum>;
 			using ClientManager = jgl::Widget::ClientManager<TServerMessageEnum>;
+			using Message = jgl::Network::Message<TServerMessageEnum>;
+			using Node = jgl::Network::Node<TServerMessageEnum>;
 
 		private:
 			Client* _nodeClient;
@@ -142,7 +144,7 @@ namespace jgl
 			{
 				_nodeClient = new Client();
 				_nodeClient->connect(p_address, p_serverPort);
-				_nodeClient->setUnknowMessageActivityFunction([&](jgl::Network::Message<TServerMessageEnum>& p_msg) {
+				_nodeClient->setUnknowMessageActivityFunction([&](Message& p_msg) {
 					this->_awnserReady.push_back(p_msg);
 					});
 
@@ -151,10 +153,10 @@ namespace jgl
 				_nodeClientManager->activate();
 			}
 
-			void emitMessage(jgl::Network::Message<TServerMessageEnum>& p_msg)
+			void emitMessage(Message& p_msg)
 			{
 				p_msg.header.emiterID = _nodeClient->connection()->id();
-				p_msg.header.sparedSpace[jgl::Network::Node<TServerMessageEnum>::nodeIDByte] = this->_id;
+				p_msg.header.sparedSpace[Node::nodeIDByte] = this->_id;
 				_nodeClient->send(p_msg);
 			}
 		};

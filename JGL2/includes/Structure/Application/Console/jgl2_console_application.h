@@ -10,10 +10,13 @@ namespace jgl
 		{
 		private:
 			void _setupJobs();
+			jgl::Long _nbUpdate;
+			jgl::Long _nbUpdatePerSecond;
 
 		public:
 			Console();
 			static Console* instance() { return (static_cast<Console*>(_instance)); }
+			const jgl::Long& nbUpdatePerSecond() {return (_nbUpdatePerSecond); }
 		};
 	}
 }
