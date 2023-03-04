@@ -11,12 +11,22 @@ namespace jgl
 		class ServerManager : public jgl::Abstract::Widget::NoGraphics
 		{
 		private:
+			jgl::Timer _removingGhostConnectionTimer = jgl::Timer(10);
 			jgl::Network::Server< TServerMessageEnum>* _server = nullptr;
 
 			jgl::Bool _onUpdate()
 			{
 				if (_server != nullptr)
+				{
 					_server->update();
+
+					if (_removingGhostConnectionTimer.isRunning() == false)
+					{
+						_server->removeGhostConnection();
+
+						_removingGhostConnectionTimer.start();
+					}
+				}
 				return (false);
 			}
 

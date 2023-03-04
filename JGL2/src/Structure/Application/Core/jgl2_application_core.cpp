@@ -22,9 +22,11 @@ namespace jgl::Abstract::Application
 	
 	void Core::_updateTime()
 	{
-		auto epoch = std::chrono::time_point_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()).time_since_epoch();
-
-		_time = std::chrono::duration_cast<std::chrono::milliseconds>(epoch).count();
+		FILETIME ft;
+		GetSystemTimeAsFileTime(&ft);
+		_time = ((ULONGLONG)ft.dwHighDateTime << 32) | ft.dwLowDateTime;
+		_time -= 116444736000000000ULL; // Convert to Unix epoch time
+		_time /= 10000; // Convert to milliseconds
 	}
 
 	void Core::_addJob(Job p_job)

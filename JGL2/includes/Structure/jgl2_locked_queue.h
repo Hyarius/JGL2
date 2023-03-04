@@ -73,13 +73,13 @@ namespace jgl
 
 		bool empty()
 		{
-			std::scoped_lock lock(muxQueue);
+			//std::scoped_lock lock(muxQueue);
 			return _content.empty();
 		}
 
 		jgl::Size_t size()
 		{
-			std::scoped_lock lock(muxQueue);
+			//std::scoped_lock lock(muxQueue);
 			return static_cast<jgl::Size_t>(_content.size());
 		}
 

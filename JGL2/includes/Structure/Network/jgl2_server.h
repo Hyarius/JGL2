@@ -318,6 +318,10 @@ namespace jgl
 
 					_onMessageReception(msg.remote, msg.msg);
 				}
+			}
+
+			void removeGhostConnection()
+			{
 				for (auto& client : _activeConnection)
 				{
 					if (client != nullptr && client->isConnected() == false)
