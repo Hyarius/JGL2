@@ -45,6 +45,8 @@ namespace jgl
 
 				jgl::Vector2Int _textAnchorOffset;
 
+				jgl::Bool _isSelected = false;
+
 				jgl::Vector2Int _anchor;
 				jgl::Vector2Int _size;
 				jgl::Float _depth;
@@ -83,9 +85,16 @@ namespace jgl
 					return (_text);
 				}
 
+				void _updateText();
+
 			public:
 				Entry();
 
+				const jgl::Bool& isSelected() const {return (_isSelected); }
+				void select() { _isSelected = true; }
+				void unselect() { _isSelected = false; }
+
+				jgl::Bool update();
 				void render();
 
 				void setDefaultValues(DefaultValues& p_defaultValues);

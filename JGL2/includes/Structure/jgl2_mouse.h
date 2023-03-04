@@ -19,7 +19,7 @@ namespace jgl
 		friend class jgl::Application::Module::Mouse;
 
 	public:
-		enum class Button
+		enum Button
 		{
 			Right = 0,
 			Left = 1,

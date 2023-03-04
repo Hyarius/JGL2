@@ -20,6 +20,21 @@ namespace jgl
 
 			jgl::Bool _onUpdate()
 			{
+				if (jgl::Application::Graphical::instance()->mouse()->getButton(jgl::Mouse::Left) == jgl::InputStatus::Released)
+				{
+					if (isPointed() == true)
+					{
+						_entry.select();
+					}
+					else
+					{
+						_entry.unselect();
+					}
+				}
+
+				if (_entry.isSelected() == true)
+					_entry.update();
+
 				return (false);
 			}
 			void _onRender()
@@ -48,6 +63,11 @@ namespace jgl
 			void setText(std::string p_text)
 			{
 				_entry.setText(p_text);
+			}
+
+			void setPlaceholder(std::string p_placeholder)
+			{
+				_entry.setPlaceholder(p_placeholder);
 			}
 
 			jgl::Widget::Component::Box& box() { return (_box); }

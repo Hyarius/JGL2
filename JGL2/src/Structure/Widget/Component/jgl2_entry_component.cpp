@@ -16,9 +16,10 @@ namespace jgl::Widget::Component
 		_verticesBaked(false),
 		_depthBaked(false)
 	{
-		_font.onEditValue([&]() {_verticesBaked = false; });
 		_text.onEditValue([&]() {_verticesBaked = false; });
 		_placeholder.onEditValue([&]() {_verticesBaked = false; });
+		_font.onEditValue([&]() {_verticesBaked = false; });
+		_outlineSize.onEditValue([&]() {_verticesBaked = false; });
 		_textSize.onEditValue([&]() {_verticesBaked = false; });
 		_outlineSize.onEditValue([&]() {_verticesBaked = false; });
 		_horizontalAlignment.onEditValue([&]() {_verticesBaked = false; });
@@ -238,5 +239,11 @@ namespace jgl::Widget::Component
 			_computeDepthData();
 
 		_castRender();
+	}
+
+	jgl::Bool Entry::update()
+	{
+
+		return (false);
 	}
 }

@@ -24,9 +24,11 @@ namespace jgl::Abstract::Application
 	{
 		FILETIME ft;
 		GetSystemTimeAsFileTime(&ft);
-		_time = ((ULONGLONG)ft.dwHighDateTime << 32) | ft.dwLowDateTime;
-		_time -= 116444736000000000ULL; // Convert to Unix epoch time
-		_time /= 10000; // Convert to milliseconds
+		ULONGLONG tmpTime = ((ULONGLONG)ft.dwHighDateTime << 32) | ft.dwLowDateTime;
+		tmpTime -= 116444736000000000ULL; // Convert to Unix epoch time
+		tmpTime /= 10000; // Convert to milliseconds
+	
+		_time = tmpTime;
 	}
 
 	void Core::_addJob(Job p_job)
