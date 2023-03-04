@@ -14,7 +14,17 @@ namespace jgl::Widget::Component
 		_horizontalAlignment(&(defaultValues.horizontalAlignment)),
 		_verticalAlignment(&(defaultValues.verticalAlignment)),
 		_verticesBaked(false),
-		_depthBaked(false)
+		_depthBaked(false),
+		_entryController(15, [&](){
+				_text.refValue() += std::string(1, jgl::Application::Graphical::instance()->keyboard()->getEntry());
+				_text.useValue();
+			}),
+		_backspaceController(jgl::Keyboard::Backspace, jgl::InputStatus::Down, 75, [&](){
+				if (_text.value().size() == 0)
+					return;
+				_text.refValue().pop_back();
+				_text.useValue();
+			})
 	{
 		_text.onEditValue([&]() {_verticesBaked = false; });
 		_placeholder.onEditValue([&]() {_verticesBaked = false; });
@@ -190,6 +200,11 @@ namespace jgl::Widget::Component
 
 	void Entry::_computeVerticesData()
 	{
+		if (_getInternalText() == _placeholder)
+		{
+			computeTextSize();
+		}
+
 		_computeTextAnchor();
 
 		_font.value()->prepareDraw(_getInternalText(), _anchor + _textAnchorOffset, _textSize, _outlineSize, _depth);
@@ -243,6 +258,8 @@ namespace jgl::Widget::Component
 
 	jgl::Bool Entry::update()
 	{
+		_entryController.update();
+		_backspaceController.update();
 
 		return (false);
 	}

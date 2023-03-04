@@ -7,47 +7,100 @@
 
 namespace jgl
 {
-	class InputController
+	namespace Abstract
+	{
+		class InputController
+		{
+		protected:
+			jgl::Timer _timer;
+			std::function<void()> _funct;
+
+			virtual jgl::Bool _needExecution() = 0;
+			virtual jgl::Bool _skipCondition(){
+				return (true);
+			}
+
+		public:
+			template <typename Func, typename... Args>
+			InputController(jgl::ULong p_inputDelay, Func&& p_func, Args&&... p_args) :
+				_timer(p_inputDelay),
+				_funct(std::bind(std::forward<Func>(p_func), std::forward<Args>(p_args)...))
+			{
+
+			}
+			virtual void update()
+			{
+				if (_skipCondition() == true && _timer.isRunning())
+					return;
+
+				if (_needExecution() == true){
+					_funct();
+					_timer.start();
+				}
+			}
+		};
+	}
+
+	class MouseInputController : public jgl::Abstract::InputController
 	{
 	private:
-		enum class Type
-		{
-			Keyboard,
-			Mouse
-		};
-		jgl::Timer _timer;
-		Type _type;
-		union Data
-		{
-			jgl::Keyboard::Key key;
-			jgl::Mouse::Button button;
-		};
-		Data _data;
+		jgl::Mouse::Button _button;
 		jgl::InputStatus _expectedStatus;
-		std::function<void()> _funct;
+
+		jgl::Bool _needExecution(){
+			return (jgl::Application::Graphical::instance()->mouse()->getButton(_button) == _expectedStatus);
+		}
 
 	public:
-		template <typename TInputType>
-		InputController(const TInputType& p_input, jgl::InputStatus p_expectedStatus, std::function<void()> p_funct, jgl::ULong p_inputTimeout = 50) :
-			_timer(p_inputTimeout),
-			_expectedStatus(p_expectedStatus),
-			_funct(p_funct)
+		template <typename Func, typename... Args>
+		MouseInputController(jgl::Mouse::Button p_button, jgl::InputStatus p_expectedStatus, jgl::ULong p_inputDelay, Func&& p_func, Args&&... p_args) :
+			jgl::Abstract::InputController(p_inputDelay, std::forward<Func>(p_func), std::forward<Args>(p_args)...),
+			_button(p_button),
+			_expectedStatus(p_expectedStatus)
 		{
-			_type = (std::is_same<TInputType, jgl::Keyboard::Key>::value ? Type::Keyboard : Type::Mouse);
-			
-			_data = static_cast<Data>(p_input);
-		}
-		void update()
-		{
-			if (_timer.isRunning() == true)
-				return;
 
-			if ((_type == Type::Keyboard && jgl::Application::Graphical::instance()->keyboard()->getKey(_data.key) == _expectedStatus) ||
-				(_type == Type::Mouse && jgl::Application::Graphical::instance()->mouse()->getButton(_data.button) == _expectedStatus))
-			{
-				_timer.start();
-				_funct();
-			}
+		}
+	};
+
+	class KeyInputController : public jgl::Abstract::InputController
+	{
+	private:
+		jgl::Keyboard::Key _key;
+		jgl::InputStatus _expectedStatus;
+
+		jgl::Bool _needExecution(){
+			return (jgl::Application::Graphical::instance()->keyboard()->getKey(_key) == _expectedStatus);
+		}
+
+	public:
+		template <typename Func, typename... Args>
+		KeyInputController(jgl::Keyboard::Key p_key, jgl::InputStatus p_expectedStatus, jgl::ULong p_inputDelay, Func&& p_func, Args&&... p_args) :
+			jgl::Abstract::InputController(p_inputDelay, std::forward<Func>(p_func), std::forward<Args>(p_args)...),
+			_key(p_key),
+			_expectedStatus(p_expectedStatus)
+		{
+
+		}
+	};
+
+	class EntryInputController : public jgl::Abstract::InputController
+	{
+	private:
+		jgl::UChar _lastEntry = '\0';
+
+		jgl::Bool _needExecution(){
+			return (jgl::Application::Graphical::instance()->keyboard()->getEntry() >= ' ');
+		}
+		jgl::Bool _skipCondition(){
+			return (_lastEntry == jgl::Application::Graphical::instance()->keyboard()->getEntry());
+		}
+
+	public:
+		template <typename Func, typename... Args>
+		EntryInputController(jgl::ULong p_inputDelay, Func&& p_func, Args&&... p_args) :
+			jgl::Abstract::InputController(p_inputDelay, std::forward<Func>(p_func), std::forward<Args>(p_args)...)
+		{
+
 		}
 	};
 }

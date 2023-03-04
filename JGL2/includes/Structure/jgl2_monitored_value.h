@@ -53,6 +53,11 @@ namespace jgl
 			return (*_actualValue);
 		}
 
+		TType& refValue()
+		{
+			return (_value);
+		}
+
 		MonitoredValue& operator = (TType p_newValue)
 		{
 			_value = p_newValue;

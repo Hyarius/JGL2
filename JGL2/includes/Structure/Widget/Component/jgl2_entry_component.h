@@ -5,6 +5,8 @@
 #include "Structure/jgl2_shader.h"
 #include "Structure/jgl2_font.h"
 
+#include "Structure/jgl2_input_controller.h"
+
 #include "Structure/jgl2_monitored_value.h"
 
 #include "Structure/Application/Graphical/jgl2_graphical_application.h"
@@ -44,6 +46,9 @@ namespace jgl
 				jgl::MonitoredValue<jgl::VerticalAlignment> _verticalAlignment;
 
 				jgl::Vector2Int _textAnchorOffset;
+
+				jgl::EntryInputController _entryController;
+				jgl::KeyInputController _backspaceController;
 
 				jgl::Bool _isSelected = false;
 
