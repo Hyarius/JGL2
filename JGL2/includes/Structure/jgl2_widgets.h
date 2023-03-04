@@ -13,4 +13,5 @@
 #include "Structure/Widget/jgl2_server_manager.h"
 #include "Structure/Widget/jgl2_node_manager.h"
 #include "Structure/Widget/jgl2_text_label.h"
+#include "Structure/Widget/jgl2_text_entry.h"
 #include "Structure/Widget/jgl2_panel.h"

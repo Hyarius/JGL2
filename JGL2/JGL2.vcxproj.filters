@@ -234,6 +234,12 @@
     <ClInclude Include="includes\Structure\Widget\jgl2_client_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\Structure\Widget\Component\jgl2_entry_component.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\Widget\jgl2_text_entry.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Structure\jgl2_iostream.cpp">
@@ -321,6 +327,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Structure\Application\Console\jgl2_console_application.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Structure\Widget\Component\jgl2_entry_component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

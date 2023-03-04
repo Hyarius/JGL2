@@ -53,11 +53,28 @@ namespace jgl
 			return (*_actualValue);
 		}
 
-		void operator = (TType p_newValue)
+		MonitoredValue& operator = (TType p_newValue)
 		{
 			_value = p_newValue;
 			useValue();
+
+			return (*this);
 		}
+
+		jgl::Bool operator == (const TType& p_other) const
+		{
+			if (value() == p_other)
+				return (true);
+			return (false);
+		}
+
+		jgl::Bool operator != (const TType& p_other) const
+		{
+			if (value() != p_other)
+				return (true);
+			return (false);
+		}
+
 		void reset()
 		{
 			_actualValue = _defaultValue;
