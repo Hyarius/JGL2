@@ -27,7 +27,7 @@ namespace jgl
 						{
 							jgl::Network::Message<TServerMessageEnum> awnser = tmpAwnserArray.pop_front();
 
-							jgl::Long clientID = awnser.header.sparedSpace[jgl::Network::Node<TServerMessageEnum>::connectionIDByte];
+							jgl::Long clientID = awnser.header.emiterID;
 
 							jgl::Network::Connection<TServerMessageEnum>* connection = _inputServer->connection(clientID);
 							connection->send(awnser);
@@ -44,12 +44,11 @@ namespace jgl
 				_inputServer = new jgl::Network::Server<TServerMessageEnum>(p_serverPort);
 				_inputServer->setUnknowMessageActivityFunction([&](jgl::Network::Connection<TServerMessageEnum>* p_connection, jgl::Network::Message<TServerMessageEnum>& p_msg) {
 
-					jgl::Size_t nodeId = p_msg.header.sparedSpace[jgl::Network::Node<TServerMessageEnum>::nodeIDByte];
+						jgl::Size_t nodeId = p_msg.header.sparedSpace[jgl::Network::Node<TServerMessageEnum>::nodeIDByte];
 
-				p_msg.header.emiterID = p_connection->id();
-				p_msg.header.sparedSpace[jgl::Network::Node<TServerMessageEnum>::connectionIDByte] = p_connection->id();
+						p_msg.header.emiterID = p_connection->id();
 
-				_nodeHandlers[nodeId]->emitMessage(p_msg);
+						_nodeHandlers[nodeId]->emitMessage(p_msg);
 					});
 				_inputServer->start();
 

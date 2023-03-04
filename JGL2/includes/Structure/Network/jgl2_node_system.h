@@ -15,7 +15,6 @@ namespace jgl
 		{
 		public:
 			static const jgl::Size_t nodeIDByte = 0;
-			static const jgl::Size_t connectionIDByte = 0;
 
 		private:
 			virtual jgl::Network::Message<TServerMessageEnum> _treatMessage(jgl::Network::Message<TServerMessageEnum>& p_msg) = 0;
@@ -141,7 +140,6 @@ namespace jgl
 			{
 				p_msg.header.emiterID = _nodeClient->connection()->id();
 				p_msg.header.sparedSpace[jgl::Network::Node<TServerMessageEnum>::nodeIDByte] = this->_id;
-				p_msg.header.sparedSpace[jgl::Network::Node<TServerMessageEnum>::connectionIDByte] = _nodeClient->connection()->id();
 				_nodeClient->send(p_msg);
 			}
 		};
