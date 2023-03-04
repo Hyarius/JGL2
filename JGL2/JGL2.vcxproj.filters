@@ -204,7 +204,7 @@
     <ClInclude Include="includes\Structure\Widget\jgl2_button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="includes\Structure\Widget\jgl2_network_manager.h">
+    <ClInclude Include="includes\Structure\Widget\jgl2_server_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\Structure\Widget\jgl2_no_graphics.h">
@@ -223,6 +223,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="includes\Structure\Application\Console\jgl2_console_application.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\Network\jgl2_node_system.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\Widget\jgl2_node_manager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\Structure\Widget\jgl2_client_manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
