@@ -11,10 +11,17 @@ namespace jgl
 		template <typename TServerMessageEnum>
 		class NodeManager : public jgl::Abstract::Widget::NoGraphics
 		{
+		public:
+			using Server = jgl::Network::Server<TServerMessageEnum>;
+			using ServerManager = jgl::Widget::ServerManager<TServerMessageEnum>;
+			using NodeHandler = jgl::Abstract::Network::NodeHandler<TServerMessageEnum>;
+			using Message = jgl::Network::Message<TServerMessageEnum>;
+			using Connection = jgl::Network::Connection<TServerMessageEnum>;
+
 		private:
-			jgl::Network::Server<TServerMessageEnum>* _inputServer;
-			jgl::Widget::ServerManager<TServerMessageEnum>* _inputServerManager;
-			std::vector<jgl::Abstract::Network::NodeHandler<TServerMessageEnum>*> _nodeHandlers;
+			Server* _inputServer;
+			ServerManager* _inputServerManager;
+			std::vector<NodeHandler*> _nodeHandlers;
 
 			jgl::Bool _onUpdate()
 			{
@@ -25,11 +32,11 @@ namespace jgl
 						auto& tmpAwnserArray = _nodeHandlers[i]->awnserReady();
 						while (tmpAwnserArray.empty() == false)
 						{
-							jgl::Network::Message<TServerMessageEnum> awnser = tmpAwnserArray.pop_front();
+							Message awnser = tmpAwnserArray.pop_front();
 
 							jgl::Long clientID = awnser.header.emiterID;
 
-							jgl::Network::Connection<TServerMessageEnum>* connection = _inputServer->connection(clientID);
+							Connection* connection = _inputServer->connection(clientID);
 							connection->send(awnser);
 						}
 					}
@@ -41,23 +48,23 @@ namespace jgl
 		public:
 			NodeManager(std::string p_name, jgl::Size_t p_serverPort) : jgl::Abstract::Widget::NoGraphics(p_name)
 			{
-				_inputServer = new jgl::Network::Server<TServerMessageEnum>(p_serverPort);
+				_inputServer = new Server(p_serverPort);
 				_inputServer->setUnknowMessageActivityFunction([&](jgl::Network::Connection<TServerMessageEnum>* p_connection, jgl::Network::Message<TServerMessageEnum>& p_msg) {
 
-						jgl::Size_t nodeId = p_msg.header.sparedSpace[jgl::Network::Node<TServerMessageEnum>::nodeIDByte];
+					jgl::Size_t nodeId = p_msg.header.sparedSpace[jgl::Network::Node<TServerMessageEnum>::nodeIDByte];
 
-						p_msg.header.emiterID = p_connection->id();
+				p_msg.header.emiterID = p_connection->id();
 
-						_nodeHandlers[nodeId]->emitMessage(p_msg);
+				_nodeHandlers[nodeId]->emitMessage(p_msg);
 					});
 				_inputServer->start();
 
-				_inputServerManager = jgl::Abstract::Application::Core::instance()->addRootWidget<jgl::Widget::ServerManager<TServerMessageEnum>>("Central node manager");
+				_inputServerManager = jgl::Abstract::Application::Core::instance()->addRootWidget<ServerManager>("Central node manager");
 				_inputServerManager->setServer(_inputServer);
 				_inputServerManager->activate();
 			}
 
-			void setNode(jgl::Abstract::Network::NodeHandler<TServerMessageEnum>* p_node)
+			void setNode(NodeHandler* p_node)
 			{
 				if (_nodeHandlers.size() < static_cast<jgl::Size_t>(p_node->id() + 1))
 					_nodeHandlers.resize(p_node->id() + 1);
